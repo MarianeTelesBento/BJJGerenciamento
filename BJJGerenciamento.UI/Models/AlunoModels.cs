@@ -12,17 +12,10 @@ namespace BJJGerenciamento.UI.Models
         public int IdTurma { get; set; }
         public string Matricula { get; set; }
         public string Nome { get; set; }
-
-        Nome varchar(25) NOT NULL,
-    Sobrenome varchar(50) NOT NULL,
-    EstadoMatricula bit NOT NULL,
-	Telefone varchar(15) NOT NULL,
-    Rg varchar(10) NOT NULL,
-    Cpf varchar(11) NOT NULL,
-    DataNascimento date NOT NULL,
-	CEP varchar(8) NULL,
-	Endereco varchar(100) NULL,
-	Bairro varchar(50) NULL,
-	Numero varchar(10) NOT NULL
+        public string Sobrenome { get; set; }
+        public bool EstadoMatricula { get; set; }
+        public string Telefone { get; set; }
+        public string Rg { get; set; }
+        public string Cpf { get; set; }
     }
 }

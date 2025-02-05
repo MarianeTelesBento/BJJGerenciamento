@@ -123,6 +123,24 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox bairro;
 
         /// <summary>
+        /// cidade control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cidade;
+
+        /// <summary>
+        /// estado control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox estado;
+
+        /// <summary>
         /// numero control.
         /// </summary>
         /// <remarks>
