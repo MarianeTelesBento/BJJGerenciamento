@@ -40,6 +40,7 @@
         <asp:TextBox ID="cep" runat="server" OnTextChanged="cep_TextChanged" />
         <label for="naoCep">Não sei o Cep:</label>
         <asp:Checkbox ID="naoCep" runat="server" OnCheckedChanged="naoCep_CheckedChanged" />
+        <asp:Button ID="BuscarCep" runat="server" OnClick="BuscarCep_Click" Text="Buscar" />
         <br />
 
         <label for="endereco">Endereço:</label>
