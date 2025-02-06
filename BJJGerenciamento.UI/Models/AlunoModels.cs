@@ -6,7 +6,7 @@ using System.Web;
 
 namespace BJJGerenciamento.UI.Models
 {
-    public class AlunoModels
+    public class AlunoModels : EnderecoModels
     {
         public int IdAlunos { get; set; }
         public int IdTurma { get; set; }
@@ -17,5 +17,6 @@ namespace BJJGerenciamento.UI.Models
         public string Telefone { get; set; }
         public string Rg { get; set; }
         public string Cpf { get; set; }
+        public DateTime DataNascimento { get; set; }
     }
 }

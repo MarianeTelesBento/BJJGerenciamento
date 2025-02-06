@@ -90,12 +90,6 @@ namespace BJJGerenciamento.UI
 
         }
 
-        protected void btnEnviar_Click(object sender, EventArgs e)
-        {
-            AlunosRepository alunosRepository = new AlunosRepository();
-            alunosRepository.CadastrarDados(matricula.Text, txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, endereco.Text, bairro.Text, numero.Text);
-        }
-
         protected void BuscarCep_Click(object sender, EventArgs e)
         {
             CepService cepService = new CepService();
@@ -107,6 +101,12 @@ namespace BJJGerenciamento.UI
             cidade.Text = ceplist.Cidade;
             estado.Text = ceplist.Estado;
 
+        }
+
+        protected void btnEnviar_Click(object sender, EventArgs e)
+        {
+            AlunosDAL alunosRepository = new AlunosDAL();
+            alunosRepository.CadastrarDados(matricula.Text, txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, endereco.Text, bairro.Text, numero.Text);
         }
     }
 }
