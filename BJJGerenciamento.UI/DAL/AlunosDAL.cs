@@ -11,29 +11,29 @@ namespace BJJGerenciamento.UI.DAL
     {
         public string connectionString = "Data Source=FAC0539673W10-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        public int CadastrarDados(string d1, string d2, string d3, string d4, string d5, string d6, string d7, string d8, string d9, string d10, string d11, string d12)
+        public int CadastrarDados(string matricula, string nome, string sobrenome, string telefone, string email, string rg, string cpf, string dataNascimento, string cep, string endereco, string bairro, string numero)
         {
             int cadastroRealizado = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Matricula, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Endereco, Bairro, Numero) values(2, @d1, @d2, @d3, 'True', @d4, @d5, @d6, @d7, @d8, @d9, @d10, @d11, @d12); SELECT SCOPE_IDENTITY();", connection);
+            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Matricula, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Endereco, Bairro, Numero) values(2, @matricula, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @endereco, @bairro, @numero);", connection);
 
-            inserirCommand.Parameters.AddWithValue("@d1", d1);
-            inserirCommand.Parameters.AddWithValue("@d2", d2);
-            inserirCommand.Parameters.AddWithValue("@d3", d3);
-            inserirCommand.Parameters.AddWithValue("@d4", d4);
-            inserirCommand.Parameters.AddWithValue("@d5", d5);
-            inserirCommand.Parameters.AddWithValue("@d6", d6);
-            inserirCommand.Parameters.AddWithValue("@d7", d7);
-            inserirCommand.Parameters.AddWithValue("@d8", d8);
-            inserirCommand.Parameters.AddWithValue("@d9", d9);
-            inserirCommand.Parameters.AddWithValue("@d10", d10);
-            inserirCommand.Parameters.AddWithValue("@d11", d11);
-            inserirCommand.Parameters.AddWithValue("@d12", d12);
+            inserirCommand.Parameters.AddWithValue("@matricula", matricula);
+            inserirCommand.Parameters.AddWithValue("@nome", nome);
+            inserirCommand.Parameters.AddWithValue("@sobrenome", sobrenome);
+            inserirCommand.Parameters.AddWithValue("@telefone", telefone);
+            inserirCommand.Parameters.AddWithValue("@email", email);
+            inserirCommand.Parameters.AddWithValue("@rg", rg);
+            inserirCommand.Parameters.AddWithValue("@cpf", cpf);
+            inserirCommand.Parameters.AddWithValue("@dataNascimento", dataNascimento);
+            inserirCommand.Parameters.AddWithValue("@cep", cep);
+            inserirCommand.Parameters.AddWithValue("@endereco", endereco);
+            inserirCommand.Parameters.AddWithValue("@bairro", bairro);
+            inserirCommand.Parameters.AddWithValue("@numero", numero);
 
-            cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
+            cadastroRealizado = inserirCommand.ExecuteNonQuery();
 
             connection.Close();
 
@@ -47,9 +47,9 @@ namespace BJJGerenciamento.UI.DAL
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand($"SELECT * FROM TBAlunos;", connection);
+            SqlCommand readerCommand = new SqlCommand($"SELECT * FROM TBAlunos;", connection);
 
-            SqlDataReader reader = inserirCommand.ExecuteReader();
+            SqlDataReader reader = readerCommand.ExecuteReader();
 
             while (reader.Read())
             {
@@ -62,14 +62,14 @@ namespace BJJGerenciamento.UI.DAL
                     Sobrenome = reader.GetString(4),
                     EstadoMatricula = reader.GetBoolean(5),
                     Telefone = reader.GetString(6),
-                    Rg = reader.GetString(7),
-                    Cpf = reader.GetString(8),
-                    DataNascimento = reader.GetDateTime(9),
-                    Cep = reader.GetString(10),
-                    Endereco = reader.GetString(11),
-                    Bairro = reader.GetString(12),
-                    Numero = reader.GetString(13),
-                    Cidade = reader.GetString(14)
+                    Email = reader.GetString(7),
+                    Rg = reader.GetString(8),
+                    Cpf = reader.GetString(9),
+                    DataNascimento = reader.GetDateTime(10),
+                    Cep = reader.GetString(11),
+                    Endereco = reader.GetString(12),
+                    Bairro = reader.GetString(13),
+                    Numero = reader.GetString(14)
                 };
                 alunoList.Add(aluno);
             }

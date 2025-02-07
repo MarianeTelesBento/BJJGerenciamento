@@ -15,6 +15,7 @@ namespace BJJGerenciamento.UI.Models
         public string Sobrenome { get; set; }
         public bool EstadoMatricula { get; set; }
         public string Telefone { get; set; }
+        public string Email { get; set; }
         public string Rg { get; set; }
         public string Cpf { get; set; }
         public DateTime DataNascimento { get; set; }

@@ -65,4 +65,19 @@
 
         <asp:Button ID="btnEnviar" Text="Enviar" OnClick="btnEnviar_Click" runat="server" />
     </main>
+
+    <script type="text/javascript">
+        function applyCPFMask() {
+            var cpf = document.getElementById('<%= cpf.ClientID %>');
+            var value = cpf.value.replace(/\D/g, '');  // Remove tudo o que não for número
+            if (value.length <= 11) {
+                // Aplica a máscara apenas se o CPF tiver até 11 dígitos
+                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            }
+            cpf.value = value;  // Atualiza o valor no campo com a máscara
+        }
+    </script>
 </asp:Content>
+
+
+

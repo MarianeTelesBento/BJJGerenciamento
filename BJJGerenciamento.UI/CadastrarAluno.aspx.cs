@@ -49,7 +49,7 @@ namespace BJJGerenciamento.UI
 
         protected void cpf_TextChanged(object sender, EventArgs e)
         {
-
+             
         }
 
         protected void dataNascimento_TextChanged(object sender, EventArgs e)

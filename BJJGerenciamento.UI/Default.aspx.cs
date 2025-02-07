@@ -13,7 +13,8 @@ namespace BJJGerenciamento.UI
         protected void Page_Load(object sender, EventArgs e)
         {
             AlunosDAL alunosDAL = new AlunosDAL();
-            alunosDAL.VisualizarDados();
+            GridView1.DataSource = alunosDAL.VisualizarDados();
+            GridView1.DataBind();
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
