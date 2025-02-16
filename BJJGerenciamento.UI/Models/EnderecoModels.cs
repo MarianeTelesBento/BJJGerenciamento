@@ -25,10 +25,5 @@ namespace BJJGerenciamento.UI.Models
         [JsonProperty("street")]
         public string Rua { get; set; }
 
-        [JsonProperty("complement")]
-        public string Complemento { get; set; }
-
-        [JsonProperty("ibge")]
-        public string IBGE { get; set; }
     }
 }

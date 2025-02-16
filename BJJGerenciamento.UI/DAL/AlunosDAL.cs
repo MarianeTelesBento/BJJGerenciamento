@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Web;
 using BJJGerenciamento.UI.Models;
 
@@ -9,18 +10,18 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        public string connectionString = "Data Source=FAC0539673W10-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        //public string connectionString = "Data Source=FAC0539673W10-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
-        public int CadastrarDados(string matricula, string nome, string sobrenome, string telefone, string email, string rg, string cpf, string dataNascimento, string cep, string endereco, string bairro, string numero)
+        public int CadastrarDados(string nome, string sobrenome, string telefone, string email, string rg, string cpf, string dataNascimento, string cep, string endereco, string bairro, string cidade, string estado, string numero)
         {
             int cadastroRealizado = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Matricula, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Endereco, Bairro, Numero) values(2, @matricula, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @endereco, @bairro, @numero);", connection);
+            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Endereco, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @endereco, @bairro, @cidade, @estado @numero);", connection);
 
-            inserirCommand.Parameters.AddWithValue("@matricula", matricula);
             inserirCommand.Parameters.AddWithValue("@nome", nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", sobrenome);
             inserirCommand.Parameters.AddWithValue("@telefone", telefone);
@@ -31,6 +32,8 @@ namespace BJJGerenciamento.UI.DAL
             inserirCommand.Parameters.AddWithValue("@cep", cep);
             inserirCommand.Parameters.AddWithValue("@endereco", endereco);
             inserirCommand.Parameters.AddWithValue("@bairro", bairro);
+            inserirCommand.Parameters.AddWithValue("@cidade", cidade);
+            inserirCommand.Parameters.AddWithValue("@estado", estado);
             inserirCommand.Parameters.AddWithValue("@numero", numero);
 
             cadastroRealizado = inserirCommand.ExecuteNonQuery();
@@ -57,7 +60,6 @@ namespace BJJGerenciamento.UI.DAL
                 { 
                     IdAlunos = reader.GetInt32(0), 
                     IdTurma = reader.GetInt32(1),
-                    Matricula = reader.GetString(2),
                     Nome = reader.GetString(3),
                     Sobrenome = reader.GetString(4),
                     EstadoMatricula = reader.GetBoolean(5),
@@ -69,7 +71,9 @@ namespace BJJGerenciamento.UI.DAL
                     Cep = reader.GetString(11),
                     Endereco = reader.GetString(12),
                     Bairro = reader.GetString(13),
-                    Numero = reader.GetString(14)
+                    Cidade = reader.GetString(14),
+                    Estado = reader.GetString(15),
+                    Numero = reader.GetString(16)
                 };
                 alunoList.Add(aluno);
             }
@@ -78,5 +82,49 @@ namespace BJJGerenciamento.UI.DAL
 
             return alunoList;
         }
+
+        public AlunoModels BuscarCpfAluno(string cpf)
+        {
+            AlunoModels aluno = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM TBAlunos WHERE Cpf = @cpf;", connection))
+                {
+                    command.Parameters.AddWithValue("@cpf", cpf);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) 
+                        {
+                            aluno = new AlunoModels
+                            {
+                                IdAlunos = reader.GetInt32(0),
+                                IdTurma = reader.GetInt32(1),
+                                Nome = reader.GetString(3),
+                                Sobrenome = reader.GetString(4),
+                                EstadoMatricula = reader.GetBoolean(5),
+                                Telefone = reader.GetString(6),
+                                Email = reader.GetString(7),
+                                Rg = reader.GetString(8),
+                                Cpf = reader.GetString(9),
+                                DataNascimento = reader.GetDateTime(10),
+                                Cep = reader.GetString(11),
+                                Endereco = reader.GetString(12),
+                                Bairro = reader.GetString(13),
+                                Cidade = reader.GetString(14),
+                                Estado = reader.GetString(15),
+                                Numero = reader.GetString(16)
+                            };
+                        }
+                    }
+                }
+            }
+
+            return aluno;
+        }
+
     }
 }

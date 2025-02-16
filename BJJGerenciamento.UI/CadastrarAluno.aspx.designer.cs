@@ -15,13 +15,13 @@ namespace BJJGerenciamento.UI
     {
 
         /// <summary>
-        /// matricula control.
+        /// cpf control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox matricula;
+        protected global::System.Web.UI.WebControls.TextBox cpf;
 
         /// <summary>
         /// txtNome control.
@@ -67,15 +67,6 @@ namespace BJJGerenciamento.UI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox rg;
-
-        /// <summary>
-        /// cpf control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cpf;
 
         /// <summary>
         /// dataNascimento control.
@@ -150,13 +141,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox estado;
 
         /// <summary>
-        /// numero control.
+        /// numeroCasa control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox numero;
+        protected global::System.Web.UI.WebControls.TextBox numeroCasa;
 
         /// <summary>
         /// btnEnviar control.

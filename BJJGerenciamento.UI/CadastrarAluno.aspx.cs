@@ -12,11 +12,28 @@ namespace BJJGerenciamento.UI
 {
     public partial class About : Page
     {
+        public void LimparCampos()
+        {
+            txtNome.Text = string.Empty;
+            sobrenome.Text = string.Empty;
+            telefone.Text = string.Empty;
+            email.Text = string.Empty;
+            cpf.Text = string.Empty;
+            rg.Text = string.Empty;
+            dataNascimento.Text = string.Empty;
+            cep.Text = string.Empty;
+            endereco.Text = string.Empty;
+            bairro.Text = string.Empty;
+            cidade.Text = string.Empty;
+            estado.Text = string.Empty;
+            numeroCasa.Text = string.Empty;
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
-
+#region TextChanged
         protected void matricula_TextChanged(object sender, EventArgs e)
         {
 
@@ -49,7 +66,13 @@ namespace BJJGerenciamento.UI
 
         protected void cpf_TextChanged(object sender, EventArgs e)
         {
-             
+            AlunosDAL alunosDAL = new AlunosDAL();
+            if (alunosDAL.BuscarCpfAluno(cpf.Text.Trim()) != null)
+            {
+                Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
+                cpf.Text = string.Empty;
+            }
+            
         }
 
         protected void dataNascimento_TextChanged(object sender, EventArgs e)
@@ -64,7 +87,10 @@ namespace BJJGerenciamento.UI
 
         protected void naoCep_CheckedChanged(object sender, EventArgs e)
         {
-
+            /*if (naoCep.Checked)
+            {
+                cep.Enabled = false;
+            }*/
         }
 
         protected void endereco_TextChanged(object sender, EventArgs e)
@@ -73,11 +99,6 @@ namespace BJJGerenciamento.UI
         }
 
         protected void bairro_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void numero_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -90,10 +111,15 @@ namespace BJJGerenciamento.UI
 
         }
 
+        protected void numeroCasa_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+#endregion
+
         protected void BuscarCep_Click(object sender, EventArgs e)
         {
             CepService cepService = new CepService();
-
             var ceplist = cepService.GetEndereco(cep.Text);
 
             endereco.Text = ceplist.Rua;
@@ -104,9 +130,10 @@ namespace BJJGerenciamento.UI
         }
 
         protected void btnEnviar_Click(object sender, EventArgs e)
-        {
+        { 
             AlunosDAL alunosRepository = new AlunosDAL();
-            alunosRepository.CadastrarDados(matricula.Text, txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, endereco.Text, bairro.Text, numero.Text);
+            alunosRepository.CadastrarDados(txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, endereco.Text, bairro.Text, cidade.Text, estado.Text, numeroCasa.Text);
+            LimparCampos();
         }
     }
 }
