@@ -40,8 +40,8 @@
         <asp:Button ID="BuscarCep" runat="server" OnClick="BuscarCep_Click" Text="Buscar" />
         <br />
 
-        <label for="endereco">Endereço:</label>
-        <asp:TextBox ID="endereco" runat="server" OnTextChanged="endereco_TextChanged" />
+        <label for="rua">Rua:</label>
+        <asp:TextBox ID="rua" runat="server" OnTextChanged="rua_TextChanged" />
         <br />
 
         <label for="bairro">Bairro:</label>

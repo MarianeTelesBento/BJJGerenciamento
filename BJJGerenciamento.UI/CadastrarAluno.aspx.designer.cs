@@ -105,13 +105,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button BuscarCep;
 
         /// <summary>
-        /// endereco control.
+        /// rua control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox endereco;
+        protected global::System.Web.UI.WebControls.TextBox rua;
 
         /// <summary>
         /// bairro control.

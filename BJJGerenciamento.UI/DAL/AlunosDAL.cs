@@ -13,14 +13,14 @@ namespace BJJGerenciamento.UI.DAL
         //public string connectionString = "Data Source=FAC0539673W10-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
         public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
-        public int CadastrarDados(string nome, string sobrenome, string telefone, string email, string rg, string cpf, string dataNascimento, string cep, string endereco, string bairro, string cidade, string estado, string numero)
+        public int CadastrarDados(string nome, string sobrenome, string telefone, string email, string rg, string cpf, string dataNascimento, string cep, string rua, string bairro, string cidade, string estado, string numero)
         {
             int cadastroRealizado = 0;
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Endereco, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @endereco, @bairro, @cidade, @estado @numero);", connection);
+            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, rua, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado @numero);", connection);
 
             inserirCommand.Parameters.AddWithValue("@nome", nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", sobrenome);
@@ -30,7 +30,7 @@ namespace BJJGerenciamento.UI.DAL
             inserirCommand.Parameters.AddWithValue("@cpf", cpf);
             inserirCommand.Parameters.AddWithValue("@dataNascimento", dataNascimento);
             inserirCommand.Parameters.AddWithValue("@cep", cep);
-            inserirCommand.Parameters.AddWithValue("@endereco", endereco);
+            inserirCommand.Parameters.AddWithValue("@rua", rua);
             inserirCommand.Parameters.AddWithValue("@bairro", bairro);
             inserirCommand.Parameters.AddWithValue("@cidade", cidade);
             inserirCommand.Parameters.AddWithValue("@estado", estado);
@@ -69,7 +69,7 @@ namespace BJJGerenciamento.UI.DAL
                     Cpf = reader.GetString(9),
                     DataNascimento = reader.GetDateTime(10),
                     Cep = reader.GetString(11),
-                    Endereco = reader.GetString(12),
+                    Rua = reader.GetString(12),
                     Bairro = reader.GetString(13),
                     Cidade = reader.GetString(14),
                     Estado = reader.GetString(15),
@@ -112,7 +112,7 @@ namespace BJJGerenciamento.UI.DAL
                                 Cpf = reader.GetString(9),
                                 DataNascimento = reader.GetDateTime(10),
                                 Cep = reader.GetString(11),
-                                Endereco = reader.GetString(12),
+                                Rua = reader.GetString(12),
                                 Bairro = reader.GetString(13),
                                 Cidade = reader.GetString(14),
                                 Estado = reader.GetString(15),

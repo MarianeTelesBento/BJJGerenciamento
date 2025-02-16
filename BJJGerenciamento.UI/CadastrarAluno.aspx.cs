@@ -22,7 +22,7 @@ namespace BJJGerenciamento.UI
             rg.Text = string.Empty;
             dataNascimento.Text = string.Empty;
             cep.Text = string.Empty;
-            endereco.Text = string.Empty;
+            rua.Text = string.Empty;
             bairro.Text = string.Empty;
             cidade.Text = string.Empty;
             estado.Text = string.Empty;
@@ -93,7 +93,7 @@ namespace BJJGerenciamento.UI
             }*/
         }
 
-        protected void endereco_TextChanged(object sender, EventArgs e)
+        protected void rua_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -122,7 +122,7 @@ namespace BJJGerenciamento.UI
             CepService cepService = new CepService();
             var ceplist = cepService.GetEndereco(cep.Text);
 
-            endereco.Text = ceplist.Rua;
+            rua.Text = ceplist.Rua;
             bairro.Text = ceplist.Bairro;
             cidade.Text = ceplist.Cidade;
             estado.Text = ceplist.Estado;
@@ -132,7 +132,7 @@ namespace BJJGerenciamento.UI
         protected void btnEnviar_Click(object sender, EventArgs e)
         { 
             AlunosDAL alunosRepository = new AlunosDAL();
-            alunosRepository.CadastrarDados(txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, endereco.Text, bairro.Text, cidade.Text, estado.Text, numeroCasa.Text);
+            alunosRepository.CadastrarDados(txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, rua.Text, bairro.Text, cidade.Text, estado.Text, numeroCasa.Text);
             LimparCampos();
         }
     }
