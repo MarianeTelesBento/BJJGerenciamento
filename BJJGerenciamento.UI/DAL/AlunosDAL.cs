@@ -10,8 +10,8 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        //public string connectionString = "Data Source=FAC0539673W10-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
-        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
+        public string connectionString = "Data Source=FAC0539673W10-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public int CadastrarDados(string nome, string sobrenome, string telefone, string email, string rg, string cpf, string dataNascimento, string cep, string rua, string bairro, string cidade, string estado, string numero)
         {
@@ -20,7 +20,7 @@ namespace BJJGerenciamento.UI.DAL
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, rua, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado @numero);", connection);
+            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, rua, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numero);", connection);
 
             inserirCommand.Parameters.AddWithValue("@nome", nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", sobrenome);
