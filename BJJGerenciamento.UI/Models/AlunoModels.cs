@@ -22,6 +22,6 @@ namespace BJJGerenciamento.UI.Models
         public string Email { get; set; }
         public string Rg { get; set; }
         public string Cpf { get; set; }
-        public DateTime DataNascimento { get; set; }
+        public string DataNascimento { get; set; }
     }
 }

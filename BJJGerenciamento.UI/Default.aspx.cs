@@ -30,11 +30,23 @@ namespace BJJGerenciamento.UI
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
-            string nome = row.Cells[1].Text;
-            string cpf = row.Cells[2].Text;
-            string email = row.Cells[3].Text;
+            modalNome.Text = row.Cells[1].Text;
+            modalCpf.Text = row.Cells[2].Text;
+            modalTelefone.Text = row.Cells[3].Text;
+            modalEstadoMatricula.Text = row.Cells[4].Text;
 
-            string script = $"<script>abrirModal('{nome}', '{cpf}', '{email}');</script>";
+            modalTurma.Text = ((HiddenField)row.FindControl("hfIdTurma")).Value;
+            modalEmail.Text = ((HiddenField)row.FindControl("hfEmail")).Value;
+            modalRg.Text = ((HiddenField)row.FindControl("hfRg")).Value;
+            modalDataNascimento.Text = ((HiddenField)row.FindControl("hfDataNascimento")).Value;
+            modalCep.Text = ((HiddenField)row.FindControl("hfCep")).Value;
+            modalRua.Text = ((HiddenField)row.FindControl("hfRua")).Value;
+            modalBairro.Text = ((HiddenField)row.FindControl("hfBairro")).Value;
+            modalCidade.Text = ((HiddenField)row.FindControl("hfCidade")).Value;
+            modalEstado.Text = ((HiddenField)row.FindControl("hfEstado")).Value;
+            modalNumero.Text = ((HiddenField)row.FindControl("hfNumero")).Value;
+
+            string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
     }

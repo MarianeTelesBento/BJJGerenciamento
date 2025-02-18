@@ -20,7 +20,7 @@ namespace BJJGerenciamento.UI.DAL
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, rua, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numero);", connection);
+            SqlCommand inserirCommand = new SqlCommand($"insert into TBAlunos(IDTurma, Nome, Sobrenome, EstadoMatricula, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, Numero) values(2, @nome, @sobrenome, 'True', @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numero);", connection);
 
             inserirCommand.Parameters.AddWithValue("@nome", nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", sobrenome);
@@ -67,7 +67,7 @@ namespace BJJGerenciamento.UI.DAL
                     Email = reader.GetString(7),
                     Rg = reader.GetString(8),
                     Cpf = reader.GetString(9),
-                    DataNascimento = reader.GetDateTime(10),
+                    DataNascimento = reader.GetDateTime(10).ToString("dd/MM/yyyy"),
                     Cep = reader.GetString(11),
                     Rua = reader.GetString(12),
                     Bairro = reader.GetString(13),
@@ -110,7 +110,7 @@ namespace BJJGerenciamento.UI.DAL
                                 Email = reader.GetString(7),
                                 Rg = reader.GetString(8),
                                 Cpf = reader.GetString(9),
-                                DataNascimento = reader.GetDateTime(10),
+                                DataNascimento = reader.GetDateTime(10).ToString("dd/MM/yyyy"),
                                 Cep = reader.GetString(11),
                                 Rua = reader.GetString(12),
                                 Bairro = reader.GetString(13),
