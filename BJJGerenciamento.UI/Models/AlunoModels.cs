@@ -10,14 +10,13 @@ namespace BJJGerenciamento.UI.Models
     {
         public int IdAlunos { get; set; }
         public int IdTurma { get; set; }
-        public string Matricula { get; set; }
+        public string IdMatricula { get; set; }
         public string NomeCompleto {
             get => $"{Nome} {Sobrenome}"; 
         }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
 
-        public bool EstadoMatricula { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string Rg { get; set; }

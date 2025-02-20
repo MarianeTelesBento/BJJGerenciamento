@@ -38,7 +38,7 @@
             <SortedDescendingHeaderStyle BackColor="#383838" />
         </asp:GridView>--%>
         
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
+        <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="IdAlunos" HeaderText="ID" />
