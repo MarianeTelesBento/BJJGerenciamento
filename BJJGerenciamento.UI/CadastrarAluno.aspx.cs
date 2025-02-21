@@ -66,12 +66,12 @@ namespace BJJGerenciamento.UI
 
         protected void cpf_TextChanged(object sender, EventArgs e)
         {
-            AlunosDAL alunosDAL = new AlunosDAL();
-            if (alunosDAL.BuscarCpfAluno(cpf.Text.Trim()) != null)
-            {
-                Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
-                cpf.Text = string.Empty;
-            }
+            //AlunosDAL alunosDAL = new AlunosDAL();
+            //if (alunosDAL.BuscarCpfAluno(cpf.Text.Trim()) != null)
+            //{
+            //    Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
+            //    cpf.Text = string.Empty;
+            //}
             
         }
 
@@ -130,9 +130,29 @@ namespace BJJGerenciamento.UI
         }
 
         protected void btnEnviar_Click(object sender, EventArgs e)
-        { 
+        {
+            AlunoModels aluno = new AlunoModels
+            {
+                IdTurma = 1,
+                IdMatricula = 1,
+                Nome = txtNome.Text,
+                Sobrenome = sobrenome.Text,
+                Telefone = telefone.Text,
+                Email = email.Text,
+                Rg = rg.Text,
+                Cpf = cpf.Text,
+                DataNascimento = dataNascimento.Text,
+                CarteiraFPJJ = "",
+                Cep = cep.Text,
+                Bairro = bairro.Text,
+                Estado = estado.Text,
+                Cidade = cidade.Text,
+                Rua = rua.Text,
+                NumeroCasa = numeroCasa.Text
+            };
+
             AlunosDAL alunosRepository = new AlunosDAL();
-            alunosRepository.CadastrarDados(txtNome.Text, sobrenome.Text, telefone.Text, email.Text, rg.Text, cpf.Text, dataNascimento.Text, cep.Text, rua.Text, bairro.Text, cidade.Text, estado.Text, numeroCasa.Text);
+            alunosRepository.CadastrarDados(aluno);
             LimparCampos();
         }
     }

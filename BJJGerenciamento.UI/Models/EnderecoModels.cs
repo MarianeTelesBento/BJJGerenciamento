@@ -7,6 +7,9 @@ namespace BJJGerenciamento.UI.Models
         [JsonProperty("cep")]
         public string Cep { get; set; }
 
+        [JsonProperty("street")]
+        public string Rua { get; set; }
+
         [JsonProperty("neighborhood")]
         public string Bairro { get; set; }
 
@@ -16,11 +19,8 @@ namespace BJJGerenciamento.UI.Models
         [JsonProperty("city")]
         public string Cidade { get; set; }
 
-        [JsonProperty("street")]
-        public string Rua { get; set; }
-
         [JsonProperty("numero")]
-        public string Numero { get; set; }
+        public string NumeroCasa { get; set; }
 
     }
 }
