@@ -66,13 +66,13 @@ namespace BJJGerenciamento.UI
 
         protected void cpf_TextChanged(object sender, EventArgs e)
         {
-            //AlunosDAL alunosDAL = new AlunosDAL();
-            //if (alunosDAL.BuscarCpfAluno(cpf.Text.Trim()) != null)
-            //{
-            //    Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
-            //    cpf.Text = string.Empty;
-            //}
-            
+            AlunosDAL alunosDAL = new AlunosDAL();
+            if (alunosDAL.BuscarCpfAluno(cpf.Text.Trim()) != null)
+            {
+                Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
+                cpf.Text = string.Empty;
+            }
+
         }
 
         protected void dataNascimento_TextChanged(object sender, EventArgs e)
@@ -137,13 +137,13 @@ namespace BJJGerenciamento.UI
                 IdMatricula = 1,
                 Nome = txtNome.Text,
                 Sobrenome = sobrenome.Text,
-                Telefone = telefone.Text,
+                Telefone = telefone.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
                 Email = email.Text,
-                Rg = rg.Text,
-                Cpf = cpf.Text,
+                Rg = rg.Text.Replace(".", "").Replace("-", ""),
+                Cpf = cpf.Text.Replace("-", "").Replace(".", ""),
                 DataNascimento = dataNascimento.Text,
                 CarteiraFPJJ = "",
-                Cep = cep.Text,
+                Cep = cep.Text.Replace("-", ""),
                 Bairro = bairro.Text,
                 Estado = estado.Text,
                 Cidade = cidade.Text,
