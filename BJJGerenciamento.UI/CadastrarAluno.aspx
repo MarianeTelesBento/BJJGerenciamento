@@ -58,8 +58,12 @@
         <asp:TextBox ID="estado" runat="server" OnTextChanged="estado_TextChanged" />
         <br />
 
-        <label for="numeroCasa">NumeroCasa:</label>
+        <label for="numeroCasa">Numero Casa:</label>
         <asp:TextBox ID="numeroCasa" runat="server" OnTextChanged="numeroCasa_TextChanged" AutoPostBack="true" oninput="formatarNumero(this)"/>
+        <br /> 
+
+        <label for="carteiraFPJJ">Carteira FPJJ</label>
+        <asp:TextBox ID="carteiraFPJJ" runat="server" OnTextChanged="carteiraFPJJ_TextChanged" textMode="Number"/>
         <br />
 
         <asp:Button ID="btnEnviar" Text="Enviar" OnClick="btnEnviar_Click" runat="server" />

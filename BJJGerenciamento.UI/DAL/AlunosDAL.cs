@@ -15,7 +15,7 @@ namespace BJJGerenciamento.UI.DAL
 
         public int CadastrarDados(AlunoModels aluno)
         {
-            int cadastroRealizado = 0;
+            int cadastroRealizado;
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();

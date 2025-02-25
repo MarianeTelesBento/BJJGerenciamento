@@ -85,13 +85,13 @@ namespace BJJGerenciamento.UI
 
         }
 
-        protected void naoCep_CheckedChanged(object sender, EventArgs e)
-        {
-            /*if (naoCep.Checked)
-            {
-                cep.Enabled = false;
-            }*/
-        }
+        //protected void naoCep_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (naoCep.Checked)
+        //    {
+        //        cep.Enabled = false;
+        //    }
+        //}
 
         protected void rua_TextChanged(object sender, EventArgs e)
         {
@@ -115,6 +115,13 @@ namespace BJJGerenciamento.UI
         {
 
         }
+
+        protected void carteiraFPJJ_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        
+
 #endregion
 
         protected void BuscarCep_Click(object sender, EventArgs e)
@@ -141,14 +148,14 @@ namespace BJJGerenciamento.UI
                 Email = email.Text,
                 Rg = rg.Text.Replace(".", "").Replace("-", ""),
                 Cpf = cpf.Text.Replace("-", "").Replace(".", ""),
-                DataNascimento = dataNascimento.Text,
-                CarteiraFPJJ = "",
+                DataNascimento = dataNascimento.Text,   
                 Cep = cep.Text.Replace("-", ""),
                 Bairro = bairro.Text,
                 Estado = estado.Text,
                 Cidade = cidade.Text,
                 Rua = rua.Text,
-                NumeroCasa = numeroCasa.Text
+                NumeroCasa = numeroCasa.Text,
+                CarteiraFPJJ = carteiraFPJJ.Text
             };
 
             AlunosDAL alunosRepository = new AlunosDAL();
