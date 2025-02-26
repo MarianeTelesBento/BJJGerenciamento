@@ -27,27 +27,27 @@ namespace BJJGerenciamento.UI
 
         protected void btnDetalhes_Click(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-            GridViewRow row = (GridViewRow)btn.NamingContainer;
+            //Button btn = (Button)sender;
+            //GridViewRow row = (GridViewRow)btn.NamingContainer;
 
-            modalNome.Text = row.Cells[1].Text;
-            modalCpf.Text = row.Cells[2].Text;
-            modalTelefone.Text = row.Cells[3].Text;
-            modalEstadoMatricula.Text = row.Cells[4].Text;
+            //modalNome.Text = row.Cells[1].Text;
+            //modalCpf.Text = row.Cells[2].Text;
+            //modalTelefone.Text = row.Cells[3].Text;
+            //modalEstadoMatricula.Text = row.Cells[4].Text;
 
-            modalTurma.Text = ((HiddenField)row.FindControl("hfIdTurma")).Value;
-            modalEmail.Text = ((HiddenField)row.FindControl("hfEmail")).Value;
-            modalRg.Text = ((HiddenField)row.FindControl("hfRg")).Value;
-            modalDataNascimento.Text = ((HiddenField)row.FindControl("hfDataNascimento")).Value;
-            modalCep.Text = ((HiddenField)row.FindControl("hfCep")).Value;
-            modalRua.Text = ((HiddenField)row.FindControl("hfRua")).Value;
-            modalBairro.Text = ((HiddenField)row.FindControl("hfBairro")).Value;
-            modalCidade.Text = ((HiddenField)row.FindControl("hfCidade")).Value;
-            modalEstado.Text = ((HiddenField)row.FindControl("hfEstado")).Value;
-            modalNumero.Text = ((HiddenField)row.FindControl("hfNumero")).Value;
+            //modalTurma.Text = ((HiddenField)row.FindControl("hfIdTurma")).Value;
+            //modalEmail.Text = ((HiddenField)row.FindControl("hfEmail")).Value;
+            //modalRg.Text = ((HiddenField)row.FindControl("hfRg")).Value;
+            //modalDataNascimento.Text = ((HiddenField)row.FindControl("hfDataNascimento")).Value;
+            //modalCep.Text = ((HiddenField)row.FindControl("hfCep")).Value;
+            //modalRua.Text = ((HiddenField)row.FindControl("hfRua")).Value;
+            //modalBairro.Text = ((HiddenField)row.FindControl("hfBairro")).Value;
+            //modalCidade.Text = ((HiddenField)row.FindControl("hfCidade")).Value;
+            //modalEstado.Text = ((HiddenField)row.FindControl("hfEstado")).Value;
+            //modalNumero.Text = ((HiddenField)row.FindControl("hfNumero")).Value;
 
-            string script = $"<script>abrirModal();</script>";
-            ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
+            //string script = $"<script>abrirModal();</script>";
+            //ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
     }
 }
