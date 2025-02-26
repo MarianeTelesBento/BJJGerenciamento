@@ -12,6 +12,15 @@ namespace BJJGerenciamento.UI
 {
     public partial class About : Page
     {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                //CarregarTurmas();
+                pnlHorarios.Visible = false;
+            }
+        }
+
         public void LimparCampos()
         {
             txtNome.Text = string.Empty;
@@ -29,11 +38,7 @@ namespace BJJGerenciamento.UI
             numeroCasa.Text = string.Empty;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-#region TextChanged
+        #region TextChanged
         protected void matricula_TextChanged(object sender, EventArgs e)
         {
 
@@ -85,14 +90,6 @@ namespace BJJGerenciamento.UI
 
         }
 
-        //protected void naoCep_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (naoCep.Checked)
-        //    {
-        //        cep.Enabled = false;
-        //    }
-        //}
-
         protected void rua_TextChanged(object sender, EventArgs e)
         {
 
@@ -120,9 +117,38 @@ namespace BJJGerenciamento.UI
         {
 
         }
-        
 
-#endregion
+        protected void ddTurmas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (!string.IsNullOrEmpty(ddTurmas.SelectedValue))
+            //{
+            //    CarregarDias(int.Parse(ddTurmas.SelectedValue));
+            //}
+        }
+
+        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<int> diasSelecionados = new List<int>();
+
+            foreach (ListItem item in cbDias.Items)
+            {
+                if (item.Selected)
+                {
+                    diasSelecionados.Add(int.Parse(item.Value));
+                }
+            }
+
+            if (diasSelecionados.Count > 0)
+            {
+                //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
+                pnlHorarios.Visible = true;
+            }
+            else
+            {
+                pnlHorarios.Visible = false;
+            }
+        }
+        #endregion
 
         protected void BuscarCep_Click(object sender, EventArgs e)
         {
@@ -136,31 +162,57 @@ namespace BJJGerenciamento.UI
 
         }
 
-        protected void btnEnviar_Click(object sender, EventArgs e)
+        protected void btnProximoResponsavel_Click(object sender, EventArgs e)
         {
-            AlunoModels aluno = new AlunoModels
-            {
-                IdTurma = 1,
-                IdMatricula = 1,
-                Nome = txtNome.Text,
-                Sobrenome = sobrenome.Text,
-                Telefone = telefone.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-                Email = email.Text,
-                Rg = rg.Text.Replace(".", "").Replace("-", ""),
-                Cpf = cpf.Text.Replace("-", "").Replace(".", ""),
-                DataNascimento = dataNascimento.Text,   
-                Cep = cep.Text.Replace("-", ""),
-                Bairro = bairro.Text,
-                Estado = estado.Text,
-                Cidade = cidade.Text,
-                Rua = rua.Text,
-                NumeroCasa = numeroCasa.Text,
-                CarteiraFPJJ = carteiraFPJJ.Text
-            };
+            pnlInformacoesPessoaisAluno.Visible = false;
+            pnlInformacoesResponsavelAluno.Visible = true;
+            //AlunoModels aluno = new AlunoModels
+            //{
+            //    IdTurma = 1,
+            //    IdMatricula = 1,
+            //    Nome = txtNome.Text,
+            //    Sobrenome = sobrenome.Text,
+            //    Telefone = telefone.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+            //    Email = email.Text,
+            //    Rg = rg.Text.Replace(".", "").Replace("-", ""),
+            //    Cpf = cpf.Text.Replace("-", "").Replace(".", ""),
+            //    DataNascimento = dataNascimento.Text,   
+            //    Cep = cep.Text.Replace("-", ""),
+            //    Bairro = bairro.Text,
+            //    Estado = estado.Text,
+            //    Cidade = cidade.Text,
+            //    Rua = rua.Text,
+            //    NumeroCasa = numeroCasa.Text,
+            //    CarteiraFPJJ = carteiraFPJJ.Text
+            //};
 
-            AlunosDAL alunosRepository = new AlunosDAL();
-            alunosRepository.CadastrarDados(aluno);
-            LimparCampos();
+            //AlunosDAL alunosRepository = new AlunosDAL();
+            //alunosRepository.CadastrarDados(aluno);
+            //LimparCampos();
+        }
+
+        protected void btnProximoPlano_Click(object sender, EventArgs e)
+        {
+            pnlInformacoesResponsavelAluno.Visible = false;
+            pnlPlanoAluno.Visible = true;
+        }
+
+
+        protected void btnVoltar_Click(object sender, EventArgs e)
+        {
+            if (pnlPlanoAluno.Visible == true)
+            {
+                pnlInformacoesResponsavelAluno.Visible = true;
+                pnlInformacoesPessoaisAluno.Visible = false;
+                pnlPlanoAluno.Visible = false;
+            }
+            else if (pnlInformacoesResponsavelAluno.Visible == true)
+            {
+                pnlInformacoesPessoaisAluno.Visible = true;
+                pnlInformacoesResponsavelAluno.Visible = false;
+                pnlPlanoAluno.Visible = false;
+            }
+                
         }
     }
 }
