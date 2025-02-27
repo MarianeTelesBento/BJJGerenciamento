@@ -109,7 +109,7 @@
                     <br />
 
                     <label for="cepResponsavel">Cep:</label>
-                    <asp:TextBox ID="cepResponsavel" runat="server" OnTextChanged="cepResponsavel_TextChanged" textMode="Email"/>
+                    <asp:TextBox ID="cepResponsavel" runat="server" OnTextChanged="cepResponsavel_TextChanged"/>
                     <br />
 
                     <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click" Text="Buscar" /> <br />

@@ -79,25 +79,28 @@ CREATE TABLE TbPresencas (
 );
 
 
-
--- Inserindo dados na tabela TbPlanos
-INSERT INTO TbPlanos (Nome, QtsDias, Mensalidade) VALUES
-('Básico', 30, 100.00),
-('Intermediário', 60, 180.00),
-('Avançado', 90, 250.00),
-('Premium', 120, 300.00),
-('Profissional', 150, 400.00),
-('Elite', 180, 500.00),
-('Kids', 30, 80.00),
-('Juvenil', 60, 150.00),
-('Master', 120, 350.00),
-('Especial', 365, 1000.00);
-
-
 DELETE FROM TbAlunos;
+DELETE FROM TbResponsaveis;
+DELETE FROM TbPlanos;
 SELECT * FROM TbResponsaveis;
 
+-- Inserindo dados na tabela 
 
+INSERT INTO TbPlanos (Nome, QtsDias, Mensalidade) VALUES
+('Kids Baby', 2, 130.00),
+('Kids Júnior', 2, 130.00),
+('Kids 1', 3, 130.00),
+('Kids 2', 3, 130.00),
+('Kids 1', 5, 150.00),
+('Kids 2', 5, 150.00),
+('Juvenil', 2, 110.00),
+('Adulto', 2, 110.00),
+('Juvenil', 3, 130.00),
+('Adulto', 3, 130.00),
+('Juvenil', 5, 150.00),
+('Adulto', 5, 150.00),
+('Juvenil', 0, 200.00),
+('Adulto', 0, 200.00)
 
 INSERT INTO TbResponsaveis (Nome, Sobrenome, CPF, RG, Telefone, Email, Bairro, CEP, Cidade, Rua, Estado, DataDeNascimento, NumeroCasa, Complemento) VALUES
 ('Carlos', 'Silva', '12345678900', 'MG123456', '31999998888', 'carlos@email.com', 'Centro', '30123456', 'Belo Horizonte', 'Rua A', 'MG', '1980-05-15', 100, NULL),
@@ -114,13 +117,13 @@ INSERT INTO TbResponsaveis (Nome, Sobrenome, CPF, RG, Telefone, Email, Bairro, C
 
 -- Inserindo dados na tabela TbAlunos
 INSERT INTO TbAlunos (IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, DataNascimento, CPF, RG, Estado, Bairro, Cidade, Rua, NumeroCasa, Complemento, CEP, CarteiraFPJJ) VALUES
-(1, 52, 'Lucas', 'Silva', '31999990000', 'lucas@email.com', '2005-03-10', '12345678911', 'MG123457', 'MG', 'Centro', 'Belo Horizonte', 'Rua A', 100, NULL, '30123456', 'FPJJ12345'),
-(2, 53, 'Beatriz', 'Souza', '11988889999', 'beatriz@email.com', '2008-07-15', '98765432111', 'SP654322', 'SP', 'Jardins', 'São Paulo', 'Avenida B', 200, 'Apto 101', '01456789', 'FPJJ12346'),
-(3, 54, 'Matheus', 'Lima', '21977778888', 'matheus@email.com', '2010-12-20', '45678912311', 'RJ789124', 'RJ', 'Copacabana', 'Rio de Janeiro', 'Rua C', 50, NULL, '22040010', 'FPJJ12347'),
-(4, 55, 'Carolina', 'Oliveira', '41966667777', 'carolina@email.com', '2007-06-25', '32165498711', 'PR321655', 'PR', 'Centro', 'Curitiba', 'Rua D', 75, NULL, '80010000', 'FPJJ12348'),
-(5, 56, 'João', 'Ferreira', '51955556666', 'joao@email.com', '2012-01-30', '11122233355', 'RS111223', 'RS', 'Moinhos de Vento', 'Porto Alegre', 'Rua E', 30, NULL, '90450000', 'FPJJ12349'),
-(6, 57, 'Isabela', 'Mendes', '48944445555', 'isabela@email.com', '2006-04-05', '55566677799', 'SC555667', 'SC', 'Centro', 'Florianópolis', 'Rua F', 90, NULL, '88010400', 'FPJJ12350'),
-(7, 58, 'Pedro', 'Santos', '81933334444', 'pedro@email.com', '2009-10-15', '99988877777', 'PE999889', 'PE', 'Boa Viagem', 'Recife', 'Rua G', 45, NULL, '51020010', 'FPJJ12351'),
-(8, 59, 'Larissa', 'Carvalho', '71922223333', 'larissa@email.com', '2011-05-28', '77766655555', 'BA777667', 'BA', 'Pituba', 'Salvador', 'Rua H', 55, NULL, '41810000', 'FPJJ12352'),
-(9, 60, 'André', 'Ribeiro', '85911112222', 'andre@email.com', '2005-08-18', '22233344466', 'CE222334', 'CE', 'Meireles', 'Fortaleza', 'Rua I', 70, NULL, '60165081', 'FPJJ12353'),
-(10, 61, 'Camila', 'Barbosa', '91900002222', 'camila@email.com', '2008-06-22', '33344455577', 'PA333445', 'PA', 'Centro', 'Belém', 'Rua J', 35, NULL, '66010000', 'FPJJ12354');
+(NULL, NULL, 'Lucas', 'Silva', '31999990000', 'lucas@email.com', '2005-03-10', '12345678911', 'MG123457', 'MG', 'Centro', 'Belo Horizonte', 'Rua A', 100, NULL, '30123456', 'FPJJ12345'),
+(NULL, NULL, 'Beatriz', 'Souza', '11988889999', 'beatriz@email.com', '2008-07-15', '98765432111', 'SP654322', 'SP', 'Jardins', 'São Paulo', 'Avenida B', 200, 'Apto 101', '01456789', 'FPJJ12346'),
+(NULL, NULL, 'Matheus', 'Lima', '21977778888', 'matheus@email.com', '2010-12-20', '45678912311', 'RJ789124', 'RJ', 'Copacabana', 'Rio de Janeiro', 'Rua C', 50, NULL, '22040010', 'FPJJ12347'),
+(NULL, NULL, 'Carolina', 'Oliveira', '41966667777', 'carolina@email.com', '2007-06-25', '32165498711', 'PR321655', 'PR', 'Centro', 'Curitiba', 'Rua D', 75, NULL, '80010000', 'FPJJ12348'),
+(NULL, NULL, 'João', 'Ferreira', '51955556666', 'joao@email.com', '2012-01-30', '11122233355', 'RS111223', 'RS', 'Moinhos de Vento', 'Porto Alegre', 'Rua E', 30, NULL, '90450000', 'FPJJ12349'),
+(NULL, NULL, 'Isabela', 'Mendes', '48944445555', 'isabela@email.com', '2006-04-05', '55566677799', 'SC555667', 'SC', 'Centro', 'Florianópolis', 'Rua F', 90, NULL, '88010400', 'FPJJ12350'),
+(NULL, NULL, 'Pedro', 'Santos', '81933334444', 'pedro@email.com', '2009-10-15', '99988877777', 'PE999889', 'PE', 'Boa Viagem', 'Recife', 'Rua G', 45, NULL, '51020010', 'FPJJ12351'),
+(NULL, NULL, 'Larissa', 'Carvalho', '71922223333', 'larissa@email.com', '2011-05-28', '77766655555', 'BA777667', 'BA', 'Pituba', 'Salvador', 'Rua H', 55, NULL, '41810000', 'FPJJ12352'),
+(NULL, NULL, 'André', 'Ribeiro', '85911112222', 'andre@email.com', '2005-08-18', '22233344466', 'CE222334', 'CE', 'Meireles', 'Fortaleza', 'Rua I', 70, NULL, '60165081', 'FPJJ12353'),
+(NULL, NULL, 'Camila', 'Barbosa', '91900002222', 'camila@email.com', '2008-06-22', '33344455577', 'PA333445', 'PA', 'Centro', 'Belém', 'Rua J', 35, NULL, '66010000', 'FPJJ12354');

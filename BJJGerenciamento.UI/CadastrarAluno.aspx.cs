@@ -165,7 +165,7 @@ namespace BJJGerenciamento.UI
                 emailResponsavel.Text = responsavel.Email;
                 rgResponsavel.Text = responsavel.Rg;
                 cpfResponsavel.Text = responsavel.Cpf;
-                dataNascimentoResponsavel.Text = responsavel.DataNascimento;
+                dataNascimentoResponsavel.Text = DateTime.Parse(responsavel.DataNascimento).ToString("yyyy-MM-dd");
                 cepResponsavel.Text = responsavel.Cep;
                 ruaResponsavel.Text = responsavel.Rua;
                 bairroResponsavel.Text = responsavel.Bairro;

@@ -104,7 +104,8 @@ namespace BJJGerenciamento.UI.DAL
                                 Estado = reader.GetString(11),
                                 DataNascimento = reader.GetDateTime(12).ToString("dd/MM/yyyy"),
                                 NumeroCasa = reader.GetInt32(13).ToString(),
-                                Complemento = reader.GetString(14)
+                                
+                                Complemento = reader.IsDBNull(14) ? "" : reader.GetString(14) 
                             };
                         }
                     }
