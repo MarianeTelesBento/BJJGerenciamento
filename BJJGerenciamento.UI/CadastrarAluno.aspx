@@ -41,7 +41,7 @@
                     <label for="cepAluno">Cep:</label>
                     <asp:TextBox ID="cepAluno" runat="server" OnTextChanged="cepAluno_TextChanged" AutoPostBack="true" oninput="formatarCep(this)"/>
 
-                    <asp:Button ID="BuscarCep" runat="server" OnClick="BuscarCep_Click" Text="Buscar" /> <br />
+                    <asp:Button ID="buscarCepAluno" runat="server" OnClick="buscarCepAluno_Click" Text="Buscar" /> <br />
 
                     <label for="ruaAluno">Rua:</label>
                     <asp:TextBox ID="ruaAluno" runat="server" OnTextChanged="ruaAluno_TextChanged"/>
@@ -111,6 +111,8 @@
                     <label for="cepResponsavel">Cep:</label>
                     <asp:TextBox ID="cepResponsavel" runat="server" OnTextChanged="cepResponsavel_TextChanged" textMode="Email"/>
                     <br />
+
+                    <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click" Text="Buscar" /> <br />
 
                     <label for="ruaResponsavel">Rua:</label>
                     <asp:TextBox ID="ruaResponsavel" runat="server" OnTextChanged="ruaResponsavel_TextChanged"/>

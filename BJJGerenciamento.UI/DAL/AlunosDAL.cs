@@ -10,7 +10,9 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        //public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+
+        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public int CadastrarDados(AlunoModels aluno)
         {
@@ -43,7 +45,74 @@ namespace BJJGerenciamento.UI.DAL
 
             return cadastroRealizado;
         }
+        public AlunoModels BuscarCpfAluno(string cpf)
+        {
+            AlunoModels aluno = null;
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM TBAlunos WHERE Cpf = @cpf;", connection))
+                {
+                    command.Parameters.AddWithValue("@cpf", cpf);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            aluno = new AlunoModels
+                            {
+                                //IdAluno = reader.GetInt32(0),
+                                //Nome = reader.GetString(1),
+                                //Sobrenome = reader.GetString(2),
+                                //Telefone = reader.GetString(3),
+                                //Email = reader.GetString(4),
+                                //Rg = reader.GetString(5),
+                                Cpf = reader.GetString(6)
+                                //DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
+                                //Cep = reader.GetString(8),
+                                //Rua = reader.GetString(9),
+                                //Bairro = reader.GetString(10),
+                                //Cidade = reader.GetString(11),
+                                //Estado = reader.GetString(12),
+                                //NumeroCasa = reader.GetString(13),
+                                //CarteiraFPJJ = reader.GetString(14)
+                            };
+                        }
+                    }
+                }
+            }
+
+            return aluno;
+        }
+        public ResponsavelModels BuscarCpfResponsavel(string cpf)
+        {
+            ResponsavelModels responsavel = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM TBResponsaveis WHERE Cpf = @cpf;", connection))
+                {
+                    command.Parameters.AddWithValue("@cpf", cpf);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            responsavel = new ResponsavelModels
+                            {
+                                Cpf = reader.GetString(6)
+                            };
+                        }
+                    }
+                }
+            }
+
+            return responsavel;
+        }
 
         //public List<AlunoModels> VisualizarDados()
         //{
@@ -84,49 +153,5 @@ namespace BJJGerenciamento.UI.DAL
 
         //    return alunoList;
         //}
-
-        public AlunoModels BuscarCpfAluno(string cpf)
-        {
-            AlunoModels aluno = null;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (SqlCommand command = new SqlCommand("SELECT * FROM TBAlunos WHERE Cpf = @cpf;", connection))
-                {
-                    command.Parameters.AddWithValue("@cpf", cpf);
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            aluno = new AlunoModels
-                            {
-                                IdAluno = reader.GetInt32(0),
-                                Nome = reader.GetString(1),
-                                Sobrenome = reader.GetString(2),
-                                Telefone = reader.GetString(3),
-                                Email = reader.GetString(4),
-                                Rg = reader.GetString(5),
-                                Cpf = reader.GetString(6),
-                                DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                                Cep = reader.GetString(8),
-                                Rua = reader.GetString(9),
-                                Bairro = reader.GetString(10),
-                                Cidade = reader.GetString(11),
-                                Estado = reader.GetString(12),
-                                NumeroCasa = reader.GetString(13),
-                                CarteiraFPJJ = reader.GetString(14)
-                            };
-                        }
-                    }
-                }
-            }
-
-            return aluno;
-        }
-
-       
     }
 }

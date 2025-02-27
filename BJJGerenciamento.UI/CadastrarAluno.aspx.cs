@@ -15,14 +15,14 @@ namespace BJJGerenciamento.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                //CarregarTurmas();
-                pnlHorarios.Visible = false;
-            }
+            //if (!IsPostBack)
+            //{
+            //    //CarregarTurmas();
+            //    pnlHorarios.Visible = false;
+            //}
         }
 
-        public void LimparCampos()
+        public void LimparCamposAluno()
         {
             nomeAluno.Text = string.Empty;
             sobrenomeAluno.Text = string.Empty;
@@ -122,39 +122,6 @@ namespace BJJGerenciamento.UI
                 {
 
                 }
-
-                protected void ddTurmas_SelectedIndexChanged(object sender, EventArgs e)
-                {
-                    //if (!string.IsNullOrEmpty(ddTurmas.SelectedValue))
-                    //{
-                    //    CarregarDias(int.Parse(ddTurmas.SelectedValue));
-                    //}
-                }
-
-                protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
-                {
-                    List<int> diasSelecionados = new List<int>();
-
-                    foreach (ListItem item in cbDias.Items)
-                    {
-                        if (item.Selected)
-                        {
-                            diasSelecionados.Add(int.Parse(item.Value));
-                        }
-                    }
-
-                    if (diasSelecionados.Count > 0)
-                    {
-                        //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
-                        pnlHorarios.Visible = true;
-                    }
-                    else
-                    {
-                        pnlHorarios.Visible = false;
-                    }
-                }
-
-
         #endregion
 
         #region TextChangedResponsavel
@@ -185,7 +152,12 @@ namespace BJJGerenciamento.UI
 
         protected void cpfResponsavel_TextChanged(object sender, EventArgs e)
         {
-
+            AlunosDAL alunosDAL = new AlunosDAL();
+            if (alunosDAL.BuscarCpfResponsavel(cpfResponsavel.Text.Trim().Replace("-", "").Replace(".", "")) != null)
+            {
+                Response.Write("<script>alert('Responsavel já cadastrando na base de dados');</script>");
+                cpfResponsavel.Text = string.Empty;
+            }
         }
 
         protected void dataNascimentoResponsavel_TextChanged(object sender, EventArgs e)
@@ -229,7 +201,40 @@ namespace BJJGerenciamento.UI
         }
         #endregion
 
-        protected void BuscarCep_Click(object sender, EventArgs e)
+        #region TextChangedPlano
+        protected void ddTurmas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //if (!string.IsNullOrEmpty(ddTurmas.SelectedValue))
+            //{
+            //    CarregarDias(int.Parse(ddTurmas.SelectedValue));
+            //}
+        }
+
+        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<int> diasSelecionados = new List<int>();
+
+            foreach (ListItem item in cbDias.Items)
+            {
+                if (item.Selected)
+                {
+                    diasSelecionados.Add(int.Parse(item.Value));
+                }
+            }
+
+            if (diasSelecionados.Count > 0)
+            {
+                //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
+                pnlHorarios.Visible = true;
+            }
+            else
+            {
+                pnlHorarios.Visible = false;
+            }
+        }
+        #endregion
+
+        protected void buscarCepAluno_Click(object sender, EventArgs e)
         {
             CepService cepService = new CepService();
             var ceplist = cepService.GetEndereco(cepAluno.Text);
@@ -238,6 +243,18 @@ namespace BJJGerenciamento.UI
             bairroAluno.Text = ceplist.Bairro;
             cidadeAluno.Text = ceplist.Cidade;
             estadoAluno.Text = ceplist.Estado;
+
+        }
+
+        protected void buscarCepResponsavel_Click(object sender, EventArgs e)
+        {
+            CepService cepService = new CepService();
+            var ceplist = cepService.GetEndereco(cepResponsavel.Text);
+
+            ruaResponsavel.Text = ceplist.Rua;
+            bairroResponsavel.Text = ceplist.Bairro;
+            cidadeResponsavel.Text = ceplist.Cidade;
+            estadoResponsavel.Text = ceplist.Estado;
 
         }
 
@@ -267,7 +284,7 @@ namespace BJJGerenciamento.UI
 
             //AlunosDAL alunosRepository = new AlunosDAL();
             //alunosRepository.CadastrarDados(aluno);
-            //LimparCampos();
+            //LimparCamposAluno;
         }
 
         protected void btnProximoPlano_Click(object sender, EventArgs e)
