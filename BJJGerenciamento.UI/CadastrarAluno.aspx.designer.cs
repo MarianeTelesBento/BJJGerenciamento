@@ -195,6 +195,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Panel pnlInformacoesResponsavelAluno;
 
         /// <summary>
+        /// cpfResponsavel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox cpfResponsavel;
+
+        /// <summary>
         /// nomeResponsavel control.
         /// </summary>
         /// <remarks>
@@ -213,15 +222,6 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox sobrenomeResponsavel;
 
         /// <summary>
-        /// cpfResponsavel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cpfResponsavel;
-
-        /// <summary>
         /// rgResponsavel control.
         /// </summary>
         /// <remarks>
@@ -231,13 +231,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox rgResponsavel;
 
         /// <summary>
-        /// TextBox1 control.
+        /// dataNascimentoResponsavel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox dataNascimentoResponsavel;
 
         /// <summary>
         /// telefoneResponsavel control.

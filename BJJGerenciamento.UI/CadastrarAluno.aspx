@@ -80,6 +80,10 @@
                 <main aria-labelledby="title2">
                     <h2 id="title2"> Responsável </h2>
 
+                    <label for="cpfResponsavel">Cpf:</label>
+                    <asp:TextBox ID="cpfResponsavel" runat="server" OnTextChanged="cpfResponsavel_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
+                    <br />
+
                     <label for="nomeResponsavel">Nome:</label>
                     <asp:TextBox ID="nomeResponsavel" runat="server" OnTextChanged="nomeResponsavel_TextChanged" />
                     <br />
@@ -88,16 +92,12 @@
                     <asp:TextBox ID="sobrenomeResponsavel" runat="server" OnTextChanged="sobrenomeResponsavel_TextChanged" />
                     <br />
 
-                    <label for="cpfResponsavel">Cpf:</label>
-                    <asp:TextBox ID="cpfResponsavel" runat="server" OnTextChanged="cpfResponsavel_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
-                    <br />
-
                     <label for="rgResponsavel">Rg:</label>
                     <asp:TextBox ID="rgResponsavel" runat="server" OnTextChanged="rgResponsavel_TextChanged" AutoPostBack="true" oninput="formatarRg(this)"/>
                     <br />
 
-                    <label for="dataNascimentoAluno">Data de Nascimento:</label>
-                    <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="dataNascimentoAluno_TextChanged" textMode="Date"/>
+                    <label for="dataNascimentoResponsavel">Data de Nascimento:</label>
+                    <asp:TextBox ID="dataNascimentoResponsavel" runat="server" OnTextChanged="dataNascimentoResponsavel_TextChanged" textMode="Date"/>
                     <br />
 
                     <label for="telefoneResponsavel">Telefone:</label>

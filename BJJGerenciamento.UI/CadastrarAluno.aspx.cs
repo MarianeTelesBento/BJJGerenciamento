@@ -153,10 +153,26 @@ namespace BJJGerenciamento.UI
         protected void cpfResponsavel_TextChanged(object sender, EventArgs e)
         {
             AlunosDAL alunosDAL = new AlunosDAL();
-            if (alunosDAL.BuscarCpfResponsavel(cpfResponsavel.Text.Trim().Replace("-", "").Replace(".", "")) != null)
+            ResponsavelModels responsavel = alunosDAL.BuscarCpfResponsavel(cpfResponsavel.Text.Trim().Replace("-", "").Replace(".", ""));
+
+            if (responsavel != null)
             {
                 Response.Write("<script>alert('Responsavel já cadastrando na base de dados');</script>");
-                cpfResponsavel.Text = string.Empty;
+
+                nomeResponsavel.Text = responsavel.Nome;
+                sobrenomeResponsavel.Text = responsavel.Sobrenome;
+                telefoneResponsavel.Text = responsavel.Telefone;
+                emailResponsavel.Text = responsavel.Email;
+                rgResponsavel.Text = responsavel.Rg;
+                cpfResponsavel.Text = responsavel.Cpf;
+                dataNascimentoResponsavel.Text = responsavel.DataNascimento;
+                cepResponsavel.Text = responsavel.Cep;
+                ruaResponsavel.Text = responsavel.Rua;
+                bairroResponsavel.Text = responsavel.Bairro;
+                cidadeResponsavel.Text = responsavel.Cidade;
+                estadoResponsavel.Text = responsavel.Estado;
+                numeroCasaResponsavel.Text = responsavel.NumeroCasa;
+                complementoResponsavel.Text = responsavel.Complemento;
             }
         }
 

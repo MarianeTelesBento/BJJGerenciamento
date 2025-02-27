@@ -63,21 +63,7 @@ namespace BJJGerenciamento.UI.DAL
                         {
                             aluno = new AlunoModels
                             {
-                                //IdAluno = reader.GetInt32(0),
-                                //Nome = reader.GetString(1),
-                                //Sobrenome = reader.GetString(2),
-                                //Telefone = reader.GetString(3),
-                                //Email = reader.GetString(4),
-                                //Rg = reader.GetString(5),
                                 Cpf = reader.GetString(6)
-                                //DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                                //Cep = reader.GetString(8),
-                                //Rua = reader.GetString(9),
-                                //Bairro = reader.GetString(10),
-                                //Cidade = reader.GetString(11),
-                                //Estado = reader.GetString(12),
-                                //NumeroCasa = reader.GetString(13),
-                                //CarteiraFPJJ = reader.GetString(14)
                             };
                         }
                     }
@@ -104,7 +90,21 @@ namespace BJJGerenciamento.UI.DAL
                         {
                             responsavel = new ResponsavelModels
                             {
-                                Cpf = reader.GetString(6)
+                                IdResponsavel = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                Sobrenome = reader.GetString(2),
+                                Cpf = reader.GetString(3),
+                                Rg = reader.GetString(4),
+                                Telefone = reader.GetString(5),
+                                Email = reader.GetString(6),
+                                Bairro = reader.GetString(7),
+                                Cep = reader.GetString(8),
+                                Cidade = reader.GetString(9),
+                                Rua = reader.GetString(10),
+                                Estado = reader.GetString(11),
+                                DataNascimento = reader.GetDateTime(12).ToString("dd/MM/yyyy"),
+                                NumeroCasa = reader.GetInt32(13).ToString(),
+                                Complemento = reader.GetString(14)
                             };
                         }
                     }

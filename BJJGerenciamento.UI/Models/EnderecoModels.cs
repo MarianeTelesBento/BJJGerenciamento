@@ -19,7 +19,6 @@ namespace BJJGerenciamento.UI.Models
         [JsonProperty("city")]
         public string Cidade { get; set; }
 
-        [JsonProperty("numero")]
         public string NumeroCasa { get; set; }
 
         public string Complemento { get; set; }
