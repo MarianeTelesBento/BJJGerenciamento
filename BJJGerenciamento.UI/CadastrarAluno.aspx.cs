@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -23,142 +24,220 @@ namespace BJJGerenciamento.UI
 
         public void LimparCampos()
         {
-            txtNome.Text = string.Empty;
-            sobrenome.Text = string.Empty;
-            telefone.Text = string.Empty;
-            email.Text = string.Empty;
-            cpf.Text = string.Empty;
-            rg.Text = string.Empty;
-            dataNascimento.Text = string.Empty;
-            cep.Text = string.Empty;
-            rua.Text = string.Empty;
-            bairro.Text = string.Empty;
-            cidade.Text = string.Empty;
-            estado.Text = string.Empty;
-            numeroCasa.Text = string.Empty;
+            nomeAluno.Text = string.Empty;
+            sobrenomeAluno.Text = string.Empty;
+            telefoneAluno.Text = string.Empty;
+            emailAluno.Text = string.Empty;
+            cpfAluno.Text = string.Empty;
+            rgAluno.Text = string.Empty;
+            dataNascimentoAluno.Text = string.Empty;
+            cepAluno.Text = string.Empty;
+            ruaAluno.Text = string.Empty;
+            bairroAluno.Text = string.Empty;
+            cidadeAluno.Text = string.Empty;
+            estadoAluno.Text = string.Empty;
+            numeroCasaAluno.Text = string.Empty;
+            complementoAluno.Text = string.Empty;
+            carteiraFPJJAluno.Text = string.Empty;
         }
 
-        #region TextChanged
-        protected void matricula_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void txtNome_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void sobrenome_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void telefone_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void email_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void rg_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void cpf_TextChanged(object sender, EventArgs e)
-        {
-            AlunosDAL alunosDAL = new AlunosDAL();
-            if (alunosDAL.BuscarCpfAluno(cpf.Text.Trim()) != null)
-            {
-                Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
-                cpf.Text = string.Empty;
-            }
-
-        }
-
-        protected void dataNascimento_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void cep_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void rua_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void bairro_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        protected void cidade_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        protected void estado_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void numeroCasa_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void carteiraFPJJ_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void ddTurmas_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (!string.IsNullOrEmpty(ddTurmas.SelectedValue))
-            //{
-            //    CarregarDias(int.Parse(ddTurmas.SelectedValue));
-            //}
-        }
-
-        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            List<int> diasSelecionados = new List<int>();
-
-            foreach (ListItem item in cbDias.Items)
-            {
-                if (item.Selected)
+        #region TextChangedAluno
+                protected void nomeAluno_TextChanged(object sender, EventArgs e)
                 {
-                    diasSelecionados.Add(int.Parse(item.Value));
-                }
-            }
 
-            if (diasSelecionados.Count > 0)
-            {
-                //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
-                pnlHorarios.Visible = true;
-            }
-            else
-            {
-                pnlHorarios.Visible = false;
-            }
+                }
+
+                protected void sobrenomeAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void telefoneAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void emailAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void rgAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void cpfAluno_TextChanged(object sender, EventArgs e)
+                {
+                    AlunosDAL alunosDAL = new AlunosDAL();
+                    if (alunosDAL.BuscarCpfAluno(cpfAluno.Text.Trim().Replace("-", "").Replace(".", "")) != null)
+                    {
+                        Response.Write("<script>alert('Aluno já cadastrando na base de dados');</script>");
+                        cpfAluno.Text = string.Empty;
+                    }
+
+                }
+
+                protected void dataNascimentoAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void cepAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void ruaAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void bairroAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void cidadeAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void estadoAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void numeroCasaAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void carteiraFPJJAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void complementoAluno_TextChanged(object sender, EventArgs e)
+                {
+
+                }
+
+                protected void ddTurmas_SelectedIndexChanged(object sender, EventArgs e)
+                {
+                    //if (!string.IsNullOrEmpty(ddTurmas.SelectedValue))
+                    //{
+                    //    CarregarDias(int.Parse(ddTurmas.SelectedValue));
+                    //}
+                }
+
+                protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
+                {
+                    List<int> diasSelecionados = new List<int>();
+
+                    foreach (ListItem item in cbDias.Items)
+                    {
+                        if (item.Selected)
+                        {
+                            diasSelecionados.Add(int.Parse(item.Value));
+                        }
+                    }
+
+                    if (diasSelecionados.Count > 0)
+                    {
+                        //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
+                        pnlHorarios.Visible = true;
+                    }
+                    else
+                    {
+                        pnlHorarios.Visible = false;
+                    }
+                }
+
+
+        #endregion
+
+        #region TextChangedResponsavel
+        protected void nomeResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void sobrenomeResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void telefoneResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void emailResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void rgResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void cpfResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void dataNascimentoResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void cepResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void ruaResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void bairroResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void cidadeResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void estadoResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void numeroCasaResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void complementoResponsavel_TextChanged(object sender, EventArgs e)
+        {
+
         }
         #endregion
 
         protected void BuscarCep_Click(object sender, EventArgs e)
         {
             CepService cepService = new CepService();
-            var ceplist = cepService.GetEndereco(cep.Text);
+            var ceplist = cepService.GetEndereco(cepAluno.Text);
 
-            rua.Text = ceplist.Rua;
-            bairro.Text = ceplist.Bairro;
-            cidade.Text = ceplist.Cidade;
-            estado.Text = ceplist.Estado;
+            ruaAluno.Text = ceplist.Rua;
+            bairroAluno.Text = ceplist.Bairro;
+            cidadeAluno.Text = ceplist.Cidade;
+            estadoAluno.Text = ceplist.Estado;
 
         }
 
@@ -166,24 +245,24 @@ namespace BJJGerenciamento.UI
         {
             pnlInformacoesPessoaisAluno.Visible = false;
             pnlInformacoesResponsavelAluno.Visible = true;
+
             //AlunoModels aluno = new AlunoModels
             //{
-            //    IdTurma = 1,
-            //    IdMatricula = 1,
-            //    Nome = txtNome.Text,
-            //    Sobrenome = sobrenome.Text,
-            //    Telefone = telefone.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-            //    Email = email.Text,
-            //    Rg = rg.Text.Replace(".", "").Replace("-", ""),
-            //    Cpf = cpf.Text.Replace("-", "").Replace(".", ""),
-            //    DataNascimento = dataNascimento.Text,   
-            //    Cep = cep.Text.Replace("-", ""),
-            //    Bairro = bairro.Text,
-            //    Estado = estado.Text,
-            //    Cidade = cidade.Text,
-            //    Rua = rua.Text,
-            //    NumeroCasa = numeroCasa.Text,
-            //    CarteiraFPJJ = carteiraFPJJ.Text
+            //    Nome = nomeAluno.Text,
+            //    Sobrenome = sobrenomeAluno.Text,
+            //    Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+            //    Email = emailAluno.Text,
+            //    Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
+            //    Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
+            //    DataNascimento = dataNascimentoAluno.Text,
+            //    Cep = cepAluno.Text.Replace("-", ""),
+            //    Bairro = bairroAluno.Text,
+            //    Estado = estadoAluno.Text,
+            //    Cidade = cidadeAluno.Text,
+            //    Rua = ruaAluno.Text,
+            //    NumeroCasa = numeroCasaAluno.Text,
+            //    CarteiraFPJJ = carteiraFPJJAluno.Text,
+            //    Complemento = complementoAluno.Text
             //};
 
             //AlunosDAL alunosRepository = new AlunosDAL();
@@ -196,7 +275,6 @@ namespace BJJGerenciamento.UI
             pnlInformacoesResponsavelAluno.Visible = false;
             pnlPlanoAluno.Visible = true;
         }
-
 
         protected void btnVoltar_Click(object sender, EventArgs e)
         {
@@ -212,7 +290,7 @@ namespace BJJGerenciamento.UI
                 pnlInformacoesResponsavelAluno.Visible = false;
                 pnlPlanoAluno.Visible = false;
             }
-                
+
         }
     }
 }

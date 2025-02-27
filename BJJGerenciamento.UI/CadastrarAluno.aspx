@@ -2,126 +2,138 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
-    <asp:UpdatePanel runat="server">
         <ContentTemplate>
 
             <asp:Button ID="btnVoltar" runat="server" Text="Voltar" OnClick="btnVoltar_Click" />
 
             <asp:Panel ID="pnlInformacoesPessoaisAluno" runat="server">
                 <main aria-labelledby="title">
-                    <h2 id="title"> Informações Pessoais </h2>
+                    <h2 id="titleAluno"> Informações Pessoais </h2>
 
-                    <label for="cpf">Cpf:</label>
-                    <asp:TextBox ID="cpf" runat="server" OnTextChanged="cpf_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
+                    <label for="cpfAluno">Cpf:</label>
+                    <asp:TextBox ID="cpfAluno" runat="server" OnTextChanged="cpfAluno_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
                     <br />
 
-                    <label for="nome">Nome:</label>
-                    <asp:TextBox ID="txtNome" runat="server" OnTextChanged="txtNome_TextChanged" />
+                    <label for="nomeAluno">Nome:</label>
+                    <asp:TextBox ID="nomeAluno" runat="server" OnTextChanged="nomeAluno_TextChanged" />
                     <br />
 
-                    <label for="sobrenome">Sobrenome:</label>
-                    <asp:TextBox ID="sobrenome" runat="server" OnTextChanged="sobrenome_TextChanged" />
+                    <label for="sobrenomeAluno">Sobrenome:</label>
+                    <asp:TextBox ID="sobrenomeAluno" runat="server" OnTextChanged="sobrenomeAluno_TextChanged" />
                     <br />
 
-                    <label for="telefone">Telefone:</label>
-                    <asp:TextBox ID="telefone" runat="server" OnTextChanged="telefone_TextChanged" TextMode="Phone" AutoPostBack="true" oninput="formatarTelefone(this)"/>
+                    <label for="telefoneAluno">Telefone:</label>
+                    <asp:TextBox ID="telefoneAluno" runat="server" OnTextChanged="telefoneAluno_TextChanged" TextMode="Phone" AutoPostBack="true" oninput="formatarTelefone(this)"/>
                     <br />
 
-                    <label for="email">Email:</label>
-                    <asp:TextBox ID="email" runat="server" OnTextChanged="email_TextChanged" textMode="Email"/>
+                    <label for="emailAluno">Email:</label>
+                    <asp:TextBox ID="emailAluno" runat="server" OnTextChanged="emailAluno_TextChanged" textMode="Email"/>
                     <br />
 
-                    <label for="rg">Rg:</label>
-                    <asp:TextBox ID="rg" runat="server" OnTextChanged="rg_TextChanged" AutoPostBack="true" oninput="formatarRg(this)"/>
+                    <label for="rgAluno">Rg:</label>
+                    <asp:TextBox ID="rgAluno" runat="server" OnTextChanged="rgAluno_TextChanged" AutoPostBack="true" oninput="formatarRg(this)"/>
                     <br />
 
-                    <label for="dataNascimento">Data de Nascimento:</label>
-                    <asp:TextBox ID="dataNascimento" runat="server" OnTextChanged="dataNascimento_TextChanged" textMode="Date"/>
+                    <label for="dataNascimentoAluno">Data de Nascimento:</label>
+                    <asp:TextBox ID="dataNascimentoAluno" runat="server" OnTextChanged="dataNascimentoAluno_TextChanged" textMode="Date"/>
                     <br />
 
-                    <label for="cep">Cep:</label>
-                    <asp:TextBox ID="cep" runat="server" OnTextChanged="cep_TextChanged" AutoPostBack="true" oninput="formatarCep(this)"/>
+                    <label for="cepAluno">Cep:</label>
+                    <asp:TextBox ID="cepAluno" runat="server" OnTextChanged="cepAluno_TextChanged" AutoPostBack="true" oninput="formatarCep(this)"/>
 
                     <asp:Button ID="BuscarCep" runat="server" OnClick="BuscarCep_Click" Text="Buscar" /> <br />
 
-                    <label for="rua">Rua:</label>
-                    <asp:TextBox ID="rua" runat="server" OnTextChanged="rua_TextChanged"/>
+                    <label for="ruaAluno">Rua:</label>
+                    <asp:TextBox ID="ruaAluno" runat="server" OnTextChanged="ruaAluno_TextChanged"/>
                     <br />
 
-                    <label for="bairro">Bairro:</label>
-                    <asp:TextBox ID="bairro" runat="server" OnTextChanged="bairro_TextChanged" />
+                    <label for="bairroAluno">Bairro:</label>
+                    <asp:TextBox ID="bairroAluno" runat="server" OnTextChanged="bairroAluno_TextChanged" />
                     <br />
 
-                    <label for="cidade">Cidade:</label>
-                    <asp:TextBox ID="cidade" runat="server" OnTextChanged="cidade_TextChanged" />
+                    <label for="cidadeAluno">Cidade:</label>
+                    <asp:TextBox ID="cidadeAluno" runat="server" OnTextChanged="cidadeAluno_TextChanged" />
                     <br />
 
-                    <label for="estado">Estado:</label>
-                    <asp:TextBox ID="estado" runat="server" OnTextChanged="estado_TextChanged" />
+                    <label for="estadoAluno">Estado:</label>
+                    <asp:TextBox ID="estadoAluno" runat="server" OnTextChanged="estadoAluno_TextChanged" />
                     <br />
 
-                    <label for="numeroCasa">Numero Casa:</label>
-                    <asp:TextBox ID="numeroCasa" runat="server" OnTextChanged="numeroCasa_TextChanged" AutoPostBack="true" oninput="formatarNumero(this)"/>
+                    <label for="complementoAluno">Complemento</label>
+                    <asp:TextBox ID="complementoAluno" runat="server" OnTextChanged="complementoAluno_TextChanged"/>
+                    <br />
+
+                    <label for="numeroCasaAluno">Numero:</label>
+                    <asp:TextBox ID="numeroCasaAluno" runat="server" OnTextChanged="numeroCasaAluno_TextChanged" AutoPostBack="true" oninput="formatarNumero(this)"/>
                     <br /> 
 
-                    <label for="carteiraFPJJ">Carteira FPJJ</label>
-                    <asp:TextBox ID="carteiraFPJJ" runat="server" OnTextChanged="carteiraFPJJ_TextChanged" textMode="Number"/>
+                    <label for="carteiraFPJJAluno">Carteira FPJJ</label>
+                    <asp:TextBox ID="carteiraFPJJAluno" runat="server" OnTextChanged="carteiraFPJJAluno_TextChanged" textMode="Number"/>
                     <br />
+
+                    
 
                     <asp:Button ID="btnProximoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server" />
                 </main>
             </asp:Panel>     
             <asp:Panel ID="pnlInformacoesResponsavelAluno" runat="server" Visible="false">
-                <main aria-labelledby="title">
+                <main aria-labelledby="title2">
                     <h2 id="title2"> Responsável </h2>
 
-
-                    <label for="nome">Nome:</label>
-                    <asp:TextBox ID="TextBox2" runat="server" OnTextChanged="txtNome_TextChanged" />
+                    <label for="nomeResponsavel">Nome:</label>
+                    <asp:TextBox ID="nomeResponsavel" runat="server" OnTextChanged="nomeResponsavel_TextChanged" />
                     <br />
 
-                    <label for="sobrenome">Sobrenome:</label>
-                    <asp:TextBox ID="TextBox3" runat="server" OnTextChanged="sobrenome_TextChanged" />
+                    <label for="sobrenomeResponsavel">Sobrenome:</label>
+                    <asp:TextBox ID="sobrenomeResponsavel" runat="server" OnTextChanged="sobrenomeResponsavel_TextChanged" />
                     <br />
 
-                    <label for="cpf">Cpf:</label>
-                    <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="cpf_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
+                    <label for="cpfResponsavel">Cpf:</label>
+                    <asp:TextBox ID="cpfResponsavel" runat="server" OnTextChanged="cpfResponsavel_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
                     <br />
 
-                    <label for="cpf">Rg:</label>
-                    <asp:TextBox ID="TextBox6" runat="server" OnTextChanged="cpf_TextChanged" AutoPostBack="true" oninput="formatarCpf(this)"/>
+                    <label for="rgResponsavel">Rg:</label>
+                    <asp:TextBox ID="rgResponsavel" runat="server" OnTextChanged="rgResponsavel_TextChanged" AutoPostBack="true" oninput="formatarRg(this)"/>
                     <br />
 
-                    <label for="telefone">Telefone:</label>
-                    <asp:TextBox ID="TextBox4" runat="server" OnTextChanged="telefone_TextChanged" TextMode="Phone" AutoPostBack="true" oninput="formatarTelefone(this)"/>
+                    <label for="dataNascimentoAluno">Data de Nascimento:</label>
+                    <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="dataNascimentoAluno_TextChanged" textMode="Date"/>
                     <br />
 
-                    <label for="email">Email:</label>
-                    <asp:TextBox ID="TextBox5" runat="server" OnTextChanged="email_TextChanged" textMode="Email"/>
+                    <label for="telefoneResponsavel">Telefone:</label>
+                    <asp:TextBox ID="telefoneResponsavel" runat="server" OnTextChanged="telefoneResponsavel_TextChanged" TextMode="Phone" AutoPostBack="true" oninput="formatarTelefone(this)"/>
                     <br />
 
-                    <label for="Cep">Cep:</label>
-                    <asp:TextBox ID="TextBox7" runat="server" OnTextChanged="email_TextChanged" textMode="Email"/>
+                    <label for="emailResponsavel">Email:</label>
+                    <asp:TextBox ID="emailResponsavel" runat="server" OnTextChanged="emailResponsavel_TextChanged" textMode="Email"/>
                     <br />
 
-                    <label for="rua">Rua:</label>
-                    <asp:TextBox ID="TextBox8" runat="server" OnTextChanged="rua_TextChanged"/>
+                    <label for="cepResponsavel">Cep:</label>
+                    <asp:TextBox ID="cepResponsavel" runat="server" OnTextChanged="cepResponsavel_TextChanged" textMode="Email"/>
                     <br />
 
-                    <label for="bairro">Bairro:</label>
-                    <asp:TextBox ID="TextBox9" runat="server" OnTextChanged="bairro_TextChanged" />
+                    <label for="ruaResponsavel">Rua:</label>
+                    <asp:TextBox ID="ruaResponsavel" runat="server" OnTextChanged="ruaResponsavel_TextChanged"/>
                     <br />
 
-                    <label for="cidade">Cidade:</label>
-                    <asp:TextBox ID="TextBox10" runat="server" OnTextChanged="cidade_TextChanged" />
+                    <label for="bairroResponsavel">Bairro:</label>
+                    <asp:TextBox ID="bairroResponsavel" runat="server" OnTextChanged="bairroResponsavel_TextChanged" />
                     <br />
 
-                    <label for="estado">Estado:</label>
-                    <asp:TextBox ID="TextBox11" runat="server" OnTextChanged="estado_TextChanged" />
+                    <label for="cidadeResponsavel">Cidade:</label>
+                    <asp:TextBox ID="cidadeResponsavel" runat="server" OnTextChanged="cidadeResponsavel_TextChanged" />
                     <br />
 
-                    <label for="numeroCasa">Numero Casa:</label>
-                    <asp:TextBox ID="TextBox12" runat="server" OnTextChanged="numeroCasa_TextChanged" AutoPostBack="true" oninput="formatarNumero(this)"/>
+                    <label for="estadoResponsavel">Estado:</label>
+                    <asp:TextBox ID="estadoResponsavel" runat="server" OnTextChanged="estadoResponsavel_TextChanged" />
+                    <br />
+
+                    <label for="complementoResponsavel">Complemento</label>
+                    <asp:TextBox ID="complementoResponsavel" runat="server" OnTextChanged="complementoResponsavel_TextChanged" />
+                    <br />
+
+                    <label for="numeroCasaResponsavel">Numero:</label>
+                    <asp:TextBox ID="numeroCasaResponsavel" runat="server" OnTextChanged="numeroCasaResponsavel_TextChanged" AutoPostBack="true" oninput="formatarNumero(this)"/>
 
                     <br />
                     <asp:Button ID="proximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server" />
@@ -152,9 +164,6 @@
             </asp:Panel>
 
         </ContentTemplate>
-    </asp:UpdatePanel>
-
-
 
     
     <script>

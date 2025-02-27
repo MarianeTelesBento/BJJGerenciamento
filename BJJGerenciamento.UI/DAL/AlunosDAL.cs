@@ -11,7 +11,6 @@ namespace BJJGerenciamento.UI.DAL
     public class AlunosDAL
     {
         public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
-        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public int CadastrarDados(AlunoModels aluno)
         {
@@ -20,10 +19,8 @@ namespace BJJGerenciamento.UI.DAL
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdTurma, IdMatricula, Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ) values(@idTurma, @idMatricula, @nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ);", connection);
+            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento) values(@nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento);", connection);
 
-            inserirCommand.Parameters.AddWithValue("@idTurma", aluno.IdTurma);
-            inserirCommand.Parameters.AddWithValue("@idMatricula", aluno.IdMatricula);
             inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
             inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
@@ -38,6 +35,7 @@ namespace BJJGerenciamento.UI.DAL
             inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
             inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
             inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
+            inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
 
             cadastroRealizado = inserirCommand.ExecuteNonQuery();
 
@@ -106,22 +104,20 @@ namespace BJJGerenciamento.UI.DAL
                             aluno = new AlunoModels
                             {
                                 IdAluno = reader.GetInt32(0),
-                                IdTurma = reader.GetInt32(1),
-                                IdMatricula = reader.GetInt32(2),
-                                Nome = reader.GetString(4),
-                                Sobrenome = reader.GetString(5),
-                                Telefone = reader.GetString(6),
-                                Email = reader.GetString(7),
-                                Rg = reader.GetString(8),
-                                Cpf = reader.GetString(9),
-                                DataNascimento = reader.GetDateTime(10).ToString("dd/MM/yyyy"),
-                                Cep = reader.GetString(11),
-                                Rua = reader.GetString(12),
-                                Bairro = reader.GetString(13),
-                                Cidade = reader.GetString(14),
-                                Estado = reader.GetString(15),
-                                NumeroCasa = reader.GetString(16),
-                                CarteiraFPJJ = reader.GetString(17)
+                                Nome = reader.GetString(1),
+                                Sobrenome = reader.GetString(2),
+                                Telefone = reader.GetString(3),
+                                Email = reader.GetString(4),
+                                Rg = reader.GetString(5),
+                                Cpf = reader.GetString(6),
+                                DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
+                                Cep = reader.GetString(8),
+                                Rua = reader.GetString(9),
+                                Bairro = reader.GetString(10),
+                                Cidade = reader.GetString(11),
+                                Estado = reader.GetString(12),
+                                NumeroCasa = reader.GetString(13),
+                                CarteiraFPJJ = reader.GetString(14)
                             };
                         }
                     }
