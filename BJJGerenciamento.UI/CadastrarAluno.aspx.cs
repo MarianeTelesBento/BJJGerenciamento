@@ -321,26 +321,6 @@ namespace BJJGerenciamento.UI
         {
             AlunosDAL alunosRepository = new AlunosDAL();
 
-            AlunoModels aluno = new AlunoModels
-            {
-                Nome = nomeAluno.Text,
-                Sobrenome = sobrenomeAluno.Text,
-                Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-                Email = emailAluno.Text,
-                Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
-                Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
-                DataNascimento = dataNascimentoAluno.Text,
-                Cep = cepAluno.Text.Replace("-", ""),
-                Bairro = bairroAluno.Text,
-                Estado = estadoAluno.Text,
-                Cidade = cidadeAluno.Text,
-                Rua = ruaAluno.Text,
-                NumeroCasa = numeroCasaAluno.Text,
-                CarteiraFPJJ = carteiraFPJJAluno.Text,
-                Complemento = complementoAluno.Text,
-                IdResponsavel = 
-            };
-
             ResponsavelModels responsavel = new ResponsavelModels
             {
                 Nome = nomeAluno.Text,
@@ -359,8 +339,29 @@ namespace BJJGerenciamento.UI
                 Complemento = complementoAluno.Text
             };
 
+            int idResponsavel = alunosRepository.CadastrarResponsavel(responsavel);
 
-            int idResponsavel = alunosRepository.CadastrarResponsavel(responsavel);    
+
+            AlunoModels aluno = new AlunoModels
+            {
+                Nome = nomeAluno.Text,
+                Sobrenome = sobrenomeAluno.Text,
+                Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+                Email = emailAluno.Text,
+                Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
+                Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
+                DataNascimento = dataNascimentoAluno.Text,
+                Cep = cepAluno.Text.Replace("-", ""),
+                Bairro = bairroAluno.Text,
+                Estado = estadoAluno.Text,
+                Cidade = cidadeAluno.Text,
+                Rua = ruaAluno.Text,
+                NumeroCasa = numeroCasaAluno.Text,
+                CarteiraFPJJ = carteiraFPJJAluno.Text,
+                Complemento = complementoAluno.Text,
+                IdResponsavel = idResponsavel
+            };
+ 
 
             alunosRepository.CadastrarAluno(aluno);
 
