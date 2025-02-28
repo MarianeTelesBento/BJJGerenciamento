@@ -146,22 +146,24 @@
                 <main aria-labelledby="title">
                     <h2 id="title3"> Plano </h2>
 
-                    <label for="ddTurmas">Selecione uma turma:</label>
-                    <asp:DropDownList ID="ddTurmas" runat="server" AutoPostBack="true" 
-                        OnSelectedIndexChanged="ddTurmas_SelectedIndexChanged">
-                    </asp:DropDownList>
+                    <label for="ddPlanos">Selecione uma turma:</label>
+                    <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" 
+                        OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged">
+                    </asp:DropDownList><br />
 
                     <label for="cbDias">Dias:</label>
                     <asp:CheckBoxList ID="cbDias" runat="server" AutoPostBack="true"
                         OnSelectedIndexChanged="cbDias_SelectedIndexChanged">
-                    </asp:CheckBoxList>
+                    </asp:CheckBoxList><br />
 
                     <asp:Panel ID="pnlHorarios" runat="server" Visible="false">
                         <label for="ddHorarios">Selecione um horário:</label>
                         <asp:DropDownList ID="ddHorarios" runat="server"></asp:DropDownList>
-                    </asp:Panel>
+                    </asp:Panel><br />
 
+                    <asp:Button ID="EnviarInformacoes" Text="Enviar" OnClick="btnEnviarInformacoes_Click" runat="server" />
                     <br />
+
                 </main>
             </asp:Panel>
 

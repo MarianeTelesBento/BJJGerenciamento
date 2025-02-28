@@ -10,18 +10,18 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        //public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+         public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
+        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
-        public int CadastrarDados(AlunoModels aluno)
+        public int CadastrarAluno(AlunoModels aluno)
         {
             int cadastroRealizado;
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento) values(@nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento);", connection);
+            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdResponsavel) values(@nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idResponsavel);", connection);
 
             inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
@@ -38,6 +38,7 @@ namespace BJJGerenciamento.UI.DAL
             inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
             inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
             inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
+            inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
 
             cadastroRealizado = inserirCommand.ExecuteNonQuery();
 
@@ -45,6 +46,46 @@ namespace BJJGerenciamento.UI.DAL
 
             return cadastroRealizado;
         }
+
+        public int CadastrarResponsavel(ResponsavelModels responsavel)
+        {
+            int idResponsavel = 0;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "INSERT INTO TBResponsaveis " +
+                               "(Nome, Sobrenome, CPF, RG, Telefone, Email, Bairro, CEP, Cidade, Rua, Estado, DataNascimento, Complemento, NumeroCasa) " +
+                               "VALUES (@nome, @sobrenome, @cpf, @rg, @telefone, @email, @bairro, @cep, @cidade, @rua, @estado, @dataNascimento, @complemento, @numeroCasa); " +
+                               "SELECT SCOPE_IDENTITY();";  // Retorna o último ID gerado
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@nome", responsavel.Nome);
+                    command.Parameters.AddWithValue("@sobrenome", responsavel.Sobrenome);
+                    command.Parameters.AddWithValue("@telefone", responsavel.Telefone);
+                    command.Parameters.AddWithValue("@email", responsavel.Email);
+                    command.Parameters.AddWithValue("@rg", responsavel.Rg);
+                    command.Parameters.AddWithValue("@cpf", responsavel.Cpf);
+                    command.Parameters.AddWithValue("@dataNascimento", responsavel.DataNascimento);
+                    command.Parameters.AddWithValue("@cep", responsavel.Cep);
+                    command.Parameters.AddWithValue("@rua", responsavel.Rua);
+                    command.Parameters.AddWithValue("@bairro", responsavel.Bairro);
+                    command.Parameters.AddWithValue("@cidade", responsavel.Cidade);
+                    command.Parameters.AddWithValue("@estado", responsavel.Estado);
+                    command.Parameters.AddWithValue("@numeroCasa", responsavel.NumeroCasa);
+                    command.Parameters.AddWithValue("@complemento", responsavel.Complemento);
+
+                    // Obtém o ID gerado
+                    idResponsavel = Convert.ToInt32(command.ExecuteScalar());
+                }
+            }
+
+            return idResponsavel;
+        }
+
+
         public AlunoModels BuscarCpfAluno(string cpf)
         {
             AlunoModels aluno = null;
@@ -53,7 +94,7 @@ namespace BJJGerenciamento.UI.DAL
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM TBAlunos WHERE Cpf = @cpf;", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM TBAlunos WHERE CPF = @cpf;", connection))
                 {
                     command.Parameters.AddWithValue("@cpf", cpf);
 
@@ -80,7 +121,7 @@ namespace BJJGerenciamento.UI.DAL
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand("SELECT * FROM TBResponsaveis WHERE Cpf = @cpf;", connection))
+                using (SqlCommand command = new SqlCommand("SELECT * FROM TBResponsaveis WHERE CPF = @cpf;", connection))
                 {
                     command.Parameters.AddWithValue("@cpf", cpf);
 
@@ -103,9 +144,8 @@ namespace BJJGerenciamento.UI.DAL
                                 Rua = reader.GetString(10),
                                 Estado = reader.GetString(11),
                                 DataNascimento = reader.GetDateTime(12).ToString("dd/MM/yyyy"),
-                                NumeroCasa = reader.GetInt32(13).ToString(),
-                                
-                                Complemento = reader.IsDBNull(14) ? "" : reader.GetString(14) 
+                                Complemento = reader.IsDBNull(13) ? "" : reader.GetString(13),
+                                NumeroCasa = reader.GetInt32(14).ToString()
                             };
                         }
                     }
@@ -113,6 +153,34 @@ namespace BJJGerenciamento.UI.DAL
             }
 
             return responsavel;
+        }
+
+        public List<PlanoModels> BuscarPlano()
+        {
+            List<PlanoModels> planoList = new List<PlanoModels>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT * FROM TBPlanos", connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while(reader.Read())
+                        {
+                            PlanoModels plano = new PlanoModels()
+                            {
+                                IdPlano = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                QtdDias = reader.GetInt32(2),
+                                Mensalidade = reader.GetDecimal(3)
+                            };
+                            planoList.Add(plano);
+                        }
+                    }
+                }
+            }
+            return planoList;
         }
 
         //public List<AlunoModels> VisualizarDados()
