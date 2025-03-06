@@ -85,7 +85,6 @@ namespace BJJGerenciamento.UI.DAL
             return idResponsavel;
         }
 
-
         public AlunoModels BuscarCpfAluno(string cpf)
         {
             AlunoModels aluno = null;
@@ -113,6 +112,7 @@ namespace BJJGerenciamento.UI.DAL
 
             return aluno;
         }
+
         public ResponsavelModels BuscarCpfResponsavel(string cpf)
         {
             ResponsavelModels responsavel = null;
@@ -171,9 +171,7 @@ namespace BJJGerenciamento.UI.DAL
                             PlanoModels plano = new PlanoModels()
                             {
                                 IdPlano = reader.GetInt32(0),
-                                Nome = reader.GetString(1),
-                                QtdDias = reader.GetInt32(2),
-                                Mensalidade = reader.GetDecimal(3)
+                                Nome = reader.GetString(1)
                             };
                             planoList.Add(plano);
                         }
@@ -182,6 +180,33 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoList;
         }
+
+        public List<string> BuscarDiasPlano(int idPlano)
+        {
+            List<string> diasPlanoList = new List<string>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(@"SELECT d.Dia FROM TBDiasSemana d 
+                    INNER JOIN TBPlanoDias pd ON d.IdDia = pd.IdDia 
+                    WHERE pd.IdPlano = @IdPlano 
+                    ORDER BY d.IdDia ASC", connection))
+                {
+                    command.Parameters.AddWithValue("@IdPlano", idPlano);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            diasPlanoList.Add(reader.GetString(0));
+                        }
+                    }
+                }
+            }
+            return diasPlanoList;
+        }
+
 
         //public List<AlunoModels> VisualizarDados()
         //{

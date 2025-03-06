@@ -144,26 +144,33 @@
             </asp:Panel>
             <asp:Panel ID="pnlPlanoAluno" runat="server" Visible="false">
                 <main aria-labelledby="title">
-                    <h2 id="title3"> Plano </h2>
+                    <section style="display:flex; gap: 50px;">
+                        <div>
+                            <h2 id="title3"> Plano </h2>
 
-                    <label for="ddPlanos">Selecione uma turma:</label>
-                    <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" 
-                        OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged">
-                    </asp:DropDownList><br />
+                            <label for="ddPlanos">Selecione uma turma:</label>
+                            <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" 
+                                OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged">
+                            </asp:DropDownList><br />
 
-                    <label for="cbDias">Dias:</label>
-                    <asp:CheckBoxList ID="cbDias" runat="server" AutoPostBack="true"
-                        OnSelectedIndexChanged="cbDias_SelectedIndexChanged">
-                    </asp:CheckBoxList><br />
+                            <label for="cbDias">Dias:</label>
+                            <asp:CheckBoxList ID="cbDias" runat="server" AutoPostBack="true"
+                                OnSelectedIndexChanged="cbDias_SelectedIndexChanged">
+                            </asp:CheckBoxList><br />
 
-                    <asp:Panel ID="pnlHorarios" runat="server" Visible="false">
-                        <label for="ddHorarios">Selecione um horário:</label>
-                        <asp:DropDownList ID="ddHorarios" runat="server"></asp:DropDownList>
-                    </asp:Panel><br />
+                            <asp:Panel ID="pnlHorarios" runat="server" Visible="false">
+                                <label for="ddHorarios">Selecione um horário:</label>
+                                <asp:DropDownList ID="ddHorarios" runat="server"></asp:DropDownList>
+                            </asp:Panel><br />
 
-                    <asp:Button ID="EnviarInformacoes" Text="Enviar" OnClick="btnEnviarInformacoes_Click" runat="server" />
-                    <br />
-
+                            <asp:Button ID="EnviarInformacoes" Text="Enviar" OnClick="btnEnviarInformacoes_Click" runat="server" />
+                            <br />
+                        </div>
+                        <div>
+                            <asp:Label Text="text" runat="server" ID="ValorPagoPlano"/>
+                        </div>
+                    </section>
+                    
                 </main>
             </asp:Panel>
 

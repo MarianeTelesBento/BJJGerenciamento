@@ -223,33 +223,45 @@ namespace BJJGerenciamento.UI
         #region TextChangedPlano
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (!string.IsNullOrEmpty(ddTurmas.SelectedValue))
-            //{
-            //    CarregarDias(int.Parse(ddTurmas.SelectedValue));
-            //}
+            AlunosDAL alunosDAL = new AlunosDAL();
+
+            if (!string.IsNullOrEmpty(ddPlanos.SelectedValue))
+            {
+                int idPlano = int.Parse(ddPlanos.SelectedValue);
+                List<string> diasPlano = alunosDAL.BuscarDiasPlano(idPlano);
+
+                cbDias.Items.Clear();
+
+                foreach (var dia in diasPlano)
+                {
+                    cbDias.Items.Add(new ListItem(dia, dia));
+                }
+            }
         }
 
         protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<int> diasSelecionados = new List<int>();
+            int totalSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
 
-            foreach (ListItem item in cbDias.Items)
-            {
-                if (item.Selected)
-                {
-                    diasSelecionados.Add(int.Parse(item.Value));
-                }
-            }
+            ValorPagoPlano.Text = Convert.ToString(totalSelecionados);
+            //List<int> diasSelecionados = new List<int>();
 
-            if (diasSelecionados.Count > 0)
-            {
-                //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
-                pnlHorarios.Visible = true;
-            }
-            else
-            {
-                pnlHorarios.Visible = false;
-            }
+            //foreach (ListItem item in cbDias.Items)
+            //{
+            //    if (item.Selected)
+            //    {
+            //        diasSelecionados.Add(int.Parse(item.Value));
+            //    }
+            //}
+            //if (diasSelecionados.Count > 0)
+            //{
+            //    //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
+            //    pnlHorarios.Visible = true;
+            //}
+            //else
+            //{
+            //    pnlHorarios.Visible = false;
+            //}
         }
         #endregion
 
