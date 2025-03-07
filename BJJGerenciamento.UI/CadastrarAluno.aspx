@@ -159,9 +159,9 @@
                             </asp:CheckBoxList><br />
 
                             <asp:Panel ID="pnlHorarios" runat="server" Visible="false">
-                                <label for="ddHorarios">Selecione um horário:</label>
-                                <asp:DropDownList ID="ddHorarios" runat="server"></asp:DropDownList>
-                            </asp:Panel><br />
+                                <label for="cbHorarios">Selecione os horários:</label>
+                                <asp:CheckBoxList ID="cbHorarios" runat="server" />
+                            </asp:Panel>
 
                             <asp:Button ID="EnviarInformacoes" Text="Enviar" OnClick="btnEnviarInformacoes_Click" runat="server" />
                             <br />

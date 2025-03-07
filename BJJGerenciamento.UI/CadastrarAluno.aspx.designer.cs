@@ -375,13 +375,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Panel pnlHorarios;
 
         /// <summary>
-        /// Controle ddHorarios.
+        /// Controle cbHorarios.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddHorarios;
+        protected global::System.Web.UI.WebControls.CheckBoxList cbHorarios;
 
         /// <summary>
         /// Controle EnviarInformacoes.

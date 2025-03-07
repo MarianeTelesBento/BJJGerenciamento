@@ -181,17 +181,19 @@ namespace BJJGerenciamento.UI.DAL
             return planoList;
         }
 
-        public List<string> BuscarDiasPlano(int idPlano)
+        public List<KeyValuePair<int, string>> BuscarDiasPlano(int idPlano)
         {
-            List<string> diasPlanoList = new List<string>();
+            List<KeyValuePair<int, string>> diasPlanoList = new List<KeyValuePair<int, string>>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand(@"SELECT d.Dia FROM TBDiasSemana d 
-                    INNER JOIN TBPlanoDias pd ON d.IdDia = pd.IdDia 
-                    WHERE pd.IdPlano = @IdPlano 
-                    ORDER BY d.IdDia ASC", connection))
+                using (SqlCommand command = new SqlCommand(@"SELECT d.IdDia, d.Dia
+                    FROM TBDiasSemana d
+                    INNER JOIN TBPlanoDias pd ON d.IdDia = pd.IdDia
+                    WHERE pd.IdPlano = @IdPlano
+                    ORDER BY d.IdDia ASC
+                    ", connection))
                 {
                     command.Parameters.AddWithValue("@IdPlano", idPlano);
 
@@ -199,13 +201,61 @@ namespace BJJGerenciamento.UI.DAL
                     {
                         while (reader.Read())
                         {
-                            diasPlanoList.Add(reader.GetString(0));
+                            int idDia = reader.GetInt32(0);
+                            string nomeDia = reader.GetString(1);
+                            diasPlanoList.Add(new KeyValuePair<int, string>(idDia, nomeDia));
                         }
                     }
                 }
             }
             return diasPlanoList;
         }
+
+        public Dictionary<string, List<string>> BuscarHorariosPlano(List<string> diasSelecionados)
+        {
+            Dictionary<string, List<string>> horariosPorDia = new Dictionary<string, List<string>>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string parametros = string.Join(",", diasSelecionados.Select((d, i) => $"@IdDia{i}"));
+
+                string query = $@"SELECT ds.Dia, h.HorarioInicio 
+                         FROM TBHora h
+                         INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
+                         INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
+                         WHERE ph.IdDia IN ({parametros}) 
+                         ORDER BY h.HorarioInicio ASC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    for (int i = 0; i < diasSelecionados.Count; i++)
+                    {
+                        command.Parameters.AddWithValue($"@IdDia{i}", diasSelecionados[i]);
+                    }
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string dia = reader.GetString(0); 
+                            string horario = reader.GetTimeSpan(1).ToString(@"hh\:mm"); 
+
+                            if (!horariosPorDia.ContainsKey(dia))
+                            {
+                                horariosPorDia[dia] = new List<string>();
+                            }
+                            horariosPorDia[dia].Add(horario);
+                        }
+                    }
+                }
+            }
+            return horariosPorDia;
+        }
+
+
+
 
 
         //public List<AlunoModels> VisualizarDados()

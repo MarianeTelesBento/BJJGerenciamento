@@ -228,13 +228,13 @@ namespace BJJGerenciamento.UI
             if (!string.IsNullOrEmpty(ddPlanos.SelectedValue))
             {
                 int idPlano = int.Parse(ddPlanos.SelectedValue);
-                List<string> diasPlano = alunosDAL.BuscarDiasPlano(idPlano);
+                List <KeyValuePair<int, string>> diasPlano = alunosDAL.BuscarDiasPlano(idPlano);
 
                 cbDias.Items.Clear();
 
                 foreach (var dia in diasPlano)
                 {
-                    cbDias.Items.Add(new ListItem(dia, dia));
+                    cbDias.Items.Add(new ListItem(dia.Value, dia.Key.ToString()));
                 }
             }
         }
@@ -242,27 +242,44 @@ namespace BJJGerenciamento.UI
         protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
         {
             int totalSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+            ValorPagoPlano.Text = totalSelecionados.ToString();
 
-            ValorPagoPlano.Text = Convert.ToString(totalSelecionados);
-            //List<int> diasSelecionados = new List<int>();
+            List<string> diasSelecionados = new List<string>();
 
-            //foreach (ListItem item in cbDias.Items)
-            //{
-            //    if (item.Selected)
-            //    {
-            //        diasSelecionados.Add(int.Parse(item.Value));
-            //    }
-            //}
-            //if (diasSelecionados.Count > 0)
-            //{
-            //    //CarregarHorarios(diasSelecionados, int.Parse(ddTurmas.SelectedValue));
-            //    pnlHorarios.Visible = true;
-            //}
-            //else
-            //{
-            //    pnlHorarios.Visible = false;
-            //}
+            foreach (ListItem item in cbDias.Items)
+            {
+                if (item.Selected)
+                {
+                    diasSelecionados.Add(item.Value);
+                }
+            }
+
+            if (diasSelecionados.Count > 0)
+            {
+                pnlHorarios.Visible = true;
+
+                AlunosDAL alunosDAL = new AlunosDAL();
+                Dictionary<string, List<string>> listaHorarios = alunosDAL.BuscarHorariosPlano(diasSelecionados);
+
+                cbHorarios.Items.Clear();
+
+                foreach (var horario in listaHorarios)
+                {
+                    foreach (var item in horario.Value)
+                    {
+                        cbHorarios.Items.Add(new ListItem(item, item));
+                    }
+                }
+            }
+            else
+            {
+                pnlHorarios.Visible = false;
+                cbHorarios.Items.Clear();
+            }
         }
+
+
+
         #endregion
 
         protected void buscarCepAluno_Click(object sender, EventArgs e)
