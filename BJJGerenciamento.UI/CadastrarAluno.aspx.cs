@@ -13,6 +13,8 @@ namespace BJJGerenciamento.UI
 {
     public partial class About : Page
     {
+        public bool alunoMaiorIdade;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             //if (!IsPostBack)
@@ -308,8 +310,29 @@ namespace BJJGerenciamento.UI
 
         protected void btnProximoResponsavel_Click(object sender, EventArgs e)
         {
+            int maiorIdade = 18;
+
+            DateTime dataNascimento = DateTime.Parse(dataNascimentoAluno.Text);
+
+            int idade = DateTime.Now.Year - dataNascimento.Year;
+
+            if (DateTime.Now < dataNascimento.AddYears(idade))
+            {
+                idade--;
+            }
+
             pnlInformacoesPessoaisAluno.Visible = false;
-            pnlInformacoesResponsavelAluno.Visible = true;
+
+            if (idade < maiorIdade || (idade == maiorIdade && DateTime.Now < dataNascimento.AddYears(18)))
+            {
+                pnlInformacoesResponsavelAluno.Visible = true; 
+            }
+            else
+            {
+                pnlPlanoAluno.Visible = true;
+                alunoMaiorIdade = true;
+            }
+
         }
 
         protected void btnProximoPlano_Click(object sender, EventArgs e)
@@ -331,15 +354,24 @@ namespace BJJGerenciamento.UI
 
         protected void btnVoltar_Click(object sender, EventArgs e)
         {
-            if (pnlPlanoAluno.Visible == true)
+            if (pnlPlanoAluno.Visible && !alunoMaiorIdade)
             {
                 pnlInformacoesResponsavelAluno.Visible = true;
+
                 pnlInformacoesPessoaisAluno.Visible = false;
                 pnlPlanoAluno.Visible = false;
             }
-            else if (pnlInformacoesResponsavelAluno.Visible == true)
+            else if (pnlPlanoAluno.Visible && alunoMaiorIdade)
             {
                 pnlInformacoesPessoaisAluno.Visible = true;
+
+                pnlInformacoesResponsavelAluno.Visible = false;
+                pnlPlanoAluno.Visible = false;
+            }
+            else if (pnlInformacoesResponsavelAluno.Visible)
+            {
+                pnlInformacoesPessoaisAluno.Visible = true;
+
                 pnlInformacoesResponsavelAluno.Visible = false;
                 pnlPlanoAluno.Visible = false;
             }
