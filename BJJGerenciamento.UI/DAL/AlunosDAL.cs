@@ -77,8 +77,6 @@ namespace BJJGerenciamento.UI.DAL
                     command.Parameters.AddWithValue("@numeroCasa", responsavel.NumeroCasa);
                     command.Parameters.AddWithValue("@complemento", responsavel.Complemento);
 
-                    // Obtém o ID gerado
-                    idResponsavel = Convert.ToInt32(command.ExecuteScalar());
                 }
             }
 
@@ -222,11 +220,11 @@ namespace BJJGerenciamento.UI.DAL
                 string parametros = string.Join(",", diasSelecionados.Select((d, i) => $"@IdDia{i}"));
 
                 string query = $@"SELECT ds.Dia, h.HorarioInicio 
-                         FROM TBHora h
-                         INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
-                         INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
-                         WHERE ph.IdDia IN ({parametros}) 
-                         ORDER BY h.HorarioInicio ASC";
+                          FROM TBHora h
+                          INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
+                          INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
+                          WHERE ds.Dia IN ({parametros}) 
+                          ORDER BY h.HorarioInicio ASC";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -239,8 +237,8 @@ namespace BJJGerenciamento.UI.DAL
                     {
                         while (reader.Read())
                         {
-                            string dia = reader.GetString(0); 
-                            string horario = reader.GetTimeSpan(1).ToString(@"hh\:mm"); 
+                            string dia = reader.GetString(0);
+                            string horario = reader.GetTimeSpan(1).ToString(@"hh\:mm");
 
                             if (!horariosPorDia.ContainsKey(dia))
                             {
@@ -253,6 +251,7 @@ namespace BJJGerenciamento.UI.DAL
             }
             return horariosPorDia;
         }
+
 
 
 

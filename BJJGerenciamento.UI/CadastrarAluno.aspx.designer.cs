@@ -384,6 +384,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.CheckBoxList cbHorarios;
 
         /// <summary>
+        /// Controle ValorPagoPlano.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ValorPagoPlano;
+
+        /// <summary>
         /// Controle EnviarInformacoes.
         /// </summary>
         /// <remarks>
@@ -393,12 +402,21 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button EnviarInformacoes;
 
         /// <summary>
-        /// Controle ValorPagoPlano.
+        /// Controle btnSalvarAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ValorPagoPlano;
+        protected global::System.Web.UI.WebControls.Button btnSalvarAluno;
+
+        /// <summary>
+        /// Controle btnCancelarAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelarAluno;
     }
 }

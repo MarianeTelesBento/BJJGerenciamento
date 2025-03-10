@@ -23,6 +23,7 @@ namespace BJJGerenciamento.UI
         }
 
         public bool cpfResponsavelExitente;
+        public List<string> diasSelecionados;
 
         public void LimparCamposAluno()
         {
@@ -241,40 +242,39 @@ namespace BJJGerenciamento.UI
 
         protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int totalSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
-            ValorPagoPlano.Text = totalSelecionados.ToString();
-
-            List<string> diasSelecionados = new List<string>();
-
-            foreach (ListItem item in cbDias.Items)
-            {
-                if (item.Selected)
-                {
-                    diasSelecionados.Add(item.Value);
-                }
-            }
+            diasSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
 
             if (diasSelecionados.Count > 0)
             {
+                pnlHorarios.Controls.Clear();
                 pnlHorarios.Visible = true;
 
                 AlunosDAL alunosDAL = new AlunosDAL();
                 Dictionary<string, List<string>> listaHorarios = alunosDAL.BuscarHorariosPlano(diasSelecionados);
 
-                cbHorarios.Items.Clear();
-
-                foreach (var horario in listaHorarios)
+                foreach (var dia in diasSelecionados)
                 {
-                    foreach (var item in horario.Value)
-                    {
-                        cbHorarios.Items.Add(new ListItem(item, item));
-                    }
+                    Panel panelDia = new Panel();
+                    panelDia.CssClass = "col-12 mb-3";
+
+                    Label lblDia = new Label();
+                    lblDia.Text = $"Selecione os horários de {dia}:";
+                    lblDia.CssClass = "form-label";
+                    panelDia.Controls.Add(lblDia);
+
+                    CheckBoxList cbHorariosDia = new CheckBoxList();
+                    cbHorariosDia.CssClass = "form-check";
+                    cbHorariosDia.DataSource = listaHorarios[dia];
+                    cbHorariosDia.DataBind();
+
+                    panelDia.Controls.Add(cbHorariosDia);
+                    pnlHorarios.Controls.Add(panelDia);
                 }
             }
             else
             {
                 pnlHorarios.Visible = false;
-                cbHorarios.Items.Clear();
+                pnlHorarios.Controls.Clear();
             }
         }
 
@@ -390,7 +390,16 @@ namespace BJJGerenciamento.UI
                 Complemento = complementoAluno.Text,
                 IdResponsavel = idResponsavel
             };
- 
+
+            PlanoModels plano = new PlanoModels
+            {
+                IdPlano = Convert.ToInt32(ddPlanos.SelectedValue),
+                QtdDias = cbDias.Items.Cast<ListItem>().Count(item => item.Selected),
+                IdDias = diasSelecionados, 
+                
+            };
+
+
 
             alunosRepository.CadastrarAluno(aluno);
 
