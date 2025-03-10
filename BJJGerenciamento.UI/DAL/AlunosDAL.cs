@@ -47,9 +47,8 @@ namespace BJJGerenciamento.UI.DAL
             return cadastroRealizado;
         }
 
-        public int CadastrarResponsavel(ResponsavelModels responsavel)
+        public void CadastrarResponsavel(ResponsavelModels responsavel)
         {
-            int idResponsavel = 0;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -57,8 +56,7 @@ namespace BJJGerenciamento.UI.DAL
 
                 string query = "INSERT INTO TBResponsaveis " +
                                "(Nome, Sobrenome, CPF, RG, Telefone, Email, Bairro, CEP, Cidade, Rua, Estado, DataNascimento, Complemento, NumeroCasa) " +
-                               "VALUES (@nome, @sobrenome, @cpf, @rg, @telefone, @email, @bairro, @cep, @cidade, @rua, @estado, @dataNascimento, @complemento, @numeroCasa); " +
-                               "SELECT SCOPE_IDENTITY();";  // Retorna o último ID gerado
+                               "VALUES (@nome, @sobrenome, @cpf, @rg, @telefone, @email, @bairro, @cep, @cidade, @rua, @estado, @dataNascimento, @complemento, @numeroCasa);" // Retorna o último ID gerado
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -80,7 +78,6 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
 
-            return idResponsavel;
         }
 
         public AlunoModels BuscarCpfAluno(string cpf)
@@ -110,7 +107,6 @@ namespace BJJGerenciamento.UI.DAL
 
             return aluno;
         }
-
         public ResponsavelModels BuscarCpfResponsavel(string cpf)
         {
             ResponsavelModels responsavel = null;
@@ -152,7 +148,6 @@ namespace BJJGerenciamento.UI.DAL
 
             return responsavel;
         }
-
         public List<PlanoModels> BuscarPlano()
         {
             List<PlanoModels> planoList = new List<PlanoModels>();
@@ -178,7 +173,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoList;
         }
-
         public List<KeyValuePair<int, string>> BuscarDiasPlano(int idPlano)
         {
             List<KeyValuePair<int, string>> diasPlanoList = new List<KeyValuePair<int, string>>();
@@ -208,7 +202,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return diasPlanoList;
         }
-
         public Dictionary<string, List<string>> BuscarHorariosPlano(List<string> diasSelecionados)
         {
             Dictionary<string, List<string>> horariosPorDia = new Dictionary<string, List<string>>();
@@ -251,9 +244,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return horariosPorDia;
         }
-
-
-
 
 
 
