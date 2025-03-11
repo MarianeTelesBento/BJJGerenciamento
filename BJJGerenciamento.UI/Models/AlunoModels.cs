@@ -11,7 +11,7 @@ namespace BJJGerenciamento.UI.Models
     {
         public int IdAlunos { get; set; }
         public int IdPlano{ get; set; }
-        public int IdResponsavel { get; set; }
+        public int? IdResponsavel { get; set; }
         public string NomeCompleto {
             get => $"{Nome} {Sobrenome}"; 
         }

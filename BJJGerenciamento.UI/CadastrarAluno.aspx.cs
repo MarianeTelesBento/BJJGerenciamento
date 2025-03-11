@@ -331,6 +331,17 @@ namespace BJJGerenciamento.UI
             {
                 pnlPlanoAluno.Visible = true;
                 alunoMaiorIdade = true;
+
+                AlunosDAL alunosDAL = new AlunosDAL();
+                List<PlanoModels> planos = alunosDAL.BuscarPlano();
+
+                if (planos != null && planos.Count > 0)
+                {
+                    ddPlanos.DataSource = planos;
+                    ddPlanos.DataTextField = "Nome";
+                    ddPlanos.DataValueField = "IdPlano";
+                    ddPlanos.DataBind();
+                }
             }
 
         }
@@ -382,38 +393,45 @@ namespace BJJGerenciamento.UI
         {
             AlunosDAL alunosRepository = new AlunosDAL();
 
-            ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavel.Text.Replace("-", "").Replace(".", "").Trim());
+            int? idResponsavel;
 
-            int idResponsavel;
-
-            if (responsavel != null) 
+            if (alunoMaiorIdade)
             {
-                idResponsavel = responsavel.IdResponsavel;
+                idResponsavel = null;
             }
             else
             {
-                responsavel = new ResponsavelModels
-                {
-                    Nome = nomeResponsavel.Text,
-                    Sobrenome = sobrenomeResponsavel.Text,
-                    Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-                    Email = emailResponsavel.Text,
-                    Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
-                    Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
-                    DataNascimento = dataNascimentoResponsavel.Text,
-                    Cep = cepResponsavel.Text.Replace("-", ""),
-                    Bairro = bairroResponsavel.Text,
-                    Estado = estadoResponsavel.Text,
-                    Cidade = cidadeResponsavel.Text,
-                    Rua = ruaResponsavel.Text,
-                    NumeroCasa = numeroCasaResponsavel.Text,
-                    Complemento = complementoResponsavel.Text
-                };
 
-                idResponsavel = alunosRepository.CadastrarResponsavel(responsavel);
+                ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavel.Text.Replace("-", "").Replace(".", "").Trim());
+
+                if (responsavel != null)
+                {
+                    idResponsavel = responsavel.IdResponsavel;
+                }
+                else
+                {
+                    responsavel = new ResponsavelModels
+                    {
+                        Nome = nomeResponsavel.Text,
+                        Sobrenome = sobrenomeResponsavel.Text,
+                        Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+                        Email = emailResponsavel.Text,
+                        Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
+                        Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
+                        DataNascimento = dataNascimentoResponsavel.Text,
+                        Cep = cepResponsavel.Text.Replace("-", ""),
+                        Bairro = bairroResponsavel.Text,
+                        Estado = estadoResponsavel.Text,
+                        Cidade = cidadeResponsavel.Text,
+                        Rua = ruaResponsavel.Text,
+                        NumeroCasa = numeroCasaResponsavel.Text,
+                        Complemento = complementoResponsavel.Text
+                    };
+
+                    idResponsavel = (int?)alunosRepository.CadastrarResponsavel(responsavel);
+                }
             }
 
-               
 
             AlunoModels aluno = new AlunoModels
             {
