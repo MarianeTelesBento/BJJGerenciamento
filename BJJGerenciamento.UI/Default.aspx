@@ -45,11 +45,11 @@
                 <asp:BoundField DataField="NomeCompleto" HeaderText="Nome" />
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
                 <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-                <asp:BoundField DataField="EstadoMatricula" HeaderText="Estado Da Matricula" />
+<%--                <asp:BoundField DataField="EstadoMatricula" HeaderText="Estado Da Matricula" />--%>
 
                 <asp:TemplateField>
                     <ItemTemplate>
-                        <asp:HiddenField ID="hfIdTurma" runat="server" Value='<%# Eval("IdTurma") %>' />
+                        <asp:HiddenField ID="hfIdTurma" runat="server" Value='<%# Eval("IdPlano") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
 
@@ -103,7 +103,7 @@
 
                 <asp:TemplateField >
                     <ItemTemplate>
-                        <asp:HiddenField ID="hfNumero" runat="server" Value='<%# Eval("Numero") %>' />
+                        <asp:HiddenField ID="hfNumero" runat="server" Value='<%# Eval("NumeroCasa") %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
 

@@ -253,44 +253,47 @@ namespace BJJGerenciamento.UI.DAL
 
 
 
-        //public List<AlunoModels> VisualizarDados()
-        //{
-        //    List<AlunoModels> alunoList = new List<AlunoModels>();
+        public List<AlunoModels> VisualizarDados()
+        {
+            List<AlunoModels> alunoList = new List<AlunoModels>();
 
-        //    SqlConnection connection = new SqlConnection(connectionString);
-        //    connection.Open();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
 
-        //    SqlCommand readerCommand = new SqlCommand($"SELECT * FROM TBAlunos;", connection);
+            SqlCommand readerCommand = new SqlCommand($"SELECT * FROM TBAlunos;", connection);
 
-        //    SqlDataReader reader = readerCommand.ExecuteReader();
+            SqlDataReader reader = readerCommand.ExecuteReader();
 
-        //    while (reader.Read())
-        //    {
-        //        AlunoModels aluno = new AlunoModels()
-        //        {
-        //            IdAlunos = reader.GetInt32(0),
-        //            IdTurma = reader.GetInt32(1),
-        //            Nome = reader.GetString(3),
-        //            Sobrenome = reader.GetString(4),
-        //            EstadoMatricula = reader.GetBoolean(5),
-        //            Telefone = reader.GetString(6),
-        //            Email = reader.GetString(7),
-        //            Rg = reader.GetString(8),
-        //            Cpf = reader.GetString(9),
-        //            DataNascimento = reader.GetDateTime(10).ToString("dd/MM/yyyy"),
-        //            Cep = reader.GetString(11),
-        //            Rua = reader.GetString(12),
-        //            Bairro = reader.GetString(13),
-        //            Cidade = reader.GetString(14),
-        //            Estado = reader.GetString(15),
-        //            Numero = reader.GetString(16)
-        //        };
-        //        alunoList.Add(aluno);
-        //    }
+            while (reader.Read())
+            {
+                AlunoModels aluno = new AlunoModels()
+                {
+                    IdAlunos = reader.GetInt32(0),
+                    IdPlano = reader.GetInt32(1),
+                    IdResponsavel = reader.GetInt32(2),
+                    Nome = reader.GetString(3),
+                    Sobrenome = reader.GetString(4),
+                    //EstadoMatricula = reader.GetBoolean(5),
+                    Telefone = reader.GetString(5),
+                    Email = reader.GetString(6),
+                    DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
+                    Cpf = reader.GetString(8),
+                    Rg = reader.GetString(9),
+                    Estado = reader.GetString(10),
+                    Bairro = reader.GetString(11),
+                    Cidade = reader.GetString(12),
+                    Rua = reader.GetString(13),
+                    NumeroCasa = reader.GetInt32(14).ToString(),
+                    Complemento = reader.GetString(15),
+                    Cep = reader.GetString(11),
+                    CarteiraFPJJ = reader.GetString(16)
+                };
+                alunoList.Add(aluno);
+            }
 
-        //    connection.Close();
+            connection.Close();
 
-        //    return alunoList;
-        //}
+            return alunoList;
+        }
     }
 }

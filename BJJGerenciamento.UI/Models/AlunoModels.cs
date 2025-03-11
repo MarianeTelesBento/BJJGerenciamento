@@ -9,7 +9,7 @@ namespace BJJGerenciamento.UI.Models
 {
     public class AlunoModels : EnderecoModels
     {
-        public int IdAluno { get; set; }
+        public int IdAlunos { get; set; }
         public int IdPlano{ get; set; }
         public int IdResponsavel { get; set; }
         public string NomeCompleto {

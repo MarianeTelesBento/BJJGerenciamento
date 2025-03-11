@@ -12,12 +12,12 @@ namespace BJJGerenciamento.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack)
-            //{
-            //    AlunosDAL alunosDAL = new AlunosDAL();
-            //    GridView1.DataSource = alunosDAL.VisualizarDados();
-            //    GridView1.DataBind();
-            //}
+            if (!IsPostBack)
+            {
+                AlunosDAL alunosDAL = new AlunosDAL();
+                GridView1.DataSource = alunosDAL.VisualizarDados();
+                GridView1.DataBind();
+            }
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
