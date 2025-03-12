@@ -12,7 +12,8 @@ namespace BJJGerenciamento.UI.Models
         public int IdPlano { get; set; }
         public string Nome { get; set; }
         public int QtdDias { get; set; }
-        //public decimal Mensalidade { get; set; }
+        public decimal Mensalidade { get; set; }
+
         public List<string> IdDias { get; set; }
         //public List<string> IdHorarios { get; set; }
 

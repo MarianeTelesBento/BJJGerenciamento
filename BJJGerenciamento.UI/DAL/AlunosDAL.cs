@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
@@ -14,9 +15,39 @@ namespace BJJGerenciamento.UI.DAL
 
         //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
+        public void CadastrarPlanoAluno(PlanoAlunoModels plano, List<KeyValuePair<int, string>> diasHorarios)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "INSERT INTO TBPlanoAluno " +
+                                      "(IdAlunos, IdDia, IdHorario, IdDetalhe) " +
+                                      "VALUES (@idAlunos, @idDia, @idHorario, @idDetalhe);";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add("@idAlunos", SqlDbType.Int);
+                    command.Parameters.Add("@idDia", SqlDbType.Int);
+                    command.Parameters.Add("@idHorario", SqlDbType.VarChar, 50);
+                    command.Parameters.Add("@idDetalhe", SqlDbType.Int);
+
+                    foreach (var diaHorario in diasHorarios)
+                    {
+                        command.Parameters["@idAlunos"].Value = plano.idAlunos;
+                        command.Parameters["@idDia"].Value = diaHorario.Key;  
+                        command.Parameters["@idHorario"].Value = diaHorario.Value;
+                        command.Parameters["@idDetalhe"].Value = plano.idDetalhe;
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+        }
+
         public int CadastrarResponsavel(ResponsavelModels responsavel)
         {
-
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -50,40 +81,41 @@ namespace BJJGerenciamento.UI.DAL
 
         }
 
-        public int CadastrarAluno(AlunoModels aluno)
-        {
-            int cadastroRealizado;
+            public int CadastrarAluno(AlunoModels aluno)
+            {
+                int cadastroRealizado;
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
+                SqlConnection connection = new SqlConnection(connectionString);
+                connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento);", connection);
+                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento); " +
+                    "SELECT SCOPE_IDENTITY();", connection);
 
-            inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
-            inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
-            inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
-            inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
-            inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
-            inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
-            inserirCommand.Parameters.AddWithValue("@rg", aluno.Rg);
-            inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
-            inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
-            inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
-            inserirCommand.Parameters.AddWithValue("@rua", aluno.Rua);
-            inserirCommand.Parameters.AddWithValue("@bairro", aluno.Bairro);
-            inserirCommand.Parameters.AddWithValue("@cidade", aluno.Cidade);
-            inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
-            inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
-            inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
-            inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
+                inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
+                inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
+                inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
+                inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
+                inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
+                inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
+                inserirCommand.Parameters.AddWithValue("@rg", aluno.Rg);
+                inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
+                inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
+                inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
+                inserirCommand.Parameters.AddWithValue("@rua", aluno.Rua);
+                inserirCommand.Parameters.AddWithValue("@bairro", aluno.Bairro);
+                inserirCommand.Parameters.AddWithValue("@cidade", aluno.Cidade);
+                inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
+                inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
+                inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
+                inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
 
 
-            cadastroRealizado = inserirCommand.ExecuteNonQuery();
+                cadastroRealizado = inserirCommand.ExecuteScalar();
 
-            connection.Close();
+                connection.Close();
 
-            return cadastroRealizado;
-        }
+                return Convert.ToInt32(cadastroRealizado);
+            }
 
 
         public AlunoModels BuscarCpfAluno(string cpf)
@@ -161,7 +193,13 @@ namespace BJJGerenciamento.UI.DAL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM TBPlanos", connection))
+                using (SqlCommand command = new SqlCommand("SELECT " +
+                    "P.IdPlano, " +
+                    "P.Nome," +
+                    " D.QtsDias, " +
+                    "D.Mensalidade " +
+                    "FROM TBPlanos P " +
+                    "JOIN TBPlanoDetalhes D ON P.IdPlano = D.IdPlano;", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -170,7 +208,9 @@ namespace BJJGerenciamento.UI.DAL
                             PlanoModels plano = new PlanoModels()
                             {
                                 IdPlano = reader.GetInt32(0),
-                                Nome = reader.GetString(1)
+                                Nome = reader.GetString(1),
+                                QtdDias = reader.GetInt32(2),
+                                Mensalidade = reader.GetDecimal(3)
                             };
                             planoList.Add(plano);
                         }

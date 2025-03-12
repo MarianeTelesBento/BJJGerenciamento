@@ -339,7 +339,7 @@ namespace BJJGerenciamento.UI
                 {
                     ddPlanos.DataSource = planos;
                     ddPlanos.DataTextField = "Nome";
-                    ddPlanos.DataValueField = "IdPlano";
+                    ddPlanos.DataValueField = "IdDetalhe";
                     ddPlanos.DataBind();
                 }
             }
@@ -358,7 +358,7 @@ namespace BJJGerenciamento.UI
             {
                 ddPlanos.DataSource = planos;
                 ddPlanos.DataTextField = "Nome";
-                ddPlanos.DataValueField = "IdPlano";
+                ddPlanos.DataValueField = "IdDetalhe";
                 ddPlanos.DataBind();
             }
         }
@@ -453,17 +453,56 @@ namespace BJJGerenciamento.UI
                 IdResponsavel = idResponsavel,
                 IdPlano = 1
             };
+             
+            int idAluno = alunosRepository.CadastrarAluno(aluno);
 
-            alunosRepository.CadastrarAluno(aluno);
+            PlanoAlunoModels plano = new PlanoAlunoModels
+            {
+                idAlunos = idAluno,
+                idDetalhe = int.Parse(ddPlanos.SelectedValue),    
+            };
 
-            //PlanoModels plano = new PlanoModels
+            List<KeyValuePair<int, string>> diasHorariosSelecionados = new List<KeyValuePair<int, string>>();
+
+            foreach (ListItem diaItem in cbDias.Items)
+            {
+                if (diaItem.Selected)
+                {
+                    int idDia = int.Parse(diaItem.Value);
+
+                    // Buscar CheckBoxList de horários correspondente ao dia
+                    foreach (Control ctrl in pnlHorarios.Controls)
+                    {
+                        if (ctrl is Panel panelDia)
+                        {
+                            foreach (Control subCtrl in panelDia.Controls)
+                            {
+                                if (subCtrl is CheckBoxList cbHorariosDia)
+                                {
+                                    foreach (ListItem horarioItem in cbHorariosDia.Items)
+                                    {
+                                        if (horarioItem.Selected)
+                                        {
+                                            diasHorariosSelecionados.Add(new KeyValuePair<int, string>(idDia, horarioItem.Text));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (diasHorariosSelecionados.Count > 0)
+            {
+                AlunosDAL alunosDAL = new AlunosDAL();
+                alunosDAL.CadastrarPlanoAluno(plano, diasHorariosSelecionados);
+                //lblMensagem.Text = "Plano cadastrado com sucesso!";
+            }
+            //else
             //{
-            //    IdPlano = Convert.ToInt32(ddPlanos.SelectedValue),
-            //    QtdDias = cbDias.Items.Cast<ListItem>().Count(item => item.Selected),
-            //    IdDias = diasSelecionados, 
-
-            //};
-
+            //    lblMensagem.Text = "Selecione pelo menos um dia e horário!";
+            //}
 
 
         }
