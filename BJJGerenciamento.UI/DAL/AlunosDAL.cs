@@ -110,7 +110,7 @@ namespace BJJGerenciamento.UI.DAL
                 inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
 
 
-                cadastroRealizado = inserirCommand.ExecuteScalar();
+                cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
 
                 connection.Close();
 

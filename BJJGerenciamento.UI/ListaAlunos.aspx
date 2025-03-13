@@ -1,10 +1,10 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="BJJGerenciamento.UI._Default" %>
+﻿<%@ Page Title="Lista de Alunos" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListaAlunos.aspx.cs" Inherits="BJJGerenciamento.UI._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <main>
 
-        <h1 id="aspnetTitle">Chamada</h1>
+        <h1 id="aspnetTitle">Lista de Alunos</h1>
 
         <%--<asp:GridView ID="GridView1" runat="server" CellPadding="4" ForeColor="Black" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" BackColor="#CCCCCC" BorderColor="#999999" BorderStyle="Solid" BorderWidth="3px" CellSpacing="2">
                         <FooterStyle BackColor="#CCCCCC" />
@@ -119,7 +119,7 @@
 
         <!-- Modal (Mini Tela) -->
         <div id="modalDetalhes" style="display: none; position: fixed; top: 10%; left: 40%; 
-            background: white; padding: 20px; border: 1px solid black;">
+            background: white; padding: 20px; border: 1px solid black; z-index: 99; ">
             <h3>Detalhes do Aluno</h3>
 
             <asp:Label>Nome:</asp:Label>
@@ -165,6 +165,7 @@
             <asp:TextBox ID="modalNumero" runat="server"></asp:TextBox>
 
             <button onclick="fecharModal()">Fechar</button>
+            <button onclick="editarModal()">Salvar</button>
         </div>
 
         <script>

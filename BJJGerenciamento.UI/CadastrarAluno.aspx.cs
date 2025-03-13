@@ -451,7 +451,7 @@ namespace BJJGerenciamento.UI
                 CarteiraFPJJ = carteiraFPJJAluno.Text,
                 Complemento = complementoAluno.Text,
                 IdResponsavel = idResponsavel,
-                IdPlano = 1
+                IdPlano = 1 //Iirar id do plano, no aluno
             };
              
             int idAluno = alunosRepository.CadastrarAluno(aluno);
@@ -470,7 +470,6 @@ namespace BJJGerenciamento.UI
                 {
                     int idDia = int.Parse(diaItem.Value);
 
-                    // Buscar CheckBoxList de horários correspondente ao dia
                     foreach (Control ctrl in pnlHorarios.Controls)
                     {
                         if (ctrl is Panel panelDia)
