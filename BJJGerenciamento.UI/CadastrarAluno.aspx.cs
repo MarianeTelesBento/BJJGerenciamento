@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.UI;
@@ -339,7 +340,7 @@ namespace BJJGerenciamento.UI
                 {
                     ddPlanos.DataSource = planos;
                     ddPlanos.DataTextField = "Nome";
-                    ddPlanos.DataValueField = "IdDetalhe";
+                    ddPlanos.DataValueField = "IdPlano";
                     ddPlanos.DataBind();
                 }
             }
@@ -393,115 +394,131 @@ namespace BJJGerenciamento.UI
         {
             AlunosDAL alunosRepository = new AlunosDAL();
 
-            int? idResponsavel;
+            //int? idResponsavel;
 
-            if (alunoMaiorIdade)
-            {
-                idResponsavel = null;
-            }
-            else
-            {
-
-                ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavel.Text.Replace("-", "").Replace(".", "").Trim());
-
-                if (responsavel != null)
-                {
-                    idResponsavel = responsavel.IdResponsavel;
-                }
-                else
-                {
-                    responsavel = new ResponsavelModels
-                    {
-                        Nome = nomeResponsavel.Text,
-                        Sobrenome = sobrenomeResponsavel.Text,
-                        Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-                        Email = emailResponsavel.Text,
-                        Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
-                        Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
-                        DataNascimento = dataNascimentoResponsavel.Text,
-                        Cep = cepResponsavel.Text.Replace("-", ""),
-                        Bairro = bairroResponsavel.Text,
-                        Estado = estadoResponsavel.Text,
-                        Cidade = cidadeResponsavel.Text,
-                        Rua = ruaResponsavel.Text,
-                        NumeroCasa = numeroCasaResponsavel.Text,
-                        Complemento = complementoResponsavel.Text
-                    };
-
-                    idResponsavel = (int?)alunosRepository.CadastrarResponsavel(responsavel);
-                }
-            }
-
-
-            AlunoModels aluno = new AlunoModels
-            {
-                Nome = nomeAluno.Text,
-                Sobrenome = sobrenomeAluno.Text,
-                Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-                Email = emailAluno.Text,
-                Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
-                Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
-                DataNascimento = dataNascimentoAluno.Text,
-                Cep = cepAluno.Text.Replace("-", ""),
-                Bairro = bairroAluno.Text,
-                Estado = estadoAluno.Text,
-                Cidade = cidadeAluno.Text,
-                Rua = ruaAluno.Text,
-                NumeroCasa = numeroCasaAluno.Text,
-                CarteiraFPJJ = carteiraFPJJAluno.Text,
-                Complemento = complementoAluno.Text,
-                IdResponsavel = idResponsavel,
-                IdPlano = 1 //Iirar id do plano, no aluno
-            };
-             
-            int idAluno = alunosRepository.CadastrarAluno(aluno);
-
-            PlanoAlunoModels plano = new PlanoAlunoModels
-            {
-                idAlunos = idAluno,
-                idDetalhe = int.Parse(ddPlanos.SelectedValue),    
-            };
-
-            List<KeyValuePair<int, string>> diasHorariosSelecionados = new List<KeyValuePair<int, string>>();
-
-            foreach (ListItem diaItem in cbDias.Items)
-            {
-                if (diaItem.Selected)
-                {
-                    int idDia = int.Parse(diaItem.Value);
-
-                    foreach (Control ctrl in pnlHorarios.Controls)
-                    {
-                        if (ctrl is Panel panelDia)
-                        {
-                            foreach (Control subCtrl in panelDia.Controls)
-                            {
-                                if (subCtrl is CheckBoxList cbHorariosDia)
-                                {
-                                    foreach (ListItem horarioItem in cbHorariosDia.Items)
-                                    {
-                                        if (horarioItem.Selected)
-                                        {
-                                            diasHorariosSelecionados.Add(new KeyValuePair<int, string>(idDia, horarioItem.Text));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (diasHorariosSelecionados.Count > 0)
-            {
-                AlunosDAL alunosDAL = new AlunosDAL();
-                alunosDAL.CadastrarPlanoAluno(plano, diasHorariosSelecionados);
-                //lblMensagem.Text = "Plano cadastrado com sucesso!";
-            }
+            //if (alunoMaiorIdade)
+            //{
+            //    idResponsavel = null;
+            //}
             //else
             //{
-            //    lblMensagem.Text = "Selecione pelo menos um dia e horário!";
+
+            //    ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavel.Text.Replace("-", "").Replace(".", "").Trim());
+
+            //    if (responsavel != null)
+            //    {
+            //        idResponsavel = responsavel.IdResponsavel;
+            //    }
+            //    else
+            //    {
+            //        responsavel = new ResponsavelModels
+            //        {
+            //            Nome = nomeResponsavel.Text,
+            //            Sobrenome = sobrenomeResponsavel.Text,
+            //            Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+            //            Email = emailResponsavel.Text,
+            //            Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
+            //            Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
+            //            DataNascimento = dataNascimentoResponsavel.Text,
+            //            Cep = cepResponsavel.Text.Replace("-", ""),
+            //            Bairro = bairroResponsavel.Text,
+            //            Estado = estadoResponsavel.Text,
+            //            Cidade = cidadeResponsavel.Text,
+            //            Rua = ruaResponsavel.Text,
+            //            NumeroCasa = numeroCasaResponsavel.Text,
+            //            Complemento = complementoResponsavel.Text
+            //        };
+
+            //        idResponsavel = (int?)alunosRepository.CadastrarResponsavel(responsavel);
+            //    }
             //}
+
+
+            //AlunoModels aluno = new AlunoModels
+            //{
+            //    Nome = nomeAluno.Text,
+            //    Sobrenome = sobrenomeAluno.Text,
+            //    Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+            //    Email = emailAluno.Text,
+            //    Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
+            //    Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
+            //    DataNascimento = dataNascimentoAluno.Text,
+            //    Cep = cepAluno.Text.Replace("-", ""),
+            //    Bairro = bairroAluno.Text,
+            //    Estado = estadoAluno.Text,
+            //    Cidade = cidadeAluno.Text,
+            //    Rua = ruaAluno.Text,
+            //    NumeroCasa = numeroCasaAluno.Text,
+            //    CarteiraFPJJ = carteiraFPJJAluno.Text,
+            //    Complemento = complementoAluno.Text,
+            //    IdResponsavel = idResponsavel,
+            //    IdPlano = 1 
+            //};
+
+            //int idAluno = alunosRepository.CadastrarAluno(aluno);
+
+            diasSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
+
+            List <PlanoModels> ListaPlanos = alunosRepository.BuscarPlanoDetalhes(ddPlanos.SelectedValue);
+            
+            foreach(var plano in ListaPlanos)
+            {
+                if (diasSelecionados.Count == plano.Mensalidade)
+                {
+                    ValorPagoPlano.Text = plano.Mensalidade.ToString();
+                    return;
+                }
+            }
+
+
+            
+
+            //PlanoAlunoModels plano = new PlanoAlunoModels
+            //{
+            //    idAlunos = idAluno,
+            //    idDetalhe = int.Parse(ddPlanos.SelectedValue),    
+            //};
+
+            //List<KeyValuePair<int, string>> diasHorariosSelecionados = new List<KeyValuePair<int, string>>();
+
+            //foreach (ListItem diaItem in cbDias.Items)
+            //{
+            //    if (diaItem.Selected)
+            //    {
+            //        int idDia = int.Parse(diaItem.Value);
+
+            //        foreach (Control ctrl in pnlHorarios.Controls)
+            //        {
+            //            if (ctrl is Panel panelDia)
+            //            {
+            //                foreach (Control subCtrl in panelDia.Controls)
+            //                {
+            //                    if (subCtrl is CheckBoxList cbHorariosDia)
+            //                    {
+            //                        foreach (ListItem horarioItem in cbHorariosDia.Items)
+            //                        {
+            //                            if (horarioItem.Selected)
+            //                            {
+            //                                diasHorariosSelecionados.Add(new KeyValuePair<int, string>(idDia, horarioItem.Text));
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            //if (diasHorariosSelecionados.Count > 0)
+            //{
+            //    AlunosDAL alunosDAL = new AlunosDAL();
+            //    alunosDAL.CadastrarPlanoAluno(plano, diasHorariosSelecionados);
+            //    //lblMensagem.Text = "Plano cadastrado com sucesso!";
+            //}
+            ////else
+            ////{
+            ////    lblMensagem.Text = "Selecione pelo menos um dia e horário!";
+            ////}
 
 
         }

@@ -194,12 +194,9 @@ namespace BJJGerenciamento.UI.DAL
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand("SELECT " +
-                    "P.IdPlano, " +
-                    "P.Nome," +
-                    " D.QtsDias, " +
-                    "D.Mensalidade " +
-                    "FROM TBPlanos P " +
-                    "JOIN TBPlanoDetalhes D ON P.IdPlano = D.IdPlano;", connection))
+                    "IdPlano, " +
+                    "Nome " +
+                    "FROM TBPlanos ", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -209,8 +206,6 @@ namespace BJJGerenciamento.UI.DAL
                             {
                                 IdPlano = reader.GetInt32(0),
                                 Nome = reader.GetString(1),
-                                QtdDias = reader.GetInt32(2),
-                                Mensalidade = reader.GetDecimal(3)
                             };
                             planoList.Add(plano);
                         }
@@ -219,6 +214,41 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoList;
         }
+
+        public List<PlanoModels> BuscarPlanoDetalhes(string idPlano)
+        {
+            List<PlanoModels> planoList = new List<PlanoModels>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT " +
+                    "IdDetalhe, " +
+                    "QtsDias, " +
+                    "Mensalidade " +
+                    "FROM TBPlanoDetalhes " +
+                    "WHERE IdPlano = @IdPlano", connection))
+                {
+                    command.Parameters.AddWithValue("@IdPlano", idPlano);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            PlanoModels plano = new PlanoModels()
+                            {
+                                IdDetalhe = reader.GetInt32(0),
+                                QtdDias = reader.GetInt32(1),
+                                Mensalidade = reader.GetDecimal(2),
+                            };
+                            planoList.Add(plano);
+                        }
+                    }
+                }
+            }
+            return planoList;
+        }
+
         public List<KeyValuePair<int, string>> BuscarDiasPlano(int idPlano)
         {
             List<KeyValuePair<int, string>> diasPlanoList = new List<KeyValuePair<int, string>>();

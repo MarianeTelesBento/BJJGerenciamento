@@ -17,5 +17,7 @@ namespace BJJGerenciamento.UI.Models
         public List<string> IdDias { get; set; }
         //public List<string> IdHorarios { get; set; }
 
+        public int IdDetalhe { get; set; }
+
     }
 }
