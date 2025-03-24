@@ -344,11 +344,16 @@ namespace BJJGerenciamento.UI.DAL
                     IdResponsavel = reader.GetInt32(2),
                     Nome = reader.GetString(3),
                     Sobrenome = reader.GetString(4),
+
                     //EstadoMatricula = reader.GetBoolean(5),
                     Telefone = reader.GetString(5),
+
                     Email = reader.GetString(6),
+
                     DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
+
                     Cpf = reader.GetString(8),
+
                     Rg = reader.GetString(9),
                     Estado = reader.GetString(10),
                     Bairro = reader.GetString(11),

@@ -36,11 +36,10 @@ namespace BJJGerenciamento.UI
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
             modalNome.Text = row.Cells[1].Text;
+            modalSobrenome.Text = row.Cells[2].Text;
             modalCpf.Text = row.Cells[2].Text;
             modalTelefone.Text = row.Cells[3].Text;
-            modalEstadoMatricula.Text = row.Cells[4].Text;
 
-            modalTurma.Text = ((HiddenField)row.FindControl("hfIdTurma")).Value;
             modalEmail.Text = ((HiddenField)row.FindControl("hfEmail")).Value;
             modalRg.Text = ((HiddenField)row.FindControl("hfRg")).Value;
             modalDataNascimento.Text = ((HiddenField)row.FindControl("hfDataNascimento")).Value;

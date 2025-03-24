@@ -42,16 +42,11 @@
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="IdAlunos" HeaderText="ID" />
-                <asp:BoundField DataField="NomeCompleto" HeaderText="Nome" />
+                <asp:BoundField DataField="Nome" HeaderText="Nome" />
+                <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
                 <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
 <%--                <asp:BoundField DataField="EstadoMatricula" HeaderText="Estado Da Matricula" />--%>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfIdTurma" runat="server" Value='<%# Eval("IdPlano") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
 
                 <asp:TemplateField>
                     <ItemTemplate>
@@ -125,14 +120,14 @@
             <asp:Label>Nome:</asp:Label>
             <asp:TextBox ID="modalNome" runat="server" Text="modalNome"></asp:TextBox>
 
+            <asp:Label>Sobrenome:</asp:Label>
+            <asp:TextBox ID="modalSobrenome" runat="server" Text="modalSobrenome"></asp:TextBox>
+
             <asp:Label>CPF:</asp:Label>
             <asp:TextBox ID="modalCpf" runat="server" Text="modalCpf"></asp:TextBox>
 
             <asp:Label>Email:</asp:Label>
             <asp:TextBox ID="modalEmail" runat="server" Text="modalEmail"></asp:TextBox>
-
-            <asp:Label>Turma:</asp:Label>
-            <asp:TextBox ID="modalTurma" runat="server" Text="modalTurma"></asp:TextBox>
 
             <asp:Label>Telefone:</asp:Label>
             <asp:TextBox ID="modalTelefone" runat="server"></asp:TextBox>

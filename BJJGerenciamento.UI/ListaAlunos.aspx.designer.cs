@@ -33,6 +33,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox modalNome;
 
         /// <summary>
+        /// Controle modalSobrenome.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalSobrenome;
+
+        /// <summary>
         /// Controle modalCpf.
         /// </summary>
         /// <remarks>
@@ -49,15 +58,6 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox modalEmail;
-
-        /// <summary>
-        /// Controle modalTurma.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalTurma;
 
         /// <summary>
         /// Controle modalTelefone.
