@@ -12,6 +12,8 @@ namespace BJJGerenciamento.UI
     public partial class _Default : Page
     {
         public List<AlunoModels> alunosList = new List<AlunoModels>();
+        public AlunoModels aluno = new AlunoModels();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -53,9 +55,23 @@ namespace BJJGerenciamento.UI
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
 
-        protected void BtnSalvarAluno_Click(object sender, EventArgs e)
+        protected void SalvarAluno_Click(object sender, EventArgs e)
         {
+            aluno.Nome = modalNome.Text;
+            aluno.Cpf = modalCpf.Text;
+            aluno.Telefone = modalTelefone.Text;
+            aluno.Email = modalEmail.Text;
+            aluno.Rg = modalRg.Text;
+            aluno.DataNascimento = modalDataNascimento.Text;
+            aluno.Cep = modalCep.Text;
+            aluno.Rua = modalRua.Text;
+            aluno.Bairro = modalBairro.Text;
+            aluno.Cidade = modalCidade.Text;
+            aluno.Estado = modalEstado.Text;
+            aluno.NumeroCasa = modalNumero.Text;
+
             AlunosDAL alunosDAL = new AlunosDAL();
+            alunosDAL.AtualizarAluno(aluno);
 
         }
     }

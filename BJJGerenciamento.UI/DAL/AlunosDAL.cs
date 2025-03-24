@@ -374,9 +374,7 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"UPDATE TBAlunos 
-                         SET IdPlano = @idPlano, 
-                             IdResponsavel = @idResponsavel, 
-                             Nome = @nome, 
+                         SET Nome = @nome, 
                              Sobrenome = @sobrenome, 
                              Telefone = @telefone, 
                              Email = @email, 
@@ -395,8 +393,6 @@ namespace BJJGerenciamento.UI.DAL
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
-                    command.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
                     command.Parameters.AddWithValue("@nome", aluno.Nome);
                     command.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
                     command.Parameters.AddWithValue("@telefone", aluno.Telefone);

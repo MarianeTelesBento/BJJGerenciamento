@@ -165,7 +165,8 @@
             <asp:TextBox ID="modalNumero" runat="server"></asp:TextBox>
 
             <button onclick="fecharModal()">Fechar</button>
-            <button ID="SalvarAluno" OnClick="BtnSalvarAluno_Click">Salvar</button>
+
+            <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" Text="Salvar" />
         </div>
 
         <script>
