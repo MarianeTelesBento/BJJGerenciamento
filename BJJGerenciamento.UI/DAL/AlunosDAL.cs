@@ -366,5 +366,58 @@ namespace BJJGerenciamento.UI.DAL
 
             return alunoList;
         }
+
+        public bool AtualizarAluno(AlunoModels aluno)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"UPDATE TBAlunos 
+                         SET IdPlano = @idPlano, 
+                             IdResponsavel = @idResponsavel, 
+                             Nome = @nome, 
+                             Sobrenome = @sobrenome, 
+                             Telefone = @telefone, 
+                             Email = @email, 
+                             Rg = @rg, 
+                             Cpf = @cpf, 
+                             DataNascimento = @dataNascimento, 
+                             CEP = @cep, 
+                             Rua = @rua, 
+                             Bairro = @bairro, 
+                             Cidade = @cidade, 
+                             Estado = @estado, 
+                             NumeroCasa = @numeroCasa, 
+                             CarteiraFPJJ = @carteiraFPJJ, 
+                             Complemento = @complemento 
+                         WHERE IdAlunos = @idAlunos";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
+                    command.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
+                    command.Parameters.AddWithValue("@nome", aluno.Nome);
+                    command.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
+                    command.Parameters.AddWithValue("@telefone", aluno.Telefone);
+                    command.Parameters.AddWithValue("@email", aluno.Email);
+                    command.Parameters.AddWithValue("@rg", aluno.Rg);
+                    command.Parameters.AddWithValue("@cpf", aluno.Cpf);
+                    command.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
+                    command.Parameters.AddWithValue("@cep", aluno.Cep);
+                    command.Parameters.AddWithValue("@rua", aluno.Rua);
+                    command.Parameters.AddWithValue("@bairro", aluno.Bairro);
+                    command.Parameters.AddWithValue("@cidade", aluno.Cidade);
+                    command.Parameters.AddWithValue("@estado", aluno.Estado);
+                    command.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
+                    command.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
+                    command.Parameters.AddWithValue("@complemento", aluno.Complemento);
+                    command.Parameters.AddWithValue("@idAlunos", aluno.IdAlunos);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
     }
 }
