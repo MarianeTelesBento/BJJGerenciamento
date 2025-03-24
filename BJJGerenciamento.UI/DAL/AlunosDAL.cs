@@ -46,6 +46,7 @@ namespace BJJGerenciamento.UI.DAL
 
         }
 
+
         public int CadastrarResponsavel(ResponsavelModels responsavel)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -81,7 +82,7 @@ namespace BJJGerenciamento.UI.DAL
 
         }
 
-            public int CadastrarAluno(AlunoModels aluno)
+       public int CadastrarAluno(AlunoModels aluno)
             {
                 int cadastroRealizado;
 

@@ -18,15 +18,16 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack)
-            //{
-            //    //CarregarTurmas();
-            //    pnlHorarios.Visible = false;
-            //}
+            if (!IsPostBack)
+            {
+                pnlHorarios.Visible = false; 
+            }
         }
 
         public bool cpfResponsavelExitente;
         public List<string> diasSelecionados;
+        public List<string> horariosSelecionados;
+
 
         public void LimparCamposAluno()
         {
@@ -243,6 +244,8 @@ namespace BJJGerenciamento.UI
             }
         }
 
+        public Dictionary<string, List<string>> listaHorarios = new Dictionary<string, List<string>>();
+
         protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
         {
             diasSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
@@ -253,7 +256,7 @@ namespace BJJGerenciamento.UI
                 pnlHorarios.Visible = true;
 
                 AlunosDAL alunosDAL = new AlunosDAL();
-                Dictionary<string, List<string>> listaHorarios = alunosDAL.BuscarHorariosPlano(diasSelecionados);
+                listaHorarios = alunosDAL.BuscarHorariosPlano(diasSelecionados);
 
                 foreach (var dia in diasSelecionados)
                 {
@@ -267,11 +270,13 @@ namespace BJJGerenciamento.UI
 
                     CheckBoxList cbHorariosDia = new CheckBoxList();
                     cbHorariosDia.CssClass = "form-check";
+                    cbHorariosDia.ID = $"cb{dia}";
                     cbHorariosDia.DataSource = listaHorarios[dia];
                     cbHorariosDia.DataBind();
 
                     panelDia.Controls.Add(cbHorariosDia);
                     pnlHorarios.Controls.Add(panelDia);
+
                 }
             }
             else
@@ -280,7 +285,6 @@ namespace BJJGerenciamento.UI
                 pnlHorarios.Controls.Clear();
             }
         }
-
 
 
         #endregion
@@ -392,7 +396,7 @@ namespace BJJGerenciamento.UI
 
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
-            AlunosDAL alunosRepository = new AlunosDAL();
+            //AlunosDAL alunosRepository = new AlunosDAL();
 
             //int? idResponsavel;
 
@@ -452,26 +456,28 @@ namespace BJJGerenciamento.UI
             //    CarteiraFPJJ = carteiraFPJJAluno.Text,
             //    Complemento = complementoAluno.Text,
             //    IdResponsavel = idResponsavel,
-            //    IdPlano = 1 
+            //    IdPlano = 1
             //};
 
             //int idAluno = alunosRepository.CadastrarAluno(aluno);
 
-            diasSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
+            horariosSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
 
-            List <PlanoModels> ListaPlanos = alunosRepository.BuscarPlanoDetalhes(ddPlanos.SelectedValue);
-            
-            foreach(var plano in ListaPlanos)
-            {
-                if (diasSelecionados.Count == plano.Mensalidade)
-                {
-                    ValorPagoPlano.Text = plano.Mensalidade.ToString();
-                    return;
-                }
-            }
+            diasSelecionados = cbHorarios.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
+
+            //List<PlanoModels> ListaPlanos = alunosRepository.BuscarPlanoDetalhes(ddPlanos.SelectedValue);
+
+            //foreach(var plano in ListaPlanos)
+            //{
+            //    if (diasSelecionados.Count == plano.Mensalidade)
+            //    {
+            //        ValorPagoPlano.Text = plano.Mensalidade.ToString();
+            //        return;
+            //    }
+            //}
 
 
-            
+
 
             //PlanoAlunoModels plano = new PlanoAlunoModels
             //{

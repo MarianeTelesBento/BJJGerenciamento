@@ -5,17 +5,20 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BJJGerenciamento.UI.DAL;
+using BJJGerenciamento.UI.Models;
 
 namespace BJJGerenciamento.UI
 {
     public partial class _Default : Page
     {
+        public List<AlunoModels> alunosList = new List<AlunoModels>();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 AlunosDAL alunosDAL = new AlunosDAL();
-                GridView1.DataSource = alunosDAL.VisualizarDados();
+                alunosList = alunosDAL.VisualizarDados();
+                GridView1.DataSource = alunosList;
                 GridView1.DataBind();
             }
         }
@@ -48,6 +51,12 @@ namespace BJJGerenciamento.UI
 
             string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
+        }
+
+        protected void BtnSalvarAluno_Click(object sender, EventArgs e)
+        {
+            AlunosDAL alunosDAL = new AlunosDAL();
+
         }
     }
 }
