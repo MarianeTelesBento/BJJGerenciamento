@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -34,6 +35,7 @@ namespace BJJGerenciamento.UI
         {
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
+            int index = row.RowIndex;
 
             modalIdAluno.Text = row.Cells[0].Text;
             modalNome.Text = row.Cells[1].Text;
@@ -41,17 +43,17 @@ namespace BJJGerenciamento.UI
             modalCpf.Text = row.Cells[3].Text;
             modalTelefone.Text = row.Cells[4].Text;
 
-            modalEmail.Text = ((HiddenField)row.FindControl("hfEmail")).Value;
-            modalRg.Text = ((HiddenField)row.FindControl("hfRg")).Value;
-            modalDataNascimento.Text = ((HiddenField)row.FindControl("hfDataNascimento")).Value;
-            modalCep.Text = ((HiddenField)row.FindControl("hfCep")).Value;
-            modalRua.Text = ((HiddenField)row.FindControl("hfRua")).Value;
-            modalBairro.Text = ((HiddenField)row.FindControl("hfBairro")).Value;
-            modalCidade.Text = ((HiddenField)row.FindControl("hfCidade")).Value;
-            modalEstado.Text = ((HiddenField)row.FindControl("hfEstado")).Value;
-            modalNumero.Text = ((HiddenField)row.FindControl("hfNumero")).Value;
-            modalComplemento.Text = ((HiddenField)row.FindControl("hfComplemento")).Value;
-            modalCarteiraFpjj.Text = ((HiddenField)row.FindControl("hfCarteiraFpjj")).Value;
+            modalEmail.Text = GridView1.DataKeys[index]["Email"].ToString();
+            modalRg.Text = GridView1.DataKeys[index]["Rg"].ToString();
+            modalDataNascimento.Text = GridView1.DataKeys[index]["DataNascimento"].ToString();
+            modalCep.Text = GridView1.DataKeys[index]["Cep"].ToString();
+            modalRua.Text = GridView1.DataKeys[index]["Rua"].ToString();
+            modalBairro.Text = GridView1.DataKeys[index]["Bairro"].ToString();
+            modalCidade.Text = GridView1.DataKeys[index]["Cidade"].ToString();
+            modalEstado.Text = GridView1.DataKeys[index]["Estado"].ToString();
+            modalNumero.Text = GridView1.DataKeys[index]["NumeroCasa"].ToString();
+            modalComplemento.Text = GridView1.DataKeys[index]["Complemento"].ToString();
+            modalCarteiraFpjj.Text = GridView1.DataKeys[index]["CarteiraFPJJ"].ToString();
 
             string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);

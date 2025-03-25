@@ -39,6 +39,7 @@
         </asp:GridView>--%>
         
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
+            DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ"
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="IdAlunos" HeaderText="ID" ReadOnly/>
@@ -47,72 +48,6 @@
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
                 <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
 <%--                <asp:BoundField DataField="EstadoMatricula" HeaderText="Estado Da Matricula" />--%>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("Email") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfRg" runat="server" Value='<%# Eval("Rg") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfDataNascimento" runat="server" Value='<%# Eval("DataNascimento") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfCep" runat="server" Value='<%# Eval("Cep") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfRua" runat="server" Value='<%# Eval("Rua") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfBairro" runat="server" Value='<%# Eval("Bairro") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfCidade" runat="server" Value='<%# Eval("Cidade") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField>
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfEstado" runat="server" Value='<%# Eval("Estado") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField >
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfNumero" runat="server" Value='<%# Eval("NumeroCasa") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField >
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfComplemento" runat="server" Value='<%# Eval("Complemento") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField >
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfCarteiraFpjj" runat="server" Value='<%# Eval("CarteiraFPJJ") %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
 
                 <asp:TemplateField HeaderText="Ação">
                     <ItemTemplate>
@@ -140,7 +75,6 @@
 
             <asp:Label>CPF:</asp:Label>
             <asp:TextBox ID="modalCpf" runat="server" Text="modalCpf"></asp:TextBox>
-
             
             <asp:Label>Telefone:</asp:Label>
             <asp:TextBox ID="modalTelefone" runat="server"></asp:TextBox>
