@@ -5,38 +5,6 @@
     <main>
 
         <h1 id="aspnetTitle">Lista de Alunos</h1>
-
-        <%--<asp:GridView ID="GridView1" runat="server" CellPadding="4" ForeColor="Black" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" BackColor="#CCCCCC" BorderColor="#999999" BorderStyle="Solid" BorderWidth="3px" CellSpacing="2">
-                        <FooterStyle BackColor="#CCCCCC" />
-                        <HeaderStyle BackColor="Pink" Font-Bold="True" ForeColor="White" />
-                        <PagerStyle BackColor="#CCCCCC" ForeColor="Black" HorizontalAlign="Left" />
-                        <RowStyle BackColor="White" />
-                        <SelectedRowStyle BackColor="#000099" Font-Bold="True" ForeColor="White" />
-                        <SortedAscendingCellStyle BackColor="#F1F1F1" />
-                        <SortedAscendingHeaderStyle BackColor="#808080" />
-                        <SortedDescendingCellStyle BackColor="#CAC9C9" />
-                        <SortedDescendingHeaderStyle BackColor="#383838" />  
-        </asp:GridView>--%>
-
-       <%-- <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" AutoGenerateSelectButton="True" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
-            <Columns>
-                <asp:BoundField DataField="IdAlunos" HeaderText="ID" />
-                <asp:BoundField DataField="Nome" HeaderText="Nome" />
-                <asp:BoundField DataField="Cpf" HeaderText="CPF" />
-            </Columns>
- 
-            
-
-            <FooterStyle BackColor="#CCCCCC" />
-            <HeaderStyle BackColor="Pink" Font-Bold="True" ForeColor="White" />
-            <PagerStyle BackColor="#CCCCCC" ForeColor="Black" HorizontalAlign="Left" />
-            <RowStyle BackColor="White" />
-            <SelectedRowStyle BackColor="#000099" Font-Bold="True" ForeColor="White" />
-            <SortedAscendingCellStyle BackColor="#F1F1F1" />
-            <SortedAscendingHeaderStyle BackColor="#808080" />
-            <SortedDescendingCellStyle BackColor="#CAC9C9" />
-            <SortedDescendingHeaderStyle BackColor="#383838" />
-        </asp:GridView>--%>
         
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
             DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ"
@@ -90,8 +58,8 @@
             <asp:Label>Email:</asp:Label>
             <asp:TextBox ID="modalEmail" runat="server" Text="modalEmail"></asp:TextBox>
 
-            <asp:Label>Estado da Matrícula:</asp:Label>
-            <asp:TextBox ID="modalEstadoMatricula" runat="server"></asp:TextBox>
+<%--            <asp:Label>Estado da Matrícula:</asp:Label>
+            <asp:TextBox ID="modalEstadoMatricula" runat="server"></asp:TextBox>--%>
 
             <asp:Label>RG:</asp:Label>
             <asp:TextBox ID="modalRg" runat="server"></asp:TextBox>

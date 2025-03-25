@@ -214,6 +214,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MatriculaModels.cs" />
     <Compile Include="Models\PlanoAlunoModels.cs" />
     <Compile Include="Models\ResponsavelModels.cs" />
     <Compile Include="Models\PlanoModels .cs" />
