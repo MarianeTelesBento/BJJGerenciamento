@@ -11,9 +11,9 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        //public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
+        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public void CadastrarPlanoAluno(PlanoAlunoModels plano, List<KeyValuePair<int, string>> diasHorarios)
         {
@@ -361,8 +361,8 @@ namespace BJJGerenciamento.UI.DAL
                     Rua = reader.GetString(13),
                     NumeroCasa = reader.GetInt32(14).ToString(),
                     Complemento = reader.GetString(15),
-                    Cep = reader.GetString(11),
-                    CarteiraFPJJ = reader.GetString(16)
+                    Cep = reader.GetString(16),
+                    CarteiraFPJJ = reader.GetString(17)
                 };
                 alunoList.Add(aluno);
             }
@@ -379,12 +379,13 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"UPDATE TBAlunos 
-                         SET Nome = @nome, 
+                         SET 
+                             Nome = @nome, 
                              Sobrenome = @sobrenome, 
+                             Cpf = @cpf, 
                              Telefone = @telefone, 
                              Email = @email, 
                              Rg = @rg, 
-                             Cpf = @cpf, 
                              DataNascimento = @dataNascimento, 
                              CEP = @cep, 
                              Rua = @rua, 

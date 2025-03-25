@@ -35,10 +35,11 @@ namespace BJJGerenciamento.UI
             Button btn = (Button)sender;
             GridViewRow row = (GridViewRow)btn.NamingContainer;
 
+            modalIdAluno.Text = row.Cells[0].Text;
             modalNome.Text = row.Cells[1].Text;
             modalSobrenome.Text = row.Cells[2].Text;
-            modalCpf.Text = row.Cells[2].Text;
-            modalTelefone.Text = row.Cells[3].Text;
+            modalCpf.Text = row.Cells[3].Text;
+            modalTelefone.Text = row.Cells[4].Text;
 
             modalEmail.Text = ((HiddenField)row.FindControl("hfEmail")).Value;
             modalRg.Text = ((HiddenField)row.FindControl("hfRg")).Value;
@@ -49,6 +50,8 @@ namespace BJJGerenciamento.UI
             modalCidade.Text = ((HiddenField)row.FindControl("hfCidade")).Value;
             modalEstado.Text = ((HiddenField)row.FindControl("hfEstado")).Value;
             modalNumero.Text = ((HiddenField)row.FindControl("hfNumero")).Value;
+            modalComplemento.Text = ((HiddenField)row.FindControl("hfComplemento")).Value;
+            modalCarteiraFpjj.Text = ((HiddenField)row.FindControl("hfCarteiraFpjj")).Value;
 
             string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
@@ -56,7 +59,9 @@ namespace BJJGerenciamento.UI
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
         {
+            aluno.IdAlunos = Convert.ToInt32(modalIdAluno.Text);
             aluno.Nome = modalNome.Text;
+            aluno.Sobrenome = modalSobrenome.Text;
             aluno.Cpf = modalCpf.Text;
             aluno.Telefone = modalTelefone.Text;
             aluno.Email = modalEmail.Text;
@@ -68,10 +73,24 @@ namespace BJJGerenciamento.UI
             aluno.Cidade = modalCidade.Text;
             aluno.Estado = modalEstado.Text;
             aluno.NumeroCasa = modalNumero.Text;
+            aluno.Complemento = modalComplemento.Text;
+            aluno.CarteiraFPJJ = modalCarteiraFpjj.Text;
 
             AlunosDAL alunosDAL = new AlunosDAL();
-            alunosDAL.AtualizarAluno(aluno);
 
+            bool funcionou = alunosDAL.AtualizarAluno(aluno);
+
+            if (funcionou)
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Aluno atualizado com sucesso!');", true);
+                alunosList = alunosDAL.VisualizarDados();
+                GridView1.DataSource = alunosList;
+                GridView1.DataBind();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Erro ao atualizar aluno. Tente novamente!');", true);
+            }
         }
     }
 }

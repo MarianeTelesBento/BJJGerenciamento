@@ -41,7 +41,7 @@
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
-                <asp:BoundField DataField="IdAlunos" HeaderText="ID" />
+                <asp:BoundField DataField="IdAlunos" HeaderText="ID" ReadOnly/>
                 <asp:BoundField DataField="Nome" HeaderText="Nome" />
                 <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
@@ -102,6 +102,18 @@
                     </ItemTemplate>
                 </asp:TemplateField>
 
+                <asp:TemplateField >
+                    <ItemTemplate>
+                        <asp:HiddenField ID="hfComplemento" runat="server" Value='<%# Eval("Complemento") %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
+
+                <asp:TemplateField >
+                    <ItemTemplate>
+                        <asp:HiddenField ID="hfCarteiraFpjj" runat="server" Value='<%# Eval("CarteiraFPJJ") %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
+
                 <asp:TemplateField HeaderText="Ação">
                     <ItemTemplate>
                         <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
@@ -117,6 +129,9 @@
             background: white; padding: 20px; border: 1px solid black; z-index: 99; ">
             <h3>Detalhes do Aluno</h3>
 
+            <asp:Label>ID:</asp:Label>
+            <asp:TextBox ID="modalIdAluno" runat="server" Text="modalNome" ReadOnly></asp:TextBox>
+
             <asp:Label>Nome:</asp:Label>
             <asp:TextBox ID="modalNome" runat="server" Text="modalNome"></asp:TextBox>
 
@@ -126,11 +141,12 @@
             <asp:Label>CPF:</asp:Label>
             <asp:TextBox ID="modalCpf" runat="server" Text="modalCpf"></asp:TextBox>
 
-            <asp:Label>Email:</asp:Label>
-            <asp:TextBox ID="modalEmail" runat="server" Text="modalEmail"></asp:TextBox>
-
+            
             <asp:Label>Telefone:</asp:Label>
             <asp:TextBox ID="modalTelefone" runat="server"></asp:TextBox>
+
+            <asp:Label>Email:</asp:Label>
+            <asp:TextBox ID="modalEmail" runat="server" Text="modalEmail"></asp:TextBox>
 
             <asp:Label>Estado da Matrícula:</asp:Label>
             <asp:TextBox ID="modalEstadoMatricula" runat="server"></asp:TextBox>
@@ -159,30 +175,21 @@
             <asp:Label>Número:</asp:Label>
             <asp:TextBox ID="modalNumero" runat="server"></asp:TextBox>
 
-            <button onclick="fecharModal()">Fechar</button>
+            <asp:Label>Complemento:</asp:Label>
+            <asp:TextBox ID="modalComplemento" runat="server"></asp:TextBox>
 
-            <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" Text="Salvar" />
+            <asp:Label>CarteiraFpjj:</asp:Label>
+            <asp:TextBox ID="modalCarteiraFpjj" runat="server"></asp:TextBox>
+
+            <div class="modal-footer">
+                <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
+                <button type="button" class="btn btn-secondary" onclick="fecharModal()">Fechar</button>
+            </div>
+
         </div>
 
         <script>
             function abrirModal() {
-                //nome, cpf, email, idTurma, telefone, estadoMatricula, rg, dataNascimento,
-                //    cep, rua, bairro, cidade, estado, numero
-
-                //document.getElementById("modalNome").innerText = nome;
-                //document.getElementById("modalCpf").innerText = cpf;
-                //document.getElementById("modalEmail").innerText = email;
-                //document.getElementById("modalTurma").innerText = idTurma;
-                //document.getElementById("modalTelefone").innerText = telefone;
-                //document.getElementById("modalEstadoMatricula").innerText = estadoMatricula;
-                //document.getElementById("modalRg").innerText = rg;
-                //document.getElementById("modalDataNascimento").innerText = dataNascimento;
-                //document.getElementById("modalCep").innerText = cep;
-                //document.getElementById("modalRua").innerText = rua;
-                //document.getElementById("modalBairro").innerText = bairro;
-                //document.getElementById("modalCidade").innerText = cidade;
-                //document.getElementById("modalEstado").innerText = estado;
-                //document.getElementById("modalNumero").innerText = numero;
                 document.getElementById("modalDetalhes").style.display = "block";
             }
 
@@ -196,6 +203,29 @@
             #GridView1 {
                 text-align: center;
             }
+            .asp-button {
+                display: inline-block;
+                width: auto;
+                padding: 8px 16px;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 1.5;
+                color: #fff;
+                background-color: #0d6efd;
+                border: 1px solid #0d6efd;
+                border-radius: 5px;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                transition: background-color 0.2s ease-in-out;
+                height: 38px;
+            }
+
+            .asp-button:hover {
+                background-color: #0b5ed7;
+                border-color: #0a58ca;
+            }
+
         </style>
     </main>
 
