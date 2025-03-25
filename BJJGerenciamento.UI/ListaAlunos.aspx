@@ -47,7 +47,15 @@
                 <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
                 <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-<%--                <asp:BoundField DataField="EstadoMatricula" HeaderText="Estado Da Matricula" />--%>
+
+<%--            <asp:TemplateField HeaderText="Estado da Matrícula">
+                    <ItemTemplate>
+                        <asp:Label ID="lblEstadoMatricula" runat="server"
+                            CssClass='<%# Convert.ToBoolean(Eval("EstadoMatricula")) ? "badge badge-success" : "badge badge-danger" %>'
+                            Text='<%# Convert.ToBoolean(Eval("EstadoMatricula")) ? "●" : "●" %>'>
+                        </asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>--%>
 
                 <asp:TemplateField HeaderText="Ação">
                     <ItemTemplate>
