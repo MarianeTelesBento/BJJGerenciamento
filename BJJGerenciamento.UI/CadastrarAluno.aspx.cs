@@ -396,74 +396,77 @@ namespace BJJGerenciamento.UI
 
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
-            //AlunosDAL alunosRepository = new AlunosDAL();
+            AlunosDAL alunosRepository = new AlunosDAL();
 
-            //int? idResponsavel;
+            int? idResponsavel;
 
-            //if (alunoMaiorIdade)
-            //{
-            //    idResponsavel = null;
-            //}
-            //else
-            //{
+            if (alunoMaiorIdade)
+            {
+                idResponsavel = null;
+            }
+            else
+            {
+                ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavel.Text.Replace("-", "").Replace(".", "").Trim());
 
-            //    ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavel.Text.Replace("-", "").Replace(".", "").Trim());
+                if (responsavel != null)
+                {
+                    idResponsavel = responsavel.IdResponsavel;
+                }
+                else
+                {
+                    responsavel = new ResponsavelModels
+                    {
+                        Nome = nomeResponsavel.Text,
+                        Sobrenome = sobrenomeResponsavel.Text,
+                        Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+                        Email = emailResponsavel.Text,
+                        Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
+                        Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
+                        DataNascimento = dataNascimentoResponsavel.Text,
+                        Cep = cepResponsavel.Text.Replace("-", ""),
+                        Bairro = bairroResponsavel.Text,
+                        Estado = estadoResponsavel.Text,
+                        Cidade = cidadeResponsavel.Text,
+                        Rua = ruaResponsavel.Text,
+                        NumeroCasa = numeroCasaResponsavel.Text,
+                        Complemento = complementoResponsavel.Text
+                    };
 
-            //    if (responsavel != null)
-            //    {
-            //        idResponsavel = responsavel.IdResponsavel;
-            //    }
-            //    else
-            //    {
-            //        responsavel = new ResponsavelModels
-            //        {
-            //            Nome = nomeResponsavel.Text,
-            //            Sobrenome = sobrenomeResponsavel.Text,
-            //            Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-            //            Email = emailResponsavel.Text,
-            //            Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
-            //            Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
-            //            DataNascimento = dataNascimentoResponsavel.Text,
-            //            Cep = cepResponsavel.Text.Replace("-", ""),
-            //            Bairro = bairroResponsavel.Text,
-            //            Estado = estadoResponsavel.Text,
-            //            Cidade = cidadeResponsavel.Text,
-            //            Rua = ruaResponsavel.Text,
-            //            NumeroCasa = numeroCasaResponsavel.Text,
-            //            Complemento = complementoResponsavel.Text
-            //        };
+                    idResponsavel = (int?)alunosRepository.CadastrarResponsavel(responsavel);
+                }
+            }
 
-            //        idResponsavel = (int?)alunosRepository.CadastrarResponsavel(responsavel);
-            //    }
-            //}
+            int idMatricula = alunosRepository.CadastrarMatricula(DateTime.Now, true);
+
+            AlunoModels aluno = new AlunoModels
+            {
+                Nome = nomeAluno.Text,
+                Sobrenome = sobrenomeAluno.Text,
+                Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
+                Email = emailAluno.Text,
+                Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
+                Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
+                DataNascimento = dataNascimentoAluno.Text,
+                Cep = cepAluno.Text.Replace("-", ""),
+                Bairro = bairroAluno.Text,
+                Estado = estadoAluno.Text,
+                Cidade = cidadeAluno.Text,
+                Rua = ruaAluno.Text,
+                NumeroCasa = numeroCasaAluno.Text,
+                CarteiraFPJJ = carteiraFPJJAluno.Text,
+                Complemento = complementoAluno.Text,
+                IdResponsavel = idResponsavel,
+                IdPlano = 1,
+                IdMatricula = idMatricula
+            };
+
+            int idAluno = alunosRepository.CadastrarAluno(aluno);
 
 
-            //AlunoModels aluno = new AlunoModels
-            //{
-            //    Nome = nomeAluno.Text,
-            //    Sobrenome = sobrenomeAluno.Text,
-            //    Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
-            //    Email = emailAluno.Text,
-            //    Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
-            //    Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
-            //    DataNascimento = dataNascimentoAluno.Text,
-            //    Cep = cepAluno.Text.Replace("-", ""),
-            //    Bairro = bairroAluno.Text,
-            //    Estado = estadoAluno.Text,
-            //    Cidade = cidadeAluno.Text,
-            //    Rua = ruaAluno.Text,
-            //    NumeroCasa = numeroCasaAluno.Text,
-            //    CarteiraFPJJ = carteiraFPJJAluno.Text,
-            //    Complemento = complementoAluno.Text,
-            //    IdResponsavel = idResponsavel,
-            //    IdPlano = 1
-            //};
 
-            //int idAluno = alunosRepository.CadastrarAluno(aluno);
+            //horariosSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
 
-            horariosSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
-
-            diasSelecionados = cbHorarios.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
+            //diasSelecionados = cbHorarios.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
 
             //List<PlanoModels> ListaPlanos = alunosRepository.BuscarPlanoDetalhes(ddPlanos.SelectedValue);
 

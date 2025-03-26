@@ -42,6 +42,7 @@ namespace BJJGerenciamento.UI
             modalSobrenome.Text = row.Cells[2].Text;
             modalCpf.Text = row.Cells[3].Text;
             modalTelefone.Text = row.Cells[4].Text;
+            modalEstadoMatricula.Text = row.Cells[5].Text;
 
             modalEmail.Text = GridView1.DataKeys[index]["Email"].ToString();
             modalRg.Text = GridView1.DataKeys[index]["Rg"].ToString();

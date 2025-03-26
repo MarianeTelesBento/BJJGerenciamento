@@ -11,9 +11,9 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        //public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
+        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public void CadastrarPlanoAluno(PlanoAlunoModels plano, List<KeyValuePair<int, string>> diasHorarios)
         {
@@ -81,7 +81,6 @@ namespace BJJGerenciamento.UI.DAL
             }
 
         }
-
        public int CadastrarAluno(AlunoModels aluno)
             {
                 int cadastroRealizado;
@@ -89,7 +88,7 @@ namespace BJJGerenciamento.UI.DAL
                 SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
 
-                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento); " +
+                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
                     "SELECT SCOPE_IDENTITY();", connection);
 
                 inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
@@ -108,7 +107,8 @@ namespace BJJGerenciamento.UI.DAL
                 inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
                 inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
                 inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
-                inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
+                inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento); 
+                inserirCommand.Parameters.AddWithValue("@idMatricula", aluno.IdMatricula);
 
 
                 cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
@@ -117,7 +117,27 @@ namespace BJJGerenciamento.UI.DAL
 
                 return Convert.ToInt32(cadastroRealizado);
             }
+        
+        public int CadastrarMatricula(DateTime dataAtual, bool estadoMatricula)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO TBMatriculas " +
+                                      "(StatusdaMatricula, Data) " +
+                                      "VALUES (@estadoMatricula, @dataMatricula);" +
+                                      "SELECT SCOPE_IDENTITY();";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@dataMatricula", dataAtual);
+                    command.Parameters.AddWithValue("@estadoMatricula", estadoMatricula);
 
+                    var cadastroRealizado = Convert.ToInt32(command.ExecuteScalar());
+
+                    return cadastroRealizado;
+                }
+            }
+        }
 
         public AlunoModels BuscarCpfAluno(string cpf)
         {
@@ -249,7 +269,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoList;
         }
-
         public List<KeyValuePair<int, string>> BuscarDiasPlano(int idPlano)
         {
             List<KeyValuePair<int, string>> diasPlanoList = new List<KeyValuePair<int, string>>();
@@ -322,8 +341,6 @@ namespace BJJGerenciamento.UI.DAL
             return horariosPorDia;
         }
 
-
-
         public List<AlunoModels> VisualizarDados()
         {
             List<AlunoModels> alunoList = new List<AlunoModels>();
@@ -362,7 +379,8 @@ namespace BJJGerenciamento.UI.DAL
                     NumeroCasa = reader.GetInt32(14).ToString(),
                     Complemento = reader.GetString(15),
                     Cep = reader.GetString(16),
-                    CarteiraFPJJ = reader.GetString(17)
+                    CarteiraFPJJ = reader.GetString(17),
+                    IdMatricula = reader.GetInt32(18)
                 };
                 alunoList.Add(aluno);
             }
@@ -395,7 +413,7 @@ namespace BJJGerenciamento.UI.DAL
                              NumeroCasa = @numeroCasa, 
                              CarteiraFPJJ = @carteiraFPJJ, 
                              Complemento = @complemento 
-                         WHERE IdAlunos = @idAlunos";
+                         WHERE IdAluno = @idAlunos";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
