@@ -12,8 +12,6 @@ namespace BJJGerenciamento.UI.Models
         public int IdAlunos { get; set; }
         public int IdPlano{ get; set; }
         public int? IdResponsavel { get; set; }
-        public int? IdMatricula { get; set; }
-        public bool StatusdaMatricula { get; set; }
         public string NomeCompleto {
             get => $"{Nome} {Sobrenome}"; 
         }
@@ -25,5 +23,9 @@ namespace BJJGerenciamento.UI.Models
         public string Cpf { get; set; }
         public string DataNascimento { get; set; }
         public string CarteiraFPJJ { get; set; }
+
+        public int IdMatricula { get; set; }
+        public bool StatusMatricula { get; set; }
+        public string DataMatricula { get; set; }
     }
 }

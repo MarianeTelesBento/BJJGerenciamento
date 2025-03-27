@@ -37,12 +37,12 @@ namespace BJJGerenciamento.UI
             GridViewRow row = (GridViewRow)btn.NamingContainer;
             int index = row.RowIndex;
 
-            modalIdAluno.Text = row.Cells[0].Text;
-            modalNome.Text = row.Cells[1].Text;
-            modalSobrenome.Text = row.Cells[2].Text;
-            modalCpf.Text = row.Cells[3].Text;
-            modalTelefone.Text = row.Cells[4].Text;
-            modalEstadoMatricula.Text = row.Cells[5].Text;
+            modalIdMatricula.Text = row.Cells[0].Text;
+            modalStatusMatricula.Text = row.Cells[1].Text;
+            modalNome.Text = row.Cells[2].Text;
+            modalSobrenome.Text = row.Cells[3].Text;
+            modalCpf.Text = row.Cells[4].Text;
+            modalTelefone.Text = row.Cells[5].Text;
 
             modalEmail.Text = GridView1.DataKeys[index]["Email"].ToString();
             modalRg.Text = GridView1.DataKeys[index]["Rg"].ToString();
@@ -55,14 +55,15 @@ namespace BJJGerenciamento.UI
             modalNumero.Text = GridView1.DataKeys[index]["NumeroCasa"].ToString();
             modalComplemento.Text = GridView1.DataKeys[index]["Complemento"].ToString();
             modalCarteiraFpjj.Text = GridView1.DataKeys[index]["CarteiraFPJJ"].ToString();
+            modalDataMatricula.Text = GridView1.DataKeys[index]["DataMatricula"].ToString();
+            aluno.IdAlunos = Convert.ToInt32(GridView1.DataKeys[index]["IdAlunos"]);
 
             string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
-        {
-            aluno.IdAlunos = Convert.ToInt32(modalIdAluno.Text);
+        {         
             aluno.Nome = modalNome.Text;
             aluno.Sobrenome = modalSobrenome.Text;
             aluno.Cpf = modalCpf.Text;
@@ -78,6 +79,7 @@ namespace BJJGerenciamento.UI
             aluno.NumeroCasa = modalNumero.Text;
             aluno.Complemento = modalComplemento.Text;
             aluno.CarteiraFPJJ = modalCarteiraFpjj.Text;
+            aluno.StatusMatricula = Convert.ToBoolean(modalStatusMatricula.Text);
 
             AlunosDAL alunosDAL = new AlunosDAL();
 

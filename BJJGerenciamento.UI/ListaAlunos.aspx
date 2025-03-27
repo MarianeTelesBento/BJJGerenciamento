@@ -7,15 +7,17 @@
         <h1 id="aspnetTitle">Lista de Alunos</h1>
         
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
-            DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ"
+            DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ, DataMatricula, IdAlunos"
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
-                <asp:BoundField DataField="IdAlunos" HeaderText="ID" ReadOnly/>
+                <asp:BoundField DataField="IdMatricula" HeaderText="IdMatricula"/>
+                <asp:BoundField DataField="StatusMatricula" HeaderText="StatusMatricula"/>
                 <asp:BoundField DataField="Nome" HeaderText="Nome" />
                 <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
                 <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-                <asp:BoundField DataField="StatusdaMatricula" HeaderText="StatusdaMatricula"/>
+                
+
 
 <%--            <asp:TemplateField HeaderText="Estado da Matrícula">
                     <ItemTemplate>
@@ -49,8 +51,16 @@
             <div class="modal-body">
 
             <div class="form-group">
-                <asp:Label for="modalIdAluno">ID:</asp:Label>
-                <asp:TextBox ID="modalIdAluno" runat="server" Text="modalNome" ReadOnly></asp:TextBox>
+                <asp:Label for="modalIdMatricula">Número da Matricula:</asp:Label>
+                <asp:TextBox ID="modalIdMatricula" runat="server" Text="modalId" ReadOnly></asp:TextBox>
+            </div>
+            <div class="form-group">
+                <asp:Label for="modalDataMatricula">Data da Matricula:</asp:Label>
+                <asp:TextBox ID="modalDataMatricula" runat="server" Text="modalId" ReadOnly></asp:TextBox>
+            </div>
+            <div class="form-group">
+                <asp:Label for="modalStatusMatricula">Status da matricula:</asp:Label>
+                <asp:TextBox ID="modalStatusMatricula" runat="server" Text="modalId"></asp:TextBox>
             </div>
             <div class="form-group">
                 <label for="modalNome">Nome:</label>
@@ -71,10 +81,6 @@
             <div class="form-group">
                 <label for="modalTelefone">Telefone:</label>
                 <asp:TextBox ID="modalTelefone" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalEstadoMatricula">Estado da Matrícula:</label>
-                <asp:TextBox ID="modalEstadoMatricula" runat="server" CssClass="form-control"></asp:TextBox>
             </div>
             <div class="form-group">
                 <label for="modalRg">RG:</label>

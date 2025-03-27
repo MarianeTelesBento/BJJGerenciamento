@@ -348,7 +348,9 @@ namespace BJJGerenciamento.UI.DAL
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand readerCommand = new SqlCommand($"SELECT * FROM TBAlunos;", connection);
+            SqlCommand readerCommand = new SqlCommand($"SELECT a.*," +
+                $" m.StatusdaMatricula, m.Data FROM TBAlunos a LEFT JOIN " +
+                $"TBMatriculas m ON a.IdMatricula = m.IdMatricula;", connection);
 
             SqlDataReader reader = readerCommand.ExecuteReader();
 
@@ -356,19 +358,13 @@ namespace BJJGerenciamento.UI.DAL
             {
                 AlunoModels aluno = new AlunoModels()
                 {
-                    IdAlunos = reader.GetInt32(0),
                     IdPlano = reader.GetInt32(1),
                     IdResponsavel = reader.GetInt32(2),
                     Nome = reader.GetString(3),
                     Sobrenome = reader.GetString(4),
-
-                    //EstadoMatricula = reader.GetBoolean(5),
                     Telefone = reader.GetString(5),
-
                     Email = reader.GetString(6),
-
                     DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-
                     Cpf = reader.GetString(8),
 
                     Rg = reader.GetString(9),
@@ -380,8 +376,11 @@ namespace BJJGerenciamento.UI.DAL
                     Complemento = reader.GetString(15),
                     Cep = reader.GetString(16),
                     CarteiraFPJJ = reader.GetString(17),
-                    IdMatricula = reader.GetInt32(18)
+                    IdMatricula = reader.GetInt32(18),
+                    StatusMatricula = reader.GetBoolean(19),
+                    DataMatricula = reader.GetDateTime(20).ToString("dd/MM/yyyy")
                 };
+
                 alunoList.Add(aluno);
             }
 
@@ -390,7 +389,7 @@ namespace BJJGerenciamento.UI.DAL
             return alunoList;
         }
 
-        public bool AtualizarAluno(AlunoModels aluno)
+        public bool AtualizarAluno(AlunoModels aluno) //Update da tbMatricula tbm
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

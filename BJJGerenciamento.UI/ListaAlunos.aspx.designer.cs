@@ -24,13 +24,31 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
-        /// Controle modalIdAluno.
+        /// Controle modalIdMatricula.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalIdAluno;
+        protected global::System.Web.UI.WebControls.TextBox modalIdMatricula;
+
+        /// <summary>
+        /// Controle modalDataMatricula.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalDataMatricula;
+
+        /// <summary>
+        /// Controle modalStatusMatricula.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalStatusMatricula;
 
         /// <summary>
         /// Controle modalNome.
@@ -76,15 +94,6 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox modalTelefone;
-
-        /// <summary>
-        /// Controle modalEstadoMatricula.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalEstadoMatricula;
 
         /// <summary>
         /// Controle modalRg.
