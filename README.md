@@ -1,6 +1,6 @@
 # Sistema de Gerenciamento para Academias de Jiu-Jitsu
 
-Este projeto foi desenvolvido como parte do **projeto de conclusão de curso** em Técnico de informática. O sistema foi projetado para facilitar o gerenciamento de academias de Jiu-Jitsu, oferecendo funcionalidades para cadastrar alunos, gerenciar matrículas, controlar status de matrícula e realizar outras operações essenciais para o bom funcionamento da academia.
+Este projeto foi desenvolvido como parte do projeto para conlusão do Técnico de informática no Senac. O sistema foi projetado para facilitar o gerenciamento de academias de Jiu-Jitsu, oferecendo funcionalidades para cadastrar alunos, gerenciar matrículas, controlar status de matrícula e realizar outras operações essenciais para o bom funcionamento da academia.
 
 ## Funcionalidades
 
@@ -16,3 +16,10 @@ Este projeto foi desenvolvido como parte do **projeto de conclusão de curso** e
 - **SQL Server**: Banco de dados relacional utilizado para armazenar os dados dos alunos e matrículas.
 - **HTML/CSS**: Para a criação da interface de usuário responsiva.
 - **JavaScript**: Usado para interatividade da página e manipulação de eventos no frontend.
+
+## Integrantes do Grupo
+
+- **Mariane**: Responsável pelo desenvolvimento do backend e pela integração com o banco de dados.
+- **Sara**: Responsável pelo design da interface e pela implementação do frontend.
+- **Raul**: Responsável pela documentação e testes do sistema.
+- **Amanda**: Responsável pela criação e análise do banco de dados.
