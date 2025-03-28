@@ -38,7 +38,10 @@ namespace BJJGerenciamento.UI
             int index = row.RowIndex;
 
             modalIdMatricula.Text = row.Cells[0].Text;
-            modalStatusMatricula.Text = row.Cells[1].Text;
+
+            CheckBox chkStatusMatricula = (CheckBox)row.FindControl("chkStatusMatricula");
+            modalStatusMatricula.Checked = chkStatusMatricula.Checked;
+
             modalNome.Text = row.Cells[2].Text;
             modalSobrenome.Text = row.Cells[3].Text;
             modalCpf.Text = row.Cells[4].Text;
@@ -56,14 +59,15 @@ namespace BJJGerenciamento.UI
             modalComplemento.Text = GridView1.DataKeys[index]["Complemento"].ToString();
             modalCarteiraFpjj.Text = GridView1.DataKeys[index]["CarteiraFPJJ"].ToString();
             modalDataMatricula.Text = GridView1.DataKeys[index]["DataMatricula"].ToString();
-            aluno.IdAlunos = Convert.ToInt32(GridView1.DataKeys[index]["IdAlunos"]);
+            ViewState["IdAlunos"] = GridView1.DataKeys[index]["IdAlunos"].ToString();
 
             string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
-        {         
+        {
+            aluno.IdAlunos = Convert.ToInt32(ViewState["IdAlunos"]);
             aluno.Nome = modalNome.Text;
             aluno.Sobrenome = modalSobrenome.Text;
             aluno.Cpf = modalCpf.Text;
@@ -79,7 +83,7 @@ namespace BJJGerenciamento.UI
             aluno.NumeroCasa = modalNumero.Text;
             aluno.Complemento = modalComplemento.Text;
             aluno.CarteiraFPJJ = modalCarteiraFpjj.Text;
-            aluno.StatusMatricula = Convert.ToBoolean(modalStatusMatricula.Text);
+            aluno.StatusMatricula = modalStatusMatricula.Checked;
 
             AlunosDAL alunosDAL = new AlunosDAL();
 

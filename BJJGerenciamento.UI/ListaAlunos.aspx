@@ -7,11 +7,18 @@
         <h1 id="aspnetTitle">Lista de Alunos</h1>
         
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
-            DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ, DataMatricula, IdAlunos"
+            DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ,DataMatricula,IdAlunos"
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
+
                 <asp:BoundField DataField="IdMatricula" HeaderText="IdMatricula"/>
-                <asp:BoundField DataField="StatusMatricula" HeaderText="StatusMatricula"/>
+                <asp:TemplateField HeaderText="Status da Matrícula">
+                    <ItemTemplate>
+                        <asp:CheckBox ID="chkStatusMatricula" runat="server" Enabled="false"
+                            Checked='<%# Convert.ToBoolean(Eval("StatusMatricula")) %>' />
+                    </ItemTemplate>
+                </asp:TemplateField>
+
                 <asp:BoundField DataField="Nome" HeaderText="Nome" />
                 <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
                 <asp:BoundField DataField="Cpf" HeaderText="CPF" />
@@ -60,7 +67,7 @@
             </div>
             <div class="form-group">
                 <asp:Label for="modalStatusMatricula">Status da matricula:</asp:Label>
-                <asp:TextBox ID="modalStatusMatricula" runat="server" Text="modalId"></asp:TextBox>
+                <asp:CheckBox ID="modalStatusMatricula" runat="server" />
             </div>
             <div class="form-group">
                 <label for="modalNome">Nome:</label>

@@ -11,9 +11,9 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        //public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
+        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public void CadastrarPlanoAluno(PlanoAlunoModels plano, List<KeyValuePair<int, string>> diasHorarios)
         {
@@ -358,6 +358,7 @@ namespace BJJGerenciamento.UI.DAL
             {
                 AlunoModels aluno = new AlunoModels()
                 {
+                    IdAlunos = reader.GetInt32(0),
                     IdPlano = reader.GetInt32(1),
                     IdResponsavel = reader.GetInt32(2),
                     Nome = reader.GetString(3),
@@ -389,30 +390,37 @@ namespace BJJGerenciamento.UI.DAL
             return alunoList;
         }
 
-        public bool AtualizarAluno(AlunoModels aluno) //Update da tbMatricula tbm
+        public bool AtualizarAluno(AlunoModels aluno)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                string query = @"UPDATE TBAlunos 
-                         SET 
-                             Nome = @nome, 
-                             Sobrenome = @sobrenome, 
-                             Cpf = @cpf, 
-                             Telefone = @telefone, 
-                             Email = @email, 
-                             Rg = @rg, 
-                             DataNascimento = @dataNascimento, 
-                             CEP = @cep, 
-                             Rua = @rua, 
-                             Bairro = @bairro, 
-                             Cidade = @cidade, 
-                             Estado = @estado, 
-                             NumeroCasa = @numeroCasa, 
-                             CarteiraFPJJ = @carteiraFPJJ, 
-                             Complemento = @complemento 
-                         WHERE IdAluno = @idAlunos";
+                string query = @"BEGIN TRANSACTION;
+                                UPDATE TBAlunos 
+                                SET 
+                                    Nome = @nome, 
+                                    Sobrenome = @sobrenome, 
+                                    Cpf = @cpf, 
+                                    Telefone = @telefone, 
+                                    Email = @email, 
+                                    Rg = @rg, 
+                                    DataNascimento = @dataNascimento, 
+                                    CEP = @cep, 
+                                    Rua = @rua, 
+                                    Bairro = @bairro, 
+                                    Cidade = @cidade, 
+                                    Estado = @estado, 
+                                    NumeroCasa = @numeroCasa, 
+                                    CarteiraFPJJ = @carteiraFPJJ, 
+                                    Complemento = @complemento 
+                                WHERE IdAluno = @idAlunos;
+
+                                UPDATE TBMatriculas 
+                                SET StatusdaMatricula = @statusMatricula
+                                WHERE IdMatricula = (SELECT IdMatricula FROM TBAlunos WHERE IdAluno = @idAlunos);
+
+                                COMMIT TRANSACTION;";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -432,6 +440,7 @@ namespace BJJGerenciamento.UI.DAL
                     command.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
                     command.Parameters.AddWithValue("@complemento", aluno.Complemento);
                     command.Parameters.AddWithValue("@idAlunos", aluno.IdAlunos);
+                    command.Parameters.AddWithValue("@statusMatricula", aluno.StatusMatricula);
 
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
