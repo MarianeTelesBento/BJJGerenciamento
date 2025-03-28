@@ -1,7 +1,3 @@
-Aqui está uma sugestão de como você pode formatar o README para o GitHub, deixando-o mais profissional e bem estruturado:
-
----
-
 # Sistema de Gerenciamento para Academias de Jiu-Jitsu
 
 Este projeto foi desenvolvido como parte do **projeto de conclusão de curso** em Técnico de informática. O sistema foi projetado para facilitar o gerenciamento de academias de Jiu-Jitsu, oferecendo funcionalidades para cadastrar alunos, gerenciar matrículas, controlar status de matrícula e realizar outras operações essenciais para o bom funcionamento da academia.
