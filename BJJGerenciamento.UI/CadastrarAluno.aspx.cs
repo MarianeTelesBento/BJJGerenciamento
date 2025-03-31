@@ -14,7 +14,6 @@ namespace BJJGerenciamento.UI
 {
     public partial class About : Page
     {
-        public bool alunoMaiorIdade;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,6 +26,7 @@ namespace BJJGerenciamento.UI
         public bool cpfResponsavelExitente;
         public List<string> diasSelecionados;
         public List<string> horariosSelecionados;
+        public bool alunoMaiorIdade;
 
 
         public void LimparCamposAluno()
@@ -48,8 +48,23 @@ namespace BJJGerenciamento.UI
             carteiraFPJJAluno.Text = string.Empty;
         }
 
+        public static bool VerificarCampos(params TextBox[] campos)
+        {
+            if (campos.Any(campo => string.IsNullOrWhiteSpace(campo.Text)))
+            {
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "alerta",
+                    "alert('Preencha todos os campos obrigatórios!');",
+                    true);
+                return false;
+            }
+            return true;
+        }
+
+
         #region TextChangedAluno
-                protected void nomeAluno_TextChanged(object sender, EventArgs e)
+        protected void nomeAluno_TextChanged(object sender, EventArgs e)
                 {
 
                 }
@@ -315,56 +330,85 @@ namespace BJJGerenciamento.UI
 
         protected void btnProximoResponsavel_Click(object sender, EventArgs e)
         {
-            int maiorIdade = 18;
-
-            DateTime dataNascimento = DateTime.Parse(dataNascimentoAluno.Text);
-
-            int idade = DateTime.Now.Year - dataNascimento.Year;
-
-            if (DateTime.Now < dataNascimento.AddYears(idade))
+            if(VerificarCampos(cpfAluno, nomeAluno, sobrenomeAluno, telefoneAluno, dataNascimentoAluno, ruaAluno, bairroAluno, cidadeAluno, estadoAluno, numeroCasaAluno))
             {
-                idade--;
-            }
+                int maiorIdade = 18;
 
-            pnlInformacoesPessoaisAluno.Visible = false;
+                DateTime dataNascimento = DateTime.Parse(dataNascimentoAluno.Text);
 
-            if (idade < maiorIdade || (idade == maiorIdade && DateTime.Now < dataNascimento.AddYears(18)))
-            {
-                pnlInformacoesResponsavelAluno.Visible = true; 
-            }
-            else
-            {
-                pnlPlanoAluno.Visible = true;
-                alunoMaiorIdade = true;
+                int idade = DateTime.Now.Year - dataNascimento.Year;
 
-                AlunosDAL alunosDAL = new AlunosDAL();
-                List<PlanoModels> planos = alunosDAL.BuscarPlano();
-
-                if (planos != null && planos.Count > 0)
+                if (DateTime.Now < dataNascimento.AddYears(idade))
                 {
-                    ddPlanos.DataSource = planos;
-                    ddPlanos.DataTextField = "Nome";
-                    ddPlanos.DataValueField = "IdPlano";
-                    ddPlanos.DataBind();
+                    idade--;
+                }
+
+                pnlInformacoesPessoaisAluno.Visible = false;
+
+                if (idade < maiorIdade || (idade == maiorIdade && DateTime.Now < dataNascimento.AddYears(18)))
+                {
+                    pnlInformacoesResponsavelAluno.Visible = true;
+                }
+                else
+                {
+                    pnlPlanoAluno.Visible = true;
+                    alunoMaiorIdade = true;
+
+                    AlunosDAL alunosDAL = new AlunosDAL();
+                    List<PlanoModels> planos = alunosDAL.BuscarPlano();
+
+                    if (planos != null && planos.Count > 0)
+                    {
+                        ddPlanos.DataSource = planos;
+                        ddPlanos.DataTextField = "Nome";
+                        ddPlanos.DataValueField = "IdPlano";
+                        ddPlanos.DataBind();
+                    }
                 }
             }
-
+            
         }
 
         protected void btnProximoPlano_Click(object sender, EventArgs e)
         {
-            pnlInformacoesResponsavelAluno.Visible = false;
-            pnlPlanoAluno.Visible = true;
-
-            AlunosDAL alunosDAL = new AlunosDAL();
-            List<PlanoModels> planos = alunosDAL.BuscarPlano();
-
-            if (planos != null && planos.Count > 0)
+            if (VerificarCampos(cpfResponsavel, nomeResponsavel, sobrenomeResponsavel, telefoneResponsavel, dataNascimentoResponsavel, ruaResponsavel, bairroResponsavel, cidadeResponsavel, estadoResponsavel, numeroCasaResponsavel))
             {
-                ddPlanos.DataSource = planos;
-                ddPlanos.DataTextField = "Nome";
-                ddPlanos.DataValueField = "IdDetalhe";
-                ddPlanos.DataBind();
+                int maiorIdade = 18;
+
+                DateTime dataNascimento = DateTime.Parse(dataNascimentoResponsavel.Text);
+
+                int idade = DateTime.Now.Year - dataNascimento.Year;
+
+                if (DateTime.Now < dataNascimento.AddYears(idade))
+                {
+                    idade--;
+                }
+
+                if (idade < maiorIdade || (idade == maiorIdade && DateTime.Now < dataNascimento.AddYears(18)))
+                {
+                    ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "alerta",
+                    "alert('O responsável deve ser maior de idade');",
+                    true);
+                }
+                else
+                {
+
+                    pnlInformacoesResponsavelAluno.Visible = false;
+                    pnlPlanoAluno.Visible = true;
+
+                    AlunosDAL alunosDAL = new AlunosDAL();
+                    List<PlanoModels> planos = alunosDAL.BuscarPlano();
+
+                    if (planos != null && planos.Count > 0)
+                    {
+                        ddPlanos.DataSource = planos;
+                        ddPlanos.DataTextField = "Nome";
+                        ddPlanos.DataValueField = "IdDetalhe";
+                        ddPlanos.DataBind();
+                    }
+                }
             }
         }
 

@@ -12,28 +12,17 @@
             <Columns>
 
                 <asp:BoundField DataField="IdMatricula" HeaderText="IdMatricula"/>
+                <asp:BoundField DataField="Nome" HeaderText="Nome" />
+                <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
+                <asp:BoundField DataField="Cpf" HeaderText="CPF" />
+                <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
+                                    
                 <asp:TemplateField HeaderText="Status da Matrícula">
                     <ItemTemplate>
                         <asp:CheckBox ID="chkStatusMatricula" runat="server" Enabled="false"
                             Checked='<%# Convert.ToBoolean(Eval("StatusMatricula")) %>' />
                     </ItemTemplate>
                 </asp:TemplateField>
-
-                <asp:BoundField DataField="Nome" HeaderText="Nome" />
-                <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" />
-                <asp:BoundField DataField="Cpf" HeaderText="CPF" />
-                <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-                
-
-
-<%--            <asp:TemplateField HeaderText="Estado da Matrícula">
-                    <ItemTemplate>
-                        <asp:Label ID="lblEstadoMatricula" runat="server"
-                            CssClass='<%# Convert.ToBoolean(Eval("EstadoMatricula")) ? "badge badge-success" : "badge badge-danger" %>'
-                            Text='<%# Convert.ToBoolean(Eval("EstadoMatricula")) ? "●" : "●" %>'>
-                        </asp:Label>
-                    </ItemTemplate>
-                </asp:TemplateField>--%>
 
                 <asp:TemplateField HeaderText="Ação">
                     <ItemTemplate>
@@ -45,96 +34,96 @@
             </Columns>
         </asp:GridView>
 
-        <!-- Modal (Mini Tela) -->
-<div id="modalDetalhes" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detalhes do Aluno</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+    <!-- Modal (Mini Tela) -->
+    <div id="modalDetalhes" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalhes do Aluno</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-            <div class="form-group">
-                <asp:Label for="modalIdMatricula">Número da Matricula:</asp:Label>
-                <asp:TextBox ID="modalIdMatricula" runat="server" Text="modalId" ReadOnly></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <asp:Label for="modalDataMatricula">Data da Matricula:</asp:Label>
-                <asp:TextBox ID="modalDataMatricula" runat="server" Text="modalId" ReadOnly></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <asp:Label for="modalStatusMatricula">Status da matricula:</asp:Label>
-                <asp:CheckBox ID="modalStatusMatricula" runat="server" />
-            </div>
-            <div class="form-group">
-                <label for="modalNome">Nome:</label>
-                <asp:TextBox ID="modalNome" runat="server" Text="modalNome" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalSobrenome">Sobrenome:</label>
-                <asp:TextBox ID="modalSobrenome" runat="server" Text="modalSobrenome" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalCpf">CPF:</label>
-                <asp:TextBox ID="modalCpf" runat="server" Text="modalCpf" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalEmail">Email:</label>
-                <asp:TextBox ID="modalEmail" runat="server" Text="modalEmail" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalTelefone">Telefone:</label>
-                <asp:TextBox ID="modalTelefone" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalRg">RG:</label>
-                <asp:TextBox ID="modalRg" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalDataNascimento">Data de Nascimento:</label>
-                <asp:TextBox ID="modalDataNascimento" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalCep">CEP:</label>
-                <asp:TextBox ID="modalCep" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalRua">Rua:</label>
-                <asp:TextBox ID="modalRua" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalBairro">Bairro:</label>
-                <asp:TextBox ID="modalBairro" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalCidade">Cidade:</label>
-                <asp:TextBox ID="modalCidade" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalEstado">Estado:</label>
-                <asp:TextBox ID="modalEstado" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalNumero">Número:</label>
-                <asp:TextBox ID="modalNumero" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalComplemento">Complemento:</label>
-                <asp:TextBox ID="modalComplemento" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
-            <div class="form-group">
-                <label for="modalCarteiraFpjj">CarteiraFpjj:</label>
-                <asp:TextBox ID="modalCarteiraFpjj" runat="server" CssClass="form-control"></asp:TextBox>
-            </div>
+                <div class="form-group">
+                    <asp:Label for="modalIdMatricula">Número da Matricula:</asp:Label>
+                    <asp:TextBox ID="modalIdMatricula" runat="server" Text="modalId" ReadOnly></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <asp:Label for="modalDataMatricula">Data da Matricula:</asp:Label>
+                    <asp:TextBox ID="modalDataMatricula" runat="server" Text="modalId" ReadOnly></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <asp:Label for="modalStatusMatricula">Status da matricula:</asp:Label>
+                    <asp:CheckBox ID="modalStatusMatricula" runat="server" />
+                </div>
+                <div class="form-group">
+                    <label for="modalNome">Nome:</label>
+                    <asp:TextBox ID="modalNome" runat="server" Text="modalNome" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalSobrenome">Sobrenome:</label>
+                    <asp:TextBox ID="modalSobrenome" runat="server" Text="modalSobrenome" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalCpf">CPF:</label>
+                    <asp:TextBox ID="modalCpf" runat="server" Text="modalCpf" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalEmail">Email:</label>
+                    <asp:TextBox ID="modalEmail" runat="server" Text="modalEmail" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalTelefone">Telefone:</label>
+                    <asp:TextBox ID="modalTelefone" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalRg">RG:</label>
+                    <asp:TextBox ID="modalRg" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalDataNascimento">Data de Nascimento:</label>
+                    <asp:TextBox ID="modalDataNascimento" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalCep">CEP:</label>
+                    <asp:TextBox ID="modalCep" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalRua">Rua:</label>
+                    <asp:TextBox ID="modalRua" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalBairro">Bairro:</label>
+                    <asp:TextBox ID="modalBairro" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalCidade">Cidade:</label>
+                    <asp:TextBox ID="modalCidade" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalEstado">Estado:</label>
+                    <asp:TextBox ID="modalEstado" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalNumero">Número:</label>
+                    <asp:TextBox ID="modalNumero" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalComplemento">Complemento:</label>
+                    <asp:TextBox ID="modalComplemento" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label for="modalCarteiraFpjj">CarteiraFpjj:</label>
+                    <asp:TextBox ID="modalCarteiraFpjj" runat="server" CssClass="form-control"></asp:TextBox>
+                </div>
 
-            <div class="modal-footer text-center">
-                <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
-            </div>
+                <div class="modal-footer text-center">
+                    <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
+                </div>
 
-        </div>
+            </div>
 
         <script>
             function abrirModal() {

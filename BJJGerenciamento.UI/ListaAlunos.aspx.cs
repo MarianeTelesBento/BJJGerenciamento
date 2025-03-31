@@ -26,6 +26,20 @@ namespace BJJGerenciamento.UI
             }
         }
 
+        public static bool VerificarCampos(params TextBox[] campos)
+        {
+            if (campos.Any(campo => string.IsNullOrWhiteSpace(campo.Text)))
+            {
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "alerta",
+                    "alert('Preencha todos os campos obrigatórios!');",
+                    true);
+                return false;
+            }
+            return true;
+        }
+
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -67,38 +81,41 @@ namespace BJJGerenciamento.UI
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
         {
-            aluno.IdAlunos = Convert.ToInt32(ViewState["IdAlunos"]);
-            aluno.Nome = modalNome.Text;
-            aluno.Sobrenome = modalSobrenome.Text;
-            aluno.Cpf = modalCpf.Text;
-            aluno.Telefone = modalTelefone.Text;
-            aluno.Email = modalEmail.Text;
-            aluno.Rg = modalRg.Text;
-            aluno.DataNascimento = modalDataNascimento.Text;
-            aluno.Cep = modalCep.Text;
-            aluno.Rua = modalRua.Text;
-            aluno.Bairro = modalBairro.Text;
-            aluno.Cidade = modalCidade.Text;
-            aluno.Estado = modalEstado.Text;
-            aluno.NumeroCasa = modalNumero.Text;
-            aluno.Complemento = modalComplemento.Text;
-            aluno.CarteiraFPJJ = modalCarteiraFpjj.Text;
-            aluno.StatusMatricula = modalStatusMatricula.Checked;
-
-            AlunosDAL alunosDAL = new AlunosDAL();
-
-            bool funcionou = alunosDAL.AtualizarAluno(aluno);
-
-            if (funcionou)
+            if (VerificarCampos(modalNome, modalSobrenome, modalCpf, modalTelefone, modalRua, modalBairro, modalCidade, modalEstado, modalNumero))
             {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Aluno atualizado com sucesso!');", true);
-                alunosList = alunosDAL.VisualizarDados();
-                GridView1.DataSource = alunosList;
-                GridView1.DataBind();
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Erro ao atualizar aluno. Tente novamente!');", true);
+                aluno.IdAlunos = Convert.ToInt32(ViewState["IdAlunos"]);
+                aluno.Nome = modalNome.Text;
+                aluno.Sobrenome = modalSobrenome.Text;
+                aluno.Cpf = modalCpf.Text;
+                aluno.Telefone = modalTelefone.Text;
+                aluno.Email = modalEmail.Text;
+                aluno.Rg = modalRg.Text;
+                aluno.DataNascimento = modalDataNascimento.Text;
+                aluno.Cep = modalCep.Text;
+                aluno.Rua = modalRua.Text;
+                aluno.Bairro = modalBairro.Text;
+                aluno.Cidade = modalCidade.Text;
+                aluno.Estado = modalEstado.Text;
+                aluno.NumeroCasa = modalNumero.Text;
+                aluno.Complemento = modalComplemento.Text;
+                aluno.CarteiraFPJJ = modalCarteiraFpjj.Text;
+                aluno.StatusMatricula = modalStatusMatricula.Checked;
+
+                AlunosDAL alunosDAL = new AlunosDAL();
+
+                bool funcionou = alunosDAL.AtualizarAluno(aluno);
+
+                if (funcionou)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Aluno atualizado com sucesso!');", true);
+                    alunosList = alunosDAL.VisualizarDados();
+                    GridView1.DataSource = alunosList;
+                    GridView1.DataBind();
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Erro ao atualizar aluno. Tente novamente!');", true);
+                }
             }
         }
     }
