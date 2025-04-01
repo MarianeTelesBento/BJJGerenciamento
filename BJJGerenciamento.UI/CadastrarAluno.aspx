@@ -4,7 +4,7 @@
         <ContentTemplate>
 
             <asp:Button ID="btnVoltar" runat="server" Text="Voltar" OnClick="btnVoltar_Click" style="background-color:dodgerblue; font-size: 14px; border: none; color: aliceblue; font-family: -apple-system, Roboto, Arial, sans-serif;
- ; border-radius: 3px;"/>
+ ; border-radius: 3px;" Visible="false"/>
 
             <asp:Panel ID="pnlInformacoesPessoaisAluno" runat="server" CssClass="container mt-4">
                 <main aria-labelledby="title">

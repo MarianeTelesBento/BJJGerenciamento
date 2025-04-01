@@ -330,7 +330,8 @@ namespace BJJGerenciamento.UI
 
         protected void btnProximoResponsavel_Click(object sender, EventArgs e)
         {
-            if(VerificarCampos(cpfAluno, nomeAluno, sobrenomeAluno, telefoneAluno, dataNascimentoAluno, ruaAluno, bairroAluno, cidadeAluno, estadoAluno, numeroCasaAluno))
+            btnVoltar.Visible = true;
+            if (VerificarCampos(cpfAluno, nomeAluno, sobrenomeAluno, telefoneAluno, dataNascimentoAluno, ruaAluno, bairroAluno, cidadeAluno, estadoAluno, numeroCasaAluno))
             {
                 int maiorIdade = 18;
 
@@ -371,6 +372,7 @@ namespace BJJGerenciamento.UI
 
         protected void btnProximoPlano_Click(object sender, EventArgs e)
         {
+            btnVoltar.Visible = true;
             if (VerificarCampos(cpfResponsavel, nomeResponsavel, sobrenomeResponsavel, telefoneResponsavel, dataNascimentoResponsavel, ruaResponsavel, bairroResponsavel, cidadeResponsavel, estadoResponsavel, numeroCasaResponsavel))
             {
                 int maiorIdade = 18;
@@ -414,27 +416,31 @@ namespace BJJGerenciamento.UI
 
         protected void btnVoltar_Click(object sender, EventArgs e)
         {
-            if (pnlPlanoAluno.Visible && !alunoMaiorIdade)
+            if (pnlPlanoAluno.Visible)
             {
-                pnlInformacoesResponsavelAluno.Visible = true;
+                if (!alunoMaiorIdade && pnlInformacoesResponsavelAluno.Visible)
+                {
+                    pnlInformacoesResponsavelAluno.Visible = true;
+                    pnlInformacoesPessoaisAluno.Visible = false;
+                }
+                else
+                {
+                    pnlInformacoesPessoaisAluno.Visible = true;
+                    pnlInformacoesResponsavelAluno.Visible = false;
+                }
 
-                pnlInformacoesPessoaisAluno.Visible = false;
-                pnlPlanoAluno.Visible = false;
-            }
-            else if (pnlPlanoAluno.Visible && alunoMaiorIdade)
-            {
-                pnlInformacoesPessoaisAluno.Visible = true;
-
-                pnlInformacoesResponsavelAluno.Visible = false;
                 pnlPlanoAluno.Visible = false;
             }
             else if (pnlInformacoesResponsavelAluno.Visible)
             {
                 pnlInformacoesPessoaisAluno.Visible = true;
-
                 pnlInformacoesResponsavelAluno.Visible = false;
-                pnlPlanoAluno.Visible = false;
             }
+            //else if (pnlInformacoesPessoaisAluno.Visible)
+            //{
+            //    pnlInformacoesPessoaisAluno.Visible = false;
+            //    pnlPlanoAluno.Visible = true;
+            //}
 
         }
 
