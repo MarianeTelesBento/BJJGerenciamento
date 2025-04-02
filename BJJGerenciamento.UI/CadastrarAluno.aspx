@@ -10,6 +10,8 @@
                 <main aria-labelledby="title">
                     <h2 id="titleAluno" class="mb-4 text-center">Informações Pessoais</h2>
 
+                    <asp:Button ID="btnPular" runat="server" Text="Pular" onClick="btnPular_Click"/>
+
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="cpfAluno" class="form-label">CPF:</label>
@@ -104,6 +106,7 @@
                 <div class="container mt-4">
                     <h2 class="text-center">Responsável</h2>
                     <div class="row">
+
                         <div class="col-md-6 mb-3">
                             <label for="cpfResponsavel" class="form-label">CPF:</label>
                             <asp:TextBox ID="cpfResponsavel" CssClass="form-control" runat="server" AutoPostBack="true" OnTextChanged="cpfResponsavel_TextChanged" oninput="formatarCpf(this)"/>

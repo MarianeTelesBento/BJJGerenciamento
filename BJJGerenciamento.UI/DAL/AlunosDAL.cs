@@ -116,8 +116,7 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Close();
 
                 return Convert.ToInt32(cadastroRealizado);
-            }
-        
+            }     
         public int CadastrarMatricula(DateTime dataAtual, bool estadoMatricula)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -235,7 +234,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoList;
         }
-
         public List<PlanoModels> BuscarPlanoDetalhes(string idPlano)
         {
             List<PlanoModels> planoList = new List<PlanoModels>();
@@ -298,7 +296,7 @@ namespace BJJGerenciamento.UI.DAL
             }
             return diasPlanoList;
         }
-        public Dictionary<string, List<string>> BuscarHorariosPlano(List<string> diasSelecionados)
+        public Dictionary<string, List<string>> BuscarHorariosPlano(KeyValuePair<int, string> diaSelecionado, int idPlano)
         {
             Dictionary<string, List<string>> horariosPorDia = new Dictionary<string, List<string>>();
 
@@ -306,21 +304,17 @@ namespace BJJGerenciamento.UI.DAL
             {
                 connection.Open();
 
-                string parametros = string.Join(",", diasSelecionados.Select((d, i) => $"@IdDia{i}"));
-
                 string query = $@"SELECT ds.Dia, h.HorarioInicio 
                           FROM TBHora h
                           INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
                           INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
-                          WHERE ds.Dia IN ({parametros}) 
+                          WHERE ds.IdDia = @IdDia AND ph.IdPlano = @IdPlano
                           ORDER BY h.HorarioInicio ASC";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    for (int i = 0; i < diasSelecionados.Count; i++)
-                    {
-                        command.Parameters.AddWithValue($"@IdDia{i}", diasSelecionados[i]);
-                    }
+                    command.Parameters.AddWithValue($"@IdDia", diaSelecionado.Key);
+                    command.Parameters.AddWithValue($"@IdPlano", idPlano);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

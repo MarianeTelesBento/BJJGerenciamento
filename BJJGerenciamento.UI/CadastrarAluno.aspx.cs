@@ -24,7 +24,6 @@ namespace BJJGerenciamento.UI
         }
 
         public bool cpfResponsavelExitente;
-        public List<string> diasSelecionados;
         public List<string> horariosSelecionados;
         public bool alunoMaiorIdade;
 
@@ -261,9 +260,15 @@ namespace BJJGerenciamento.UI
 
         public Dictionary<string, List<string>> listaHorarios = new Dictionary<string, List<string>>();
 
-        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
+        KeyValuePair<int, string> diaSelecionado;
+
+        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e) //DAL formatada para apenas 1 panel para cada dia, sendo obrigatório clicar no botão de "adicionar" para poder adicionar mais dias
+            //importar aplicativo da camada...
+            //Adicionar o nome do plano em uma váriavel
+            //Adicionar os dias selecionados em uma lista
+            //verificar quais horários foram selecionador no check box e criar uma lista
         {
-            diasSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
+            diaSelecionado = cbDias.SelectedValue
 
             if (diasSelecionados.Count > 0)
             {
@@ -271,28 +276,26 @@ namespace BJJGerenciamento.UI
                 pnlHorarios.Visible = true;
 
                 AlunosDAL alunosDAL = new AlunosDAL();
-                listaHorarios = alunosDAL.BuscarHorariosPlano(diasSelecionados);
+                listaHorarios = alunosDAL.BuscarHorariosPlano(diaSelecionado, Convert.ToInt32(ddPlanos.SelectedValue));
 
-                foreach (var dia in diasSelecionados)
-                {
-                    Panel panelDia = new Panel();
-                    panelDia.CssClass = "col-12 mb-3";
+                Panel panelDia = new Panel();
+                panelDia.CssClass = "col-12 mb-3";
 
-                    Label lblDia = new Label();
-                    lblDia.Text = $"Selecione os horários de {dia}:";
-                    lblDia.CssClass = "form-label";
-                    panelDia.Controls.Add(lblDia);
+                Label lblDia = new Label();
+                lblDia.Text = $"Selecione os horários de {dia.Value}:";
+                lblDia.CssClass = "form-label";
+                panelDia.Controls.Add(lblDia);
 
-                    CheckBoxList cbHorariosDia = new CheckBoxList();
-                    cbHorariosDia.CssClass = "form-check";
-                    cbHorariosDia.ID = $"cb{dia}";
-                    cbHorariosDia.DataSource = listaHorarios[dia];
-                    cbHorariosDia.DataBind();
+                CheckBoxList cbHorariosDia = new CheckBoxList();
+                cbHorariosDia.CssClass = "form-check";
+                cbHorariosDia.ID = $"cb{dia.Key}";
+                cbHorariosDia.DataSource = listaHorarios[dia.Value];
+                cbHorariosDia.DataBind();
 
-                    panelDia.Controls.Add(cbHorariosDia);
-                    pnlHorarios.Controls.Add(panelDia);
+                panelDia.Controls.Add(cbHorariosDia);
+                pnlHorarios.Controls.Add(panelDia);
 
-                }
+                
             }
             else
             {
@@ -303,6 +306,27 @@ namespace BJJGerenciamento.UI
 
 
         #endregion
+
+        protected void btnPular_Click(object sender, EventArgs e)
+        {
+            pnlPlanoAluno.Visible = true;
+            pnlInformacoesPessoaisAluno.Visible = false;
+            pnlInformacoesResponsavelAluno.Visible = false;
+
+            AlunosDAL alunosDAL = new AlunosDAL();
+            List<PlanoModels> planos = alunosDAL.BuscarPlano();
+
+            if (planos != null && planos.Count > 0)
+            {
+                ddPlanos.DataSource = planos;
+                ddPlanos.DataTextField = "Nome";
+                ddPlanos.DataValueField = "idPlano";
+
+                ddPlanos.DataBind();
+
+            }
+
+        }
 
         protected void buscarCepAluno_Click(object sender, EventArgs e)
         {
@@ -362,7 +386,7 @@ namespace BJJGerenciamento.UI
                     {
                         ddPlanos.DataSource = planos;
                         ddPlanos.DataTextField = "Nome";
-                        ddPlanos.DataValueField = "IdPlano";
+                        ddPlanos.DataValueField = "idPlano";
                         ddPlanos.DataBind();
                     }
                 }
@@ -407,8 +431,10 @@ namespace BJJGerenciamento.UI
                     {
                         ddPlanos.DataSource = planos;
                         ddPlanos.DataTextField = "Nome";
-                        ddPlanos.DataValueField = "IdDetalhe";
+                        ddPlanos.DataValueField = "idPlano";
+
                         ddPlanos.DataBind();
+
                     }
                 }
             }
