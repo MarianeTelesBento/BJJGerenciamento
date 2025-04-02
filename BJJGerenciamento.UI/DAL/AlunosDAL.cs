@@ -11,9 +11,9 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        //public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
+        public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
         public void CadastrarPlanoAluno(PlanoAlunoModels plano, List<KeyValuePair<int, string>> diasHorarios)
         {
@@ -116,7 +116,7 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Close();
 
                 return Convert.ToInt32(cadastroRealizado);
-            }     
+       }     
         public int CadastrarMatricula(DateTime dataAtual, bool estadoMatricula)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -134,6 +134,29 @@ namespace BJJGerenciamento.UI.DAL
                     var cadastroRealizado = Convert.ToInt32(command.ExecuteScalar());
 
                     return cadastroRealizado;
+                }
+            }
+        }
+
+        public int CadastrarPlano(PlanoAlunoModels planoAluno)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "INSERT INTO TBPlanoAluno " +
+                                      "(IdAlunos, IdDia, IdHorario, IdDetalhe) " +
+                                      "VALUES (@IdAlunos, @IdDia, @IdHorario, @IdDetalhe);" +
+                                      "SELECT SCOPE_IDENTITY();";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IdAlunos", planoAluno.idAlunos);
+                    command.Parameters.AddWithValue("@IdDia", planoAluno.idDia);
+                    command.Parameters.AddWithValue("@IdHorario", planoAluno.idHorario);
+                    command.Parameters.AddWithValue("@IdDetalhe", planoAluno.idDetalhe);
+
+                    int idPlanoAluno = Convert.ToInt32(command.ExecuteScalar());
+
+                    return idPlanoAluno;
                 }
             }
         }

@@ -214,12 +214,13 @@
                     </div>
 
 
-                    <!-- Painel de horários para cada dia -->
+                    <!-- Horários para cada dia -->
                     <div class="row">
                         <asp:Panel ID="pnlHorarios" runat="server" Visible="false">
                             <div class="col-12 mb-3">
                                 <label for="cbHorarios" class="form-label">Selecione os horários:</label>
-                                <asp:CheckBoxList ID="cbHorarios" CssClass="form-check" runat="server"/>
+                                <asp:CheckBoxList ID="cbHorariosDia" CssClass="form-check" runat="server"/>
+                                <asp:Button ID="btnSalvarDiaHorario" runat="server" Text="Button" onClick="btnSalvarDiaHorario_Click"/>
                             </div>
                         </asp:Panel>
                     </div>

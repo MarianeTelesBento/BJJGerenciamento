@@ -240,13 +240,19 @@ namespace BJJGerenciamento.UI
         #endregion
 
         #region TextChangedPlano
+
+
+        int idPlano;
+        List<int> idDiasPlano = new List<int>();
+        public Dictionary<string, List<string>> listaHorarios = new Dictionary<string, List<string>>();
+
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
             AlunosDAL alunosDAL = new AlunosDAL();
 
             if (!string.IsNullOrEmpty(ddPlanos.SelectedValue))
             {
-                int idPlano = int.Parse(ddPlanos.SelectedValue);
+                idPlano = int.Parse(ddPlanos.SelectedValue);
                 List <KeyValuePair<int, string>> diasPlano = alunosDAL.BuscarDiasPlano(idPlano);
 
                 cbDias.Items.Clear();
@@ -258,44 +264,43 @@ namespace BJJGerenciamento.UI
             }
         }
 
-        public Dictionary<string, List<string>> listaHorarios = new Dictionary<string, List<string>>();
-
-        KeyValuePair<int, string> diaSelecionado;
-
-        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e) //DAL formatada para apenas 1 panel para cada dia, sendo obrigatório clicar no botão de "adicionar" para poder adicionar mais dias
-            //importar aplicativo da camada...
-            //Adicionar o nome do plano em uma váriavel
-            //Adicionar os dias selecionados em uma lista
-            //verificar quais horários foram selecionador no check box e criar uma lista
+        protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            diaSelecionado = cbDias.SelectedValue
-
-            if (diasSelecionados.Count > 0)
+            if (cbDias.SelectedItem != null && int.TryParse(cbDias.SelectedValue, out int idDia))
             {
-                pnlHorarios.Controls.Clear();
-                pnlHorarios.Visible = true;
+                string nomeDia = cbDias.SelectedItem.Text;
+                idDiasPlano.Add(Convert.ToInt32(cbDias.SelectedItem.Value));
+
+                KeyValuePair<int, string> diaSelecionado = new KeyValuePair<int, string>(idDia, nomeDia);
 
                 AlunosDAL alunosDAL = new AlunosDAL();
                 listaHorarios = alunosDAL.BuscarHorariosPlano(diaSelecionado, Convert.ToInt32(ddPlanos.SelectedValue));
+
+                pnlHorarios.Controls.Clear();
 
                 Panel panelDia = new Panel();
                 panelDia.CssClass = "col-12 mb-3";
 
                 Label lblDia = new Label();
-                lblDia.Text = $"Selecione os horários de {dia.Value}:";
+                lblDia.Text = $"Selecione os horários de {diaSelecionado.Value}:";
                 lblDia.CssClass = "form-label";
                 panelDia.Controls.Add(lblDia);
 
-                CheckBoxList cbHorariosDia = new CheckBoxList();
-                cbHorariosDia.CssClass = "form-check";
-                cbHorariosDia.ID = $"cb{dia.Key}";
-                cbHorariosDia.DataSource = listaHorarios[dia.Value];
-                cbHorariosDia.DataBind();
+                cbHorariosDia.Items.Clear();
 
-                panelDia.Controls.Add(cbHorariosDia);
+                if (listaHorarios.ContainsKey(diaSelecionado.Value))
+                {
+                    foreach (var horario in listaHorarios[diaSelecionado.Value])
+                    {
+                        cbHorariosDia.Items.Add(new ListItem(horario, horario));
+                    }
+
+                    panelDia.Controls.Add(cbHorariosDia);
+                }
+
                 pnlHorarios.Controls.Add(panelDia);
 
-                
+                pnlHorarios.Visible = true;
             }
             else
             {
@@ -304,8 +309,13 @@ namespace BJJGerenciamento.UI
             }
         }
 
-
         #endregion
+
+        protected void btnSalvarDiaHorario_Click(object sender, EventArgs e)
+        {
+            cbDias.SelectedItem.Enabled = false; 
+            cbDias.SelectedItem.Selected = false;
+        }
 
         protected void btnPular_Click(object sender, EventArgs e)
         {
@@ -538,7 +548,14 @@ namespace BJJGerenciamento.UI
 
             int idAluno = alunosRepository.CadastrarAluno(aluno);
 
-
+            if(idAluno >= 0)
+            {
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "alerta",
+                    "alert('Aluno Salvo com sucesso');",
+                    true);
+            }
 
             //horariosSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
 
@@ -607,5 +624,6 @@ namespace BJJGerenciamento.UI
 
 
         }
+
     }
 }
