@@ -10,7 +10,7 @@
                 <main aria-labelledby="title">
                     <h2 id="titleAluno" class="mb-4 text-center">Informações Pessoais</h2>
 
-                    <asp:Button ID="btnPular" runat="server" Text="Pular" onClick="btnPular_Click"/>
+<%--                    <asp:Button ID="btnPular" runat="server" Text="Pular" onClick="btnPular_Click"/>--%>
 
                     <div class="row g-3">
                         <div class="col-md-6">
@@ -193,9 +193,9 @@
 
             <asp:Panel ID="pnlPlanoAluno" runat="server" Visible="false">
                 <div class="container mt-4">
-                    <h2 class="text-center">Plano</h2>
+                    <h2 class="text-center">Finalizar (Por enquanto)</h2>
 
-                    <div class="row">
+                   <%-- <div class="row">
                         <!-- Seleção da Turma -->
                         <div class="col-md-6 mb-3">
                             <label for="ddPlanos" class="form-label">Selecione uma turma:</label>
@@ -230,7 +230,7 @@
                         <div class="col-12 mb-3">
                             <asp:Label ID="ValorPagoPlano" runat="server" CssClass="fw-bold fs-5 text-success" Text="Valor: R$ 0,00" />
                         </div>
-                    </div>
+                    </div>--%>
 
                     <!-- Botão de Enviar -->
                     <div class="col-12 text-center mt-3">
