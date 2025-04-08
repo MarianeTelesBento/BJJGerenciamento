@@ -30,31 +30,31 @@
                 <div class="row">
                     <asp:Panel ID="pnlSegunda" runat="server" Visible="false">
                         <div class="col-12 mb-3">
-                            <label for="cbHorariosSegunda" class="form-label">Selecione os horários:</label>
+                            <label for="cbHorariosSegunda" class="form-label">Selecione os horários de SEGUNDA</label>
                             <asp:CheckBoxList ID="cbHorariosSegunda" CssClass="form-check" runat="server"/>
                         </div>
                     </asp:Panel>
                     <asp:Panel ID="pnlTerca" runat="server" Visible="false">
                         <div class="col-12 mb-3">
-                            <label for="cbHorariosTerca" class="form-label">Selecione os horários:</label>
+                            <label for="cbHorariosTerca" class="form-label">Selecione os horários de TERÇA</label>
                             <asp:CheckBoxList ID="cbHorariosTerca" CssClass="form-check" runat="server"/>
                         </div>
                     </asp:Panel>
                     <asp:Panel ID="pnlQuarta" runat="server" Visible="false">
                         <div class="col-12 mb-3">
-                            <label for="cbHorariosQuarta" class="form-label">Selecione os horários:</label>
+                            <label for="cbHorariosQuarta" class="form-label">Selecione os horários de QUARTA</label>
                             <asp:CheckBoxList ID="cbHorariosQuarta" CssClass="form-check" runat="server"/>
                         </div>
                     </asp:Panel>
                     <asp:Panel ID="pnlQuinta" runat="server" Visible="false">
                         <div class="col-12 mb-3">
-                            <label for="cbHorariosQuinta" class="form-label">Selecione os horários:</label>
+                            <label for="cbHorariosQuinta" class="form-label">Selecione os horários de QUINTA</label>
                             <asp:CheckBoxList ID="cbHorariosQuinta" CssClass="form-check" runat="server"/>
                         </div>
                     </asp:Panel>
                     <asp:Panel ID="pnlSexta" runat="server" Visible="false">
                         <div class="col-12 mb-3">
-                            <label for="cbHorariosSexta" class="form-label">Selecione os horários:</label>
+                            <label for="cbHorariosSexta" class="form-label">Selecione os horários de SEXTA</label>
                             <asp:CheckBoxList ID="cbHorariosSexta" CssClass="form-check" runat="server"/>
                         </div>
                     </asp:Panel>

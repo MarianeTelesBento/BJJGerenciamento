@@ -12,11 +12,12 @@ namespace BJJGerenciamento.UI
 {
 	public partial class CadastrarPlano : System.Web.UI.Page
 	{
+        public int idAlunos = 0; //Pegar da págida de cadastro Aluno
+
 		protected void Page_Load(object sender, EventArgs e)
 		{
             if (!IsPostBack)
             {
-                //pnlHorarios.Visible = false; 
 
                 PlanoDAL planoDAL = new PlanoDAL();
                 List<PlanoModels> planos = planoDAL.BuscarPlano();
@@ -33,23 +34,27 @@ namespace BJJGerenciamento.UI
             }
         }
 
-        public List<string> horariosSelecionados;
-
-        #region TextChangedPlano
-
-
-        int idPlano;
-        List<int> idDiasPlano = new List<int>();
-        public Dictionary<string, List<string>> listaHorarios = new Dictionary<string, List<string>>();
-
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AlunosDAL alunosDAL = new AlunosDAL();
+
+            pnlSegunda.Visible = false;
+            pnlTerca.Visible = false;
+            pnlQuarta.Visible = false;
+            pnlQuinta.Visible = false;
+            pnlSexta.Visible = false;
+
+            cbHorariosSegunda.Items.Clear();
+            cbHorariosTerca.Items.Clear();
+            cbHorariosQuarta.Items.Clear();
+            cbHorariosQuinta.Items.Clear();
+            cbHorariosSexta.Items.Clear();
+
+            PlanoDAL planoDal = new PlanoDAL();
 
             if (!string.IsNullOrEmpty(ddPlanos.SelectedValue))
             {
-                idPlano = int.Parse(ddPlanos.SelectedValue);
-                List<KeyValuePair<int, string>> diasPlano = alunosDAL.BuscarDiasPlano(idPlano);
+                int idPlano = int.Parse(ddPlanos.SelectedValue);
+                List<KeyValuePair<int, string>> diasPlano = planoDal.BuscarDiasPlano(idPlano);
 
                 cbDias.Items.Clear();
 
@@ -80,108 +85,55 @@ namespace BJJGerenciamento.UI
             {
                 if (item.Selected)
                 {
-                    string nomeDia = item.Text;
+                    string nomeDia = item.Text.Trim();
                     int idDia = int.Parse(item.Value);
 
-                    AlunosDAL alunosDAL = new AlunosDAL();
-                    listaHorarios = alunosDAL.BuscarHorariosPlano( new KeyValuePair<int, String> (idDia, nomeDia), Convert.ToInt32(ddPlanos.SelectedValue)));
+                    PlanoDAL planoDal = new PlanoDAL();
+                    Dictionary<string, List<string>> listaHorarios = planoDal.BuscarHorariosPlano( new KeyValuePair<int, String> (idDia, nomeDia), Convert.ToInt32(ddPlanos.SelectedValue));
 
-                    switch (nomeDia.ToLower()) 
+                    switch (nomeDia)
                     {
                         case "Segunda":
                             pnlSegunda.Visible = true;
+                            if (listaHorarios.ContainsKey("Segunda"))
+                                foreach (var horario in listaHorarios["Segunda"])
+                                    cbHorariosSegunda.Items.Add(horario);
                             break;
                         case "Terça":
                             pnlTerca.Visible = true;
+                            if (listaHorarios.ContainsKey("Terça"))
+                                foreach (var horario in listaHorarios["Terça"])
+                                    cbHorariosTerca.Items.Add(horario);
                             break;
                         case "Quarta":
                             pnlQuarta.Visible = true;
+                            if (listaHorarios.ContainsKey("Quarta"))
+                                foreach (var horario in listaHorarios["Quarta"])
+                                    cbHorariosQuarta.Items.Add(horario);
                             break;
                         case "Quinta":
                             pnlQuinta.Visible = true;
+                            if (listaHorarios.ContainsKey("Quinta"))
+                                foreach (var horario in listaHorarios["Quinta"])
+                                    cbHorariosQuinta.Items.Add(horario);
                             break;
                         case "Sexta":
                             pnlSexta.Visible = true;
+                            if (listaHorarios.ContainsKey("Sexta"))
+                                foreach (var horario in listaHorarios["Sexta"])
+                                    cbHorariosSexta.Items.Add(horario);
                             break;
                     
                     }
-
-
-
                 }
             }
 
         }
 
-        #endregion
-
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
-
-        //    horariosSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
-
-        //    diasSelecionados = cbHorarios.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
-
-        //    List<PlanoModels> ListaPlanos = alunosRepository.BuscarPlanoDetalhes(ddPlanos.SelectedValue);
-
-        //    foreach (var plano in ListaPlanos)
-        //    {
-        //        if (diasSelecionados.Count == plano.Mensalidade)
-        //        {
-        //            ValorPagoPlano.Text = plano.Mensalidade.ToString();
-        //            return;
-        //        }
-        //    }
-
-
-
-
-        //    PlanoAlunoModels plano = new PlanoAlunoModels
-        //    {
-        //        idAlunos = idAluno,
-        //        idDetalhe = int.Parse(ddPlanos.SelectedValue),
-        //    };
-
-        //    List<KeyValuePair<int, string>> diasHorariosSelecionados = new List<KeyValuePair<int, string>>();
-
-        //    foreach (ListItem diaItem in cbDias.Items)
-        //    {
-        //        if (diaItem.Selected)
-        //        {
-        //            int idDia = int.Parse(diaItem.Value);
-
-        //            foreach (Control ctrl in pnlHorarios.Controls)
-        //            {
-        //                if (ctrl is Panel panelDia)
-        //                {
-        //                    foreach (Control subCtrl in panelDia.Controls)
-        //                    {
-        //                        if (subCtrl is CheckBoxList cbHorariosDia)
-        //                        {
-        //                            foreach (ListItem horarioItem in cbHorariosDia.Items)
-        //                            {
-        //                                if (horarioItem.Selected)
-        //                                {
-        //                                    diasHorariosSelecionados.Add(new KeyValuePair<int, string>(idDia, horarioItem.Text));
-        //                                }
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    if (diasHorariosSelecionados.Count > 0)
-        //    {
-        //        AlunosDAL alunosDAL = new AlunosDAL();
-        //        alunosDAL.CadastrarPlanoAluno(plano, diasHorariosSelecionados);
-        //        lblMensagem.Text = "Plano cadastrado com sucesso!";
-        //    }
-        //    else
-        //    {
-        //        lblMensagem.Text = "Selecione pelo menos um dia e horário!";
-        //    }
+            
+        
 
 
         }
