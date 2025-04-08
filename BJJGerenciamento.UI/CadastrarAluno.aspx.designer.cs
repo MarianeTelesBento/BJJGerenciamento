@@ -11,7 +11,7 @@ namespace BJJGerenciamento.UI
 {
 
 
-    public partial class About
+    public partial class CadastrarAluno
     {
 
         /// <summary>

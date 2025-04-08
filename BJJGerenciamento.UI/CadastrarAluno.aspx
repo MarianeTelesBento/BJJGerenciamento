@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Cadastrar aluno" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastrarAluno.aspx.cs" Inherits="BJJGerenciamento.UI.About" %>
+﻿<%@ Page Title="Cadastrar aluno" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="CadastrarAluno.aspx.cs" Inherits="BJJGerenciamento.UI.CadastrarAluno" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
         <ContentTemplate>
@@ -194,43 +194,6 @@
             <asp:Panel ID="pnlPlanoAluno" runat="server" Visible="false">
                 <div class="container mt-4">
                     <h2 class="text-center">Finalizar (Por enquanto)</h2>
-
-                   <%-- <div class="row">
-                        <!-- Seleção da Turma -->
-                        <div class="col-md-6 mb-3">
-                            <label for="ddPlanos" class="form-label">Selecione uma turma:</label>
-                            <asp:DropDownList ID="ddPlanos" style="border-radius: 2px;" runat="server" AutoPostBack="true" 
-                                OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged">
-                            </asp:DropDownList>
-                        </div>
-
-                        <!-- Dias disponíveis -->
-                        <div class="col-md-6 mb-3">
-                            <label for="cbDias">Dias:</label>
-                            <asp:CheckBoxList ID="cbDias" runat="server" AutoPostBack="true"
-                                OnSelectedIndexChanged="cbDias_SelectedIndexChanged">
-                            </asp:CheckBoxList><br />
-                        </div>
-                    </div>
-
-
-                    <!-- Horários para cada dia -->
-                    <div class="row">
-                        <asp:Panel ID="pnlHorarios" runat="server" Visible="false">
-                            <div class="col-12 mb-3">
-                                <label for="cbHorarios" class="form-label">Selecione os horários:</label>
-                                <asp:CheckBoxList ID="cbHorariosDia" CssClass="form-check" runat="server"/>
-                                <asp:Button ID="btnSalvarDiaHorario" runat="server" Text="Button" onClick="btnSalvarDiaHorario_Click"/>
-                            </div>
-                        </asp:Panel>
-                    </div>
-
-                    <!-- Valor do plano -->
-                    <div class="row">
-                        <div class="col-12 mb-3">
-                            <asp:Label ID="ValorPagoPlano" runat="server" CssClass="fw-bold fs-5 text-success" Text="Valor: R$ 0,00" />
-                        </div>
-                    </div>--%>
 
                     <!-- Botão de Enviar -->
                     <div class="col-12 text-center mt-3">

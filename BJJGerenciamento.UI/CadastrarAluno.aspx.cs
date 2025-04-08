@@ -12,19 +12,15 @@ using BJJGerenciamento.UI.Service;
 
 namespace BJJGerenciamento.UI
 {
-    public partial class About : Page
+    public partial class CadastrarAluno : Page
     {
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                //pnlHorarios.Visible = false; 
-            }
+
         }
 
         public bool cpfResponsavelExitente;
-        public List<string> horariosSelecionados;
         public bool alunoMaiorIdade;
 
 
@@ -239,104 +235,6 @@ namespace BJJGerenciamento.UI
         }
         #endregion
 
-        #region TextChangedPlano
-
-
-        //int idPlano;
-        //List<int> idDiasPlano = new List<int>();
-        //public Dictionary<string, List<string>> listaHorarios = new Dictionary<string, List<string>>();
-
-        //protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    AlunosDAL alunosDAL = new AlunosDAL();
-
-        //    if (!string.IsNullOrEmpty(ddPlanos.SelectedValue))
-        //    {
-        //        idPlano = int.Parse(ddPlanos.SelectedValue);
-        //        List <KeyValuePair<int, string>> diasPlano = alunosDAL.BuscarDiasPlano(idPlano);
-
-        //        cbDias.Items.Clear();
-
-        //        foreach (var dia in diasPlano)
-        //        {
-        //            cbDias.Items.Add(new ListItem(dia.Value, dia.Key.ToString()));
-        //        }
-        //    }
-        //}
-
-        //protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (cbDias.SelectedItem != null && int.TryParse(cbDias.SelectedValue, out int idDia))
-        //    {
-        //        string nomeDia = cbDias.SelectedItem.Text;
-        //        idDiasPlano.Add(Convert.ToInt32(cbDias.SelectedItem.Value));
-
-        //        KeyValuePair<int, string> diaSelecionado = new KeyValuePair<int, string>(idDia, nomeDia);
-
-        //        AlunosDAL alunosDAL = new AlunosDAL();
-        //        listaHorarios = alunosDAL.BuscarHorariosPlano(diaSelecionado, Convert.ToInt32(ddPlanos.SelectedValue));
-
-        //        pnlHorarios.Controls.Clear();
-
-        //        Panel panelDia = new Panel();
-        //        panelDia.CssClass = "col-12 mb-3";
-
-        //        Label lblDia = new Label();
-        //        lblDia.Text = $"Selecione os horários de {diaSelecionado.Value}:";
-        //        lblDia.CssClass = "form-label";
-        //        panelDia.Controls.Add(lblDia);
-
-        //        cbHorariosDia.Items.Clear();
-
-        //        if (listaHorarios.ContainsKey(diaSelecionado.Value))
-        //        {
-        //            foreach (var horario in listaHorarios[diaSelecionado.Value])
-        //            {
-        //                cbHorariosDia.Items.Add(new ListItem(horario, horario));
-        //            }
-
-        //            panelDia.Controls.Add(cbHorariosDia);
-        //        }
-
-        //        pnlHorarios.Controls.Add(panelDia);
-
-        //        pnlHorarios.Visible = true;
-        //    }
-        //    else
-        //    {
-        //        pnlHorarios.Visible = false;
-        //        pnlHorarios.Controls.Clear();
-        //    }
-        //}
-
-        #endregion
-
-        //protected void btnSalvarDiaHorario_Click(object sender, EventArgs e)
-        //{
-        //    cbDias.SelectedItem.Enabled = false; 
-        //    cbDias.SelectedItem.Selected = false;
-        //}
-
-        //protected void btnPular_Click(object sender, EventArgs e)
-        //{
-        //    pnlPlanoAluno.Visible = true;
-        //    pnlInformacoesPessoaisAluno.Visible = false;
-        //    pnlInformacoesResponsavelAluno.Visible = false;
-
-        //    AlunosDAL alunosDAL = new AlunosDAL();
-        //    List<PlanoModels> planos = alunosDAL.BuscarPlano();
-
-        //    if (planos != null && planos.Count > 0)
-        //    {
-        //        ddPlanos.DataSource = planos;
-        //        ddPlanos.DataTextField = "Nome";
-        //        ddPlanos.DataValueField = "idPlano";
-
-        //        ddPlanos.DataBind();
-
-        //    }
-
-        //}
 
         protected void buscarCepAluno_Click(object sender, EventArgs e)
         {
@@ -434,18 +332,6 @@ namespace BJJGerenciamento.UI
                     pnlInformacoesResponsavelAluno.Visible = false;
                     pnlPlanoAluno.Visible = true;
 
-                    //AlunosDAL alunosDAL = new AlunosDAL();
-                    //List<PlanoModels> planos = alunosDAL.BuscarPlano();
-
-                    //if (planos != null && planos.Count > 0)
-                    //{
-                    //    ddPlanos.DataSource = planos;
-                    //    ddPlanos.DataTextField = "Nome";
-                    //    ddPlanos.DataValueField = "idPlano";
-
-                    //    ddPlanos.DataBind();
-
-                    //}
                 }
             }
         }
@@ -555,74 +441,6 @@ namespace BJJGerenciamento.UI
                     "alert('Aluno Salvo com sucesso'); window.location.href='ListaAlunos.aspx';",
                     true);
             }
-
-
-            //horariosSelecionados = cbDias.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
-
-            //diasSelecionados = cbHorarios.Items.Cast<ListItem>().Where(li => li.Selected).Select(li => li.Text).ToList();
-
-            //List<PlanoModels> ListaPlanos = alunosRepository.BuscarPlanoDetalhes(ddPlanos.SelectedValue);
-
-            //foreach(var plano in ListaPlanos)
-            //{
-            //    if (diasSelecionados.Count == plano.Mensalidade)
-            //    {
-            //        ValorPagoPlano.Text = plano.Mensalidade.ToString();
-            //        return;
-            //    }
-            //}
-
-
-
-
-            //PlanoAlunoModels plano = new PlanoAlunoModels
-            //{
-            //    idAlunos = idAluno,
-            //    idDetalhe = int.Parse(ddPlanos.SelectedValue),    
-            //};
-
-            //List<KeyValuePair<int, string>> diasHorariosSelecionados = new List<KeyValuePair<int, string>>();
-
-            //foreach (ListItem diaItem in cbDias.Items)
-            //{
-            //    if (diaItem.Selected)
-            //    {
-            //        int idDia = int.Parse(diaItem.Value);
-
-            //        foreach (Control ctrl in pnlHorarios.Controls)
-            //        {
-            //            if (ctrl is Panel panelDia)
-            //            {
-            //                foreach (Control subCtrl in panelDia.Controls)
-            //                {
-            //                    if (subCtrl is CheckBoxList cbHorariosDia)
-            //                    {
-            //                        foreach (ListItem horarioItem in cbHorariosDia.Items)
-            //                        {
-            //                            if (horarioItem.Selected)
-            //                            {
-            //                                diasHorariosSelecionados.Add(new KeyValuePair<int, string>(idDia, horarioItem.Text));
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //if (diasHorariosSelecionados.Count > 0)
-            //{
-            //    AlunosDAL alunosDAL = new AlunosDAL();
-            //    alunosDAL.CadastrarPlanoAluno(plano, diasHorariosSelecionados);
-            //    //lblMensagem.Text = "Plano cadastrado com sucesso!";
-            //}
-            ////else
-            ////{
-            ////    lblMensagem.Text = "Selecione pelo menos um dia e horário!";
-            ////}
-
-
         }
 
     }
