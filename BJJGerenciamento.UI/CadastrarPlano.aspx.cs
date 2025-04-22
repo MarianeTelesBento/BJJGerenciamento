@@ -12,10 +12,12 @@ namespace BJJGerenciamento.UI
 {
 	public partial class CadastrarPlano : System.Web.UI.Page
 	{
-        public int idAlunos = 0; //Pegar da págida de cadastro Aluno
+        int idAluno; 
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
+            idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
+
             if (!IsPostBack)
             {
 
@@ -67,7 +69,6 @@ namespace BJJGerenciamento.UI
 
         protected void cbDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             pnlSegunda.Visible = false;
             pnlTerca.Visible = false;
             pnlQuarta.Visible = false;
@@ -80,7 +81,6 @@ namespace BJJGerenciamento.UI
             cbHorariosQuinta.Items.Clear();
             cbHorariosSexta.Items.Clear();
 
-
             foreach(ListItem item in cbDias.Items)
             {
                 if (item.Selected)
@@ -89,41 +89,71 @@ namespace BJJGerenciamento.UI
                     int idDia = int.Parse(item.Value);
 
                     PlanoDAL planoDal = new PlanoDAL();
-                    Dictionary<string, List<string>> listaHorarios = planoDal.BuscarHorariosPlano( new KeyValuePair<int, String> (idDia, nomeDia), Convert.ToInt32(ddPlanos.SelectedValue));
+                    Dictionary<string, List<PlanoHorarioModels>> listaHorarios = planoDal.BuscarHorariosPlano( new KeyValuePair<int, String> (idDia, nomeDia), Convert.ToInt32(ddPlanos.SelectedValue));
 
                     switch (nomeDia)
                     {
                         case "Segunda":
                             pnlSegunda.Visible = true;
                             if (listaHorarios.ContainsKey("Segunda"))
+                            {
                                 foreach (var horario in listaHorarios["Segunda"])
-                                    cbHorariosSegunda.Items.Add(horario);
+                                {
+                                    cbHorariosSegunda.Items.Add(new ListItem($"{horario.horarioInicio} - {horario.horarioFim}", horario.idHora.ToString()
+                                        ));
+                                }
+                            }
                             break;
                         case "Terça":
                             pnlTerca.Visible = true;
                             if (listaHorarios.ContainsKey("Terça"))
+                            {
                                 foreach (var horario in listaHorarios["Terça"])
-                                    cbHorariosTerca.Items.Add(horario);
+                                {
+                                    cbHorariosTerca.Items.Add(new ListItem($"{horario.horarioInicio} - {horario.horarioFim}", horario.idHora.ToString()
+                                        ));
+                                }
+                            }
                             break;
                         case "Quarta":
                             pnlQuarta.Visible = true;
                             if (listaHorarios.ContainsKey("Quarta"))
+                            {
                                 foreach (var horario in listaHorarios["Quarta"])
-                                    cbHorariosQuarta.Items.Add(horario);
+                                {
+                                    cbHorariosQuarta.Items.Add(new ListItem($"{horario.horarioInicio} - {horario.horarioFim}", horario.idHora.ToString()
+                                        ));
+                                }
+                            }
                             break;
                         case "Quinta":
                             pnlQuinta.Visible = true;
+
                             if (listaHorarios.ContainsKey("Quinta"))
+                            {
                                 foreach (var horario in listaHorarios["Quinta"])
-                                    cbHorariosQuinta.Items.Add(horario);
+                                {
+                                    cbHorariosQuinta.Items.Add(new ListItem(
+                                        $"{horario.horarioInicio} - {horario.horarioFim}",
+                                        horario.idHora.ToString()                          
+                                    ));
+                                }
+                            }
                             break;
                         case "Sexta":
                             pnlSexta.Visible = true;
+
                             if (listaHorarios.ContainsKey("Sexta"))
+                            {
                                 foreach (var horario in listaHorarios["Sexta"])
-                                    cbHorariosSexta.Items.Add(horario);
+                                {
+                                    cbHorariosSexta.Items.Add(new ListItem(
+                                        $"{horario.horarioInicio} - {horario.horarioFim}",
+                                        horario.idHora.ToString()                          
+                                    ));
+                                }
+                            }
                             break;
-                    
                     }
                 }
             }
@@ -132,10 +162,113 @@ namespace BJJGerenciamento.UI
 
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
-            
-        
+            if (string.IsNullOrEmpty(ValorPagoPlano.Text))
+            {
+                Response.Write("<script>alert('Selecione um valor para o plano');</script>");
+                return;
+            }
+
+            int idDetalhe = int.Parse(ddPlanos.SelectedValue);
+
+            foreach (ListItem diaItem in cbDias.Items)
+            {
+                if (diaItem.Selected)
+                {
+                    int idDia = int.Parse(diaItem.Value);
+                    string nomeDia = diaItem.Text;
+
+                    CheckBoxList horariosDia = ObterCheckBoxListPorDia(nomeDia);
+
+                    if (horariosDia != null)
+                    {
+                        foreach (ListItem horarioItem in horariosDia.Items)
+                        {
+
+                            if (horarioItem.Selected)
+                            {
+                                int idHorario = int.Parse(horarioItem.Value);
+
+                                PlanoDAL planoDAL = new PlanoDAL();
+
+                                int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(ValorPagoPlano.Text));
+
+                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(idAluno, idDia, idHorario, idDetalhe, idPlanoAlunoValor);
+
+                                if (cadastroFuncionando > 0)
+                                {
+                                    ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                                    typeof(Page),
+                                    "alerta",
+                                    "alert('Plano cadastrada com sucesso!'); window.location.href='ListaAlunos.aspx';",
+                                    true);
+                                }
+                                else
+                                {
+                                    Response.Write("<script>alert('Erro ao cadastrar plano.');</script>");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        protected void btnValorPlano_Click(object sender, EventArgs e)
+        {
+            int totalHorariosSelecionados = 0;
+
+            totalHorariosSelecionados += ContarSelecionados(cbHorariosSegunda);
+            totalHorariosSelecionados += ContarSelecionados(cbHorariosTerca);
+            totalHorariosSelecionados += ContarSelecionados(cbHorariosQuarta);
+            totalHorariosSelecionados += ContarSelecionados(cbHorariosQuinta);
+            totalHorariosSelecionados += ContarSelecionados(cbHorariosSexta);
 
 
+            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+
+            if (totalHorariosSelecionados > totalDiasSelecionados)
+            {
+                Response.Write("<script>alert('Esse plano não permite mais de um horário por dia');</script>");
+            }
+            else if (totalDiasSelecionados != totalHorariosSelecionados )
+            {
+                Response.Write("<script>alert('Selecione pelo menos um horário para cada dia');</script>");
+            }
+            else
+            {
+                PlanoDAL planoDAL = new PlanoDAL();
+                decimal valorPlano = planoDAL.BuscarMensalidade(int.Parse(ddPlanos.SelectedValue), totalDiasSelecionados);
+
+                ValorPagoPlano.Text = $"{valorPlano}";
+
+                EnviarInformacoes.Visible = true;
+            }
+        }
+
+        private int ContarSelecionados(CheckBoxList cbl)
+        {
+            return cbl.Items.Cast<ListItem>().Count(item => item.Selected);
+        }
+
+        private CheckBoxList ObterCheckBoxListPorDia(string nomeDia)
+        {
+            switch (nomeDia)
+            {
+                case "Segunda":
+                    return cbHorariosSegunda;
+                case "Terça":
+                    return cbHorariosTerca;
+                case "Quarta":
+                    return cbHorariosQuarta;
+                case "Quinta":
+                    return cbHorariosQuinta;
+                case "Sexta":
+                    return cbHorariosSexta;
+                default:
+                    return null;
+            }
         }
     }
 }

@@ -63,16 +63,20 @@
                 <!-- Valor do plano -->
                 <div class="row">
                     <div class="col-12 mb-3">
-                        <asp:Label ID="ValorPagoPlano" runat="server" CssClass="fw-bold fs-5 text-success" Text="Valor: R$ 0,00" />
+                        <label for="ValorPlano" class="form-label">Valor do plano: R$</label>
+                        <asp:TextBox ID="ValorPagoPlano" runat="server" Text=""/>
+                        <asp:Button ID="btnValorPlano" runat="server" Text="Calcular" OnClick="btnValorPlano_Click" style="background-color: dodgerblue; font-size: 14px; border: none; color: aliceblue; font-family: -apple-system, Roboto, Arial, sans-serif;"/>
                     </div>
                 </div>
 
                 <!-- Botão de Enviar -->
-                <div class="col-12 text-center mt-3">
-                    <asp:Button ID="EnviarInformacoes" runat="server" style="background-color:dodgerblue; font-size: 14px; border: none; color: aliceblue; font-family: -apple-system, Roboto, Arial, sans-serif;
-            ; border-radius: 3px;" Text="Enviar" OnClick="btnEnviarInformacoes_Click" />
+                   <asp:Button ID="EnviarInformacoes" runat="server" style="background-color:dodgerblue; font-size: 14px; border: none; color: aliceblue; font-family: -apple-system, Roboto, Arial, sans-serif;
+            ; border-radius: 3px;" Text="Enviar" OnClick="btnEnviarInformacoes_Click" Visible="false"/>
                 </div>
+
             </div>
+
+              
 
         </ContentTemplate>
 </asp:content>

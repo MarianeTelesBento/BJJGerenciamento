@@ -129,7 +129,16 @@ namespace BJJGerenciamento.UI
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ValorPagoPlano;
+        protected global::System.Web.UI.WebControls.TextBox ValorPagoPlano;
+
+        /// <summary>
+        /// Controle btnValorPlano.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnValorPlano;
 
         /// <summary>
         /// Controle EnviarInformacoes.

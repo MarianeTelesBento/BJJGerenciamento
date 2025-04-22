@@ -15,35 +15,64 @@ namespace BJJGerenciamento.UI.DAL
 
         //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
 
-        public void CadastrarPlanoAluno(PlanoAlunoModels plano, List<KeyValuePair<int, string>> diasHorarios)
+        public int CadastrarPlanoAlunoValor(decimal valorPlano)
         {
-
-        }
-
-
-        public int CadastrarPlano(PlanoAlunoModels planoAluno)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                connection.Open();
-                string query = "INSERT INTO TBPlanoAluno " +
-                                      "(IdAlunos, IdDia, IdHorario, IdDetalhe) " +
-                                      "VALUES (@IdAlunos, @IdDia, @IdHorario, @IdDetalhe);" +
-                                      "SELECT SCOPE_IDENTITY();";
-                using (SqlCommand command = new SqlCommand(query, connection))
+                string query = @"INSERT INTO TBPlanoAlunoValor (Valor)
+                         VALUES (@valorPlano); SELECT SCOPE_IDENTITY();";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    command.Parameters.AddWithValue("@IdAlunos", planoAluno.idAlunos);
-                    command.Parameters.AddWithValue("@IdDia", planoAluno.idDia);
-                    command.Parameters.AddWithValue("@IdHorario", planoAluno.idHorario);
-                    command.Parameters.AddWithValue("@IdDetalhe", planoAluno.idDetalhe);
+                    cmd.Parameters.AddWithValue("@valorPlano", valorPlano);
 
-                    int idPlanoAluno = Convert.ToInt32(command.ExecuteScalar());
+                    con.Open();
 
-                    return idPlanoAluno;
+                    return Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }
         }
+        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO TBPlanoAluno (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor)
+                         VALUES (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor)";
 
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdAluno", idAlunos);
+                    cmd.Parameters.AddWithValue("@IdDia", idDia);
+                    cmd.Parameters.AddWithValue("@IdHorario", idHorario);
+                    cmd.Parameters.AddWithValue("@IdDetalhe", idDetalhe);
+                    cmd.Parameters.AddWithValue("@IdPlanoAlunoValor", idPlanoAlunoValor);
+
+                    con.Open();
+                    return Convert.ToInt32(cmd.ExecuteNonQuery());
+                }
+            }
+        }
+        public decimal BuscarMensalidade(int idPlano, int QtsDias)
+        {
+            decimal mensalidade = 0;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT TOP 1 Mensalidade FROM TBPlanoDetalhes WHERE IdPlano = @IdPlano AND QtsDias >= @QtsDias ORDER BY QtsDias ASC;", connection))
+                {
+                    command.Parameters.AddWithValue("@IdPlano", idPlano);
+                    command.Parameters.AddWithValue("@QtsDias", QtsDias);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        mensalidade = reader.GetDecimal(0);                    
+                    }
+
+                }
+            }
+            return mensalidade;
+        }
         public List<PlanoModels> BuscarPlano()
         {
             List<PlanoModels> planoList = new List<PlanoModels>();
@@ -134,20 +163,20 @@ namespace BJJGerenciamento.UI.DAL
             }
             return diasPlanoList;
         }
-        public Dictionary<string, List<string>> BuscarHorariosPlano(KeyValuePair<int, string> diaSelecionado, int idPlano)
+        public Dictionary<string, List<PlanoHorarioModels>> BuscarHorariosPlano(KeyValuePair<int, string> diaSelecionado, int idPlano)
         {
-            Dictionary<string, List<string>> horariosPorDia = new Dictionary<string, List<string>>();
+            Dictionary<string, List<PlanoHorarioModels>> horariosPorDia = new Dictionary<string, List<PlanoHorarioModels>>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                string query = $@"SELECT ds.Dia, h.HorarioInicio 
-                          FROM TBHora h
-                          INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
-                          INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
-                          WHERE ds.IdDia = @IdDia AND ph.IdPlano = @IdPlano
-                          ORDER BY h.HorarioInicio ASC";
+                string query = $@"SELECT ds.Dia, h.HorarioInicio, h.HorarioFim, h.IdHora
+	                                FROM TBHora h
+	                                INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
+	                                INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
+	                                WHERE ds.IdDia = @IdDia AND ph.IdPlano = @IdPlano
+	                                ORDER BY h.HorarioInicio ASC";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -158,14 +187,19 @@ namespace BJJGerenciamento.UI.DAL
                     {
                         while (reader.Read())
                         {
+                            PlanoHorarioModels planoHorarioModels = new PlanoHorarioModels();
+
                             string dia = reader.GetString(0);
-                            string horario = reader.GetTimeSpan(1).ToString(@"hh\:mm");
+
+                            planoHorarioModels.horarioInicio = reader.GetTimeSpan(1).ToString(@"hh\:mm");
+                            planoHorarioModels.horarioFim = reader.GetTimeSpan(2).ToString(@"hh\:mm");
+                            planoHorarioModels.idHora = reader.GetInt32(3);
 
                             if (!horariosPorDia.ContainsKey(dia))
                             {
-                                horariosPorDia[dia] = new List<string>();
+                                horariosPorDia[dia] = new List<PlanoHorarioModels>();
                             }
-                            horariosPorDia[dia].Add(horario);
+                            horariosPorDia[dia].Add(planoHorarioModels);
                         }
                     }
                 }

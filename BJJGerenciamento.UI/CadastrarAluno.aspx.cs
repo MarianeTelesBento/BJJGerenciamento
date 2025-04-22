@@ -368,6 +368,7 @@ namespace BJJGerenciamento.UI
 
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
+
             AlunosDAL alunosRepository = new AlunosDAL();
 
             int? idResponsavel;
@@ -441,6 +442,8 @@ namespace BJJGerenciamento.UI
                     "alert('Aluno Salvo com sucesso'); window.location.href='ListaAlunos.aspx';",
                     true);
             }
+            
+            Server.Transfer($"CadastrarPlano.aspx?idAluno={idAluno}"); 
         }
 
     }
