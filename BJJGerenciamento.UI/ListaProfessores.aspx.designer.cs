@@ -11,7 +11,7 @@ namespace BJJGerenciamento.UI
 {
 
 
-    public partial class _Default
+    public partial class ListaProfessores
     {
 
         /// <summary>
@@ -24,31 +24,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
-        /// Controle modalIdMatricula.
+        /// Controle modalIdProfessor.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalIdMatricula;
-
-        /// <summary>
-        /// Controle modalDataMatricula.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalDataMatricula;
-
-        /// <summary>
-        /// Controle modalStatusMatricula.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox modalStatusMatricula;
+        protected global::System.Web.UI.WebControls.TextBox modalIdProfessor;
 
         /// <summary>
         /// Controle modalNome.
@@ -78,6 +60,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox modalCpf;
 
         /// <summary>
+        /// Controle modalDataNasc.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalDataNasc;
+
+        /// <summary>
         /// Controle modalEmail.
         /// </summary>
         /// <remarks>
@@ -94,15 +85,6 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox modalTelefone;
-
-        /// <summary>
-        /// Controle modalDataNascimento.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalDataNascimento;
 
         /// <summary>
         /// Controle modalCep.
@@ -168,21 +150,39 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox modalComplemento;
 
         /// <summary>
-        /// Controle modalCarteiraFpjj.
+        /// Controle modalCarteiraFPJJ.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCarteiraFpjj;
+        protected global::System.Web.UI.WebControls.TextBox modalCarteiraFPJJ;
 
         /// <summary>
-        /// Controle SalvarAluno.
+        /// Controle modalCarteiraCBJJ.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SalvarAluno;
+        protected global::System.Web.UI.WebControls.TextBox modalCarteiraCBJJ;
+
+        /// <summary>
+        /// Controle modalAtivo.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox modalAtivo;
+
+        /// <summary>
+        /// Controle SalvarProfessor.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SalvarProfessor;
     }
 }

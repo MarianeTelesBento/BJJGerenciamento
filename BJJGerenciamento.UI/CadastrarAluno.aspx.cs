@@ -31,7 +31,6 @@ namespace BJJGerenciamento.UI
             telefoneAluno.Text = string.Empty;
             emailAluno.Text = string.Empty;
             cpfAluno.Text = string.Empty;
-            rgAluno.Text = string.Empty;
             dataNascimentoAluno.Text = string.Empty;
             cepAluno.Text = string.Empty;
             ruaAluno.Text = string.Empty;
@@ -181,7 +180,6 @@ namespace BJJGerenciamento.UI
                 sobrenomeResponsavel.Text = responsavel.Sobrenome;
                 telefoneResponsavel.Text = responsavel.Telefone;
                 emailResponsavel.Text = responsavel.Email;
-                rgResponsavel.Text = responsavel.Rg;
                 cpfResponsavel.Text = responsavel.Cpf;
                 dataNascimentoResponsavel.Text = DateTime.Parse(responsavel.DataNascimento).ToString("yyyy-MM-dd");
                 cepResponsavel.Text = responsavel.Cep;
@@ -393,7 +391,6 @@ namespace BJJGerenciamento.UI
                         Sobrenome = sobrenomeResponsavel.Text,
                         Telefone = telefoneResponsavel.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
                         Email = emailResponsavel.Text,
-                        Rg = rgResponsavel.Text.Replace(".", "").Replace("-", ""),
                         Cpf = cpfResponsavel.Text.Replace("-", "").Replace(".", ""),
                         DataNascimento = dataNascimentoResponsavel.Text,
                         Cep = cepResponsavel.Text.Replace("-", ""),
@@ -417,7 +414,6 @@ namespace BJJGerenciamento.UI
                 Sobrenome = sobrenomeAluno.Text,
                 Telefone = telefoneAluno.Text.Replace(")", "").Replace("(", "").Replace(" ", "").Replace("-", ""),
                 Email = emailAluno.Text,
-                Rg = rgAluno.Text.Replace(".", "").Replace("-", ""),
                 Cpf = cpfAluno.Text.Replace("-", "").Replace(".", ""),
                 DataNascimento = dataNascimentoAluno.Text,
                 Cep = cepAluno.Text.Replace("-", ""),

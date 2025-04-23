@@ -11,178 +11,160 @@ namespace BJJGerenciamento.UI
 {
 
 
-    public partial class _Default
+    public partial class CadastrarProfessor
     {
 
         /// <summary>
-        /// Controle GridView1.
+        /// Controle txtNome.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.TextBox txtNome;
 
         /// <summary>
-        /// Controle modalIdMatricula.
+        /// Controle txtSobrenome.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalIdMatricula;
+        protected global::System.Web.UI.WebControls.TextBox txtSobrenome;
 
         /// <summary>
-        /// Controle modalDataMatricula.
+        /// Controle txtCpf.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalDataMatricula;
+        protected global::System.Web.UI.WebControls.TextBox txtCpf;
 
         /// <summary>
-        /// Controle modalStatusMatricula.
+        /// Controle txtDataNascimento.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox modalStatusMatricula;
+        protected global::System.Web.UI.WebControls.TextBox txtDataNascimento;
 
         /// <summary>
-        /// Controle modalNome.
+        /// Controle txtTelefone.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalNome;
+        protected global::System.Web.UI.WebControls.TextBox txtTelefone;
 
         /// <summary>
-        /// Controle modalSobrenome.
+        /// Controle txtEmail.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalSobrenome;
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
-        /// Controle modalCpf.
+        /// Controle txtFpjj.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCpf;
+        protected global::System.Web.UI.WebControls.TextBox txtFpjj;
 
         /// <summary>
-        /// Controle modalEmail.
+        /// Controle txtCBJJ.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalEmail;
+        protected global::System.Web.UI.WebControls.TextBox txtCBJJ;
 
         /// <summary>
-        /// Controle modalTelefone.
+        /// Controle txtCep.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalTelefone;
+        protected global::System.Web.UI.WebControls.TextBox txtCep;
 
         /// <summary>
-        /// Controle modalDataNascimento.
+        /// Controle buscarCepResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalDataNascimento;
+        protected global::System.Web.UI.WebControls.Button buscarCepResponsavel;
 
         /// <summary>
-        /// Controle modalCep.
+        /// Controle txtCidade.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCep;
+        protected global::System.Web.UI.WebControls.TextBox txtCidade;
 
         /// <summary>
-        /// Controle modalRua.
+        /// Controle txtBairro.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalRua;
+        protected global::System.Web.UI.WebControls.TextBox txtBairro;
 
         /// <summary>
-        /// Controle modalBairro.
+        /// Controle txtRua.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalBairro;
+        protected global::System.Web.UI.WebControls.TextBox txtRua;
 
         /// <summary>
-        /// Controle modalCidade.
+        /// Controle txtNumero.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCidade;
+        protected global::System.Web.UI.WebControls.TextBox txtNumero;
 
         /// <summary>
-        /// Controle modalEstado.
+        /// Controle txtComplemento.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalEstado;
+        protected global::System.Web.UI.WebControls.TextBox txtComplemento;
 
         /// <summary>
-        /// Controle modalNumero.
+        /// Controle txtEstado.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalNumero;
+        protected global::System.Web.UI.WebControls.TextBox txtEstado;
 
         /// <summary>
-        /// Controle modalComplemento.
+        /// Controle btnEnviar.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalComplemento;
-
-        /// <summary>
-        /// Controle modalCarteiraFpjj.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCarteiraFpjj;
-
-        /// <summary>
-        /// Controle SalvarAluno.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SalvarAluno;
+        protected global::System.Web.UI.WebControls.Button btnEnviar;
     }
 }

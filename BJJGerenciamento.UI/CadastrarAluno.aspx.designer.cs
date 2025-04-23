@@ -33,15 +33,6 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Panel pnlInformacoesPessoaisAluno;
 
         /// <summary>
-        /// Controle cpfAluno.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cpfAluno;
-
-        /// <summary>
         /// Controle nomeAluno.
         /// </summary>
         /// <remarks>
@@ -60,31 +51,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox sobrenomeAluno;
 
         /// <summary>
-        /// Controle telefoneAluno.
+        /// Controle cpfAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox telefoneAluno;
-
-        /// <summary>
-        /// Controle emailAluno.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox emailAluno;
-
-        /// <summary>
-        /// Controle rgAluno.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox rgAluno;
+        protected global::System.Web.UI.WebControls.TextBox cpfAluno;
 
         /// <summary>
         /// Controle dataNascimentoAluno.
@@ -96,6 +69,33 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox dataNascimentoAluno;
 
         /// <summary>
+        /// Controle telefoneAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox telefoneAluno;
+
+        /// <summary>
+        /// Controle carteiraFPJJAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox carteiraFPJJAluno;
+
+        /// <summary>
+        /// Controle emailAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox emailAluno;
+
+        /// <summary>
         /// Controle cepAluno.
         /// </summary>
         /// <remarks>
@@ -105,22 +105,22 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox cepAluno;
 
         /// <summary>
-        /// Controle buscarCepAluno.
+        /// Controle Button1.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button buscarCepAluno;
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// Controle ruaAluno.
+        /// Controle cidadeAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ruaAluno;
+        protected global::System.Web.UI.WebControls.TextBox cidadeAluno;
 
         /// <summary>
         /// Controle bairroAluno.
@@ -132,13 +132,22 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox bairroAluno;
 
         /// <summary>
-        /// Controle cidadeAluno.
+        /// Controle ruaAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cidadeAluno;
+        protected global::System.Web.UI.WebControls.TextBox ruaAluno;
+
+        /// <summary>
+        /// Controle numeroCasaAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox numeroCasaAluno;
 
         /// <summary>
         /// Controle estadoAluno.
@@ -159,24 +168,6 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox complementoAluno;
 
         /// <summary>
-        /// Controle numeroCasaAluno.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox numeroCasaAluno;
-
-        /// <summary>
-        /// Controle carteiraFPJJAluno.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox carteiraFPJJAluno;
-
-        /// <summary>
         /// Controle btnProximoResponsavel.
         /// </summary>
         /// <remarks>
@@ -193,15 +184,6 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlInformacoesResponsavelAluno;
-
-        /// <summary>
-        /// Controle cpfResponsavel.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cpfResponsavel;
 
         /// <summary>
         /// Controle nomeResponsavel.
@@ -222,13 +204,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox sobrenomeResponsavel;
 
         /// <summary>
-        /// Controle rgResponsavel.
+        /// Controle cpfResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox rgResponsavel;
+        protected global::System.Web.UI.WebControls.TextBox cpfResponsavel;
 
         /// <summary>
         /// Controle dataNascimentoResponsavel.
@@ -276,13 +258,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button buscarCepResponsavel;
 
         /// <summary>
-        /// Controle ruaResponsavel.
+        /// Controle cidadeResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ruaResponsavel;
+        protected global::System.Web.UI.WebControls.TextBox cidadeResponsavel;
 
         /// <summary>
         /// Controle bairroResponsavel.
@@ -294,22 +276,22 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox bairroResponsavel;
 
         /// <summary>
-        /// Controle cidadeResponsavel.
+        /// Controle ruaResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cidadeResponsavel;
+        protected global::System.Web.UI.WebControls.TextBox ruaResponsavel;
 
         /// <summary>
-        /// Controle estadoResponsavel.
+        /// Controle numeroCasaResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox estadoResponsavel;
+        protected global::System.Web.UI.WebControls.TextBox numeroCasaResponsavel;
 
         /// <summary>
         /// Controle complementoResponsavel.
@@ -321,13 +303,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox complementoResponsavel;
 
         /// <summary>
-        /// Controle numeroCasaResponsavel.
+        /// Controle estadoResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox numeroCasaResponsavel;
+        protected global::System.Web.UI.WebControls.TextBox estadoResponsavel;
 
         /// <summary>
         /// Controle proximoPlano.

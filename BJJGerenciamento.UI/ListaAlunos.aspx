@@ -79,10 +79,6 @@
                         <asp:TextBox ID="modalTelefone" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <label for="modalRg">RG:</label>
-                        <asp:TextBox ID="modalRg" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
                         <label for="modalDataNascimento">Data de Nascimento:</label>
                         <asp:TextBox ID="modalDataNascimento" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>

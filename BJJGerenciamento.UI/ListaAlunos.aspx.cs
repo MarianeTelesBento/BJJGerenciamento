@@ -62,7 +62,6 @@ namespace BJJGerenciamento.UI
             modalTelefone.Text = row.Cells[4].Text;
 
             modalEmail.Text = GridView1.DataKeys[index]["Email"].ToString();
-            modalRg.Text = GridView1.DataKeys[index]["Rg"].ToString();
             modalDataNascimento.Text = GridView1.DataKeys[index]["DataNascimento"].ToString();
             modalCep.Text = GridView1.DataKeys[index]["Cep"].ToString();
             modalRua.Text = GridView1.DataKeys[index]["Rua"].ToString();
@@ -89,7 +88,6 @@ namespace BJJGerenciamento.UI
                 aluno.Cpf = modalCpf.Text;
                 aluno.Telefone = modalTelefone.Text;
                 aluno.Email = modalEmail.Text;
-                aluno.Rg = modalRg.Text;
                 aluno.DataNascimento = modalDataNascimento.Text;
                 aluno.Cep = modalCep.Text;
                 aluno.Rua = modalRua.Text;

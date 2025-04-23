@@ -23,8 +23,8 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = "INSERT INTO TBResponsaveis " +
-                                      "(Nome, Sobrenome, CPF, RG, Telefone, Email, Bairro, CEP, Cidade, Rua, Estado, DataDeNascimento, Complemento, NumeroCasa) " +
-                                      "VALUES (@nome, @sobrenome, @cpf, @rg, @telefone, @email, @bairro, @cep, @cidade, @rua, @estado, @dataNascimento, @complemento, @numeroCasa);" +
+                                      "(Nome, Sobrenome, CPF, Telefone, Email, Bairro, CEP, Cidade, Rua, Estado, DataDeNascimento, Complemento, NumeroCasa) " +
+                                      "VALUES (@nome, @sobrenome, @cpf, @telefone, @email, @bairro, @cep, @cidade, @rua, @estado, @dataNascimento, @complemento, @numeroCasa);" +
                                       "SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -33,7 +33,6 @@ namespace BJJGerenciamento.UI.DAL
                     command.Parameters.AddWithValue("@sobrenome", responsavel.Sobrenome);
                     command.Parameters.AddWithValue("@telefone", responsavel.Telefone);
                     command.Parameters.AddWithValue("@email", responsavel.Email);
-                    command.Parameters.AddWithValue("@rg", responsavel.Rg);
                     command.Parameters.AddWithValue("@cpf", responsavel.Cpf);
                     command.Parameters.AddWithValue("@dataNascimento", responsavel.DataNascimento);
                     command.Parameters.AddWithValue("@cep", responsavel.Cep);
@@ -57,7 +56,7 @@ namespace BJJGerenciamento.UI.DAL
                 SqlConnection connection = new SqlConnection(connectionString);
                 connection.Open();
 
-                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Rg, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @rg, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
+                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
                     "SELECT SCOPE_IDENTITY();", connection);
 
                 inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
@@ -66,7 +65,6 @@ namespace BJJGerenciamento.UI.DAL
                 inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
                 inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
                 inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
-                inserirCommand.Parameters.AddWithValue("@rg", aluno.Rg);
                 inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
                 inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
                 inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
@@ -203,7 +201,6 @@ namespace BJJGerenciamento.UI.DAL
                     DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
                     Cpf = reader.GetString(8),
 
-                    Rg = reader.GetString(9),
                     Estado = reader.GetString(10),
                     Bairro = reader.GetString(11),
                     Cidade = reader.GetString(12),
