@@ -134,6 +134,22 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
+        public static bool CpfJaCadastrado(string cpf)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString)) // sua string de conexão
+            {
+                string query = "SELECT COUNT(*) FROM TBProfessores WHERE Cpf = @Cpf"; // Consulta para contar registros com o CPF informado
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Cpf", cpf); // Adiciona o parâmetro para evitar SQL Injection
+
+                connection.Open();
+
+                int count = Convert.ToInt32(command.ExecuteScalar()); // Executa o SELECT e obtém o valor de contagem
+
+                return count > 0; // Se count > 0, significa que o CPF já está cadastrado
+            }
+        }
+
 
     }
 }
