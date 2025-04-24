@@ -38,17 +38,24 @@ namespace BJJGerenciamento.UI
                 Estado = txtEstado.Text
             };
 
-            // Criando a instância da DAL para salvar os dados
-            ProfessorDAL professorDAL = new ProfessorDAL();
+            ProfessorDAL professorDAL = new ProfessorDAL(professor);
 
-            // Chamando o método CadastrarProfessor para salvar no banco de dados
-            professorDAL.CadastrarProfessor(professor);
+            int cadastroFuncionando = professorDAL.CadastrarProfessor();
 
-            // Mensagem de sucesso ou redirecionamento após o cadastro
-            // Exemplo: Exibindo uma mensagem ou redirecionando
-            Response.Write("<script>alert('Professor cadastrado com sucesso!');</script>");
+            if (cadastroFuncionando > 0)
+            {
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                typeof(Page),
+                "alerta",
+                "alert('alert('Professor cadastrado com sucesso!'); window.location.href='ListaProfessores.aspx';",
+                true);
+            }
+            else
+            {
+                Response.Write("<script>alert('Erro ao cadastrar professor.');</script>");
+            }
 
-            // Limpar os campos após o envio
+
             LimparCampos();
 
         }   

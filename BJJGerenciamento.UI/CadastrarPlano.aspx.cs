@@ -32,6 +32,7 @@ namespace BJJGerenciamento.UI
 
                     ddPlanos.DataBind();
 
+                    ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", ""));
                 }
             }
         }
@@ -217,6 +218,21 @@ namespace BJJGerenciamento.UI
 
         protected void btnValorPlano_Click(object sender, EventArgs e)
         {
+            if(string.IsNullOrEmpty(ddPlanos.SelectedValue))
+            {
+                Response.Write("<script>alert('Selecione uma turma');</script>");
+                return;
+            }
+
+            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+
+            if (totalDiasSelecionados == null || totalDiasSelecionados == 0 )
+            {
+                Response.Write("<script>alert('Selecione pelo menos um dia');</script>");
+                return;
+            }
+
+
             int totalHorariosSelecionados = 0;
 
             totalHorariosSelecionados += ContarSelecionados(cbHorariosSegunda);
@@ -226,7 +242,6 @@ namespace BJJGerenciamento.UI
             totalHorariosSelecionados += ContarSelecionados(cbHorariosSexta);
 
 
-            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
 
             if (totalHorariosSelecionados > totalDiasSelecionados)
             {

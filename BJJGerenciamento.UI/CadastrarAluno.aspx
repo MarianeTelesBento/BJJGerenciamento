@@ -267,7 +267,7 @@
 
             <asp:Panel ID="pnlPlanoAluno" runat="server" Visible="false">
                 <div class="container mt-4">
-                    <h2 class="text-center">Finalizar (Por enquanto)</h2>
+                    <h2 class="text-center">Confirmar cadastro</h2>
 
                     <!-- Botão de Enviar -->
                     <div class="col-12 text-center mt-3">
@@ -280,44 +280,44 @@
         </ContentTemplate>
 
      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Máscara para o telefone
+            $('#<%= telefoneAluno.ClientID %>').mask('(00) 00000-0000');
+
+            // Máscara para o CPF
+            $('#<%= cpfAluno.ClientID %>').mask('000.000.000-00');
+
+
+            $('#<%= cepAluno.ClientID %>').mask('00000-000')
+
+            $('#<%= numeroCasaAluno.ClientID %>').mask('00000')
+
+            $('#<%= telefoneAluno.ClientID %>').mask('(00) 00000-0000');
+
+            $('#<%= cpfResponsavel.ClientID %>').mask('000.000.000-00');
+
+
+            $('#<%= cepResponsavel.ClientID %>').mask('00000-000')
+
+            $('#<%= numeroCasaResponsavel.ClientID %>').mask('00000')
+        });
+
+        function formatarCep(campo) {
+            let cep = campo.value.replace(/\D/g, "");
+
+            if (cep.length > 8) cep = cep.substring(0, 8);
+
+            cep = cep.replace(/^(\d{5})(\d)/, "$1-$2");
+
+            campo.value = cep;
+        }
+    </script>
     
-        <script type="text/javascript">
-            $(document).ready(function () {
-                // Máscara para o telefone
-                $('#<%= telefoneAluno.ClientID %>').mask('(00) 00000-0000');
-
-                // Máscara para o CPF
-                $('#<%= cpfAluno.ClientID %>').mask('000.000.000-00');
-
-
-                $('#<%= cepAluno.ClientID %>').mask('00000-000')
-
-                $('#<%= numeroCasaAluno.ClientID %>').mask('00000')
-
-                $('#<%= telefoneAluno.ClientID %>').mask('(00) 00000-0000');
-
-                $('#<%= cpfResponsavel.ClientID %>').mask('000.000.000-00');
-
-
-                $('#<%= cepResponsavel.ClientID %>').mask('00000-000')
-
-                $('#<%= numeroCasaResponsavel.ClientID %>').mask('00000')
-            });
-
-            function formatarCep(campo) {
-                let cep = campo.value.replace(/\D/g, "");
-
-                if (cep.length > 8) cep = cep.substring(0, 8);
-
-                cep = cep.replace(/^(\d{5})(\d)/, "$1-$2");
-
-                campo.value = cep;
-            }
-        </script>
 
 </asp:Content>
 

@@ -12,6 +12,7 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
+
         public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
         //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
@@ -49,41 +50,41 @@ namespace BJJGerenciamento.UI.DAL
             }
 
         }
-       public int CadastrarAluno(AlunoModels aluno)
-            {
-                int cadastroRealizado;
+        public int CadastrarAluno(AlunoModels aluno)
+                {
+                    int cadastroRealizado;
 
-                SqlConnection connection = new SqlConnection(connectionString);
-                connection.Open();
+                    SqlConnection connection = new SqlConnection(connectionString);
+                    connection.Open();
 
-                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
-                    "SELECT SCOPE_IDENTITY();", connection);
+                    SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula, @); " +
+                        "SELECT SCOPE_IDENTITY();", connection);
 
-                inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
-                inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
-                inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
-                inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
-                inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
-                inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
-                inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
-                inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
-                inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
-                inserirCommand.Parameters.AddWithValue("@rua", aluno.Rua);
-                inserirCommand.Parameters.AddWithValue("@bairro", aluno.Bairro);
-                inserirCommand.Parameters.AddWithValue("@cidade", aluno.Cidade);
-                inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
-                inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
-                inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
-                inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento); 
-                inserirCommand.Parameters.AddWithValue("@idMatricula", aluno.IdMatricula);
+                    inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
+                    inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
+                    inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
+                    inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
+                    inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
+                    inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
+                    inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
+                    inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
+                    inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
+                    inserirCommand.Parameters.AddWithValue("@rua", aluno.Rua);
+                    inserirCommand.Parameters.AddWithValue("@bairro", aluno.Bairro);
+                    inserirCommand.Parameters.AddWithValue("@cidade", aluno.Cidade);
+                    inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
+                    inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
+                    inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
+                    inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento); 
+                    inserirCommand.Parameters.AddWithValue("@idMatricula", aluno.IdMatricula);
 
 
-                cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
+                    cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
 
-                connection.Close();
+                    connection.Close();
 
-                return Convert.ToInt32(cadastroRealizado);
-       }     
+                    return Convert.ToInt32(cadastroRealizado);
+           }     
         public int CadastrarMatricula(DateTime dataAtual, bool estadoMatricula)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -154,7 +155,6 @@ namespace BJJGerenciamento.UI.DAL
                                 Nome = reader.GetString(1),
                                 Sobrenome = reader.GetString(2),
                                 Cpf = reader.GetString(3),
-                                Rg = reader.GetString(4),
                                 Telefone = reader.GetString(5),
                                 Email = reader.GetString(6),
                                 Bairro = reader.GetString(7),
@@ -236,7 +236,6 @@ namespace BJJGerenciamento.UI.DAL
                                     Cpf = @cpf, 
                                     Telefone = @telefone, 
                                     Email = @email, 
-                                    Rg = @rg, 
                                     DataNascimento = @dataNascimento, 
                                     CEP = @cep, 
                                     Rua = @rua, 
@@ -260,7 +259,6 @@ namespace BJJGerenciamento.UI.DAL
                     command.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
                     command.Parameters.AddWithValue("@telefone", aluno.Telefone);
                     command.Parameters.AddWithValue("@email", aluno.Email);
-                    command.Parameters.AddWithValue("@rg", aluno.Rg);
                     command.Parameters.AddWithValue("@cpf", aluno.Cpf);
                     command.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
                     command.Parameters.AddWithValue("@cep", aluno.Cep);

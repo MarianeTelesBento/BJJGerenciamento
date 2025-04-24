@@ -10,7 +10,19 @@ namespace BJJGerenciamento.UI.DAL
     {
         public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        public void CadastrarProfessor(ProfessorModels professor)
+        public ProfessorModels Professor { get; set; }
+
+        public ProfessorDAL(ProfessorModels professor)
+        {
+            Professor = professor;
+        }
+
+        public ProfessorDAL()
+        {
+
+        }
+
+        public int CadastrarProfessor()
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -20,26 +32,25 @@ namespace BJJGerenciamento.UI.DAL
 
                 SqlCommand command = new SqlCommand(query, connection);
 
-                // Usando Add com tipos explícitos para evitar problemas de conversão
-                command.Parameters.Add("@Nome", SqlDbType.VarChar, 50).Value = professor.Nome;
-                command.Parameters.Add("@Sobrenome", SqlDbType.VarChar, 50).Value = professor.Sobrenome;
-                command.Parameters.Add("@DataNasc", SqlDbType.Date).Value = professor.DataNasc;
-                command.Parameters.Add("@Cpf", SqlDbType.VarChar, 14).Value = professor.Cpf;
-                command.Parameters.Add("@Telefone", SqlDbType.VarChar, 15).Value = professor.Telefone;
-                command.Parameters.Add("@Email", SqlDbType.VarChar, 50).Value = professor.Email;
-                command.Parameters.Add("@CEP", SqlDbType.VarChar, 9).Value = professor.CEP ?? (object)DBNull.Value; // Aceitando null para CEP
-                command.Parameters.Add("@Rua", SqlDbType.VarChar, 100).Value = professor.Rua;
-                command.Parameters.Add("@Bairro", SqlDbType.VarChar, 50).Value = professor.Bairro;
-                command.Parameters.Add("@CarteiraFPJJ", SqlDbType.VarChar, 20).Value = professor.CarteiraFPJJ ?? (object)DBNull.Value; // Aceitando null para CarteiraFPJJ
-                command.Parameters.Add("@CarteiraCBJJ", SqlDbType.VarChar, 20).Value = professor.CarteiraCBJJ ?? (object)DBNull.Value; // Aceitando null para CarteiraCBJJ
-                command.Parameters.Add("@Numero", SqlDbType.VarChar, 10).Value = professor.Numero;
-                command.Parameters.Add("@Complemento", SqlDbType.VarChar, 100).Value = professor.Complemento ?? (object)DBNull.Value; // Aceitando null para Complemento
-                command.Parameters.Add("@Cidade", SqlDbType.VarChar, 100).Value = professor.Cidade; 
-                command.Parameters.Add("@Estado", SqlDbType.VarChar, 100).Value = professor.Estado;
+                command.Parameters.Add("@Nome", SqlDbType.VarChar, 50).Value = Professor.Nome;
+                command.Parameters.Add("@Sobrenome", SqlDbType.VarChar, 50).Value = Professor.Sobrenome;
+                command.Parameters.Add("@DataNasc", SqlDbType.Date).Value = Professor.DataNasc;
+                command.Parameters.Add("@Cpf", SqlDbType.VarChar, 14).Value = Professor.Cpf;
+                command.Parameters.Add("@Telefone", SqlDbType.VarChar, 15).Value = Professor.Telefone;
+                command.Parameters.Add("@Email", SqlDbType.VarChar, 50).Value = Professor.Email;
+                command.Parameters.Add("@CEP", SqlDbType.VarChar, 9).Value = Professor.CEP ?? (object)DBNull.Value;
+                command.Parameters.Add("@Rua", SqlDbType.VarChar, 100).Value = Professor.Rua;
+                command.Parameters.Add("@Bairro", SqlDbType.VarChar, 50).Value = Professor.Bairro;
+                command.Parameters.Add("@CarteiraFPJJ", SqlDbType.VarChar, 20).Value = Professor.CarteiraFPJJ ?? (object)DBNull.Value; 
+                command.Parameters.Add("@CarteiraCBJJ", SqlDbType.VarChar, 20).Value = Professor.CarteiraCBJJ ?? (object)DBNull.Value; 
+                command.Parameters.Add("@Numero", SqlDbType.VarChar, 10).Value = Professor.Numero;
+                command.Parameters.Add("@Complemento", SqlDbType.VarChar, 100).Value = Professor.Complemento ?? (object)DBNull.Value;
+                command.Parameters.Add("@Cidade", SqlDbType.VarChar, 100).Value = Professor.Cidade; 
+                command.Parameters.Add("@Estado", SqlDbType.VarChar, 100).Value = Professor.Estado;
 
 
                 connection.Open();
-                command.ExecuteNonQuery();
+                return command.ExecuteNonQuery();
             }
         }
 
@@ -74,7 +85,6 @@ namespace BJJGerenciamento.UI.DAL
                         Cidade = reader["Cidade"].ToString(),
                         Estado = reader["Estado"].ToString(),
                         Ativo = Convert.ToBoolean(reader["Ativo"])
-
                     };
 
                     listaProfessores.Add(professor);
