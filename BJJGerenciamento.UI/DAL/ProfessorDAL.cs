@@ -146,7 +146,7 @@ namespace BJJGerenciamento.UI.DAL
 
         public static bool CpfJaCadastrado(string cpf)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString)) // sua string de conexão
+            using (SqlConnection connection = new SqlConnection(new ProfessorDAL().connectionString)) // sua string de conexão
             {
                 string query = "SELECT COUNT(*) FROM TBProfessores WHERE Cpf = @Cpf"; // Consulta para contar registros com o CPF informado
                 SqlCommand command = new SqlCommand(query, connection);

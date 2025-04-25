@@ -38,9 +38,9 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <Button OnClick="painelAluno()">Aluno</button>
+<%--                                <Button OnClick="painelAluno()">Aluno</button>
                                 <Button OnClick="painelResponsavel()">Responsável</button>
-                                <Button OnClick="painelPlano()">Plano</button>
+                                <Button OnClick="painelPlano()">Plano</button>--%>
 
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal()">
                                     <span aria-hidden="true">&times;</span>
@@ -130,7 +130,7 @@
 
                                 </div>
                             </asp:Panel>
-                            <asp:Panel ID="pnlResponsavel"  runat="server">
+<%--                            <asp:Panel ID="pnlResponsavel"  runat="server">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label for="modalNomeResponsavel">Nome:</label>
@@ -198,7 +198,7 @@
                                             <asp:Button ID="SalvarPlano" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
                                         </div>
                                </div>
-                            </asp:Panel>
+                            </asp:Panel>--%>
                         </div>
                     </div>
                 </div>
@@ -215,23 +215,23 @@
             document.getElementById("modalDetalhes").style.display = "none";
         }
 
-        function painelAluno() {
-            document.getElementById("pnlAluno").style.display = "block";
-            document.getElementById("pnlResponsavel").style.display = "none";
-            document.getElementById("pnlPlano").style.display = "none";
-        }
+        //function painelAluno() {
+        //    document.getElementById("pnlAluno").style.display = "block";
+        //    document.getElementById("pnlResponsavel").style.display = "none";
+        //    document.getElementById("pnlPlano").style.display = "none";
+        //}
 
-        function painelResponsavel() {
-            document.getElementById("pnlAluno").style.display = "none";
-            document.getElementById("pnlResponsavel").style.display = "block";
-            document.getElementById("pnlPlano").style.display = "none";
-        }
+        //function painelResponsavel() {
+        //    document.getElementById("pnlAluno").style.display = "none";
+        //    document.getElementById("pnlResponsavel").style.display = "block";
+        //    document.getElementById("pnlPlano").style.display = "none";
+        //}
 
-        function painelPlano() {
-            document.getElementById("pnlAluno").style.display = "none";
-            document.getElementById("pnlResponsavel").style.display = "none";
-            document.getElementById("pnlPlano").style.display = "block";
-        }
+        //function painelPlano() {
+        //    document.getElementById("pnlAluno").style.display = "none";
+        //    document.getElementById("pnlResponsavel").style.display = "none";
+        //    document.getElementById("pnlPlano").style.display = "block";
+        //}
 
     </script>
 
@@ -263,7 +263,7 @@
         }
 
         #pnlAluno{
-            display = "block";
+            display: "block";
         }
 /*      .form-group {
             display: flex;
