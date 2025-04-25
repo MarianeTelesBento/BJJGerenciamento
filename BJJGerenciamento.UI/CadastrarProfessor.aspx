@@ -3,25 +3,34 @@
     <h2>Cadastrar Professor</h2>
 
     <style>
-        .btn-custom {
-            width: 250px;
-            font-size: 16px;
-            border: none;
-            color: white;
-            border-radius: 6px;
-            font-family: -apple-system, Roboto, Arial, sans-serif;
-            padding: 6px 0;
-        }
+ .btn-custom {
+    width: 250px;
+    font-size: 16px;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    padding: 0 16px; /* padding lateral */
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+}
 
-        .btn-custom2 {
-            width: 90px;
-            font-size: 15px;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            font-family: -apple-system, Roboto, Arial, sans-serif;
-            padding: 6px 0;
-        }
+.btn-custom2 {
+    width: 90px;
+    font-size: 15px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    padding: 12px;
+    height: 35px;
+    line-height: 3px;
+    text-align: center;
+}
+
+
+
     </style>
 
     <!-- Validation Summary -->

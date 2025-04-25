@@ -222,6 +222,7 @@
     </Compile>
     <Compile Include="DAL\PlanoDAL .cs" />
     <Compile Include="DAL\AlunosDAL.cs" />
+    <Compile Include="DAL\PresencaDAL.cs" />
     <Compile Include="DAL\ProfessorDAL.cs" />
     <Compile Include="ListaAlunos.aspx.cs">
       <DependentUpon>ListaAlunos.aspx</DependentUpon>
@@ -242,6 +243,7 @@
     </Compile>
     <Compile Include="Models\PlanoHorarioModels.cs" />
     <Compile Include="Models\PlanoAlunoModels.cs" />
+    <Compile Include="Models\PresencaModels.cs" />
     <Compile Include="Models\ProfessorModels.cs" />
     <Compile Include="Models\ResponsavelModels.cs" />
     <Compile Include="Models\PlanoModels.cs" />
