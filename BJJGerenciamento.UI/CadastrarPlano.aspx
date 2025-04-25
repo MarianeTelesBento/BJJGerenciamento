@@ -80,7 +80,7 @@
         background-color: #dee2e6;
         margin: 20px 0;
     }
-    <style>
+
    .btn-custom {
     background-color: #e53935; 
     font-size: 14px;
@@ -101,7 +101,6 @@
     line-height: 18px;
      
    }
-
 
     .form-select {
         padding: 0.375rem 0.75rem;
@@ -125,10 +124,7 @@
         margin-bottom: 8px;
         display: block;
     }
-
-   
 </style>
-
 
 
 <div class="container mt-5">
@@ -140,6 +136,9 @@
                 <label for="ddPlanos" class="form-label">Selecione uma turma:</label>
                 <asp:DropDownList ID="ddPlanos" runat="server" CssClass="form-select"
                     AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" />
+                <label for="cbPasseLivre">Passe Livre:</label>
+                <asp:CheckBox ID="cbPasseLivre" runat="server" CssClass="form-check"
+                    AutoPostBack="true" OnCheckedChanged="cbPasseLivre_SelectedIndexChanged"/>
             </div>
 
             <!-- Dias disponíveis -->
