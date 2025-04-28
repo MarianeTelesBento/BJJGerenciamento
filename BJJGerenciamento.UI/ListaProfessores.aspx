@@ -111,9 +111,13 @@
                         <asp:TextBox ID="modalCarteiraCBJJ" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
 
-                    <div class="modal-footer text-center">
-                        <asp:Button ID="SalvarProfessor" OnClick="SalvarProfessor_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
-                    </div>
+                                      <div class="modal-footer text-center">
+                                      <asp:Button ID="SalvarProfessor" OnClick="SalvarProfessor_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
+                                      </div>
+
+  
+
+
 
                 </div>
             </div>
@@ -134,20 +138,31 @@
         #GridView1 {
             text-align: center;
         }
-        .asp-button {
-            display: inline-block;
-            padding: 8px 16px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #0d6efd;
-            border: 1px solid #0d6efd;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+      
+   .asp-button {
+       display: inline-block;
+       width: auto;
+       padding: 8px 16px;
+       font-size: 16px;
+       font-weight: 400;
+       line-height: 1.5;
+       color: #fff;
+       background-color: #0d6efd;
+       border: 1px solid #0d6efd;
+       border-radius: 5px;
+       cursor: pointer;
+       text-align: center;
+       text-decoration: none;
+       transition: background-color 0.2s ease-in-out;
+       height: 38px;
+   }
 
-        .asp-button:hover {
-            background-color: #0b5ed7;
-        }
+   .asp-button:hover {
+       background-color: #0b5ed7;
+       border-color: #0a58ca;
+   }
+
+
     </style>
 
 </main>

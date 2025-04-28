@@ -14,7 +14,7 @@
 <style>
 .btn-custom {
     width: 250px;
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     color: white;
     border-radius: 6px;
@@ -38,6 +38,21 @@
     padding: 0px 10px;
     height: 32px;
     line-height: 32px; /* igual altura */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-custom1 {
+    width: 250px;
+    font-size: 14px;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    padding: 0px 14px;
+    height: 38px;
+    line-height: 38px; /* igual altura */
     text-align: center;
     display: flex;
     align-items: center;
@@ -156,10 +171,9 @@
 </div>
 
 
-
-<div class="text-end">
+    <div class="modal-footer text-end">
     <asp:Button ID="btnProximoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
-        CssClass="btn btn-danger btn-custom w-100 align-content-md-center" />
+        CssClass="btn btn-custom btn-danger" />
 </div>
 
     
@@ -218,13 +232,13 @@
         Informações de Logradouro
     </div>
     <div class="card-body">
-        <div class="row mb-3">
+        <div class="row mb-3 align-items-center">
             <div class="col-md-6">
                 <label for="cepResponsavel" class="form-label">CEP</label>
-                <div class="d-flex gap-2">
+                <div class="input-group">
                     <asp:TextBox ID="cepResponsavel" runat="server" CssClass="form-control" OnTextChanged="cepResponsavel_TextChanged" AutoPostBack="true" />
                     <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click"
-                        Text="Buscar" CssClass="btn btn-danger btn-custom2" UseSubmitBehavior="false" />
+                        Text="Buscar" CssClass="btn btn-custom2 btn-danger ms-2" UseSubmitBehavior="false" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -232,6 +246,7 @@
                 <asp:TextBox ID="cidadeResponsavel" CssClass="form-control" runat="server" />
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="bairroResponsavel" class="form-label">Bairro</label>
@@ -242,9 +257,10 @@
                 <asp:TextBox ID="ruaResponsavel" CssClass="form-control" runat="server" />
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-6">
-                <label for="numeroResponsavel" class="form-label">Número</label>
+                <label for="numeroCasaResponsavel" class="form-label">Número</label>
                 <asp:TextBox ID="numeroCasaResponsavel" CssClass="form-control" runat="server" />
             </div>
             <div class="col-md-6">
@@ -252,6 +268,7 @@
                 <asp:TextBox ID="complementoResponsavel" CssClass="form-control" runat="server" />
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="estadoResponsavel" class="form-label">Estado</label>
@@ -261,11 +278,12 @@
     </div>
 </div>
 
-
-        <div class="text-end">
-    <asp:Button ID="proximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server"
-        CssClass="btn btn-danger btn-custom px-3" />
+<!-- Botão Próximo Responsável -->
+<div class="text-end mb-6">
+    <asp:Button ID="btnProximoAlunoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
+        CssClass="btn btn-custom btn-danger w-100" />
 </div>
+
 
   
 
@@ -315,6 +333,8 @@
             $('#<%= numeroCasaResponsavel.ClientID %>').mask('00000')
 
             $('#<%= telefoneResponsavel.ClientID %>').mask('(00) 00000-0000');
+
+
         });
 
         function formatarCep(campo) {
