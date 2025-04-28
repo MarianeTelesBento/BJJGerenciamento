@@ -10,21 +10,22 @@
     color: white;
     border-radius: 6px;
     font-family: -apple-system, Roboto, Arial, sans-serif;
-    padding: 0 16px; /* padding lateral */
-    height: 45px;
+    padding: 0px 14px; /* padding lateral */
+    height: 35px;
     line-height: 45px;
     text-align: center;
+
 }
 
 .btn-custom2 {
     width: 90px;
-    font-size: 15px;
+    font-size: 12px;
     border: none;
     color: white;
     border-radius: 4px;
     font-family: -apple-system, Roboto, Arial, sans-serif;
     padding: 12px;
-    height: 35px;
+    height: 16px;
     line-height: 3px;
     text-align: center;
 }
@@ -107,7 +108,7 @@
                     <label class="form-label">CEP</label>
                     <div class="d-flex gap-2">
                         <asp:TextBox ID="txtCep" runat="server" CssClass="form-control" AutoPostBack="true" OnTextChanged="cepResponsavel_TextChanged" />
-                        <asp:Button ID="buscarCepResponsavel" runat="server" Text="Buscar" CssClass="btn btn-danger btn-custom2" OnClick="buscarCepResponsavel_Click" UseSubmitBehavior="false" />
+                        <asp:Button ID="buscarCepResponsavel" runat="server" Text="Buscar" CssClass="btn btn-danger btn-custom2" OnClick="buscarCepResponsavel_Click" UseSubmitBehavior="false"  />
                     </div>
                     <asp:RequiredFieldValidator ID="rfvCep" ControlToValidate="txtCep" runat="server" ErrorMessage="Informe o CEP." CssClass="text-danger" Display="Dynamic" />
                     <asp:RegularExpressionValidator ID="revCep" ControlToValidate="txtCep" runat="server" ValidationExpression="^\d{5}-\d{3}$" ErrorMessage="CEP inválido." CssClass="text-danger" Display="Dynamic" />
@@ -152,7 +153,7 @@
 
     <!-- Botão Enviar -->
     <div class="text-end">
-        <asp:Button ID="btnEnviar" Text="Enviar" runat="server" CssClass="btn btn-danger btn-custom px-5" OnClick="btnEnviar_Click" />
+        <asp:Button ID="btnEnviar" Text="Enviar" runat="server" CssClass="btn btn-danger btn-custom px-3" OnClick="btnEnviar_Click" />
     </div>
 
     <!-- Scripts de Máscara -->

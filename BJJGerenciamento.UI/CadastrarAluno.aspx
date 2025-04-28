@@ -19,7 +19,8 @@
         color: white;
         border-radius: 6px;
         font-family: -apple-system, Roboto, Arial, sans-serif;
-        padding: 6px 0;
+        padding: 8px ;
+         height: 38px;
     }
       .btn-custom3 {
       width: 350px;
@@ -32,13 +33,13 @@
       }
 
     .btn-custom2 {
-        width: 90px;
-        font-size: 15px;
+       
+        font-size: 13px;
         border: none;
         color: white;
         border-radius: 4px;
         font-family: -apple-system, Roboto, Arial, sans-serif;
-        padding: 6px 0;
+       
     }
     
 
@@ -153,7 +154,7 @@
 
 <div class="text-end">
     <asp:Button ID="btnProximoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
-        CssClass="btn btn-danger" Style="width:250px;" />
+        CssClass="btn btn-danger btn-custom" Style="width:250px;" />
 </div>
 
     
