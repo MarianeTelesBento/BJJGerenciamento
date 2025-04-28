@@ -85,8 +85,8 @@ namespace BJJGerenciamento.UI
                     Estado = txtEstado.Text
                 };
 
-                ProfessorDAL professorDAL = new ProfessorDAL();
-                professorDAL.CadastrarProfessor(professor);
+                ProfessorDAL professorDAL = new ProfessorDAL(professor);
+                professorDAL.CadastrarProfessor();
 
                 // Mensagem de sucesso
                 ScriptManager.RegisterStartupScript(this, GetType(), "sucesso", "alert('Professor cadastrado com sucesso!');", true);

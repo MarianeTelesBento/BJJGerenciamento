@@ -156,7 +156,6 @@ namespace BJJGerenciamento.UI.DAL
                                 Nome = reader.GetString(1),
                                 Sobrenome = reader.GetString(2),
                                 Cpf = reader.GetString(3),
-                                Rg = reader.GetString(4),
                                 Telefone = reader.GetString(5),
                                 Email = reader.GetString(6),
                                 Bairro = reader.GetString(7),
@@ -238,7 +237,6 @@ namespace BJJGerenciamento.UI.DAL
                                     Cpf = @cpf, 
                                     Telefone = @telefone, 
                                     Email = @email, 
-                                    Rg = @rg, 
                                     DataNascimento = @dataNascimento, 
                                     CEP = @cep, 
                                     Rua = @rua, 
@@ -262,7 +260,6 @@ namespace BJJGerenciamento.UI.DAL
                     command.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
                     command.Parameters.AddWithValue("@telefone", aluno.Telefone);
                     command.Parameters.AddWithValue("@email", aluno.Email);
-                    command.Parameters.AddWithValue("@rg", aluno.Rg);
                     command.Parameters.AddWithValue("@cpf", aluno.Cpf);
                     command.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
                     command.Parameters.AddWithValue("@cep", aluno.Cep);

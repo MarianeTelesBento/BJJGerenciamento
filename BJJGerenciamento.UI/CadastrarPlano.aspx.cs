@@ -32,6 +32,7 @@ namespace BJJGerenciamento.UI
 
                     ddPlanos.DataBind();
 
+                    ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", ""));
                 }
             }
         }
@@ -160,6 +161,36 @@ namespace BJJGerenciamento.UI
 
         }
 
+        protected void cbPasseLivre_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbPasseLivre.Checked)
+            {
+                foreach (ListItem item in cbDias.Items)
+                {
+                    item.Selected = true;
+                }
+            }
+            else
+            {
+                foreach (ListItem item in cbDias.Items)
+                {
+                    item.Selected = false;
+                }
+            }
+
+            cbDias_SelectedIndexChanged(null, null);
+
+            if (cbPasseLivre.Checked)
+            {
+                foreach (ListItem item in cbHorariosSegunda.Items) item.Selected = true;
+                foreach (ListItem item in cbHorariosTerca.Items) item.Selected = true;
+                foreach (ListItem item in cbHorariosQuarta.Items) item.Selected = true;
+                foreach (ListItem item in cbHorariosQuinta.Items) item.Selected = true;
+                foreach (ListItem item in cbHorariosSexta.Items) item.Selected = true;
+            }
+        }
+
+
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(ValorPagoPlano.Text))
@@ -217,6 +248,21 @@ namespace BJJGerenciamento.UI
 
         protected void btnValorPlano_Click(object sender, EventArgs e)
         {
+            if(string.IsNullOrEmpty(ddPlanos.SelectedValue))
+            {
+                Response.Write("<script>alert('Selecione uma turma');</script>");
+                return;
+            }
+
+            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+
+            if (totalDiasSelecionados == null || totalDiasSelecionados == 0 )
+            {
+                Response.Write("<script>alert('Selecione pelo menos um dia');</script>");
+                return;
+            }
+
+
             int totalHorariosSelecionados = 0;
 
             totalHorariosSelecionados += ContarSelecionados(cbHorariosSegunda);
@@ -226,13 +272,8 @@ namespace BJJGerenciamento.UI
             totalHorariosSelecionados += ContarSelecionados(cbHorariosSexta);
 
 
-            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
 
-            if (totalHorariosSelecionados > totalDiasSelecionados)
-            {
-                Response.Write("<script>alert('Esse plano não permite mais de um horário por dia');</script>");
-            }
-            else if (totalDiasSelecionados != totalHorariosSelecionados )
+            if (totalDiasSelecionados != totalHorariosSelecionados )
             {
                 Response.Write("<script>alert('Selecione pelo menos um horário para cada dia');</script>");
             }
@@ -240,6 +281,16 @@ namespace BJJGerenciamento.UI
             {
                 PlanoDAL planoDAL = new PlanoDAL();
                 decimal valorPlano = planoDAL.BuscarMensalidade(int.Parse(ddPlanos.SelectedValue), totalDiasSelecionados);
+
+                if (totalHorariosSelecionados > totalDiasSelecionados)
+                {
+                    valorPlano = 200.00m;
+
+                    ValorPagoPlano.Text = $"{valorPlano}";
+
+                    EnviarInformacoes.Visible = true;
+                    //Response.Write("<script>alert('Esse plano não permite mais de um horário por dia');</script>");
+                }
 
                 ValorPagoPlano.Text = $"{valorPlano}";
 

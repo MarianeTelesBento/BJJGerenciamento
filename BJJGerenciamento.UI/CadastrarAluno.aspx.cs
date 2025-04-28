@@ -20,7 +20,7 @@ namespace BJJGerenciamento.UI
 
         }
 
-        public bool cpfResponsavelExitente;
+        public bool cpfResponsavelExistente;
         public bool alunoMaiorIdade;
 
 
@@ -173,7 +173,7 @@ namespace BJJGerenciamento.UI
 
             if (responsavel != null)
             {
-                cpfResponsavelExitente = true;
+                cpfResponsavelExistente = true;
                 Response.Write("<script>alert('Responsavel já cadastrando na base de dados');</script>");
 
                 nomeResponsavel.Text = responsavel.Nome;

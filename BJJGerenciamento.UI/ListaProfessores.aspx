@@ -14,7 +14,7 @@
             <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" HtmlEncode="false"/>
             <asp:BoundField DataField="Cpf" HeaderText="CPF" />
             <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-            <asp:TemplateField HeaderText="Ativo">
+            <asp:TemplateField HeaderText="Status da Matrícula">
                 <ItemTemplate>
                     <asp:CheckBox ID="chkAtivo" runat="server" Enabled="false"
                         Checked='<%# Convert.ToBoolean(Eval("Ativo")) %>' />
@@ -45,6 +45,10 @@
                     <div class="form-group">
                         <asp:Label for="modalIdProfessor">ID:</asp:Label>
                         <asp:TextBox ID="modalIdProfessor" runat="server" ReadOnly CssClass="form-control"></asp:TextBox>
+                    </div>
+                     <div class="form-group d-flex align-items-center gap-2">
+                        <asp:Label ID="lblmodalAtivo" runat="server" CssClass="mb-0">Status da matrícula:</asp:Label>
+                        <asp:CheckBox ID="modalAtivo" runat="server" />
                     </div>
                     <div class="form-group">
                         <asp:Label for="modalNome">Nome:</asp:Label>
@@ -105,9 +109,6 @@
                     <div class="form-group">
                         <asp:Label for="modalCarteiraCBJJ">Carteira CBJJ:</asp:Label>
                         <asp:TextBox ID="modalCarteiraCBJJ" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
-                        <asp:CheckBox ID="modalAtivo" runat="server" CssClass="form-check-input" Text="Ativo" />
                     </div>
 
                     <div class="modal-footer text-center">
