@@ -58,7 +58,10 @@ namespace BJJGerenciamento.UI.DAL
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT TOP 1 Mensalidade FROM TBPlanoDetalhes WHERE IdPlano = @IdPlano AND QtsDias >= @QtsDias ORDER BY QtsDias ASC;", connection))
+                using (SqlCommand command = new SqlCommand("SELECT TOP 1 IdDetalhe, QtsDias, Mensalidade " +
+                "FROM TBPlanoDetalhes " +
+                "WHERE IdPlano = @IdPlano AND QtsDias >= @QtsDias " +
+                "ORDER BY QtsDias ASC", connection))
                 {
                     command.Parameters.AddWithValue("@IdPlano", idPlano);
                     command.Parameters.AddWithValue("@QtsDias", QtsDias);
@@ -66,7 +69,7 @@ namespace BJJGerenciamento.UI.DAL
 
                     if (reader.Read())
                     {
-                        mensalidade = reader.GetDecimal(0);                    
+                        mensalidade = reader.GetDecimal(2);                    
                     }
 
                 }
@@ -103,22 +106,23 @@ namespace BJJGerenciamento.UI.DAL
         }
         public PlanoModels BuscarPlanoDetalhes(int idPlano, int qtsDias)
         {
-            PlanoModels plano = null; // Vamos mudar para retornar apenas um plano
+            PlanoModels plano = null;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(
-                    "SELECT IdDetalhe, QtsDias, Mensalidade " +
+                    "SELECT TOP 1 IdDetalhe, QtsDias, Mensalidade " +
                     "FROM TBPlanoDetalhes " +
-                    "WHERE IdPlano = @IdPlano AND QtsDias = @QtsDias", connection))
+                    "WHERE IdPlano = @IdPlano AND QtsDias >= @QtsDias " +
+                    "ORDER BY QtsDias ASC", connection))
                 {
                     command.Parameters.AddWithValue("@IdPlano", idPlano);
                     command.Parameters.AddWithValue("@QtsDias", qtsDias);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        if (reader.Read()) // Apenas um resultado
+                        if (reader.Read())
                         {
                             plano = new PlanoModels()
                             {
@@ -132,7 +136,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return plano;
         }
-
         public List<KeyValuePair<int, string>> BuscarDiasPlano(int idPlano)
         {
             List<KeyValuePair<int, string>> diasPlanoList = new List<KeyValuePair<int, string>>();
