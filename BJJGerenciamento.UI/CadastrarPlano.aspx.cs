@@ -12,15 +12,14 @@ namespace BJJGerenciamento.UI
 {
 	public partial class CadastrarPlano : System.Web.UI.Page
 	{
-        int idAluno; 
+        int idAluno;
 
-		protected void Page_Load(object sender, EventArgs e)
-		{
+        protected void Page_Load(object sender, EventArgs e)
+        {
             idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
 
             if (!IsPostBack)
             {
-
                 PlanoDAL planoDAL = new PlanoDAL();
                 List<PlanoModels> planos = planoDAL.BuscarPlano();
 
@@ -29,7 +28,6 @@ namespace BJJGerenciamento.UI
                     ddPlanos.DataSource = planos;
                     ddPlanos.DataTextField = "Nome";
                     ddPlanos.DataValueField = "idPlano";
-
                     ddPlanos.DataBind();
 
                     ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", ""));
@@ -39,7 +37,6 @@ namespace BJJGerenciamento.UI
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             pnlSegunda.Visible = false;
             pnlTerca.Visible = false;
             pnlQuarta.Visible = false;
@@ -54,17 +51,28 @@ namespace BJJGerenciamento.UI
 
             PlanoDAL planoDal = new PlanoDAL();
 
-            if (!string.IsNullOrEmpty(ddPlanos.SelectedValue))
+            if (ddPlanos.SelectedValue != "-1")
             {
-                int idPlano = int.Parse(ddPlanos.SelectedValue);
-                List<KeyValuePair<int, string>> diasPlano = planoDal.BuscarDiasPlano(idPlano);
-
-                cbDias.Items.Clear();
-
-                foreach (var dia in diasPlano)
+                int idPlano;
+                if (int.TryParse(ddPlanos.SelectedValue, out idPlano))
                 {
-                    cbDias.Items.Add(new ListItem(dia.Value, dia.Key.ToString()));
+                    List<KeyValuePair<int, string>> diasPlano = planoDal.BuscarDiasPlano(idPlano);
+
+                    cbDias.Items.Clear();
+
+                    foreach (var dia in diasPlano)
+                    {
+                        cbDias.Items.Add(new ListItem(dia.Value, dia.Key.ToString()));
+                    }
                 }
+                else
+                {
+                    cbDias.Items.Clear();
+                }
+            }
+            else
+            {
+                cbDias.Items.Clear();
             }
         }
 
@@ -213,7 +221,7 @@ namespace BJJGerenciamento.UI
 
             int idDetalhe = planoSelecionado.IdDetalhe;
 
-            bool cadastroSucesso = false; // para controlar se algum cadastro foi bem-sucedido
+            bool cadastroSucesso = false;
 
             foreach (ListItem diaItem in cbDias.Items)
             {
@@ -238,7 +246,7 @@ namespace BJJGerenciamento.UI
 
                                 if (cadastroFuncionando > 0)
                                 {
-                                    cadastroSucesso = true; // marca que deu certo
+                                    cadastroSucesso = true; 
                                 }
                             }
                         }
