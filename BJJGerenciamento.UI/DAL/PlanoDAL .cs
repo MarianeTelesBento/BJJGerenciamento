@@ -101,39 +101,38 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoList;
         }
-        public List<PlanoModels> BuscarPlanoDetalhes(string idPlano)
+        public PlanoModels BuscarPlanoDetalhes(int idPlano, int qtsDias)
         {
-            List<PlanoModels> planoList = new List<PlanoModels>();
+            PlanoModels plano = null; // Vamos mudar para retornar apenas um plano
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT " +
-                    "IdDetalhe, " +
-                    "QtsDias, " +
-                    "Mensalidade " +
+                using (SqlCommand command = new SqlCommand(
+                    "SELECT IdDetalhe, QtsDias, Mensalidade " +
                     "FROM TBPlanoDetalhes " +
-                    "WHERE IdPlano = @IdPlano", connection))
+                    "WHERE IdPlano = @IdPlano AND QtsDias = @QtsDias", connection))
                 {
                     command.Parameters.AddWithValue("@IdPlano", idPlano);
+                    command.Parameters.AddWithValue("@QtsDias", qtsDias);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while (reader.Read())
+                        if (reader.Read()) // Apenas um resultado
                         {
-                            PlanoModels plano = new PlanoModels()
+                            plano = new PlanoModels()
                             {
                                 IdDetalhe = reader.GetInt32(0),
                                 QtdDias = reader.GetInt32(1),
                                 Mensalidade = reader.GetDecimal(2),
                             };
-                            planoList.Add(plano);
                         }
                     }
                 }
             }
-            return planoList;
+            return plano;
         }
+
         public List<KeyValuePair<int, string>> BuscarDiasPlano(int idPlano)
         {
             List<KeyValuePair<int, string>> diasPlanoList = new List<KeyValuePair<int, string>>();

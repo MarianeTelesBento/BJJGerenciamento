@@ -199,7 +199,21 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            int idDetalhe = int.Parse(ddPlanos.SelectedValue);
+            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+            int idPlano = int.Parse(ddPlanos.SelectedValue);
+
+            PlanoDAL planoDAL = new PlanoDAL();
+            PlanoModels planoSelecionado = planoDAL.BuscarPlanoDetalhes(idPlano, totalDiasSelecionados);
+
+            if (planoSelecionado == null)
+            {
+                Response.Write("<script>alert('Plano não encontrado. Verifique os dias selecionados e o plano.');</script>");
+                return;
+            }
+
+            int idDetalhe = planoSelecionado.IdDetalhe;
+
+            bool cadastroSucesso = false; // para controlar se algum cadastro foi bem-sucedido
 
             foreach (ListItem diaItem in cbDias.Items)
             {
@@ -214,12 +228,9 @@ namespace BJJGerenciamento.UI
                     {
                         foreach (ListItem horarioItem in horariosDia.Items)
                         {
-
                             if (horarioItem.Selected)
                             {
                                 int idHorario = int.Parse(horarioItem.Value);
-
-                                PlanoDAL planoDAL = new PlanoDAL();
 
                                 int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(ValorPagoPlano.Text));
 
@@ -227,24 +238,28 @@ namespace BJJGerenciamento.UI
 
                                 if (cadastroFuncionando > 0)
                                 {
-                                    ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
-                                    typeof(Page),
-                                    "alerta",
-                                    "alert('Plano cadastrada com sucesso!'); window.location.href='ListaAlunos.aspx';",
-                                    true);
+                                    cadastroSucesso = true; // marca que deu certo
                                 }
-                                else
-                                {
-                                    Response.Write("<script>alert('Erro ao cadastrar plano.');</script>");
-                                }
-
                             }
                         }
                     }
                 }
             }
 
+            if (cadastroSucesso)
+            {
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "alerta",
+                    "alert('Plano cadastrado com sucesso!'); window.location.href='ListaAlunos.aspx';",
+                    true);
+            }
+            else
+            {
+                Response.Write("<script>alert('Erro ao cadastrar plano.');</script>");
+            }
         }
+
 
         protected void btnValorPlano_Click(object sender, EventArgs e)
         {
