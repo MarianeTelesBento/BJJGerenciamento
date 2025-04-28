@@ -11,39 +11,44 @@
 
        <h2>Cadastro de Alunos</h2>
 
- <style>
-    .btn-custom {
-        width: 250px;
-        font-size: 16px;
-        border: none;
-        color: white;
-        border-radius: 6px;
-        font-family: -apple-system, Roboto, Arial, sans-serif;
-        padding: 8px ;
-         height: 38px;
-    }
-      .btn-custom3 {
-      width: 350px;
-      font-size: 16px;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      font-family: -apple-system, Roboto, Arial, sans-serif;
-      padding: 6px 0;
-      }
+<style>
+.btn-custom {
+    width: 250px;
+    font-size: 13px;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    padding: 0px 14px;
+    height: 38px;
+    line-height: 38px; /* igual altura */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .btn-custom2 {
-       
-        font-size: 13px;
-        border: none;
-        color: white;
-        border-radius: 4px;
-        font-family: -apple-system, Roboto, Arial, sans-serif;
-       
-    }
+.btn-custom2 {
+    width: 90px;
+    font-size: 12px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    font-family: -apple-system, Roboto, Arial, sans-serif;
+    padding: 0px 10px;
+    height: 32px;
+    line-height: 32px; /* igual altura */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+</style>
+
+
     
 
-</style>
+
 
 <%--                    <asp:Button ID="btnPular" runat="server" Text="Pular" onClick="btnPular_Click"/>--%>
 <div class="container mt-4">
@@ -154,7 +159,7 @@
 
 <div class="text-end">
     <asp:Button ID="btnProximoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
-        CssClass="btn btn-danger btn-custom" Style="width:250px;" />
+        CssClass="btn btn-danger btn-custom w-100 align-content-md-center" />
 </div>
 
     
@@ -257,10 +262,12 @@
 </div>
 
 
-    <div class="text-end">
-        <asp:Button ID="proximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server" CssClass="btn btn-danger" Style="width:250px;" />
-    </div>
+        <div class="text-end">
+    <asp:Button ID="proximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server"
+        CssClass="btn btn-danger btn-custom px-3" />
+</div>
 
+  
 
 
         </asp:Panel>
@@ -306,6 +313,8 @@
             $('#<%= cepResponsavel.ClientID %>').mask('00000-000')
 
             $('#<%= numeroCasaResponsavel.ClientID %>').mask('00000')
+
+            $('#<%= telefoneResponsavel.ClientID %>').mask('(00) 00000-0000');
         });
 
         function formatarCep(campo) {
