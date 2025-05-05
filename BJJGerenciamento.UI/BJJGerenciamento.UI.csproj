@@ -153,6 +153,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
+    <Content Include="GerenciarSalas.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Images\LogoBJJ.png" />
     <Content Include="ListaAlunos.aspx" />
@@ -233,6 +234,14 @@
     <Compile Include="DAL\AlunosDAL.cs" />
     <Compile Include="DAL\PresencaDAL.cs" />
     <Compile Include="DAL\ProfessorDAL.cs" />
+    <Compile Include="DAL\SalaDAL.cs" />
+    <Compile Include="GerenciarSalas.aspx.cs">
+      <DependentUpon>GerenciarSalas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GerenciarSalas.aspx.designer.cs">
+      <DependentUpon>GerenciarSalas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -265,6 +274,7 @@
     <Compile Include="Models\PlanoModels.cs" />
     <Compile Include="Models\EnderecoModels.cs" />
     <Compile Include="Models\AlunoModels.cs" />
+    <Compile Include="Models\SalaModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\CepService.cs" />
     <Compile Include="Site.Master.cs">

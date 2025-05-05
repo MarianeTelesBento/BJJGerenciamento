@@ -52,6 +52,7 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
         }
+
         public decimal BuscarMensalidade(int idPlano, int QtsDias)
         {
             decimal mensalidade = 0;
