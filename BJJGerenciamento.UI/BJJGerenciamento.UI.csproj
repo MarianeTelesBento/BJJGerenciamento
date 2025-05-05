@@ -134,6 +134,7 @@
     <Content Include="CadastrarAluno.aspx" />
     <Content Include="CadastrarPlano.aspx" />
     <Content Include="CadastrarProfessor.aspx" />
+    <Content Include="CadastrarTurmas.aspx" />
     <Content Include="Chamada.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -222,6 +223,13 @@
     </Compile>
     <Compile Include="CadastrarProfessor.aspx.designer.cs">
       <DependentUpon>CadastrarProfessor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CadastrarTurmas.aspx.cs">
+      <DependentUpon>CadastrarTurmas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CadastrarTurmas.aspx.designer.cs">
+      <DependentUpon>CadastrarTurmas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Chamada.aspx.cs">
       <DependentUpon>Chamada.aspx</DependentUpon>
