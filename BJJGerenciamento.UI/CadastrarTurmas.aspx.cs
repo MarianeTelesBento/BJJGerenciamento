@@ -1,112 +1,134 @@
-﻿using BJJGerenciamento.UI.DAL;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using BJJGerenciamento.UI.DAL;
-using BJJGerenciamento.UI.Models;
 
 namespace BJJGerenciamento.UI
 {
-	public partial class CadastrarTurmas : System.Web.UI.Page
-	{
+    public partial class CadastrarTurmas : System.Web.UI.Page
+    {
         PlanoDAL planoDAL = new PlanoDAL();
         protected void Page_Load(object sender, EventArgs e)
-		{
+        {
             if (!IsPostBack)
             {
-                // Carregar planos no DropDownList
-                CarregarPlanos();
-
-                // Carregar dias da semana no CheckBoxList
                 CarregarDiasSemana();
             }
-        }
-
-        private void CarregarPlanos()
-        {
-            var planos = planoDAL.BuscarPlano(); // Buscar planos da DAL
-            ddlPlano.DataSource = planos;
-            ddlPlano.DataTextField = "Nome";
-            ddlPlano.DataValueField = "IdPlano";
-            ddlPlano.DataBind();
+            else
+            {
+                RecarregarHorariosSelecionados();
+            }
         }
 
         private void CarregarDiasSemana()
         {
-            // Você pode carregar os dias diretamente na tabela TBDiasSemana ou definir como manualmente
-            var diasSemana = new List<KeyValuePair<int, string>>()
-            {
-                new KeyValuePair<int, string>(1, "Segunda"),
-                new KeyValuePair<int, string>(2, "Terça"),
-                new KeyValuePair<int, string>(3, "Quarta"),
-                new KeyValuePair<int, string>(4, "Quinta"),
-                new KeyValuePair<int, string>(5, "Sexta"),
-                new KeyValuePair<int, string>(6, "Sábado"),
-                new KeyValuePair<int, string>(7, "Domingo")
-            };
-
-            cblDias.DataSource = diasSemana;
+            var dias = planoDAL.BuscarDiasSemana();
+            cblDias.DataSource = dias;
             cblDias.DataTextField = "Value";
             cblDias.DataValueField = "Key";
             cblDias.DataBind();
         }
 
-        // Quando os dias forem selecionados, você atualiza os horários
         protected void cblDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var diasSelecionados = new List<int>();
-            foreach (ListItem item in cblDias.Items)
-            {
-                if (item.Selected)
-                {
-                    diasSelecionados.Add(int.Parse(item.Value));
-                }
-            }
-
-            // Atualizar horários com base nos dias selecionados
-            CarregarHorarios(diasSelecionados);
-            AtualizarMensalidade(diasSelecionados.Count); // Atualizar mensalidade
-        }
-
-        private void CarregarHorarios(List<int> diasSelecionados)
-        {
+            // Limpa o PlaceHolder
             phHorarios.Controls.Clear();
 
-            foreach (var dia in diasSelecionados)
-            {
-                var horarios = planoDAL.BuscarHorariosPlano(new KeyValuePair<int, string>(dia, ""), int.Parse(ddlPlano.SelectedValue));
+            // Carrega todos os horários do banco
+            var horarios = planoDAL.BuscarHorarios();
 
-                foreach (var horario in horarios)
+            foreach (ListItem diaItem in cblDias.Items)
+            {
+                if (diaItem.Selected)
                 {
-                    var checkBox = new CheckBox
+                    int idDia = int.Parse(diaItem.Value);
+
+                    // Cria um título para o dia
+                    phHorarios.Controls.Add(new Literal { Text = $"<strong>{diaItem.Text}</strong><br />" });
+
+                    // Cria o CheckBoxList dos horários
+                    CheckBoxList cblHorarios = new CheckBoxList
                     {
-                        Text = $"{horario.Key} - {horario.Value}",
-                        ID = $"chkHorario_{dia}_{horario.Key}"
+                        ID = $"cblHorarios_{idDia}",
+                        RepeatDirection = RepeatDirection.Horizontal
                     };
-                    phHorarios.Controls.Add(checkBox);
+
+                    cblHorarios.DataSource = horarios;
+                    cblHorarios.DataTextField = "Value";
+                    cblHorarios.DataValueField = "Key";
+                    cblHorarios.DataBind();
+
+                    phHorarios.Controls.Add(cblHorarios);
                     phHorarios.Controls.Add(new Literal { Text = "<br />" });
                 }
             }
         }
 
-        private void AtualizarMensalidade(int quantidadeDias)
-        {
-            if (ddlPlano.SelectedValue != null)
-            {
-                var planoId = int.Parse(ddlPlano.SelectedValue);
-                var mensalidade = planoDAL.BuscarMensalidade(planoId, quantidadeDias);
-                txtMensalidade.Text = mensalidade.ToString("C2");
-            }
-        }
-
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
-            // Coletar os dados e salvar no banco
-            var idPlano = int.Parse(ddlPlano.SelectedValue);
-            var diasSelecionados = new List<int>();
+            string nomePlano = txtNomeNovoPlano.Text.Trim();
+            string mensalidadeStr = txtMensalidade.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(nomePlano))
+            {
+                // Exiba erro de validação
+                return;
+            }
+
+            if (cblDias.SelectedItem == null)
+            {
+                // Exiba erro de validação
+                return;
+            }
+
+            int idPlano = planoDAL.CriarNovoPlano(nomePlano);
+            int diasSelecionados = 0;
+
+            foreach (ListItem diaItem in cblDias.Items)
+            {
+                if (diaItem.Selected)
+                {
+                    int idDia = int.Parse(diaItem.Value);
+                    planoDAL.VincularPlanoADia(idPlano, idDia);
+                    diasSelecionados++;
+
+                    // Recupera o CheckBoxList dos horários para este dia
+                    var cblHorarios = phHorarios.FindControl($"cblHorarios_{idDia}") as CheckBoxList;
+                    if (cblHorarios != null)
+                    {
+                        foreach (ListItem horarioItem in cblHorarios.Items)
+                        {
+                            if (horarioItem.Selected)
+                            {
+                                int idHora = int.Parse(horarioItem.Value);
+                                planoDAL.VincularPlanoHorario(idPlano, idDia, idHora);
+                            }
+                        }
+                    }
+                }
+            }
+
+            decimal valor = decimal.Parse(txtMensalidade.Text);
+            planoDAL.SalvarValorPlano(idPlano, diasSelecionados, valor);
+
+        }
+
+        protected void btnCalcularMensalidade_Click(object sender, EventArgs e)
+        {
+            var diasSelecionados = ObterDiasSelecionados();
+            if (diasSelecionados.Count == 0)
+            {
+                txtMensalidade.Text = "0.00";
+                return;
+            }
+
+            decimal mensalidade = diasSelecionados.Count * 100; // Exemplo de cálculo automático
+            txtMensalidade.Text = mensalidade.ToString("F2");
+        }
+
+        private List<int> ObterDiasSelecionados()
+        {
+            List<int> diasSelecionados = new List<int>();
             foreach (ListItem item in cblDias.Items)
             {
                 if (item.Selected)
@@ -114,16 +136,37 @@ namespace BJJGerenciamento.UI
                     diasSelecionados.Add(int.Parse(item.Value));
                 }
             }
+            return diasSelecionados;
+        }
 
-            // Salvar os dados usando o método da DAL
-            foreach (var dia in diasSelecionados)
+        private void RecarregarHorariosSelecionados()
+        {
+            phHorarios.Controls.Clear();
+            var horarios = planoDAL.BuscarHorarios();
+
+            foreach (ListItem diaItem in cblDias.Items)
             {
-                // Chamar método da DAL para salvar a turma
-                planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(txtMensalidade.Text));
-            }
+                if (diaItem.Selected)
+                {
+                    int idDia = int.Parse(diaItem.Value);
 
-            // Exibir mensagem de sucesso
-            Response.Redirect("CadastrarAluno.aspx");
+                    phHorarios.Controls.Add(new Literal { Text = $"<strong>{diaItem.Text}</strong><br />" });
+
+                    CheckBoxList cblHorarios = new CheckBoxList
+                    {
+                        ID = $"cblHorarios_{idDia}",
+                        RepeatDirection = RepeatDirection.Horizontal
+                    };
+
+                    cblHorarios.DataSource = horarios;
+                    cblHorarios.DataTextField = "Value";
+                    cblHorarios.DataValueField = "Key";
+                    cblHorarios.DataBind();
+
+                    phHorarios.Controls.Add(cblHorarios);
+                    phHorarios.Controls.Add(new Literal { Text = "<br />" });
+                }
+            }
         }
 
     }

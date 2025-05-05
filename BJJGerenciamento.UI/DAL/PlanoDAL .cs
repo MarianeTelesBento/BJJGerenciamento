@@ -210,77 +210,98 @@ namespace BJJGerenciamento.UI.DAL
             return horariosPorDia;
         }
 
-        public int CadastrarPlano(string nome)
+        public int CriarNovoPlano(string nome)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO TBPlanos (Nome)
-                         VALUES (@Nome); SELECT SCOPE_IDENTITY();";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@Nome", nome);
-
-                    con.Open();
-                    return Convert.ToInt32(cmd.ExecuteScalar()); // Retorna o IdPlano recém-criado
-                }
+                string query = "INSERT INTO TBPlanos (Nome) OUTPUT INSERTED.IdPlano VALUES (@Nome)";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Nome", nome);
+                con.Open();
+                return (int)cmd.ExecuteScalar();
             }
         }
 
-        public void CadastrarPlanoDia(int idPlano, int idDia)
+        public void VincularPlanoADia(int idPlano, int idDia)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO TBPlanoDias (IdPlano, IdDia)
-                         VALUES (@IdPlano, @IdDia)";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
-                    cmd.Parameters.AddWithValue("@IdDia", idDia);
-
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                string query = "INSERT INTO TBPlanoDias (IdPlano, IdDia) VALUES (@IdPlano, @IdDia)";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                cmd.Parameters.AddWithValue("@IdDia", idDia);
+                con.Open();
+                cmd.ExecuteNonQuery();
             }
         }
 
-        public void CadastrarPlanoHorario(int idPlano, int idDia, int idHora)
+        public void VincularPlanoHorario(int idPlano, int idDia, int idHora)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO TBPlanoHorario (IdPlano, IdDia, IdHora)
-                         VALUES (@IdPlano, @IdDia, @IdHora)";
-
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
-                    cmd.Parameters.AddWithValue("@IdDia", idDia);
-                    cmd.Parameters.AddWithValue("@IdHora", idHora);
-
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                }
+                string query = "INSERT INTO TBPlanoHorario (IdPlano, IdDia, IdHora) VALUES (@IdPlano, @IdDia, @IdHora)";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                cmd.Parameters.AddWithValue("@IdDia", idDia);
+                cmd.Parameters.AddWithValue("@IdHora", idHora);
+                con.Open();
+                cmd.ExecuteNonQuery();
             }
         }
 
-        public void CadastrarPlanoDetalhe(int idPlano, int qtsDias, decimal mensalidade)
+        public void SalvarValorPlano(int idPlano, int quantidadeDias, decimal mensalidade)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO TBPlanoDetalhes (IdPlano, QtsDias, Mensalidade)
-                         VALUES (@IdPlano, @QtsDias, @Mensalidade)";
+                string query = "INSERT INTO TBPlanoDetalhes (IdPlano, QtsDias, Mensalidade) VALUES (@IdPlano, @QtsDias, @Mensalidade)";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                cmd.Parameters.AddWithValue("@QtsDias", quantidadeDias);
+                cmd.Parameters.AddWithValue("@Mensalidade", mensalidade);
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
 
-                using (SqlCommand cmd = new SqlCommand(query, con))
+        public List<KeyValuePair<int, string>> BuscarDiasSemana()
+        {
+            var lista = new List<KeyValuePair<int, string>>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT IdDia, Dia FROM TBDiasSemana";
+                SqlCommand cmd = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
-                    cmd.Parameters.AddWithValue("@QtsDias", qtsDias);
-                    cmd.Parameters.AddWithValue("@Mensalidade", mensalidade);
-
-                    con.Open();
-                    cmd.ExecuteNonQuery();
+                    lista.Add(new KeyValuePair<int, string>(
+                        Convert.ToInt32(reader["IdDia"]),
+                        reader["Dia"].ToString()));
                 }
             }
+            return lista;
+        }
+
+        public List<KeyValuePair<int, string>> BuscarHorarios()
+        {
+            var lista = new List<KeyValuePair<int, string>>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT IdHora, HorarioInicio, HorarioFim FROM TBHora";
+                SqlCommand cmd = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader["IdHora"]);
+                    TimeSpan inicio = (TimeSpan)reader["HorarioInicio"];
+                    TimeSpan fim = (TimeSpan)reader["HorarioFim"];
+                    string texto = $"{inicio:hh\\:mm} - {fim:hh\\:mm}";
+
+                    lista.Add(new KeyValuePair<int, string>(id, texto));
+                }
+            }
+            return lista;
         }
 
     }

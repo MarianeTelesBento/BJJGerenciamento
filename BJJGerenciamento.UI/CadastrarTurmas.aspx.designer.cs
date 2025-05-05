@@ -24,13 +24,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Label lblPlano;
 
         /// <summary>
-        /// Controle ddlPlano.
+        /// Controle txtNomeNovoPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPlano;
+        protected global::System.Web.UI.WebControls.TextBox txtNomeNovoPlano;
 
         /// <summary>
         /// Controle lblDias.
@@ -69,13 +69,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.PlaceHolder phHorarios;
 
         /// <summary>
-        /// Controle lblMensalidade.
+        /// Controle Label1.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMensalidade;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
         /// Controle txtMensalidade.
@@ -85,6 +85,15 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMensalidade;
+
+        /// <summary>
+        /// Controle btnCalcularMensalidade.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCalcularMensalidade;
 
         /// <summary>
         /// Controle btnSalvar.
