@@ -154,7 +154,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Home.aspx" />
+    <Content Include="Images\filtro.png" />
     <Content Include="Images\LogoBJJ.png" />
+    <Content Include="Images\save.png" />
     <Content Include="ListaAlunos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="ListaProfessores.aspx" />

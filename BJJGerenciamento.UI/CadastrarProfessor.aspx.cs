@@ -89,8 +89,13 @@ namespace BJJGerenciamento.UI
                 professorDAL.CadastrarProfessor();
 
                 // Mensagem de sucesso
-                ScriptManager.RegisterStartupScript(this, GetType(), "sucesso", "alert('Professor cadastrado com sucesso!');", true);
                 LimparCampos();
+
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "sucesso",
+                    "alert('Professor cadastrado com sucesso!'); window.location.href='ListaProfessores.aspx';",
+                    true);
             }
             catch (Exception ex)
             {

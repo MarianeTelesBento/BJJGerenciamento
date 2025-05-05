@@ -434,7 +434,7 @@ namespace BJJGerenciamento.UI
             {
                 ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
                     typeof(Page),
-                    "alerta",
+                    "sucesso",
                     "alert('Aluno Salvo com sucesso'); window.location.href='ListaAlunos.aspx';",
                     true);
             }
