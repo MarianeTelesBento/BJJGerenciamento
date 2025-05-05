@@ -52,6 +52,7 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
         }
+
         public decimal BuscarMensalidade(int idPlano, int QtsDias)
         {
             decimal mensalidade = 0;
@@ -208,5 +209,79 @@ namespace BJJGerenciamento.UI.DAL
             }
             return horariosPorDia;
         }
+
+        public int CadastrarPlano(string nome)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO TBPlanos (Nome)
+                         VALUES (@Nome); SELECT SCOPE_IDENTITY();";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@Nome", nome);
+
+                    con.Open();
+                    return Convert.ToInt32(cmd.ExecuteScalar()); // Retorna o IdPlano recém-criado
+                }
+            }
+        }
+
+        public void CadastrarPlanoDia(int idPlano, int idDia)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO TBPlanoDias (IdPlano, IdDia)
+                         VALUES (@IdPlano, @IdDia)";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                    cmd.Parameters.AddWithValue("@IdDia", idDia);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void CadastrarPlanoHorario(int idPlano, int idDia, int idHora)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO TBPlanoHorario (IdPlano, IdDia, IdHora)
+                         VALUES (@IdPlano, @IdDia, @IdHora)";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                    cmd.Parameters.AddWithValue("@IdDia", idDia);
+                    cmd.Parameters.AddWithValue("@IdHora", idHora);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void CadastrarPlanoDetalhe(int idPlano, int qtsDias, decimal mensalidade)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"INSERT INTO TBPlanoDetalhes (IdPlano, QtsDias, Mensalidade)
+                         VALUES (@IdPlano, @QtsDias, @Mensalidade)";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                    cmd.Parameters.AddWithValue("@QtsDias", qtsDias);
+                    cmd.Parameters.AddWithValue("@Mensalidade", mensalidade);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
 }
