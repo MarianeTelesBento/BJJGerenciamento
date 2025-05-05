@@ -17,7 +17,7 @@
                     AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged"  Visible="false"/> 
                 <asp:DropDownList ID="ddProfessores" runat="server"
                     AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged"  Visible="false"/> 
-                <asp:ImageButton ID="btnSalvarChamada" runat="server" ImageUrl="Images/save.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" Visible="false"/>
+                <asp:ImageButton ID="btnSalvarChamada" runat="server" ImageUrl="Images/save.png" OnClick="btnSalvarChamada_Click" AlternateText="Filtrar" Visible="false"/>
 
                 <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
                     DataKeyNames="Email,DataNascimento, DataMatricula,IdAlunos"
@@ -37,11 +37,12 @@
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Presente?" >
-                            <ItemTemplate>
-                                <asp:CheckBox ID="chkPresente" runat="server"/>
-                            </ItemTemplate>
-                        </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Presente?" HeaderStyle-CssClass="center" ItemStyle-CssClass="center" Visible="false">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkPresente" runat="server" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+
                     </Columns>
                 </asp:GridView>
             </main>

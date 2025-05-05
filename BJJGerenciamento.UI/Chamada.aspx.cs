@@ -19,6 +19,7 @@ namespace BJJGerenciamento.UI
         {
             if (!IsPostBack)
             {
+                GridView1.Columns[6].Visible = false;
                 AlunosDAL alunosDAL = new AlunosDAL();
                 alunosList = alunosDAL.VisualizarDados();
                 GridView1.DataSource = alunosList;
@@ -89,12 +90,14 @@ namespace BJJGerenciamento.UI
         {
             if(ddProfessores.Visible == true)
             {
+                GridView1.Columns[6].Visible = false;
                 ddProfessores.Visible = false;
                 ddSalas.Visible = false;
                 btnSalvarChamada.Visible = false;
                 return;
             }
 
+            GridView1.Columns[6].Visible = true; 
             ddProfessores.Visible = true;
             ddSalas.Visible = true;
             btnSalvarChamada.Visible = true;
@@ -110,7 +113,48 @@ namespace BJJGerenciamento.UI
                 ddProfessores.Items.Insert(0, new ListItem("-- Selecione um professor --", ""));
             }
 
-            
+            SalaDAL salaDAL = new SalaDAL();
+            List<SalaModel> salas = salaDAL.ObterSalas();
+            List<SalaModel> salasAtivas = salas.Where(s => s.Ativa == true).ToList();
+
+            if (salas != null && salas.Count > 0)
+            {
+                ddSalas.DataSource = salasAtivas;
+                ddSalas.DataTextField = "NumeroSala";
+                ddSalas.DataValueField = "IdSala";
+                ddSalas.DataBind();
+                ddSalas.Items.Insert(0, new ListItem("-- Selecione uma sala --", ""));
+            }
+        }
+
+        protected void btnSalvarChamada_Click(object sender, EventArgs e)
+        {
+            PresencaModels presencaModel = new PresencaModels();
+
+            if (ddProfessores.SelectedValue == "-1" || ddSalas.SelectedValue == "-1")
+            {
+                // Exibir mensagem de erro ou aviso
+                return;
+            }
+
+            presencaModel.IdProfessor = Convert.ToInt32(ddProfessores.SelectedValue);
+            presencaModel.IdSala = Convert.ToInt32(ddSalas.SelectedValue);
+
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                CheckBox checkBox = (CheckBox)row.FindControl("chkPresente");
+                if (checkBox != null && checkBox.Checked)
+                {
+                    presencaModel.IdMatricula = Convert.ToInt32(row.Cells[0].Text.Trim());
+
+                    PresencaDAL presencaDAL = new PresencaDAL();
+                    presencaDAL.RegistrarPresenca(presencaModel);
+                }
+            }
+
+            ddProfessores.Visible = false;
+            ddSalas.Visible = false;
+            btnSalvarChamada.Visible = false;
         }
     }
 }

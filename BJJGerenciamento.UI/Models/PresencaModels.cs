@@ -7,24 +7,28 @@ namespace BJJGerenciamento.UI.Models
 {
 	public class PresencaModels
 	{
-		public PresencaModels() { }
+		public PresencaModels() {
+            Data = DateTime.Now;
+            StatusPresenca = true;
+        }
         public int IdPresenca { get; set; }
-        public int IdAluno { get; set; }
+        public int IdMatricula { get; set; }
         public int IdProfessor { get; set; }
         public bool StatusPresenca { get; set; }
         public int IdSala { get; set; }
         public DateTime Data { get; set; }
 
 
-      public PresencaModels(int idPresenca, int idAluno, int idProfessor, bool statusPresenca, int idSala, DateTime data)
+      public PresencaModels(int idPresenca, int idMatricula, int idProfessor, bool statusPresenca, int idSala)
       {
             IdPresenca = idPresenca;
-            IdAluno = idAluno;
+            IdMatricula = idMatricula;
             IdProfessor = idProfessor;
             StatusPresenca = statusPresenca;
             IdSala = idSala;
-            Data = data;
-      }   
+            Data = DateTime.Now;
+            StatusPresenca = true;
+        }   
 
     }
 }
