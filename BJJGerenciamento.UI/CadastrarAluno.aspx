@@ -217,22 +217,22 @@
 </div>
 
 <!-- Card do formulário -->
-<div class="card p-4">
-    <div class="card-header">
-        Informações de Logradouro
-    </div>
-    <div class="card-body">
-        <div class="row g-3">
-            <!-- Campo CEP com botão Buscar -->
-            <div class="col-md-6">
-                <label for="cepResponsavel" class="form-label">CEP</label>
-                <div class="d-flex">
-                    <asp:TextBox ID="cepResponsavel" CssClass="form-control" runat="server"
-                        OnTextChanged="cepResponsavel_TextChanged" AutoPostBack="true" placeholder="Digite o CEP" />
-                    <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click"
-                        Text="Buscar" CssClass="btn btn-danger btn-custom2" UseSubmitBehavior="false" />
-                </div>
-            </div>
+         <div class="card mb-4">
+     <div class="card-header">
+         Informações de Logradouro
+     </div>
+     <div class="card-body">
+         <div class="row mb-3">
+             <div class="col-md-6">
+                 <label for="cepResponsavel" class="form-label">CEP</label>
+                 <div class="d-flex gap-2">
+                      <asp:TextBox ID="TextBox1" CssClass="form-control" runat="server"
+                      <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click"
+                         Text="Buscar" CssClass="btn btn-danger btn-custom2" UseSubmitBehavior="false" />
+                 </div>
+             </div>
+         </div>
+
 
             <!-- Cidade e Bairro -->
             <div class="col-md-6">
@@ -268,7 +268,7 @@
 </div>
 
 <!-- Botão Próximo fora do card, alinhado à direita -->
-<div class="d-flex justify-content-end mt-3">
+<div class= "modal-footer text-end"
     <asp:Button ID="btnProximo" runat="server" Text="Próximo" CssClass="btn btn-danger btn-custom" />
 </div>
 
