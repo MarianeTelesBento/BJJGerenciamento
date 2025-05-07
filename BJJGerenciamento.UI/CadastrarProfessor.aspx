@@ -12,7 +12,7 @@
     font-family: -apple-system, Roboto, Arial, sans-serif;
     padding: 0px 14px; /* padding lateral */
     height: 35px;
-    line-height: 45px;
+    line-height: 35px;
     text-align: center;
 
 }

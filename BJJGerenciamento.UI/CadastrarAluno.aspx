@@ -10,23 +10,20 @@
 <%--  <h2 id="titleAluno" class="mb-4 text-center">Informações Pessoais</h2>--%>
 
        <h2>Cadastro de Alunos</h2>
-
-<style>
-.btn-custom {
+    <style>
+ .btn-custom {
     width: 250px;
-    font-size: 14px;
+    font-size: 16px;
     border: none;
     color: white;
     border-radius: 6px;
     font-family: -apple-system, Roboto, Arial, sans-serif;
-    padding: 0px 14px;
-    height: 38px;
-    line-height: 38px; /* igual altura */
+    padding: 0px 14px; /* padding lateral */
+    height: 35px;
+    line-height: 35px;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
+ }
 
 .btn-custom2 {
     width: 90px;
@@ -35,29 +32,25 @@
     color: white;
     border-radius: 4px;
     font-family: -apple-system, Roboto, Arial, sans-serif;
-    padding: 0px 10px;
-    height: 32px;
-    line-height: 32px; /* igual altura */
+    padding: 12px;
+    height: 16px;
+    line-height: 3px;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-.btn-custom1 {
+ .btn-custom1 {
     width: 250px;
-    font-size: 14px;
+    font-size: 16px;
     border: none;
     color: white;
     border-radius: 6px;
     font-family: -apple-system, Roboto, Arial, sans-serif;
-    padding: 0px 14px;
-    height: 38px;
-    line-height: 38px; /* igual altura */
+    padding: 0px 14px; /* padding lateral */
+    height: 35px;
+    line-height: 35px;
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
+ }
+
 </style>
 
 
@@ -173,7 +166,7 @@
 
     <div class="modal-footer text-end">
     <asp:Button ID="btnProximoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
-        CssClass="btn btn-custom btn-danger" />
+        CssClass="btn btn-danger btn-custom" />
 </div>
 
     
@@ -188,10 +181,7 @@
                 <div class="container mt-4">
     <div class="row mb-3">
 <div class="card mb-4">
- 
-    <div class="card-header">
-        Informações Pessoais
-    </div>
+    <div class="card-header">Informações Pessoais</div>
     <div class="card-body">
         <div class="row mb-3">
             <div class="col-md-6">
@@ -206,7 +196,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="cpfResponsavel" class="form-label">CPF</label>
-                <asp:TextBox ID="cpfResponsavel" CssClass="form-control" runat="server" OnTextChanged="cpfResponsavel_TextChanged" AutoPostBack="true"/>
+                <asp:TextBox ID="cpfResponsavel" CssClass="form-control" runat="server" OnTextChanged="cpfResponsavel_TextChanged" AutoPostBack="true" />
             </div>
             <div class="col-md-6">
                 <label for="dataNascimentoResponsavel" class="form-label">Data de Nascimento</label>
@@ -226,50 +216,49 @@
     </div>
 </div>
 
-<!-- CARD: INFORMAÇÕES DE LOGRADOURO -->
-<div class="card mb-4">
+<!-- Card do formulário -->
+<div class="card p-4">
     <div class="card-header">
         Informações de Logradouro
     </div>
     <div class="card-body">
-        <div class="row mb-3 align-items-center">
+        <div class="row g-3">
+            <!-- Campo CEP com botão Buscar -->
             <div class="col-md-6">
                 <label for="cepResponsavel" class="form-label">CEP</label>
-                <div class="input-group">
-                    <asp:TextBox ID="cepResponsavel" runat="server" CssClass="form-control" OnTextChanged="cepResponsavel_TextChanged" AutoPostBack="true" />
+                <div class="d-flex">
+                    <asp:TextBox ID="cepResponsavel" CssClass="form-control" runat="server"
+                        OnTextChanged="cepResponsavel_TextChanged" AutoPostBack="true" placeholder="Digite o CEP" />
                     <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click"
-                        Text="Buscar" CssClass="btn btn-custom2 btn-danger ms-2" UseSubmitBehavior="false" />
+                        Text="Buscar" CssClass="btn btn-danger btn-custom2" UseSubmitBehavior="false" />
                 </div>
             </div>
+
+            <!-- Cidade e Bairro -->
             <div class="col-md-6">
                 <label for="cidadeResponsavel" class="form-label">Cidade</label>
                 <asp:TextBox ID="cidadeResponsavel" CssClass="form-control" runat="server" />
             </div>
-        </div>
-
-        <div class="row mb-3">
             <div class="col-md-6">
                 <label for="bairroResponsavel" class="form-label">Bairro</label>
                 <asp:TextBox ID="bairroResponsavel" CssClass="form-control" runat="server" />
             </div>
+
+            <!-- Rua e Número -->
             <div class="col-md-6">
                 <label for="ruaResponsavel" class="form-label">Rua</label>
                 <asp:TextBox ID="ruaResponsavel" CssClass="form-control" runat="server" />
             </div>
-        </div>
-
-        <div class="row mb-3">
             <div class="col-md-6">
                 <label for="numeroCasaResponsavel" class="form-label">Número</label>
                 <asp:TextBox ID="numeroCasaResponsavel" CssClass="form-control" runat="server" />
             </div>
+
+            <!-- Complemento e Estado -->
             <div class="col-md-6">
                 <label for="complementoResponsavel" class="form-label">Complemento</label>
                 <asp:TextBox ID="complementoResponsavel" CssClass="form-control" runat="server" />
             </div>
-        </div>
-
-        <div class="row mb-3">
             <div class="col-md-6">
                 <label for="estadoResponsavel" class="form-label">Estado</label>
                 <asp:TextBox ID="estadoResponsavel" CssClass="form-control" runat="server" />
@@ -278,14 +267,10 @@
     </div>
 </div>
 
-<!-- Botão Próximo Responsável -->
-<div class="text-end mb-6">
-    <asp:Button ID="btnProximoAlunoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
-        CssClass="btn btn-custom btn-danger w-100" />
+<!-- Botão Próximo fora do card, alinhado à direita -->
+<div class="d-flex justify-content-end mt-3">
+    <asp:Button ID="btnProximo" runat="server" Text="Próximo" CssClass="btn btn-danger btn-custom" />
 </div>
-
-
-  
 
 
         </asp:Panel>
