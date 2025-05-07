@@ -155,6 +155,7 @@ namespace BJJGerenciamento.UI
             ddProfessores.Visible = false;
             ddSalas.Visible = false;
             btnSalvarChamada.Visible = false;
+            GridView1.Columns[6].Visible = false;
         }
     }
 }
