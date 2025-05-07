@@ -58,7 +58,7 @@
 
 
 
-<%--                    <asp:Button ID="btnPular" runat="server" Text="Pular" onClick="btnPular_Click"/>--%>
+<%--<asp:Button ID="btnPular" runat="server" Text="Pular" onClick="btnPular_Click"/>--%>
 <div class="container mt-4">
 
     <!-- INFORMAÇÕES PESSOAIS -->

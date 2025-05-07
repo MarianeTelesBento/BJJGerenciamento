@@ -4,6 +4,7 @@
 
     <main>
         <h1 id="aspnetTitle">Lista de Alunos</h1>    
+        
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
             DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ,DataMatricula,IdAlunos"
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">

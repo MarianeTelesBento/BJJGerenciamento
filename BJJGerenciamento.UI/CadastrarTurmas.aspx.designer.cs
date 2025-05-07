@@ -11,88 +11,97 @@ namespace BJJGerenciamento.UI
 {
 
 
-    public partial class Chamada
+    public partial class CadastrarTurmas
     {
 
         /// <summary>
-        /// Controle TxtTermoPesquisa.
+        /// Controle lblPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtTermoPesquisa;
+        protected global::System.Web.UI.WebControls.Label lblPlano;
 
         /// <summary>
-        /// Controle btnPesquisar.
+        /// Controle txtNomeNovoPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPesquisar;
+        protected global::System.Web.UI.WebControls.TextBox txtNomeNovoPlano;
 
         /// <summary>
-        /// Controle btnFiltro.
+        /// Controle lblDias.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnFiltro;
+        protected global::System.Web.UI.WebControls.Label lblDias;
 
         /// <summary>
-        /// Controle ddPlanos.
+        /// Controle cblDias.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddPlanos;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblDias;
 
         /// <summary>
-        /// Controle btnChamada.
+        /// Controle lblHorarios.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnChamada;
+        protected global::System.Web.UI.WebControls.Label lblHorarios;
 
         /// <summary>
-        /// Controle ddSalas.
+        /// Controle phHorarios.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddSalas;
+        protected global::System.Web.UI.WebControls.PlaceHolder phHorarios;
 
         /// <summary>
-        /// Controle ddProfessores.
+        /// Controle Label1.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddProfessores;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// Controle btnSalvarChamada.
+        /// Controle txtMensalidade.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton btnSalvarChamada;
+        protected global::System.Web.UI.WebControls.TextBox txtMensalidade;
 
         /// <summary>
-        /// Controle GridView1.
+        /// Controle btnCalcularMensalidade.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::System.Web.UI.WebControls.Button btnCalcularMensalidade;
+
+        /// <summary>
+        /// Controle btnSalvar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSalvar;
     }
 }

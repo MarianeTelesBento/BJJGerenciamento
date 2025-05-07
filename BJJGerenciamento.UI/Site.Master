@@ -73,6 +73,7 @@
                             </li>
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/Chamada.aspx">Chamada</a></li>
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/GerenciarSalas.aspx">Salas</a></li>
                         </ul>
                     </div>
                 </div>
