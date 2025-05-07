@@ -5,14 +5,16 @@
             <main>
                 <h1 id="aspnetTitle">Chamada</h1>    
 
-                <asp:TextBox ID="TxtTermoPesquisa" runat="server"></asp:TextBox>
-                <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" />
                 <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" />
-                <asp:DropDownList ID="ddPlanos" runat="server"
-                    AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged"  Visible="false"/> 
+
+                <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged"  Visible="false"/> 
+                <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false"></asp:TextBox>
+                <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false"/>
+                <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false"/>
+
+                <br />
 
                 <asp:Button ID="btnChamada" runat="server" Text="Chamada" OnClick="btnChamada_Click" />
-
                 <asp:DropDownList ID="ddSalas" runat="server"
                     AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged"  Visible="false"/> 
                 <asp:DropDownList ID="ddProfessores" runat="server"
@@ -37,7 +39,7 @@
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                    <asp:TemplateField HeaderText="Presente?" HeaderStyle-CssClass="center" ItemStyle-CssClass="center" Visible="false">
+                    <asp:TemplateField HeaderText="Presente" HeaderStyle-CssClass="center" ItemStyle-CssClass="center" Visible="false">
                         <ItemTemplate>
                             <asp:CheckBox ID="chkPresente" runat="server" />
                         </ItemTemplate>
