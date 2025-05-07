@@ -49,19 +49,6 @@ namespace BJJGerenciamento.UI
 
         }
 
-        protected void btnPesquisar_Click(object sender, EventArgs e)
-        {
-            IdsMarcados = ObterIdsAlunosSelecionados();
-
-            AlunosDAL alunosDAL = new AlunosDAL();
-            alunosList = alunosDAL.PesquisarAlunos(TxtTermoPesquisa.Text);
-            GridView1.DataSource = alunosList;
-            GridView1.DataBind();
-
-            RestaurarChecks(IdsMarcados);
-
-        }
-
         protected void btnFiltro_Click(object sender, EventArgs e)
         {
             IdsMarcados = ObterIdsAlunosSelecionados();
@@ -96,6 +83,19 @@ namespace BJJGerenciamento.UI
                 TxtTermoPesquisa.Visible = false;
                 ddPlanos.Visible = false;
             }
+        }
+
+        protected void btnPesquisar_Click(object sender, EventArgs e)
+        {
+            IdsMarcados = ObterIdsAlunosSelecionados();
+
+            AlunosDAL alunosDAL = new AlunosDAL();
+            alunosList = alunosDAL.PesquisarAlunos(TxtTermoPesquisa.Text);
+            GridView1.DataSource = alunosList;
+            GridView1.DataBind();
+
+            RestaurarChecks(IdsMarcados);
+
         }
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
