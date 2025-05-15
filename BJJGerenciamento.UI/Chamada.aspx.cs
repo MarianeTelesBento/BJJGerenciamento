@@ -12,6 +12,20 @@ namespace BJJGerenciamento.UI
 {
     public partial class Chamada : System.Web.UI.Page
     {
+        private List<int> IdsMarcados
+        {
+            get
+            {
+                if (Session["IdsMarcados"] == null)
+                    Session["IdsMarcados"] = new List<int>();
+                return (List<int>)Session["IdsMarcados"];
+            }
+            set
+            {
+                Session["IdsMarcados"] = value;
+            }
+        }
+
         public List<AlunoModels> alunosList = new List<AlunoModels>();
         public AlunoModels aluno = new AlunoModels();
 
@@ -24,6 +38,9 @@ namespace BJJGerenciamento.UI
                 alunosList = alunosDAL.VisualizarDados();
                 GridView1.DataSource = alunosList;
                 GridView1.DataBind();
+
+                RestaurarChecks(IdsMarcados);
+
             }
         }
 
@@ -32,40 +49,62 @@ namespace BJJGerenciamento.UI
 
         }
 
-        protected void btnPesquisar_Click(object sender, EventArgs e)
-        {
-            AlunosDAL alunosDAL = new AlunosDAL();
-            alunosList = alunosDAL.PesquisarAlunos(TxtTermoPesquisa.Text);
-            GridView1.DataSource = alunosList;
-            GridView1.DataBind();
-        }
-
         protected void btnFiltro_Click(object sender, EventArgs e)
         {
+            IdsMarcados = ObterIdsAlunosSelecionados();
+
             if (ddPlanos.Visible == false)
             {
+                btnLimpar.Visible = true;
+                btnPesquisar.Visible = true;
+                TxtTermoPesquisa.Visible = true;
                 ddPlanos.Visible = true;
                 PlanoDAL planoDAL = new PlanoDAL();
                 List<PlanoModels> planos = planoDAL.BuscarPlano();
 
                 if (planos != null && planos.Count > 0)
                 {
+                    IdsMarcados = ObterIdsAlunosSelecionados();
+
                     ddPlanos.DataSource = planos;
                     ddPlanos.DataTextField = "Nome";
                     ddPlanos.DataValueField = "idPlano";
                     ddPlanos.DataBind();
 
-                    ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", ""));
+                    RestaurarChecks(IdsMarcados);
+
+                    ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", "-1"));
                 }
             }
             else
             {
+                btnLimpar.Visible = false;
+                btnPesquisar.Visible = false;
+                TxtTermoPesquisa.Visible = false;
                 ddPlanos.Visible = false;
             }
         }
 
+        protected void btnPesquisar_Click(object sender, EventArgs e)
+        {
+            IdsMarcados = ObterIdsAlunosSelecionados();
+
+            AlunosDAL alunosDAL = new AlunosDAL();
+            alunosList = alunosDAL.PesquisarAlunos(TxtTermoPesquisa.Text);
+            GridView1.DataSource = alunosList;
+            GridView1.DataBind();
+
+            RestaurarChecks(IdsMarcados);
+
+        }
+
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
-        {//Ajustar
+        {
+            //MANDAR TODA A LÓGICA DE PESQUISA BOTÃO DE PESQUISAR, TIRAR DAQUI
+            //Se não houver termo de pesquisa, ele busca todos os alunos da turma selecionada
+            //Se houver termo de pesquisa, ele busca os alunos da turma selecionada e que contenham o termo de pesquisa
+            IdsMarcados = ObterIdsAlunosSelecionados();
+
             AlunosDAL alunosDal = new AlunosDAL();
 
             if (ddPlanos.SelectedValue != "-1")
@@ -76,6 +115,8 @@ namespace BJJGerenciamento.UI
                     List<AlunoModels> listaAlunos = alunosDal.PesquisarAlunosTurma(idPlano);
                     GridView1.DataSource = listaAlunos;
                     GridView1.DataBind();
+
+                    RestaurarChecks(IdsMarcados);
                 }
 
             }
@@ -110,7 +151,7 @@ namespace BJJGerenciamento.UI
                 ddProfessores.DataTextField = "Nome";
                 ddProfessores.DataValueField = "IdProfessor";
                 ddProfessores.DataBind();
-                ddProfessores.Items.Insert(0, new ListItem("-- Selecione um professor --", ""));
+                ddProfessores.Items.Insert(0, new ListItem("-- Selecione um professor --", "-1"));
             }
 
             SalaDAL salaDAL = new SalaDAL();
@@ -123,7 +164,7 @@ namespace BJJGerenciamento.UI
                 ddSalas.DataTextField = "NumeroSala";
                 ddSalas.DataValueField = "IdSala";
                 ddSalas.DataBind();
-                ddSalas.Items.Insert(0, new ListItem("-- Selecione uma sala --", ""));
+                ddSalas.Items.Insert(0, new ListItem("-- Selecione uma sala --", "-1"));
             }
         }
 
@@ -133,12 +174,14 @@ namespace BJJGerenciamento.UI
 
             if (ddProfessores.SelectedValue == "-1" || ddSalas.SelectedValue == "-1")
             {
-                // Exibir mensagem de erro ou aviso
+                Response.Write("<script>alert('Selecione uma turma');</script>");
                 return;
             }
 
             presencaModel.IdProfessor = Convert.ToInt32(ddProfessores.SelectedValue);
             presencaModel.IdSala = Convert.ToInt32(ddSalas.SelectedValue);
+
+            PresencaDAL presencaDAL = new PresencaDAL();
 
             foreach (GridViewRow row in GridView1.Rows)
             {
@@ -146,16 +189,57 @@ namespace BJJGerenciamento.UI
                 if (checkBox != null && checkBox.Checked)
                 {
                     presencaModel.IdMatricula = Convert.ToInt32(row.Cells[0].Text.Trim());
-
-                    PresencaDAL presencaDAL = new PresencaDAL();
                     presencaDAL.RegistrarPresenca(presencaModel);
                 }
             }
 
+            IdsMarcados = new List<int>();
             ddProfessores.Visible = false;
             ddSalas.Visible = false;
             btnSalvarChamada.Visible = false;
             GridView1.Columns[6].Visible = false;
+        }
+
+        protected void btnLimpar_Click(object sender, EventArgs e)
+        {
+            IdsMarcados = ObterIdsAlunosSelecionados();
+
+            AlunosDAL alunosDAL = new AlunosDAL();
+            alunosList = alunosDAL.VisualizarDados();
+            GridView1.DataSource = alunosList;
+            GridView1.DataBind();
+
+            RestaurarChecks(IdsMarcados);
+        }
+
+        private List<int> ObterIdsAlunosSelecionados()
+        {
+            List<int> idsSelecionados = new List<int>();
+
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                CheckBox checkBox = row.FindControl("chkPresente") as CheckBox;
+                if (checkBox != null && checkBox.Checked)
+                {
+                    int idMatricula = Convert.ToInt32(row.Cells[0].Text.Trim());
+                    idsSelecionados.Add(idMatricula);
+                }
+            }
+
+            return idsSelecionados;
+        }
+
+        private void RestaurarChecks(List<int> idsSelecionados)
+        {
+            foreach (GridViewRow row in GridView1.Rows)
+            {
+                int idMatricula = Convert.ToInt32(row.Cells[0].Text.Trim());
+                CheckBox checkBox = row.FindControl("chkPresente") as CheckBox;
+                if (checkBox != null && idsSelecionados.Contains(idMatricula))
+                {
+                    checkBox.Checked = true;
+                }
+            }
         }
     }
 }
