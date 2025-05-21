@@ -31,10 +31,7 @@ namespace BJJGerenciamento.UI
 
         protected void cblDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Limpa o PlaceHolder
             phHorarios.Controls.Clear();
-
-            // Carrega todos os horários do banco
             var horarios = planoDAL.BuscarHorarios();
 
             foreach (ListItem diaItem in cblDias.Items)
@@ -43,26 +40,31 @@ namespace BJJGerenciamento.UI
                 {
                     int idDia = int.Parse(diaItem.Value);
 
-                    // Cria um título para o dia
-                    phHorarios.Controls.Add(new Literal { Text = $"<strong>{diaItem.Text}</strong><br />" });
+                    // Título do dia
+                    phHorarios.Controls.Add(new Literal { Text = $"<span class='dia-horario-titulo'>{diaItem.Text}</span>" });
 
-                    // Cria o CheckBoxList dos horários
-                    CheckBoxList cblHorarios = new CheckBoxList
+                    // Container para os horários
+                    Panel container = new Panel();
+                    container.CssClass = "horarios-container";
+
+                    foreach (var horario in horarios)
                     {
-                        ID = $"cblHorarios_{idDia}",
-                        RepeatDirection = RepeatDirection.Horizontal
-                    };
+                        // Criando CheckBox individual
+                        CheckBox chk = new CheckBox
+                        {
+                            ID = $"chk_{idDia}_{horario.Key}",
+                            Text = horario.Value,
+                            CssClass = "horario-item"
+                        };
 
-                    cblHorarios.DataSource = horarios;
-                    cblHorarios.DataTextField = "Value";
-                    cblHorarios.DataValueField = "Key";
-                    cblHorarios.DataBind();
+                        container.Controls.Add(chk);
+                    }
 
-                    phHorarios.Controls.Add(cblHorarios);
-                    phHorarios.Controls.Add(new Literal { Text = "<br />" });
+                    phHorarios.Controls.Add(container);
                 }
             }
         }
+
 
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
@@ -122,7 +124,7 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            decimal mensalidade = diasSelecionados.Count * 100; // Exemplo de cálculo automático
+            decimal mensalidade = diasSelecionados.Count * 30; // Exemplo de cálculo automático
             txtMensalidade.Text = mensalidade.ToString("F2");
         }
 
@@ -139,35 +141,39 @@ namespace BJJGerenciamento.UI
             return diasSelecionados;
         }
 
-        private void RecarregarHorariosSelecionados()
+      private void RecarregarHorariosSelecionados()
+{
+    phHorarios.Controls.Clear();
+    var horarios = planoDAL.BuscarHorarios();
+
+    foreach (ListItem diaItem in cblDias.Items)
+    {
+        if (diaItem.Selected)
         {
-            phHorarios.Controls.Clear();
-            var horarios = planoDAL.BuscarHorarios();
+            int idDia = int.Parse(diaItem.Value);
 
-            foreach (ListItem diaItem in cblDias.Items)
+            phHorarios.Controls.Add(new Literal { Text = $"<span class='dia-horario-titulo'>{diaItem.Text}</span>" });
+
+            Panel container = new Panel();
+            container.CssClass = "horarios-container";
+
+            foreach (var horario in horarios)
             {
-                if (diaItem.Selected)
+                CheckBox chk = new CheckBox
                 {
-                    int idDia = int.Parse(diaItem.Value);
+                    ID = $"chk_{idDia}_{horario.Key}",
+                    Text = horario.Value,
+                    CssClass = "horario-item"
+                };
 
-                    phHorarios.Controls.Add(new Literal { Text = $"<strong>{diaItem.Text}</strong><br />" });
-
-                    CheckBoxList cblHorarios = new CheckBoxList
-                    {
-                        ID = $"cblHorarios_{idDia}",
-                        RepeatDirection = RepeatDirection.Horizontal
-                    };
-
-                    cblHorarios.DataSource = horarios;
-                    cblHorarios.DataTextField = "Value";
-                    cblHorarios.DataValueField = "Key";
-                    cblHorarios.DataBind();
-
-                    phHorarios.Controls.Add(cblHorarios);
-                    phHorarios.Controls.Add(new Literal { Text = "<br />" });
-                }
+                container.Controls.Add(chk);
             }
+
+            phHorarios.Controls.Add(container);
         }
+    }
+}
+
 
     }
 }

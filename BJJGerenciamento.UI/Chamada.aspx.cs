@@ -28,7 +28,7 @@ namespace BJJGerenciamento.UI
 
         public List<AlunoModels> alunosList = new List<AlunoModels>();
         public AlunoModels aluno = new AlunoModels();
-
+       
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

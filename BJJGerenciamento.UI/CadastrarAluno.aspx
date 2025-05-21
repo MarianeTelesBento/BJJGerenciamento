@@ -164,10 +164,10 @@
 </div>
 
 
-    <div class="modal-footer text-end">
+<%--    <div class="modal-footer text-end">
     <asp:Button ID="btnProximoResponsavel" Text="Próximo" OnClick="btnProximoResponsavel_Click" runat="server"
         CssClass="btn btn-danger btn-custom" />
-</div>
+</div>--%>
 
     
         
@@ -178,7 +178,8 @@
             </asp:Panel>
             <asp:Panel ID="pnlInformacoesResponsavelAluno" runat="server" Visible="false" CssClass="container mt-4">
  <h2>Cadastro de Responsável</h2>  
-                <div class="container mt-4">
+
+    <div class="container mt-4">
     <div class="row mb-3">
 <div class="card mb-4">
     <div class="card-header">Informações Pessoais</div>
@@ -226,54 +227,61 @@
              <div class="col-md-6">
                  <label for="cepResponsavel" class="form-label">CEP</label>
                  <div class="d-flex gap-2">
-                      <asp:TextBox ID="TextBox1" CssClass="form-control" runat="server"
+                      <asp:TextBox ID="cepResponsavel" CssClass="form-control" runat="server" />
                       <asp:Button ID="buscarCepResponsavel" runat="server" OnClick="buscarCepResponsavel_Click"
                          Text="Buscar" CssClass="btn btn-danger btn-custom2" UseSubmitBehavior="false" />
-                 </div>
-             </div>
-         </div>
 
-
-            <!-- Cidade e Bairro -->
-            <div class="col-md-6">
-                <label for="cidadeResponsavel" class="form-label">Cidade</label>
-                <asp:TextBox ID="cidadeResponsavel" CssClass="form-control" runat="server" />
-            </div>
-            <div class="col-md-6">
-                <label for="bairroResponsavel" class="form-label">Bairro</label>
-                <asp:TextBox ID="bairroResponsavel" CssClass="form-control" runat="server" />
-            </div>
-
-            <!-- Rua e Número -->
-            <div class="col-md-6">
-                <label for="ruaResponsavel" class="form-label">Rua</label>
-                <asp:TextBox ID="ruaResponsavel" CssClass="form-control" runat="server" />
-            </div>
-            <div class="col-md-6">
-                <label for="numeroCasaResponsavel" class="form-label">Número</label>
-                <asp:TextBox ID="numeroCasaResponsavel" CssClass="form-control" runat="server" />
-            </div>
-
-            <!-- Complemento e Estado -->
-            <div class="col-md-6">
-                <label for="complementoResponsavel" class="form-label">Complemento</label>
-                <asp:TextBox ID="complementoResponsavel" CssClass="form-control" runat="server" />
-            </div>
-            <div class="col-md-6">
-                <label for="estadoResponsavel" class="form-label">Estado</label>
-                <asp:TextBox ID="estadoResponsavel" CssClass="form-control" runat="server" />
-            </div>
         </div>
     </div>
 </div>
 
+      
+
+
+            <!-- Cidade e Bairro -->
+          <div class="row mb-3">
+    <div class="col-md-6">
+        <label for="cidadeResponsavel" class="form-label">Cidade</label>
+        <asp:TextBox ID="cidadeResponsavel" CssClass="form-control" runat="server" />
+    </div>
+    <div class="col-md-6">
+        <label for="bairroResponsavel" class="form-label">Bairro</label>
+        <asp:TextBox ID="bairroResponsavel" CssClass="form-control" runat="server" />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="ruaResponsavel" class="form-label">Rua</label>
+        <asp:TextBox ID="ruaResponsavel" CssClass="form-control" runat="server" />
+    </div>
+    <div class="col-md-6">
+        <label for="numeroCasaResponsavel" class="form-label">Número</label>
+        <asp:TextBox ID="numeroCasaResponsavel" CssClass="form-control" runat="server" />
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="complementoResponsavel" class="form-label">Complemento</label>
+        <asp:TextBox ID="complementoResponsavel" CssClass="form-control" runat="server" />
+    </div>
+    <div class="col-md-6">
+        <label for="estadoResponsavel" class="form-label">Estado</label>
+        <asp:TextBox ID="estadoResponsavel" CssClass="form-control" runat="server" />
+    </div>
+</div>    
+  </asp:Panel>
+
 <!-- Botão Próximo fora do card, alinhado à direita -->
-<div class= "modal-footer text-end"
-    <asp:Button ID="btnProximo" runat="server" Text="Próximo" CssClass="btn btn-danger btn-custom" />
+             <div class="modal-footer text-end">
+    <asp:Button ID="btnProximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server"
+        CssClass="btn btn-danger btn-custom" />
 </div>
 
 
-        </asp:Panel>
+
+       
 
 
             <asp:Panel ID="pnlPlanoAluno" runat="server" Visible="false">

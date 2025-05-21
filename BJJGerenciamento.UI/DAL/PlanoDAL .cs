@@ -268,7 +268,7 @@ namespace BJJGerenciamento.UI.DAL
             var lista = new List<KeyValuePair<int, string>>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT IdDia, Dia FROM TBDiasSemana";
+                string query = "SELECT IdDia, Dia FROM TBDiasSemana order by IdDia asc";
                 SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
