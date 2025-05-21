@@ -20,7 +20,7 @@
 
         <div class="mb-4">
             <asp:Button ID="btnConfirmarAdicao" runat="server" Text="Confirmar Adição da Sala"
-                CssClass="btn btn-success" OnClick="btnConfirmarAdicao_Click" Visible="false" />
+                CssClass="btn btn-success" Style="height: 40px" OnClick="btnConfirmarAdicao_Click" Visible="false" />
         </div>
 
         <asp:GridView ID="gvSalas" runat="server" AutoGenerateColumns="False" DataKeyNames="IdSala"
