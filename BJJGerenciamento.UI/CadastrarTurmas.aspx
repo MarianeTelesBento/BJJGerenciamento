@@ -151,6 +151,7 @@
                 <asp:Button ID="btnSalvar" runat="server" Text="Salvar"
                     OnClick="btnSalvar_Click" CssClass="btn btn-danger btn-custom" />
             </div>
+            <asp:Label ID="lblMensagem" runat="server" ForeColor="Red" Visible="false"></asp:Label>
         </div>
     </div>
  <script type="text/javascript">
