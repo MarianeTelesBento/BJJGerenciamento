@@ -260,7 +260,6 @@ namespace BJJGerenciamento.UI
 
         protected void btnProximoResponsavel_Click(object sender, EventArgs e)
         {
-            //btnVoltar.Visible = true;
             if (VerificarCampos(cpfAluno, nomeAluno, sobrenomeAluno, telefoneAluno, dataNascimentoAluno, ruaAluno, bairroAluno, cidadeAluno, estadoAluno, numeroCasaAluno))
             {
                 int maiorIdade = 18;
@@ -285,16 +284,6 @@ namespace BJJGerenciamento.UI
                     pnlPlanoAluno.Visible = true;
                     alunoMaiorIdade = true;
 
-                    //AlunosDAL alunosDAL = new AlunosDAL();
-                    //List<PlanoModels> planos = alunosDAL.BuscarPlano();
-
-                    //if (planos != null && planos.Count > 0)
-                    //{
-                    //    ddPlanos.DataSource = planos;
-                    //    ddPlanos.DataTextField = "Nome";
-                    //    ddPlanos.DataValueField = "idPlano";
-                    //    ddPlanos.DataBind();
-                    //}
                 }
             }
             
