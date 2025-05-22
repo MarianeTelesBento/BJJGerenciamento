@@ -60,24 +60,6 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox modalNome;
 
         /// <summary>
-        /// Controle modalQtdDias.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalQtdDias;
-
-        /// <summary>
-        /// Controle modalMensalidade.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalMensalidade;
-
-        /// <summary>
         /// Controle lblDiasEdit.
         /// </summary>
         /// <remarks>

@@ -20,6 +20,17 @@ namespace BJJGerenciamento.UI
                 CarregarDiasSemana();
                 phHorariosEdit.Controls.Clear();
             }
+            else
+            {
+                if (int.TryParse(modalIdPlano.Text, out int idPlano) && idPlano > 0)
+                {
+                    List<int> diasSelecionados = new List<int>();
+                    foreach (ListItem item in cblDiasEdit.Items)
+                        if (item.Selected) diasSelecionados.Add(int.Parse(item.Value));
+
+                    CarregarHorariosPorDia(diasSelecionados, idPlano);
+                }
+            }
         }
 
         private void CarregarTurmas()
@@ -41,8 +52,19 @@ namespace BJJGerenciamento.UI
             cblDiasEdit.SelectedIndexChanged += cblDiasEdit_SelectedIndexChanged;
         }
 
-        private void CarregarHorariosPorDia(List<int> diasSelecionados)
+        private void CarregarHorariosPorDia(List<int> diasSelecionados, int idPlano = 0)
         {
+            // 🔸 Salvar os horários já marcados antes de limpar
+            var horariosSelecionadosAnteriores = new HashSet<string>();
+            foreach (Control ctrl in phHorariosEdit.Controls)
+            {
+                if (ctrl is CheckBox cb && cb.Checked)
+                {
+                    horariosSelecionadosAnteriores.Add(cb.ID);
+                }
+            }
+
+            // 🔸 Limpa os controles
             phHorariosEdit.Controls.Clear();
 
             if (diasSelecionados == null || diasSelecionados.Count == 0)
@@ -51,27 +73,38 @@ namespace BJJGerenciamento.UI
             var todosHorarios = planoDAL.BuscarHorarios();
             var todosDias = planoDAL.BuscarDiasSemana();
 
+            var horariosDoPlano = idPlano > 0
+                ? planoDAL.BuscarHorariosPorPlano(idPlano)
+                : new Dictionary<int, List<PlanoHorarioModels>>();
+
             foreach (int idDia in diasSelecionados)
             {
                 var diaNome = todosDias.FirstOrDefault(d => d.Key == idDia).Value ?? "Dia desconhecido";
                 phHorariosEdit.Controls.Add(new LiteralControl($"<strong>{diaNome}</strong><br />"));
 
-                var horariosDoDia = planoDAL.BuscarHorariosPorDia(idDia).Select(h => h.Key).ToList();
+                var horariosMarcadosDoPlano = horariosDoPlano.ContainsKey(idDia)
+                    ? horariosDoPlano[idDia].Select(h => h.idHora).ToList()
+                    : new List<int>();
 
                 foreach (var h in todosHorarios)
                 {
+                    string checkboxId = $"chkHorario_{idDia}_{h.Key}";
+
                     CheckBox cb = new CheckBox
                     {
-                        ID = $"chkHorario_{idDia}_{h.Key}",
+                        ID = checkboxId,
                         Text = h.Value,
                         CssClass = "form-check-input",
-                        Checked = horariosDoDia.Contains(h.Key)
+                        Checked =
+                            horariosMarcadosDoPlano.Contains(h.Key) || 
+                            horariosSelecionadosAnteriores.Contains(checkboxId) 
                     };
-                    cb.InputAttributes["style"] = "margin-right:10px;";
 
+                    cb.InputAttributes["style"] = "margin-right:10px;";
                     phHorariosEdit.Controls.Add(cb);
                     phHorariosEdit.Controls.Add(new LiteralControl("<br />"));
                 }
+
                 phHorariosEdit.Controls.Add(new LiteralControl("<hr />"));
             }
         }
@@ -87,8 +120,6 @@ namespace BJJGerenciamento.UI
 
             modalIdPlano.Text = turma.IdPlano.ToString();
             modalNome.Text = turma.Nome;
-            modalQtdDias.Text = turma.QtdDias.ToString();
-            modalMensalidade.Text = turma.Mensalidade.ToString("F2");
             modalAtivo.Checked = turma.Ativo;
 
             var diasSelecionados = planoDAL.ListarDiasDoPlano(idPlano);
@@ -98,19 +129,21 @@ namespace BJJGerenciamento.UI
                 cblDiasEdit.Items[i].Selected = diasSelecionados.Contains(idDia);
             }
 
-            CarregarHorariosPorDia(diasSelecionados);
+            CarregarHorariosPorDia(diasSelecionados, idPlano);
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "abrirModal", "abrirModal();", true);
         }
 
         protected void SalvarTurma_Click(object sender, EventArgs e)
         {
+            if (!int.TryParse(modalIdPlano.Text, out int idPlano))
+                idPlano = 0;
+
+
             PlanoModels turmaAtualizada = new PlanoModels
             {
-                IdPlano = int.Parse(modalIdPlano.Text),
-                Nome = modalNome.Text,
-                QtdDias = int.Parse(modalQtdDias.Text),
-                Mensalidade = decimal.Parse(modalMensalidade.Text),
+                IdPlano = idPlano,
+                Nome = modalNome.Text.Trim(),
                 Ativo = modalAtivo.Checked
             };
 
@@ -127,7 +160,6 @@ namespace BJJGerenciamento.UI
             planoDAL.AtualizarDiasDoPlano(turmaAtualizada.IdPlano, diasSelecionados);
 
             List<(int IdDia, int IdHora)> horariosSelecionados = new List<(int, int)>();
-
             foreach (ListItem itemDia in cblDiasEdit.Items)
             {
                 if (itemDia.Selected)
@@ -139,7 +171,9 @@ namespace BJJGerenciamento.UI
                         if (ctrl is CheckBox cb)
                         {
                             string[] parts = cb.ID.Split('_');
-                            if (parts.Length == 3 && int.TryParse(parts[1], out int diaCheck) && int.TryParse(parts[2], out int idHora))
+                            if (parts.Length == 3 &&
+                                int.TryParse(parts[1], out int diaCheck) &&
+                                int.TryParse(parts[2], out int idHora))
                             {
                                 if (diaCheck == idDia && cb.Checked)
                                 {
@@ -150,12 +184,9 @@ namespace BJJGerenciamento.UI
                     }
                 }
             }
-
             planoDAL.AtualizarHorariosDoPlanoComDias(turmaAtualizada.IdPlano, horariosSelecionados);
 
-
             CarregarTurmas();
-
             ScriptManager.RegisterStartupScript(this, this.GetType(), "fecharModal", "fecharModal();", true);
         }
 
@@ -173,7 +204,6 @@ namespace BJJGerenciamento.UI
 
         protected void GridViewTurmas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Método não utilizado
         }
     }
 }

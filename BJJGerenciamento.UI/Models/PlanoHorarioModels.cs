@@ -12,5 +12,6 @@ namespace BJJGerenciamento.UI.Models
         public int idHora { get; set; }
         public string horarioInicio { get; set; }
         public string horarioFim { get; set; }
+        public string dia { get; set; }
     }
 }
