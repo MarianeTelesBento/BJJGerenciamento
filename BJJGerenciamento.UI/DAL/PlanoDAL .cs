@@ -313,14 +313,11 @@ namespace BJJGerenciamento.UI.DAL
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = @"
-            SELECT 
-                P.IdPlano, 
-                P.Nome, 
-                D.QtsDias, 
-                D.Mensalidade, 
-                P.Ativo
-            FROM TBPlanos P
-            INNER JOIN TBPlanoDetalhes D ON P.IdPlano = D.IdPlano";
+        SELECT 
+            P.IdPlano, 
+            P.Nome,  
+            P.Ativo
+        FROM TBPlanos P";
 
                 SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
@@ -331,8 +328,6 @@ namespace BJJGerenciamento.UI.DAL
                     {
                         IdPlano = Convert.ToInt32(reader["IdPlano"]),
                         Nome = reader["Nome"].ToString(),
-                        QtdDias = Convert.ToInt32(reader["QtsDias"]),
-                        Mensalidade = Convert.ToDecimal(reader["Mensalidade"]),
                         Ativo = Convert.ToBoolean(reader["Ativo"])
                     });
                 }
@@ -509,50 +504,6 @@ namespace BJJGerenciamento.UI.DAL
             return horarios;
         }
 
-        // Atualizar horários do plano (exclui antigos e insere novos)
-        public void AtualizarHorariosDoPlano(int idPlano, List<int> horariosSelecionados)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                using (SqlTransaction tran = conn.BeginTransaction())
-                {
-                    try
-                    {
-                        // Apagar horários antigos
-                        string deleteSql = "DELETE FROM TBPlanoHorario WHERE IdPlano = @IdPlano";
-                        using (SqlCommand cmdDelete = new SqlCommand(deleteSql, conn, tran))
-                        {
-                            cmdDelete.Parameters.AddWithValue("@IdPlano", idPlano);
-                            cmdDelete.ExecuteNonQuery();
-                        }
-
-                        // Inserir novos horários
-                        string insertSql = "INSERT INTO TBPlanoHorario (IdPlano, IdHora) VALUES (@IdPlano, @IdHora)";
-                        using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn, tran))
-                        {
-                            cmdInsert.Parameters.AddWithValue("@IdPlano", idPlano);
-                            var paramIdHora = cmdInsert.Parameters.Add("@IdHora", SqlDbType.Int);
-
-                            foreach (int idHora in horariosSelecionados)
-                            {
-                                paramIdHora.Value = idHora;
-                                cmdInsert.ExecuteNonQuery();
-                            }
-                        }
-
-                        tran.Commit();
-                    }
-                    catch
-                    {
-                        tran.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-
         public List<KeyValuePair<int, string>> BuscarHorariosPorDia(int idDia)
         {
             var horarios = new List<KeyValuePair<int, string>>();
@@ -656,7 +607,52 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
+        public Dictionary<int, List<PlanoHorarioModels>> BuscarHorariosPorPlano(int idPlano)
+        {
+            Dictionary<int, List<PlanoHorarioModels>> horariosPorDia = new Dictionary<int, List<PlanoHorarioModels>>();
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT ds.IdDia, ds.Dia, h.HorarioInicio, h.HorarioFim, h.IdHora
+                         FROM TBHora h
+                         INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
+                         INNER JOIN TBDiasSemana ds ON ph.IdDia = ds.IdDia
+                         WHERE ph.IdPlano = @IdPlano
+                         ORDER BY ds.IdDia, h.HorarioInicio ASC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@IdPlano", idPlano);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int idDia = reader.GetInt32(0);
+
+                            PlanoHorarioModels planoHorario = new PlanoHorarioModels
+                            {
+                                dia = reader.GetString(1),
+                                horarioInicio = reader.GetTimeSpan(2).ToString(@"hh\:mm"),
+                                horarioFim = reader.GetTimeSpan(3).ToString(@"hh\:mm"),
+                                idHora = reader.GetInt32(4)
+                            };
+
+                            if (!horariosPorDia.ContainsKey(idDia))
+                            {
+                                horariosPorDia[idDia] = new List<PlanoHorarioModels>();
+                            }
+
+                            horariosPorDia[idDia].Add(planoHorario);
+                        }
+                    }
+                }
+            }
+
+            return horariosPorDia;
+        }
 
     }
 }

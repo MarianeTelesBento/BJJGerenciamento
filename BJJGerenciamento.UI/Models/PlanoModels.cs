@@ -19,5 +19,8 @@ namespace BJJGerenciamento.UI.Models
         public int IdDetalhe { get; set; }
 
         public bool Ativo { get; set; }
+
+        public string DiasSemana { get; set; }  
+        public string Horarios { get; set; }  
     }
 }

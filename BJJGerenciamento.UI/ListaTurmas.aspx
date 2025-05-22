@@ -6,13 +6,11 @@
     <h1>Lista de Turmas</h1>
 
     <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridViewTurmas" runat="server" AutoGenerateColumns="False"
-        DataKeyNames="IdPlano,Ativo,Nome,QtdDias,Mensalidade"
+        DataKeyNames="IdPlano,Ativo,Nome"
         OnSelectedIndexChanged="GridViewTurmas_SelectedIndexChanged">
         <Columns>
             <asp:BoundField DataField="IdPlano" HeaderText="ID" />
             <asp:BoundField DataField="Nome" HeaderText="Nome da Turma" />
-            <asp:BoundField DataField="QtdDias" HeaderText="Dias/semana" />
-            <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
             <asp:TemplateField HeaderText="Ativo">
                 <ItemTemplate>
                     <asp:CheckBox ID="chkAtivo" runat="server" Enabled="false"
@@ -52,14 +50,6 @@
                     <div class="form-group">
                         <asp:Label for="modalNome">Nome:</asp:Label>
                         <asp:TextBox ID="modalNome" runat="server" CssClass="form-control"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
-                        <asp:Label for="modalQtdDias">Quantidade de dias:</asp:Label>
-                        <asp:TextBox ID="modalQtdDias" runat="server" CssClass="form-control" TextMode="Number" min="1" max="7"></asp:TextBox>
-                    </div>
-                    <div class="form-group">
-                        <asp:Label for="modalMensalidade">Mensalidade:</asp:Label>
-                        <asp:TextBox ID="modalMensalidade" runat="server" CssClass="form-control" TextMode="Number" step="0.01"></asp:TextBox>
                     </div>
 
                     <div class="form-group">
