@@ -91,7 +91,18 @@ namespace BJJGerenciamento.UI
 
             AlunosDAL alunosDAL = new AlunosDAL();
 
-            alunosList = alunosDAL.PesquisarAlunos(TxtTermoPesquisa.Text);
+            string termo = TxtTermoPesquisa.Text;
+            int? idPlano = null;
+
+            if (ddPlanos.SelectedValue != "-1")
+            {
+                if (int.TryParse(ddPlanos.SelectedValue, out int idPlanoConvertido))
+                {
+                    idPlano = idPlanoConvertido;
+                }
+            }
+            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano);
+
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
 
@@ -104,23 +115,6 @@ namespace BJJGerenciamento.UI
             //MANDAR TODA A LÓGICA DE PESQUISA BOTÃO DE PESQUISAR, TIRAR DAQUI
             //Se não houver termo de pesquisa, ele busca todos os alunos da turma selecionada
             //Se houver termo de pesquisa, ele busca os alunos da turma selecionada e que contenham o termo de pesquisa
-            IdsMarcados = ObterIdsAlunosSelecionados();
-
-            AlunosDAL alunosDal = new AlunosDAL();
-
-            if (ddPlanos.SelectedValue != "-1")
-            {
-                int idPlano;
-                if (int.TryParse(ddPlanos.SelectedValue, out idPlano))
-                {
-                    List<AlunoModels> listaAlunos = alunosDal.PesquisarAlunosTurma(idPlano);
-                    GridView1.DataSource = listaAlunos;
-                    GridView1.DataBind();
-
-                    RestaurarChecks(IdsMarcados);
-                }
-
-            }
 
         }
 

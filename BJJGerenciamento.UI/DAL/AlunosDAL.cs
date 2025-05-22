@@ -221,92 +221,65 @@ namespace BJJGerenciamento.UI.DAL
 
             return alunoList;
         }
-        public List<AlunoModels> PesquisarAlunos(string termo)
+        public List<AlunoModels> PesquisarAlunos(string termo = null, int? idPlano = null)
         {
             List<AlunoModels> alunoList = new List<AlunoModels>();
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-
-            SqlCommand readerCommand = new SqlCommand($"SELECT a.IdAluno, a.IdPlano, a.IdResponsavel, a.Nome, a.Sobrenome, a.Telefone, a.Email, a.DataNascimento, a.Cpf, a.Idmatricula," +
-                $" m.StatusdaMatricula, m.Data FROM TBAlunos a LEFT JOIN " +
-                $"TBMatriculas m ON a.IdMatricula = m.IdMatricula WHERE Nome LIKE @termo;", connection);
-
-            readerCommand.Parameters.AddWithValue("@termo", "%" + termo + "%");
-
-            SqlDataReader reader = readerCommand.ExecuteReader();
-
-            while (reader.Read())
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                AlunoModels aluno = new AlunoModels()
+                connection.Open();
+
+                string query = @"
+                    SELECT a.IdAluno, a.IdPlano, a.IdResponsavel, a.Nome, a.Sobrenome, a.Telefone, 
+                           a.Email, a.DataNascimento, a.Cpf, a.IdMatricula, 
+                           m.StatusdaMatricula, m.Data
+                    FROM TBAlunos a
+                    LEFT JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+                    LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
+                    LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
+                    WHERE (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+                      AND (@idPlano IS NULL OR pd.IdPlano = @idPlano);";
+
+                using (SqlCommand readerCommand = new SqlCommand(query, connection))
                 {
-                    IdAlunos = reader.GetInt32(0),
-                    IdPlano = reader.GetInt32(1),
-                    IdResponsavel = reader.GetInt32(2),
-                    Nome = reader.GetString(3),
-                    Sobrenome = reader.GetString(4),
-                    Telefone = reader.GetString(5),
-                    Email = reader.GetString(6),
-                    DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                    Cpf = reader.GetString(8),
+                    if (!string.IsNullOrWhiteSpace(termo))
+                        readerCommand.Parameters.AddWithValue("@termo", "%" + termo + "%");
+                    else
+                        readerCommand.Parameters.AddWithValue("@termo", DBNull.Value);
 
-                    IdMatricula = reader.GetInt32(9),
-                    StatusMatricula = reader.GetBoolean(10),
-                    DataMatricula = reader.GetDateTime(11).ToString("dd/MM/yyyy")
-                };
+                    if (idPlano.HasValue)
+                        readerCommand.Parameters.AddWithValue("@idPlano", idPlano.Value);
+                    else
+                        readerCommand.Parameters.AddWithValue("@idPlano", DBNull.Value);
 
-                alunoList.Add(aluno);
+                    SqlDataReader reader = readerCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        AlunoModels aluno = new AlunoModels()
+                        {
+                            IdAlunos = reader.GetInt32(0),
+                            IdPlano = reader.GetInt32(1),
+                            IdResponsavel = reader.GetInt32(2),
+                            Nome = reader.GetString(3),
+                            Sobrenome = reader.GetString(4),
+                            Telefone = reader.GetString(5),
+                            Email = reader.GetString(6),
+                            DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
+                            Cpf = reader.GetString(8),
+                            IdMatricula = reader.GetInt32(9),
+                            StatusMatricula = reader.GetBoolean(10),
+                            DataMatricula = reader.GetDateTime(11).ToString("dd/MM/yyyy")
+                        };
+
+                        alunoList.Add(aluno);
+                    }
+                }
             }
-
-            connection.Close();
 
             return alunoList;
         }
-        public List<AlunoModels> PesquisarAlunosTurma(int idPlano)
-        {
-            List<AlunoModels> alunoList = new List<AlunoModels>();
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-
-            SqlCommand readerCommand = new SqlCommand($"SELECT a.IdAluno," +
-                $" a.IdPlano, a.IdResponsavel, a.Nome, a.Sobrenome, a.Telefone, a.Email, a.DataNascimento, a.Cpf, " +
-                $"a.Idmatricula, m.StatusdaMatricula, m.Data FROM TBAlunos " +
-                $"a LEFT JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula" +
-                $" INNER JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno " +
-                $"INNER JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe " +
-                $"WHERE pd.IdPlano = @idPlano", connection);
-
-            readerCommand.Parameters.AddWithValue("@idPlano", idPlano);
-
-            SqlDataReader reader = readerCommand.ExecuteReader();
-
-            while (reader.Read())
-            {
-                AlunoModels aluno = new AlunoModels()
-                {
-                    IdAlunos = reader.GetInt32(0),
-                    IdPlano = reader.GetInt32(1),
-                    IdResponsavel = reader.GetInt32(2),
-                    Nome = reader.GetString(3),
-                    Sobrenome = reader.GetString(4),
-                    Telefone = reader.GetString(5),
-                    Email = reader.GetString(6),
-                    DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                    Cpf = reader.GetString(8),
-
-                    IdMatricula = reader.GetInt32(9),
-                    StatusMatricula = reader.GetBoolean(10),
-                    DataMatricula = reader.GetDateTime(11).ToString("dd/MM/yyyy")
-                };
-
-                alunoList.Add(aluno);
-            }
-
-            connection.Close();
-
-            return alunoList;
-        }
         public bool AtualizarAluno(AlunoModels aluno)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
