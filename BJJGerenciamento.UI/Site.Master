@@ -78,6 +78,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item"  runat="server" href="~/CadastrarTurmas.aspx">Cadastrar Turmas</a></li>
+                                    <li><a class="dropdown-item"  runat="server" href="~/ListaTurmas.aspx">Listar Turmas</a></li>
                                 </ul>
                             </li>
 
