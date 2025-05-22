@@ -144,6 +144,7 @@
                 <asp:Button ID="btnCalcularMensalidade" runat="server" Text="Calcular"
                     OnClick="btnCalcularMensalidade_Click" CssClass="btn btn-danger btn-pequeno" />
             </div>
+ 
 
             <!-- Botão Salvar -->
             <div class="text-center">
@@ -152,4 +153,25 @@
             </div>
         </div>
     </div>
+ <script type="text/javascript">
+     function limparCampos() {
+         // Limpa o nome da turma
+         document.getElementById('<%= txtNomeNovoPlano.ClientID %>').value = "";
+
+        // Limpa o valor da mensalidade
+        document.getElementById('<%= txtMensalidade.ClientID %>').value = "";
+
+        // Desmarca os dias
+        var dias = document.querySelectorAll('#<%= cblDias.ClientID %> input[type=checkbox]');
+         dias.forEach(function (chk) {
+             chk.checked = false;
+         });
+
+     
+     }
+ </script>
+
+
+
+
 </asp:Content>

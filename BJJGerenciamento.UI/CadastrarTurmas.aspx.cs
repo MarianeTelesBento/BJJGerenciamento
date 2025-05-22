@@ -112,6 +112,14 @@ namespace BJJGerenciamento.UI
 
             decimal valor = decimal.Parse(txtMensalidade.Text);
             planoDAL.SalvarValorPlano(idPlano, diasSelecionados, valor);
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", @"
+            alert('Turma cadastrada com sucesso!');
+            setTimeout(function() {
+             limparCampos();
+             }, 100);
+             ", true);
+
+
 
         }
 
