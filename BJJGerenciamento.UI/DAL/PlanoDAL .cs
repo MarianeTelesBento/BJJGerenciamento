@@ -210,7 +210,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return horariosPorDia;
         }
-
         public int CriarNovoPlano(string nome)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
