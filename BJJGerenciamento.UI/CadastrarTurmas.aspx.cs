@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using BJJGerenciamento.UI.DAL;
 
@@ -31,8 +32,31 @@ namespace BJJGerenciamento.UI
 
         protected void cblDias_SelectedIndexChanged(object sender, EventArgs e)
         {
-            phHorarios.Controls.Clear();
+            // Salvar seleções atuais
             var horarios = planoDAL.BuscarHorarios();
+
+            // Dicionário para salvar os horários selecionados: chave = "idDia_idHora"
+            var horariosSelecionados = new HashSet<string>();
+
+            foreach (Control ctrl in phHorarios.Controls)
+            {
+                if (ctrl is Panel panel)
+                {
+                    foreach (Control subCtrl in panel.Controls)
+                    {
+                        if (subCtrl is CheckBox chk)
+                        {
+                            if (chk.Checked)
+                            {
+                                horariosSelecionados.Add(chk.ID); // Exemplo: "chk_1_3"
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Limpar e recriar controles
+            phHorarios.Controls.Clear();
 
             foreach (ListItem diaItem in cblDias.Items)
             {
@@ -43,18 +67,19 @@ namespace BJJGerenciamento.UI
                     // Título do dia
                     phHorarios.Controls.Add(new Literal { Text = $"<span class='dia-horario-titulo'>{diaItem.Text}</span>" });
 
-                    // Container para os horários
                     Panel container = new Panel();
                     container.CssClass = "horarios-container";
 
                     foreach (var horario in horarios)
                     {
-                        // Criando CheckBox individual
+                        string chkId = $"chk_{idDia}_{horario.Key}";
+
                         CheckBox chk = new CheckBox
                         {
-                            ID = $"chk_{idDia}_{horario.Key}",
+                            ID = chkId,
                             Text = horario.Value,
-                            CssClass = "horario-item"
+                            CssClass = "horario-item",
+                            Checked = horariosSelecionados.Contains(chkId) // Mantém a seleção
                         };
 
                         container.Controls.Add(chk);
@@ -71,57 +96,106 @@ namespace BJJGerenciamento.UI
             string nomePlano = txtNomeNovoPlano.Text.Trim();
             string mensalidadeStr = txtMensalidade.Text.Trim();
 
+            lblMensagem.Visible = false;
+            lblMensagem.Text = "";
+
+            // Validação do nome da turma
             if (string.IsNullOrWhiteSpace(nomePlano))
             {
-                // Exiba erro de validação
+                lblMensagem.Text = "Informe o nome da turma.";
+                lblMensagem.Visible = true;
                 return;
             }
 
+            // Validação dos dias
             if (cblDias.SelectedItem == null)
             {
-                // Exiba erro de validação
+                lblMensagem.Text = "Selecione pelo menos um dia.";
+                lblMensagem.Visible = true;
                 return;
             }
 
+            // Validação da mensalidade
+            if (string.IsNullOrWhiteSpace(mensalidadeStr))
+            {
+                lblMensagem.Text = "Informe o valor da mensalidade.";
+                lblMensagem.Visible = true;
+                return;
+            }
+
+            if (!decimal.TryParse(mensalidadeStr, out decimal valor))
+            {
+                lblMensagem.Text = "Informe uma sujestão de valor válida.";
+                lblMensagem.Visible = true;
+                return;
+            }
+
+            // Cria o novo plano e pega o ID gerado
             int idPlano = planoDAL.CriarNovoPlano(nomePlano);
             int diasSelecionados = 0;
 
+            List<string> diasSemHorarios = new List<string>();
+
+            // Percorre os dias selecionados
             foreach (ListItem diaItem in cblDias.Items)
             {
                 if (diaItem.Selected)
                 {
                     int idDia = int.Parse(diaItem.Value);
-                    planoDAL.VincularPlanoADia(idPlano, idDia);
-                    diasSelecionados++;
+                    bool temHorarioSelecionado = false;
 
-                    // Recupera o CheckBoxList dos horários para este dia
-                    var cblHorarios = phHorarios.FindControl($"cblHorarios_{idDia}") as CheckBoxList;
-                    if (cblHorarios != null)
+                    // Percorre os checkboxes de horário dentro dos panels
+                    foreach (Control ctrl in phHorarios.Controls)
                     {
-                        foreach (ListItem horarioItem in cblHorarios.Items)
+                        if (ctrl is Panel panel)
                         {
-                            if (horarioItem.Selected)
+                            foreach (Control subCtrl in panel.Controls)
                             {
-                                int idHora = int.Parse(horarioItem.Value);
-                                planoDAL.VincularPlanoHorario(idPlano, idDia, idHora);
+                                if (subCtrl is CheckBox chk && chk.ID.StartsWith($"chk_{idDia}_"))
+                                {
+                                    if (chk.Checked)
+                                    {
+                                        temHorarioSelecionado = true;
+                                        int idHora = int.Parse(chk.ID.Split('_')[2]);
+                                        planoDAL.VincularPlanoHorario(idPlano, idDia, idHora);
+                                    }
+                                }
                             }
                         }
+                    }
+
+                    if (!temHorarioSelecionado)
+                    {
+                        // Guarda os dias que não tiveram horário selecionado
+                        diasSemHorarios.Add(diaItem.Text);
+                    }
+                    else
+                    {
+                        // Salva o vínculo do dia
+                        planoDAL.VincularPlanoADia(idPlano, idDia);
+                        diasSelecionados++;
                     }
                 }
             }
 
-            decimal valor = decimal.Parse(txtMensalidade.Text);
+            // Se houver dias sem horário, exibe a mensagem e para o processo
+            if (diasSemHorarios.Count > 0)
+            {
+                lblMensagem.Text = "Os seguintes dias não possuem horários selecionados: " + string.Join(", ", diasSemHorarios) + ".";
+                lblMensagem.Visible = true;
+                return;
+            }
+
+            // Salva o valor do plano
             planoDAL.SalvarValorPlano(idPlano, diasSelecionados, valor);
+
+            // Exibe alerta de sucesso e faz o redirect para a lista
             ClientScript.RegisterStartupScript(this.GetType(), "alert", @"
-            alert('Turma cadastrada com sucesso!');
-            setTimeout(function() {
-             limparCampos();
-             }, 100);
-             ", true);
-
-
-
+        alert('Turma cadastrada com sucesso!');
+        window.location.href='ListaTurmas.aspx';
+    ", true);
         }
+
 
         protected void btnCalcularMensalidade_Click(object sender, EventArgs e)
         {
