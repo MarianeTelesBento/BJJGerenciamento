@@ -162,6 +162,7 @@
     <Content Include="ListaAlunos.aspx" />
     <Content Include="Global.asax" />
     <Content Include="ListaProfessores.aspx" />
+    <Content Include="ListaTurmas.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -276,6 +277,14 @@
     <Compile Include="ListaProfessores.aspx.designer.cs">
       <DependentUpon>ListaProfessores.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ListaTurmas.aspx.cs">
+      <DependentUpon>ListaTurmas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ListaTurmas.aspx.designer.cs">
+      <DependentUpon>ListaTurmas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DiasHorariosModels.cs" />
     <Compile Include="Models\PlanoHorarioModels.cs" />
     <Compile Include="Models\PlanoAlunoModels.cs" />
     <Compile Include="Models\PresencaModels.cs" />

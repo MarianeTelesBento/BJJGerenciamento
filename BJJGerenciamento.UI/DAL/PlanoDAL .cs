@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -303,6 +304,359 @@ namespace BJJGerenciamento.UI.DAL
             }
             return lista;
         }
+
+
+        public List<PlanoModels> ListarTurmas()
+        {
+            List<PlanoModels> turmas = new List<PlanoModels>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT 
+                P.IdPlano, 
+                P.Nome, 
+                D.QtsDias, 
+                D.Mensalidade, 
+                P.Ativo
+            FROM TBPlanos P
+            INNER JOIN TBPlanoDetalhes D ON P.IdPlano = D.IdPlano";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    turmas.Add(new PlanoModels
+                    {
+                        IdPlano = Convert.ToInt32(reader["IdPlano"]),
+                        Nome = reader["Nome"].ToString(),
+                        QtdDias = Convert.ToInt32(reader["QtsDias"]),
+                        Mensalidade = Convert.ToDecimal(reader["Mensalidade"]),
+                        Ativo = Convert.ToBoolean(reader["Ativo"])
+                    });
+                }
+            }
+
+            return turmas;
+        }
+
+
+        public void AtualizarTurma(PlanoModels turma)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                string queryPlanos = @"UPDATE TBPlanos 
+                               SET Nome = @Nome, Ativo = @Ativo 
+                               WHERE IdPlano = @IdPlano";
+
+                SqlCommand cmdPlanos = new SqlCommand(queryPlanos, con);
+                cmdPlanos.Parameters.AddWithValue("@Nome", turma.Nome);
+                cmdPlanos.Parameters.AddWithValue("@Ativo", turma.Ativo);
+                cmdPlanos.Parameters.AddWithValue("@IdPlano", turma.IdPlano);
+                cmdPlanos.ExecuteNonQuery();
+
+                string queryDetalhes = @"UPDATE TBPlanoDetalhes 
+                                 SET QtsDias = @QtdDias, Mensalidade = @Mensalidade 
+                                 WHERE IdPlano = @IdPlano";
+
+                SqlCommand cmdDetalhes = new SqlCommand(queryDetalhes, con);
+                cmdDetalhes.Parameters.AddWithValue("@QtdDias", turma.QtdDias);
+                cmdDetalhes.Parameters.AddWithValue("@Mensalidade", turma.Mensalidade);
+                cmdDetalhes.Parameters.AddWithValue("@IdPlano", turma.IdPlano);
+                cmdDetalhes.ExecuteNonQuery();
+            }
+        }
+        public PlanoModels ObterTurmaPorId(int idPlano)
+        {
+            PlanoModels plano = null;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT 
+                p.IdPlano, 
+                p.Nome, 
+                ISNULL(d.QtsDias, 0) AS QtdDias, 
+                ISNULL(d.Mensalidade, 0) AS Mensalidade, 
+                p.Ativo
+            FROM TBPlanos p
+            LEFT JOIN TBPlanoDetalhes d ON p.IdPlano = d.IdPlano
+            WHERE p.IdPlano = @IdPlano";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            plano = new PlanoModels
+                            {
+                                IdPlano = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                QtdDias = reader.GetInt32(2),
+                                Mensalidade = reader.GetDecimal(3),
+                                Ativo = reader.GetBoolean(4)
+                            };
+                        }
+                    }
+                }
+            }
+
+            return plano;
+        }
+
+
+        public List<int> ListarDiasDoPlano(int idPlano)
+        {
+            List<int> dias = new List<int>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT IdDia FROM TBPlanoDias WHERE IdPlano = @IdPlano";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            dias.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+
+            return dias;
+        }
+
+        // Atualizar dias do plano (exclui os antigos e insere os novos)
+        public void AtualizarDiasDoPlano(int idPlano, List<int> diasSelecionados)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (SqlTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Apagar dias antigos
+                        string deleteSql = "DELETE FROM TBPlanoDias WHERE IdPlano = @IdPlano";
+                        using (SqlCommand cmdDelete = new SqlCommand(deleteSql, conn, tran))
+                        {
+                            cmdDelete.Parameters.AddWithValue("@IdPlano", idPlano);
+                            cmdDelete.ExecuteNonQuery();
+                        }
+
+                        // Inserir novos dias
+                        string insertSql = "INSERT INTO TBPlanoDias (IdPlano, IdDia) VALUES (@IdPlano, @IdDia)";
+                        using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn, tran))
+                        {
+                            cmdInsert.Parameters.AddWithValue("@IdPlano", idPlano);
+                            var paramIdDia = cmdInsert.Parameters.Add("@IdDia", SqlDbType.Int);
+
+                            foreach (int idDia in diasSelecionados)
+                            {
+                                paramIdDia.Value = idDia;
+                                cmdInsert.ExecuteNonQuery();
+                            }
+                        }
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        // Listar horários do plano (IdHora)
+        public List<int> ListarHorariosDoPlano(int idPlano)
+        {
+            List<int> horarios = new List<int>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT IdHora FROM TBPlanoHorario WHERE IdPlano = @IdPlano";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            horarios.Add(reader.GetInt32(0));
+                        }
+                    }
+                }
+            }
+
+            return horarios;
+        }
+
+        // Atualizar horários do plano (exclui antigos e insere novos)
+        public void AtualizarHorariosDoPlano(int idPlano, List<int> horariosSelecionados)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (SqlTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Apagar horários antigos
+                        string deleteSql = "DELETE FROM TBPlanoHorario WHERE IdPlano = @IdPlano";
+                        using (SqlCommand cmdDelete = new SqlCommand(deleteSql, conn, tran))
+                        {
+                            cmdDelete.Parameters.AddWithValue("@IdPlano", idPlano);
+                            cmdDelete.ExecuteNonQuery();
+                        }
+
+                        // Inserir novos horários
+                        string insertSql = "INSERT INTO TBPlanoHorario (IdPlano, IdHora) VALUES (@IdPlano, @IdHora)";
+                        using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn, tran))
+                        {
+                            cmdInsert.Parameters.AddWithValue("@IdPlano", idPlano);
+                            var paramIdHora = cmdInsert.Parameters.Add("@IdHora", SqlDbType.Int);
+
+                            foreach (int idHora in horariosSelecionados)
+                            {
+                                paramIdHora.Value = idHora;
+                                cmdInsert.ExecuteNonQuery();
+                            }
+                        }
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public List<KeyValuePair<int, string>> BuscarHorariosPorDia(int idDia)
+        {
+            var horarios = new List<KeyValuePair<int, string>>();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = @"SELECT h.IdHora, CONVERT(varchar, h.HorarioInicio, 108) + ' - ' + CONVERT(varchar, h.HorarioFim, 108) AS Horario
+                         FROM TBHora h
+                         INNER JOIN TBPlanoHorario ph ON ph.IdHora = h.IdHora
+                         WHERE ph.IdDia = @IdDia
+                         ORDER BY h.HorarioInicio";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IdDia", idDia);
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            horarios.Add(new KeyValuePair<int, string>(dr.GetInt32(0), dr.GetString(1)));
+                        }
+                    }
+                }
+            }
+            return horarios;
+        }
+
+        public void AtualizarHorariosDoPlanoComDias(int idPlano, List<(int IdDia, int IdHora)> horariosSelecionados)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                using (SqlTransaction tran = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Passo 1: Obter os horários atuais
+                        List<(int IdDia, int IdHora)> horariosAtuais = new List<(int, int)>();
+                        string selectSql = "SELECT IdDia, IdHora FROM TBPlanoHorario WHERE IdPlano = @IdPlano";
+                        using (SqlCommand cmdSelect = new SqlCommand(selectSql, conn, tran))
+                        {
+                            cmdSelect.Parameters.AddWithValue("@IdPlano", idPlano);
+                            using (SqlDataReader reader = cmdSelect.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    int idDia = Convert.ToInt32(reader["IdDia"]);
+                                    int idHora = Convert.ToInt32(reader["IdHora"]);
+                                    horariosAtuais.Add((idDia, idHora));
+                                }
+                            }
+                        }
+
+                        // Passo 2: Identificar os que devem ser inseridos
+                        var novos = horariosSelecionados.Except(horariosAtuais).ToList();
+
+                        // Passo 3: Identificar os que devem ser removidos
+                        var removidos = horariosAtuais.Except(horariosSelecionados).ToList();
+
+                        // Inserir novos
+                        string insertSql = "INSERT INTO TBPlanoHorario (IdPlano, IdDia, IdHora) VALUES (@IdPlano, @IdDia, @IdHora)";
+                        using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn, tran))
+                        {
+                            cmdInsert.Parameters.AddWithValue("@IdPlano", idPlano);
+                            var pDia = cmdInsert.Parameters.Add("@IdDia", SqlDbType.Int);
+                            var pHora = cmdInsert.Parameters.Add("@IdHora", SqlDbType.Int);
+
+                            foreach (var h in novos)
+                            {
+                                pDia.Value = h.IdDia;
+                                pHora.Value = h.IdHora;
+                                cmdInsert.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Remover antigos
+                        string deleteSql = "DELETE FROM TBPlanoHorario WHERE IdPlano = @IdPlano AND IdDia = @IdDia AND IdHora = @IdHora";
+                        using (SqlCommand cmdDelete = new SqlCommand(deleteSql, conn, tran))
+                        {
+                            cmdDelete.Parameters.AddWithValue("@IdPlano", idPlano);
+                            var pDia = cmdDelete.Parameters.Add("@IdDia", SqlDbType.Int);
+                            var pHora = cmdDelete.Parameters.Add("@IdHora", SqlDbType.Int);
+
+                            foreach (var h in removidos)
+                            {
+                                pDia.Value = h.IdDia;
+                                pHora.Value = h.IdHora;
+                                cmdDelete.ExecuteNonQuery();
+                            }
+                        }
+
+                        tran.Commit();
+                    }
+                    catch
+                    {
+                        tran.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+
 
     }
 }
