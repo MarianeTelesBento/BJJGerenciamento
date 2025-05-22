@@ -154,7 +154,6 @@
             <asp:Panel ID="pnlInformacoesResponsavelAluno" runat="server" Visible="false" CssClass="container mt-4">
                 <h2>Cadastro de Responsável</h2>  
                     <div class="container mt-4">
-
                         <div class="card mb-4">
                             <div class="card-header">Informações Pessoais</div>
                             <div class="card-body">
@@ -241,8 +240,6 @@
                             <asp:Button ID="btnProximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server"
                             CssClass="btn btn-danger btn-custom" />
                         </div>
-
-
                     </div>
             </asp:Panel>
 
