@@ -281,7 +281,7 @@ namespace BJJGerenciamento.UI
                 }
                 else
                 {
-                    pnlPlanoAluno.Visible = true;
+                    pnlConfirmarAluno.Visible = true;
                     alunoMaiorIdade = true;
 
                 }
@@ -317,7 +317,7 @@ namespace BJJGerenciamento.UI
                 {
 
                     pnlInformacoesResponsavelAluno.Visible = false;
-                    pnlPlanoAluno.Visible = true;
+                    pnlConfirmarAluno.Visible = true;
 
                 }
             }
@@ -325,7 +325,7 @@ namespace BJJGerenciamento.UI
 
         protected void btnVoltar_Click(object sender, EventArgs e)
         {
-            if (pnlPlanoAluno.Visible)
+            if (pnlConfirmarAluno.Visible) //Alteração do nome do pnl
             {
                 if (!alunoMaiorIdade && pnlInformacoesResponsavelAluno.Visible)
                 {
@@ -338,7 +338,7 @@ namespace BJJGerenciamento.UI
                     pnlInformacoesResponsavelAluno.Visible = false;
                 }
 
-                pnlPlanoAluno.Visible = false;
+                pnlConfirmarAluno.Visible = false;
             }
             else if (pnlInformacoesResponsavelAluno.Visible)
             {
@@ -348,7 +348,7 @@ namespace BJJGerenciamento.UI
             //else if (pnlInformacoesPessoaisAluno.Visible)
             //{
             //    pnlInformacoesPessoaisAluno.Visible = false;
-            //    pnlPlanoAluno.Visible = true;
+            //    pnlConfirmarAluno.Visible = true;
             //}
 
         }

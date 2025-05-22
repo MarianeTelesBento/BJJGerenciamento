@@ -321,13 +321,13 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button btnProximoPlano;
 
         /// <summary>
-        /// Controle pnlPlanoAluno.
+        /// Controle pnlConfirmarAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlPlanoAluno;
+        protected global::System.Web.UI.WebControls.Panel pnlConfirmarAluno;
 
         /// <summary>
         /// Controle EnviarInformacoes.

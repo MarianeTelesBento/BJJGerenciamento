@@ -243,7 +243,7 @@
                     </div>
             </asp:Panel>
 
-            <asp:Panel ID="pnlPlanoAluno" runat="server" Visible="false">
+            <asp:Panel ID="pnlConfirmarAluno" runat="server" Visible="false">
                 <div class="container mt-4">
                     <h2 class="text-center">Confirmar cadastro</h2>
 

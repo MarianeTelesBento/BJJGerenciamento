@@ -90,6 +90,7 @@ namespace BJJGerenciamento.UI
             IdsMarcados = ObterIdsAlunosSelecionados();
 
             AlunosDAL alunosDAL = new AlunosDAL();
+
             alunosList = alunosDAL.PesquisarAlunos(TxtTermoPesquisa.Text);
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
