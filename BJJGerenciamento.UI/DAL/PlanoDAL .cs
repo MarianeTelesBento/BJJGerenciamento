@@ -432,7 +432,6 @@ namespace BJJGerenciamento.UI.DAL
             return dias;
         }
 
-        // Atualizar dias do plano (exclui os antigos e insere os novos)
         public void AtualizarDiasDoPlano(int idPlano, List<int> diasSelecionados)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -476,7 +475,6 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
-        // Listar horários do plano (IdHora)
         public List<int> ListarHorariosDoPlano(int idPlano)
         {
             List<int> horarios = new List<int>();
@@ -652,6 +650,8 @@ namespace BJJGerenciamento.UI.DAL
 
             return horariosPorDia;
         }
+
+
 
     }
 }

@@ -116,16 +116,11 @@ namespace BJJGerenciamento.UI
             }
 
             // Validação da mensalidade
-            if (string.IsNullOrWhiteSpace(mensalidadeStr))
+            if (string.IsNullOrWhiteSpace(mensalidadeStr) ||
+            !decimal.TryParse(mensalidadeStr, out decimal valor) ||
+            valor <= 0)
             {
-                lblMensagem.Text = "Informe o valor da mensalidade.";
-                lblMensagem.Visible = true;
-                return;
-            }
-
-            if (!decimal.TryParse(mensalidadeStr, out decimal valor))
-            {
-                lblMensagem.Text = "Informe uma sujestão de valor válida.";
+                lblMensagem.Text = "Por favor, informe uma sujestão de valor válida (o Valor não pode ser 0,00).";
                 lblMensagem.Visible = true;
                 return;
             }
