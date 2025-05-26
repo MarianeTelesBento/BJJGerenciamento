@@ -23,7 +23,6 @@ namespace BJJGerenciamento.UI.Models
         public string Cpf { get; set; }
         public string DataNascimento { get; set; }
         public string CarteiraFPJJ { get; set; }
-
         public int IdMatricula { get; set; }
         public bool StatusMatricula { get; set; }
         public string DataMatricula { get; set; }
