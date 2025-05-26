@@ -15,6 +15,7 @@ namespace BJJGerenciamento.UI
         public List<AlunoModels> alunosList = new List<AlunoModels>();
         public AlunoModels aluno = new AlunoModels();
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -24,20 +25,6 @@ namespace BJJGerenciamento.UI
                 GridView1.DataSource = alunosList;
                 GridView1.DataBind();
             }
-        }
-
-        public static bool VerificarCampos(params TextBox[] campos)
-        {
-            if (campos.Any(campo => string.IsNullOrWhiteSpace(campo.Text)))
-            {
-                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
-                    typeof(Page),
-                    "alerta",
-                    "alert('Preencha todos os campos obrigatórios!');",
-                    true);
-                return false;
-            }
-            return true;
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -51,52 +38,114 @@ namespace BJJGerenciamento.UI
             GridViewRow row = (GridViewRow)btn.NamingContainer;
             int index = row.RowIndex;
 
-            modalIdMatricula.Text = row.Cells[0].Text;
+            modalIdMatriculaAluno.Text = row.Cells[0].Text;
 
             CheckBox chkStatusMatricula = (CheckBox)row.FindControl("chkStatusMatricula");
             modalStatusMatricula.Checked = chkStatusMatricula.Checked;
 
-            modalNome.Text = row.Cells[1].Text;
-            modalSobrenome.Text = row.Cells[2].Text;
-            modalCpf.Text = row.Cells[3].Text;
-            modalTelefone.Text = row.Cells[4].Text;
+            modalNomeAluno.Text = row.Cells[1].Text;
+            modalSobrenomeAluno.Text = row.Cells[2].Text;
+            modalCpfAluno.Text = row.Cells[3].Text;
+            modalTelefoneAluno.Text = row.Cells[4].Text;
 
-            modalEmail.Text = GridView1.DataKeys[index]["Email"].ToString();
-            modalDataNascimento.Text = GridView1.DataKeys[index]["DataNascimento"].ToString();
-            modalCep.Text = GridView1.DataKeys[index]["Cep"].ToString();
-            modalRua.Text = GridView1.DataKeys[index]["Rua"].ToString();
-            modalBairro.Text = GridView1.DataKeys[index]["Bairro"].ToString();
-            modalCidade.Text = GridView1.DataKeys[index]["Cidade"].ToString();
-            modalEstado.Text = GridView1.DataKeys[index]["Estado"].ToString();
-            modalNumero.Text = GridView1.DataKeys[index]["NumeroCasa"].ToString();
-            modalComplemento.Text = GridView1.DataKeys[index]["Complemento"].ToString();
-            modalCarteiraFpjj.Text = GridView1.DataKeys[index]["CarteiraFPJJ"].ToString();
-            modalDataMatricula.Text = GridView1.DataKeys[index]["DataMatricula"].ToString();
+            modalEmailAluno.Text = GridView1.DataKeys[index]["Email"].ToString();
+            modalDataNascimentoAluno.Text = GridView1.DataKeys[index]["DataNascimento"].ToString();
+            modalCepAluno.Text = GridView1.DataKeys[index]["Cep"].ToString();
+            modalRuaAluno.Text = GridView1.DataKeys[index]["Rua"].ToString();
+            modalBairroAluno.Text = GridView1.DataKeys[index]["Bairro"].ToString();
+            modalCidadeAluno.Text = GridView1.DataKeys[index]["Cidade"].ToString();
+            modalEstadoAluno.Text = GridView1.DataKeys[index]["Estado"].ToString();
+            modalNumeroAluno.Text = GridView1.DataKeys[index]["NumeroCasa"].ToString();
+            modalComplementoAluno.Text = GridView1.DataKeys[index]["Complemento"].ToString();
+            modalCarteiraFpjjAluno.Text = GridView1.DataKeys[index]["CarteiraFPJJ"].ToString();
+            modalDataMatriculaAluno.Text = GridView1.DataKeys[index]["DataMatricula"].ToString();
             ViewState["IdAlunos"] = GridView1.DataKeys[index]["IdAlunos"].ToString();
 
-            string script = $"<script>abrirModal();</script>";
+            DateTime dataNascimento = Convert.ToDateTime(modalDataNascimentoAluno.Text);
+            int idade = DateTime.Now.Year - dataNascimento.Year;
+
+            if (DateTime.Now < dataNascimento.AddYears(idade))
+            {
+                idade--;
+            }
+
+            bool maiorDeIdade = idade >= 18;
+
+            if (maiorDeIdade)
+            {
+                btnDetalhesResponsavel.Visible = false;
+            }
+            else
+            {
+                btnDetalhesResponsavel.Visible = true;
+            }
+
+
+                string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
 
+        protected void btnDetalhesAluno_Click(object sender, EventArgs e)
+        {
+            string aba = "Aluno";
+            string script = $"<script>abrirModal(); exibirAba('{aba}');</script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
+        }
+
+        protected void btnDetalhesResponsavel_Click(object sender, EventArgs e)
+        {
+            //Status Responsável
+            int matriculaId = Convert.ToInt32(modalIdMatriculaAluno.Text);
+            AlunosDAL alunosDAL = new AlunosDAL();
+            ResponsavelModels responsavel =  alunosDAL.BuscarResponsavel(matriculaId);
+
+            modalNomeResponsavel.Text = responsavel.Nome;
+            modalSobrenomeResponsavel.Text = responsavel.Sobrenome;
+            modalCpfResponsavel.Text = responsavel.Cpf;
+            modalTelefoneResponsavel.Text = responsavel.Telefone;
+            modalEmailResponsavel.Text = responsavel.Email;
+            modalDataNascimentoResponsavel.Text = responsavel.DataNascimento;
+            modalCepResponsavel.Text = responsavel.Cep;
+            modalRuaResponsavel.Text = responsavel.Rua;
+            modalBairroResponsavel.Text = responsavel.Bairro;
+            modalCidadeResponsavel.Text = responsavel.Cidade;
+            modalEstadoResponsavel.Text = responsavel.Estado;
+            modalNumeroResponsavel.Text = responsavel.NumeroCasa;
+            modalComplementoResponsavel.Text = responsavel.Complemento;
+            ModalIdResponsavel.Text = responsavel.IdResponsavel.ToString();
+
+            string aba = "Responsavel";
+            string script = $"<script>abrirModal(); exibirAba('{aba}');</script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
+        }
+
+        protected void btnDetalhesPlano_Click(object sender, EventArgs e)
+        {
+            string aba = "Plano";
+            string script = $"<script>abrirModal(); exibirAba('{aba}');</script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
+        }
+
+
         protected void SalvarAluno_Click(object sender, EventArgs e)
         {
-            if (VerificarCampos(modalNome, modalSobrenome, modalCpf, modalTelefone, modalRua, modalBairro, modalCidade, modalEstado, modalNumero))
+            if (VerificarCampos(modalNomeAluno, modalSobrenomeAluno, modalCpfAluno, modalTelefoneAluno, modalRuaAluno, modalBairroAluno, modalCidadeAluno, modalEstadoAluno, modalNumeroAluno))
             {
                 aluno.IdAlunos = Convert.ToInt32(ViewState["IdAlunos"]);
-                aluno.Nome = modalNome.Text;
-                aluno.Sobrenome = modalSobrenome.Text;
-                aluno.Cpf = modalCpf.Text;
-                aluno.Telefone = modalTelefone.Text;
-                aluno.Email = modalEmail.Text;
-                aluno.DataNascimento = modalDataNascimento.Text;
-                aluno.Cep = modalCep.Text;
-                aluno.Rua = modalRua.Text;
-                aluno.Bairro = modalBairro.Text;
-                aluno.Cidade = modalCidade.Text;
-                aluno.Estado = modalEstado.Text;
-                aluno.NumeroCasa = modalNumero.Text;
-                aluno.Complemento = modalComplemento.Text;
-                aluno.CarteiraFPJJ = modalCarteiraFpjj.Text;
+                aluno.Nome = modalNomeAluno.Text;
+                aluno.Sobrenome = modalSobrenomeAluno.Text;
+                aluno.Cpf = modalCpfAluno.Text;
+                aluno.Telefone = modalTelefoneAluno.Text;
+                aluno.Email = modalEmailAluno.Text;
+                aluno.DataNascimento = modalDataNascimentoAluno.Text;
+                aluno.Cep = modalCepAluno.Text;
+                aluno.Rua = modalRuaAluno.Text;
+                aluno.Bairro = modalBairroAluno.Text;
+                aluno.Cidade = modalCidadeAluno.Text;
+                aluno.Estado = modalEstadoAluno.Text;
+                aluno.NumeroCasa = modalNumeroAluno.Text;
+                aluno.Complemento = modalComplementoAluno.Text;
+                aluno.CarteiraFPJJ = modalCarteiraFpjjAluno.Text;
                 aluno.StatusMatricula = modalStatusMatricula.Checked;
 
                 AlunosDAL alunosDAL = new AlunosDAL();
@@ -115,6 +164,62 @@ namespace BJJGerenciamento.UI
                     ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Erro ao atualizar aluno. Tente novamente!');", true);
                 }
             }
+        }
+
+        protected void SalvarResponsavel_Click(object sender, EventArgs e)
+        {
+
+            if (VerificarCampos(modalNomeResponsavel, modalSobrenomeResponsavel, modalCpfResponsavel, modalEmailResponsavel, modalTelefoneResponsavel, modalDataNascimentoResponsavel, modalRuaResponsavel, modalBairroResponsavel, modalCidadeResponsavel, modalEstadoResponsavel, modalNumeroResponsavel))
+            {
+                ResponsavelModels responsavel = new ResponsavelModels()
+                {
+                    Nome = modalNomeResponsavel.Text,
+                    Sobrenome = modalSobrenomeResponsavel.Text,
+                    Cpf = modalCpfResponsavel.Text,
+                    Telefone = modalTelefoneResponsavel.Text,
+                    Email = modalEmailResponsavel.Text,
+                    DataNascimento = modalDataNascimentoResponsavel.Text,
+                    Cep = modalCepResponsavel.Text,
+                    Rua = modalRuaResponsavel.Text,
+                    Bairro = modalBairroResponsavel.Text,
+                    Cidade = modalCidadeResponsavel.Text,
+                    Estado = modalEstadoResponsavel.Text,
+                    NumeroCasa = modalNumeroResponsavel.Text,
+                    Complemento = modalComplementoResponsavel.Text,
+                    IdResponsavel = Convert.ToInt32(ModalIdResponsavel.Text)
+                };
+
+                AlunosDAL alunosDAL = new AlunosDAL();
+
+                bool funcionou = alunosDAL.AtualizarResponsavel(responsavel);
+
+                if (funcionou)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Responsável atualizado com sucesso!');", true);
+                    alunosList = alunosDAL.VisualizarDados();
+                    GridView1.DataSource = alunosList;
+                    GridView1.DataBind();
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Erro ao atualizar responsável. Tente novamente!');", true);
+                }
+            }    
+           
+        }
+
+        public static bool VerificarCampos(params TextBox[] campos)
+        {
+            if (campos.Any(campo => string.IsNullOrWhiteSpace(campo.Text)))
+            {
+                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
+                    typeof(Page),
+                    "alerta",
+                    "alert('Preencha todos os campos obrigatórios!');",
+                    true);
+                return false;
+            }
+            return true;
         }
 
     }

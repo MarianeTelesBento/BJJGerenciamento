@@ -24,31 +24,49 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
-        /// Controle pnlAluno.
+        /// Controle btnDetalhesAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlAluno;
+        protected global::System.Web.UI.WebControls.Button btnDetalhesAluno;
 
         /// <summary>
-        /// Controle modalIdMatricula.
+        /// Controle btnDetalhesResponsavel.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalIdMatricula;
+        protected global::System.Web.UI.WebControls.Button btnDetalhesResponsavel;
 
         /// <summary>
-        /// Controle modalDataMatricula.
+        /// Controle btnDetalhesPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalDataMatricula;
+        protected global::System.Web.UI.WebControls.Button btnDetalhesPlano;
+
+        /// <summary>
+        /// Controle modalIdMatriculaAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalIdMatriculaAluno;
+
+        /// <summary>
+        /// Controle modalDataMatriculaAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalDataMatriculaAluno;
 
         /// <summary>
         /// Controle modalStatusMatricula.
@@ -60,130 +78,130 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.CheckBox modalStatusMatricula;
 
         /// <summary>
-        /// Controle modalNome.
+        /// Controle modalNomeAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalNome;
+        protected global::System.Web.UI.WebControls.TextBox modalNomeAluno;
 
         /// <summary>
-        /// Controle modalSobrenome.
+        /// Controle modalSobrenomeAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalSobrenome;
+        protected global::System.Web.UI.WebControls.TextBox modalSobrenomeAluno;
 
         /// <summary>
-        /// Controle modalCpf.
+        /// Controle modalCpfAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCpf;
+        protected global::System.Web.UI.WebControls.TextBox modalCpfAluno;
 
         /// <summary>
-        /// Controle modalEmail.
+        /// Controle modalEmailAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalEmail;
+        protected global::System.Web.UI.WebControls.TextBox modalEmailAluno;
 
         /// <summary>
-        /// Controle modalTelefone.
+        /// Controle modalTelefoneAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalTelefone;
+        protected global::System.Web.UI.WebControls.TextBox modalTelefoneAluno;
 
         /// <summary>
-        /// Controle modalDataNascimento.
+        /// Controle modalDataNascimentoAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalDataNascimento;
+        protected global::System.Web.UI.WebControls.TextBox modalDataNascimentoAluno;
 
         /// <summary>
-        /// Controle modalCep.
+        /// Controle modalCepAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCep;
+        protected global::System.Web.UI.WebControls.TextBox modalCepAluno;
 
         /// <summary>
-        /// Controle modalRua.
+        /// Controle modalRuaAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalRua;
+        protected global::System.Web.UI.WebControls.TextBox modalRuaAluno;
 
         /// <summary>
-        /// Controle modalBairro.
+        /// Controle modalBairroAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalBairro;
+        protected global::System.Web.UI.WebControls.TextBox modalBairroAluno;
 
         /// <summary>
-        /// Controle modalCidade.
+        /// Controle modalCidadeAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCidade;
+        protected global::System.Web.UI.WebControls.TextBox modalCidadeAluno;
 
         /// <summary>
-        /// Controle modalEstado.
+        /// Controle modalEstadoAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalEstado;
+        protected global::System.Web.UI.WebControls.TextBox modalEstadoAluno;
 
         /// <summary>
-        /// Controle modalNumero.
+        /// Controle modalNumeroAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalNumero;
+        protected global::System.Web.UI.WebControls.TextBox modalNumeroAluno;
 
         /// <summary>
-        /// Controle modalComplemento.
+        /// Controle modalComplementoAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalComplemento;
+        protected global::System.Web.UI.WebControls.TextBox modalComplementoAluno;
 
         /// <summary>
-        /// Controle modalCarteiraFpjj.
+        /// Controle modalCarteiraFpjjAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox modalCarteiraFpjj;
+        protected global::System.Web.UI.WebControls.TextBox modalCarteiraFpjjAluno;
 
         /// <summary>
         /// Controle SalvarAluno.
@@ -193,5 +211,149 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SalvarAluno;
+
+        /// <summary>
+        /// Controle ModalIdResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ModalIdResponsavel;
+
+        /// <summary>
+        /// Controle modalNomeResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalNomeResponsavel;
+
+        /// <summary>
+        /// Controle modalSobrenomeResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalSobrenomeResponsavel;
+
+        /// <summary>
+        /// Controle modalCpfResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalCpfResponsavel;
+
+        /// <summary>
+        /// Controle modalEmailResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalEmailResponsavel;
+
+        /// <summary>
+        /// Controle modalTelefoneResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalTelefoneResponsavel;
+
+        /// <summary>
+        /// Controle modalDataNascimentoResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalDataNascimentoResponsavel;
+
+        /// <summary>
+        /// Controle modalCepResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalCepResponsavel;
+
+        /// <summary>
+        /// Controle modalRuaResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalRuaResponsavel;
+
+        /// <summary>
+        /// Controle modalBairroResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalBairroResponsavel;
+
+        /// <summary>
+        /// Controle modalCidadeResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalCidadeResponsavel;
+
+        /// <summary>
+        /// Controle modalEstadoResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalEstadoResponsavel;
+
+        /// <summary>
+        /// Controle modalNumeroResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalNumeroResponsavel;
+
+        /// <summary>
+        /// Controle modalComplementoResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox modalComplementoResponsavel;
+
+        /// <summary>
+        /// Controle SalvarResponsavel.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SalvarResponsavel;
+
+        /// <summary>
+        /// Controle SalvarPlano.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SalvarPlano;
     }
 }

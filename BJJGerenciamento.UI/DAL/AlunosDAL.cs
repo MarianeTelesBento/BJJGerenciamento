@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Runtime.ConstrainedExecution;
 using System.Web;
@@ -13,7 +14,7 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class AlunosDAL
     {
-        
+
 
         public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
@@ -52,41 +53,41 @@ namespace BJJGerenciamento.UI.DAL
             }
 
         }
-       public int CadastrarAluno(AlunoModels aluno)
-            {
-                int cadastroRealizado;
+        public int CadastrarAluno(AlunoModels aluno)
+        {
+            int cadastroRealizado;
 
-                SqlConnection connection = new SqlConnection(connectionString);
-                connection.Open();
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
 
-                SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
-                    "SELECT SCOPE_IDENTITY();", connection);
+            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
+                "SELECT SCOPE_IDENTITY();", connection);
 
-                inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
-                inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
-                inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
-                inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
-                inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
-                inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
-                inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
-                inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
-                inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
-                inserirCommand.Parameters.AddWithValue("@rua", aluno.Rua);
-                inserirCommand.Parameters.AddWithValue("@bairro", aluno.Bairro);
-                inserirCommand.Parameters.AddWithValue("@cidade", aluno.Cidade);
-                inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
-                inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
-                inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
-                inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento); 
-                inserirCommand.Parameters.AddWithValue("@idMatricula", aluno.IdMatricula);
+            inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
+            inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
+            inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
+            inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
+            inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);
+            inserirCommand.Parameters.AddWithValue("@email", aluno.Email);
+            inserirCommand.Parameters.AddWithValue("@cpf", aluno.Cpf);
+            inserirCommand.Parameters.AddWithValue("@dataNascimento", aluno.DataNascimento);
+            inserirCommand.Parameters.AddWithValue("@cep", aluno.Cep);
+            inserirCommand.Parameters.AddWithValue("@rua", aluno.Rua);
+            inserirCommand.Parameters.AddWithValue("@bairro", aluno.Bairro);
+            inserirCommand.Parameters.AddWithValue("@cidade", aluno.Cidade);
+            inserirCommand.Parameters.AddWithValue("@estado", aluno.Estado);
+            inserirCommand.Parameters.AddWithValue("@numeroCasa", aluno.NumeroCasa);
+            inserirCommand.Parameters.AddWithValue("@carteiraFPJJ", aluno.CarteiraFPJJ);
+            inserirCommand.Parameters.AddWithValue("@complemento", aluno.Complemento);
+            inserirCommand.Parameters.AddWithValue("@idMatricula", aluno.IdMatricula);
 
 
-                cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
+            cadastroRealizado = Convert.ToInt32(inserirCommand.ExecuteScalar());
 
-                connection.Close();
+            connection.Close();
 
-                return Convert.ToInt32(cadastroRealizado);
-       }     
+            return Convert.ToInt32(cadastroRealizado);
+        }
         public int CadastrarMatricula(DateTime dataAtual, bool estadoMatricula)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -332,6 +333,99 @@ namespace BJJGerenciamento.UI.DAL
 
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
+                }
+            }
+        }
+
+        public bool AtualizarResponsavel(ResponsavelModels responsavel)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"UPDATE TBResponsaveis 
+                                SET 
+                                    Nome = @nome, 
+                                    Sobrenome = @sobrenome, 
+                                    Cpf = @cpf, 
+                                    Telefone = @telefone, 
+                                    Email = @email, 
+                                    DataDeNascimento = @dataNascimento, 
+                                    CEP = @cep, 
+                                    Rua = @rua, 
+                                    Bairro = @bairro, 
+                                    Cidade = @cidade, 
+                                    Estado = @estado, 
+                                    NumeroCasa = @numeroCasa, 
+                                    Complemento = @complemento 
+                                WHERE IdResponsavel = @idResponsavel;";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@nome", responsavel.Nome);
+                    command.Parameters.AddWithValue("@sobrenome", responsavel.Sobrenome);
+                    command.Parameters.AddWithValue("@telefone", responsavel.Telefone);
+                    command.Parameters.AddWithValue("@email", responsavel.Email);
+                    command.Parameters.AddWithValue("@cpf", responsavel.Cpf);
+                    command.Parameters.AddWithValue("@dataNascimento", responsavel.DataNascimento);
+                    command.Parameters.AddWithValue("@cep", responsavel.Cep);
+                    command.Parameters.AddWithValue("@rua", responsavel.Rua);
+                    command.Parameters.AddWithValue("@bairro", responsavel.Bairro);
+                    command.Parameters.AddWithValue("@cidade", responsavel.Cidade);
+                    command.Parameters.AddWithValue("@estado", responsavel.Estado);
+                    command.Parameters.AddWithValue("@numeroCasa", responsavel.NumeroCasa);
+                    command.Parameters.AddWithValue("@complemento", responsavel.Complemento);
+                    command.Parameters.AddWithValue("@idResponsavel", responsavel.IdResponsavel);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        public ResponsavelModels BuscarResponsavel(int idMatricula)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT r.IdResponsavel, r.Nome, r.Sobrenome, r.CPF, r.Email, r.Telefone,
+                                       r.DataDeNascimento, r.Cep, r.Rua, r.Bairro, r.Cidade, r.Estado, 
+                                       r.NumeroCasa, r.Complemento
+                                FROM TBResponsaveis r
+                                JOIN TBAlunos a ON r.IdResponsavel = a.IdResponsavel
+                                WHERE a.IdMatricula = @idMatricula;
+                                ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idMatricula", idMatricula);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ResponsavelModels responsavel = new ResponsavelModels
+                            {
+                                IdResponsavel = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                Sobrenome = reader.GetString(2),
+                                Cpf = reader.GetString(3),
+                                Email = reader.GetString(4),
+                                Telefone = reader.GetString(5),
+                                DataNascimento = reader.GetDateTime(6).ToString("dd/MM/yyyy"),
+                                Cep = reader.GetString(7),
+                                Rua = reader.GetString(8),
+                                Bairro = reader.GetString(9),
+                                Cidade = reader.GetString(10),
+                                Estado = reader.GetString(11),
+                                NumeroCasa = reader.GetInt32(12).ToString(),
+                                Complemento = reader.IsDBNull(13) ? "" : reader.GetString(13)
+                            };
+
+                            return responsavel;
+                        }
+                        return null;
+                    }
                 }
             }
         }
