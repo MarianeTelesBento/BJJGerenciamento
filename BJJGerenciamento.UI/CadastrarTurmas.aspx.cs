@@ -120,7 +120,7 @@ namespace BJJGerenciamento.UI
             !decimal.TryParse(mensalidadeStr, out decimal valor) ||
             valor <= 0)
             {
-                lblMensagem.Text = "Por favor, informe uma sujestão de valor válida (o Valor não pode ser 0,00).";
+                lblMensagem.Text = "Por favor, informe uma sugestão de valor válida (o Valor não pode ser 0,00).";
                 lblMensagem.Visible = true;
                 return;
             }
