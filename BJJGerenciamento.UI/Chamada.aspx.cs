@@ -112,10 +112,8 @@ namespace BJJGerenciamento.UI
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //MANDAR TODA A LÓGICA DE PESQUISA BOTÃO DE PESQUISAR, TIRAR DAQUI
-            //Se não houver termo de pesquisa, ele busca todos os alunos da turma selecionada
-            //Se houver termo de pesquisa, ele busca os alunos da turma selecionada e que contenham o termo de pesquisa
-
+            //Ao mudar, aparecer um combo com os dias
+            //Ao mudar o combo de dias, aparecer um combo com os horários
         }
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
