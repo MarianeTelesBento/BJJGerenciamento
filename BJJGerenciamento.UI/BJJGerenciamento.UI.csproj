@@ -163,6 +163,7 @@
     <Content Include="Global.asax" />
     <Content Include="ListaProfessores.aspx" />
     <Content Include="ListaTurmas.aspx" />
+    <Content Include="Login.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -241,6 +242,7 @@
     <Compile Include="Chamada.aspx.designer.cs">
       <DependentUpon>Chamada.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PlanoDAL .cs" />
     <Compile Include="DAL\AlunosDAL.cs" />
     <Compile Include="DAL\PresencaDAL.cs" />
@@ -284,7 +286,15 @@
     <Compile Include="ListaTurmas.aspx.designer.cs">
       <DependentUpon>ListaTurmas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Models\DiasHorariosModels.cs" />
+    <Compile Include="Models\LoginModels.cs" />
     <Compile Include="Models\PlanoHorarioModels.cs" />
     <Compile Include="Models\PlanoAlunoModels.cs" />
     <Compile Include="Models\PresencaModels.cs" />

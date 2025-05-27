@@ -10,8 +10,10 @@ using System.Web.UI.WebControls;
 
 namespace BJJGerenciamento.UI
 {
+
     public partial class Chamada : System.Web.UI.Page
     {
+
         private List<int> IdsMarcados
         {
             get
@@ -31,6 +33,10 @@ namespace BJJGerenciamento.UI
        
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
             if (!IsPostBack)
             {
                 GridView1.Columns[6].Visible = false;

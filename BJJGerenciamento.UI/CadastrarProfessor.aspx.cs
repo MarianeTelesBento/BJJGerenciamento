@@ -13,7 +13,13 @@ namespace BJJGerenciamento.UI
 {
     public partial class CadastrarProfessor : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e) { }
+        protected void Page_Load(object sender, EventArgs e) 
+        {
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+        }
 
         protected void btnEnviar_Click(object sender, EventArgs e)
         {

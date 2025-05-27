@@ -13,6 +13,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
             if (!IsPostBack)
             {
                 CarregarSalas();

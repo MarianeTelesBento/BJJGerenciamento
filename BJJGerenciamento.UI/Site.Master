@@ -1,4 +1,7 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="BJJGerenciamento.UI.SiteMaster" %>
+﻿
+
+
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="BJJGerenciamento.UI.SiteMaster" %>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -85,6 +88,19 @@
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/GerenciarSalas.aspx">Salas</a></li>
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/Chamada.aspx">Chamada</a></li>
+
+                            
+        <!-- Botão de sair com confirmação -->
+       <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+    <ul class="navbar-nav flex-grow-1">
+        </ul>
+    <div style="display: flex; align-items: center;">
+        <asp:Button ID="btnSair" runat="server" CssClass="btn btn-outline-danger my-2 my-sm-0 ml-2"
+            Text="Sair" OnClientClick="return confirm('Deseja realmente sair?');"
+            OnClick="btnSair_Click" style="margin-left: auto; margin-right: 15px; height:35px    " />
+    </div>
+</div>
+   
 
 
 

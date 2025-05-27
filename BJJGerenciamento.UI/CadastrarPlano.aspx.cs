@@ -16,6 +16,12 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
+
             idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
 
             if (!IsPostBack)

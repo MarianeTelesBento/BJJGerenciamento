@@ -11,6 +11,10 @@ namespace BJJGerenciamento.UI
         PlanoDAL planoDAL = new PlanoDAL();
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
             if (!IsPostBack)
             {
                 CarregarDiasSemana();

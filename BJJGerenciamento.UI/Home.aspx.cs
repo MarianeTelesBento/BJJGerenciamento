@@ -11,7 +11,16 @@ namespace BJJGerenciamento.UI
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
 
-		}
-	}
+        }
+        //protected void btnSair_Click(object sender, EventArgs e)
+        //{
+        //    Session.Clear();
+        //    Response.Redirect("Login.aspx");
+        //}
+    }
 }
