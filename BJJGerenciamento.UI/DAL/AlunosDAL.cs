@@ -531,7 +531,60 @@ namespace BJJGerenciamento.UI.DAL
                         return null;
                     }
                 }
+
             }
+        }
+
+        public static int ObterQuantidadeAtivos() 
+        {
+            using (SqlConnection conn = new SqlConnection( new AlunosDAL().connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM TBMatriculas WHERE StatusdaMatricula = 1";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                conn.Open();
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+        public static int ObterQuantidadeInativos()
+        {
+            using (SqlConnection conn = new SqlConnection(new AlunosDAL().connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM TBMatriculas WHERE StatusdaMatricula = 0";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                conn.Open();
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+        public static List <AlunoModels> ObterAniversariantesDoMes()
+        {
+            List<AlunoModels> aniversariantes = new List<AlunoModels>();
+            using (SqlConnection connection = new SqlConnection(new AlunosDAL().connectionString))
+            {
+                connection.Open();
+                string query = @"
+                    SELECT a.IdAluno, a.Nome, a.Sobrenome, a.DataNascimento
+                    FROM TBAlunos a
+                    WHERE MONTH(a.DataNascimento) = MONTH(GETDATE())";
+                    
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            AlunoModels aluno = new AlunoModels
+                            {
+                                IdAlunos = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                Sobrenome = reader.GetString(2),
+                                DataNascimento = reader.GetDateTime(3).ToString("dd/MM/yyyy")
+                            };
+                            aniversariantes.Add(aluno);
+                        }
+                    }
+                }
+            }
+            return aniversariantes;
         }
     }
 }

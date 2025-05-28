@@ -46,7 +46,7 @@
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
                 <div class="container">
                     <a class="navbar-brand" runat="server" href="~/Home.aspx">
-                        <img src="Images/LogoBJJ.png" style="height: 40px; width: 40px; border-radius: 50px;">
+                        <img src="Images/LogoBJJ.png" style="height: 50px; width: 50px;, background-color:transparent">
                     </a>
                     <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
