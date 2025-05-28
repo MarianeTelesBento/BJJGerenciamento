@@ -155,6 +155,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="GerenciarSalas.aspx" />
+    <Content Include="Graduacao.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Images\filtro.png" />
     <Content Include="Images\LogoBJJ.png" />
@@ -255,6 +256,13 @@
     <Compile Include="GerenciarSalas.aspx.designer.cs">
       <DependentUpon>GerenciarSalas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Graduacao.aspx.cs">
+      <DependentUpon>Graduacao.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Graduacao.aspx.designer.cs">
+      <DependentUpon>Graduacao.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -294,6 +302,8 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\DiasHorariosModels.cs" />
+    <Compile Include="DAL\GraduacaoDAL.cs" />
+    <Compile Include="Models\GraduacaoModels.cs" />
     <Compile Include="Models\LoginModels.cs" />
     <Compile Include="Models\PlanoHorarioModels.cs" />
     <Compile Include="Models\PlanoAlunoModels.cs" />

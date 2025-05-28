@@ -222,6 +222,110 @@ namespace BJJGerenciamento.UI.DAL
 
             return alunoList;
         }
+
+        public List<AlunoModels> VisualizarAlunosPresencas()
+        {
+            List<AlunoModels> alunoList = new List<AlunoModels>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT 
+                        a.IdMatricula,
+                        a.Nome,
+                        a.Sobrenome,
+                        a.CPF,
+                        a.Telefone,
+                        m.StatusdaMatricula,
+                        COUNT(CASE
+                            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
+                            ELSE NULL
+                        END) AS TotalPresencas
+                    FROM TBAlunos a
+                    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+                    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
+                    OUTER APPLY (
+                        SELECT MAX(DataGraduacao) AS UltimaGraduacao
+                        FROM TBGraduacoes g
+                        WHERE g.IdMatricula = a.IdMatricula
+                    ) g
+                    GROUP BY a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula;
+                    ", connection);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    AlunoModels aluno = new AlunoModels()
+                    {
+                        IdMatricula = reader.GetInt32(0),
+                        Nome = reader.GetString(1),
+                        Sobrenome = reader.GetString(2),
+                        Cpf = reader.GetString(3),
+                        Telefone = reader.GetString(4),
+                        StatusMatricula = reader.GetBoolean(5),
+                        TotalPresencas = reader.GetInt32(6)
+                    };
+
+                    alunoList.Add(aluno);
+                }
+            }
+
+            return alunoList;
+        }
+
+        public List<AlunoModels> PesquisarAlunosPresencas(string termo = null, int? idPlano = null)
+        {
+            List<AlunoModels> alunoList = new List<AlunoModels>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+                    SELECT a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, "" +
+                $""m.StatusdaMatricula, "" +
+                $""COUNT(p.IdPresenca) AS TotalPresencas FROM TBAlunos a JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula GROUP BY a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula;
+                    WHERE (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+                      AND (@idPlano IS NULL OR pd.IdPlano = @idPlano);";
+
+                using (SqlCommand readerCommand = new SqlCommand(query, connection))
+                {
+                    if (!string.IsNullOrWhiteSpace(termo))
+                        readerCommand.Parameters.AddWithValue("@termo", "%" + termo + "%");
+                    else
+                        readerCommand.Parameters.AddWithValue("@termo", DBNull.Value);
+
+                    if (idPlano.HasValue)
+                        readerCommand.Parameters.AddWithValue("@idPlano", idPlano.Value);
+                    else
+                        readerCommand.Parameters.AddWithValue("@idPlano", DBNull.Value);
+
+                    SqlDataReader reader = readerCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        AlunoModels aluno = new AlunoModels()
+                        {
+                            IdMatricula = reader.GetInt32(0),
+                            Nome = reader.GetString(1),
+                            Sobrenome = reader.GetString(2),
+                            Cpf = reader.GetString(3),
+                            Telefone = reader.GetString(4),
+                            StatusMatricula = reader.GetBoolean(5),
+                            TotalPresencas = reader.GetInt32(6)
+                        };
+
+                        alunoList.Add(aluno);
+                    }
+                }
+            }
+
+            return alunoList;
+        }
+
         public List<AlunoModels> PesquisarAlunos(string termo = null, int? idPlano = null)
         {
             List<AlunoModels> alunoList = new List<AlunoModels>();
