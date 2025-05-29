@@ -188,11 +188,21 @@ namespace BJJGerenciamento.UI
             // Salva o valor do plano
             planoDAL.SalvarValorPlano(idPlano, diasSelecionados, valor);
 
-            // Exibe alerta de sucesso e faz o redirect para a lista
-            ClientScript.RegisterStartupScript(this.GetType(), "alert", @"
-        alert('Turma cadastrada com sucesso!');
-        window.location.href='ListaTurmas.aspx';
-    ", true);
+            string script = @"
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Turma cadastrada com sucesso!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = 'ListaTurmas.aspx';
+                    }
+                });";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+
         }
 
 

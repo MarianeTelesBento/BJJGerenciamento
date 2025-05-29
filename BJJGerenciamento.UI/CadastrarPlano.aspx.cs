@@ -262,11 +262,20 @@ namespace BJJGerenciamento.UI
 
             if (cadastroSucesso)
             {
-                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
-                    typeof(Page),
-                    "alerta",
-                    "alert('Plano cadastrado com sucesso!'); window.location.href='ListaAlunos.aspx';",
-                    true);
+                string script = @"
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Plano cadastrado com sucesso!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'ListaAlunos.aspx';
+                        }
+                    });";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
             }
             else
             {

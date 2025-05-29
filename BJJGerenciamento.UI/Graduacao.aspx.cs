@@ -12,25 +12,17 @@ namespace BJJGerenciamento.UI
 {
 	public partial class Graduacao : System.Web.UI.Page
 	{
-        private List<int> IdsMarcados
-        {
-            get
-            {
-                if (Session["IdsMarcados"] == null)
-                    Session["IdsMarcados"] = new List<int>();
-                return (List<int>)Session["IdsMarcados"];
-            }
-            set
-            {
-                Session["IdsMarcados"] = value;
-            }
-        }
 
         public List<AlunoModels> alunosList = new List<AlunoModels>();
         public AlunoModels aluno = new AlunoModels();
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
             if (!IsPostBack)
             {
                 AlunosDAL alunosDAL = new AlunosDAL();
@@ -123,22 +115,48 @@ namespace BJJGerenciamento.UI
 
         protected void btnGraduar_Click(object sender, EventArgs e)
         {
-            string aba = "Aluno";
-            string script = $"<script>abrirModal(); </script>";
+            Button btn = (Button)sender;
+
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            modalMatricula.Text = row.Cells[0].Text;
+            modalNome.Text  = row.Cells[1].Text;
+            modalSobrenome.Text = row.Cells[2].Text;
+
+            string script = "<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
+
 
         protected void btnSalvarGraduacao_Click(object sender, EventArgs e)
         {
             GraduacaoDAL graduacaoDAL = new GraduacaoDAL();
-            graduacaoDAL.CadastrarGraduacao(new GraduacaoModels
-            {
-                idMatricula = Convert.ToInt32(Session["idMatricula"]),
-                observacao = "Nova graduação iniciada",
-                dataGraduacao = DateTime.Now
-            });
+            int cadastroRealizado = graduacaoDAL.CadastrarGraduacao(new GraduacaoModels
+                                    {
+                                        idMatricula = Convert.ToInt32(modalMatricula.Text),
+                                        observacao = modalObservacaoAluno.Text,
+                                        dataGraduacao = DateTime.Now
+                                    });
 
-            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Nova graduação registrada com sucesso!');", true);
+            if (cadastroRealizado > 0)
+            {
+                string script = @"
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Nova graduação registrada com sucesso!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });";
+                ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+
+
+                AlunosDAL alunosDAL = new AlunosDAL();
+                alunosList = alunosDAL.VisualizarAlunosPresencas();
+                GridView1.DataSource = alunosList;
+                GridView1.DataBind();
+            }
+
         }
 
     }

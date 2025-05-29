@@ -143,6 +143,12 @@
                     </div>
                     <div id="divAluno" class="modal-body">
                         <div class="form-group">
+
+
+                            <asp:TextBox ID="modalMatricula" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+                            <asp:TextBox ID="modalNome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+                            <asp:TextBox ID="modalSobrenome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+
                             <asp:Label>Observação:</asp:Label>
                             <asp:TextBox ID="modalObservacaoAluno" runat="server" CssClass="form-control"></asp:TextBox>
                         </div>
@@ -155,6 +161,7 @@
         </div>
 
     </main>
+
 
     <script>
         function abrirModal() {

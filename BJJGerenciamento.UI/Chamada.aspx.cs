@@ -182,14 +182,32 @@ namespace BJJGerenciamento.UI
 
             PresencaDAL presencaDAL = new PresencaDAL();
 
+            int cadastroRealizado = 0;
             foreach (GridViewRow row in GridView1.Rows)
             {
                 CheckBox checkBox = (CheckBox)row.FindControl("chkPresente");
                 if (checkBox != null && checkBox.Checked)
                 {
                     presencaModel.IdMatricula = Convert.ToInt32(row.Cells[0].Text.Trim());
-                    presencaDAL.RegistrarPresenca(presencaModel);
+                    cadastroRealizado += presencaDAL.RegistrarPresenca(presencaModel);
                 }
+            }
+
+            if (cadastroRealizado > 0)
+            {
+                string script = @"
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Chamada registrada com sucesso!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });";
+                ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+            }
+            else
+            {
+                Response.Write("<script>alert('Nenhuma presença registrada.');</script>");
             }
 
             IdsMarcados = new List<int>();

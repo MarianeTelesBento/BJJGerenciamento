@@ -24,14 +24,14 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = "INSERT INTO TBGraduacoes " +
-                                      "(IdMatricula, Obsrevacao, DataGraduacao) " + 
-                                      "VALUES (@idMatricula, @idObservacao, @dataGraduacao);" +
+                                      "(IdMatricula, Observacao, DataGraduacao) " + 
+                                      "VALUES (@idMatricula, @Observacao, @dataGraduacao);" +
                                       "SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@idMatricula", graduacao.idMatricula);
-                    command.Parameters.AddWithValue("@idObservacao", graduacao.observacao);
+                    command.Parameters.AddWithValue("@Observacao", graduacao.observacao);
                     command.Parameters.AddWithValue("@dataGraduacao", graduacao.dataGraduacao);
 
                     var idResponsavel = command.ExecuteScalar();
