@@ -157,7 +157,7 @@
     <Content Include="GerenciarSalas.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Images\filtro.png" />
-    <Content Include="Images\LogoBJJ.png" />
+    <Content Include="Images\Logo_BJJ.png" />
     <Content Include="Images\save.png" />
     <Content Include="ListaAlunos.aspx" />
     <Content Include="Global.asax" />
