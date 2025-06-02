@@ -393,6 +393,24 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button SalvarResponsavel;
 
         /// <summary>
+        /// Controle ddPlanosModal.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddPlanosModal;
+
+        /// <summary>
+        /// Controle cbPasseLivre.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbPasseLivre;
+
+        /// <summary>
         /// Controle SalvarPlano.
         /// </summary>
         /// <remarks>

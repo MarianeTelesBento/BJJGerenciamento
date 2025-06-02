@@ -198,11 +198,11 @@
         <div class="separador"></div>
 
         <!-- Valor do plano -->
-  <div class="d-flex align-items-center gap-2">
-    <asp:TextBox ID="ValorPagoPlano" runat="server" CssClass="input-text" />
-    <asp:Button ID="btnValorPlano" runat="server" Text="Calcular"
-        OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
-</div>
+       <div class="d-flex align-items-center gap-2">
+            <asp:TextBox ID="ValorPagoPlano" runat="server" CssClass="input-text" />
+            <asp:Button ID="btnValorPlano" runat="server" Text="Calcular"
+                OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
+        </div>
 
 
         <!-- Botão de Enviar -->

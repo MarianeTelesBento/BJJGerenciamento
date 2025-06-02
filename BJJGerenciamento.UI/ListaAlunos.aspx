@@ -138,79 +138,149 @@
                     </div>
 
                     <div ID="divResponsavel" class="modal-body" style="display: none;">
-                                <div class="form-group">
-                                    <asp:Label>Número do ID:</asp:Label>
-                                    <asp:TextBox ID="ModalIdResponsavel" runat="server" ReadOnly CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label">Nome:</label>
-                                    <asp:TextBox ID="modalNomeResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label">Sobrenome:</label>
-                                    <asp:TextBox ID="modalSobrenomeResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>CPF:</label>
-                                    <asp:TextBox ID="modalCpfResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Email:</label>
-                                    <asp:TextBox ID="modalEmailResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Telefone:</label>
-                                    <asp:TextBox ID="modalTelefoneResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label">Data de Nascimento:</label>
-                                    <asp:TextBox ID="modalDataNascimentoResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>CEP:</label>
-                                    <asp:TextBox ID="modalCepResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Rua:</label>
-                                    <asp:TextBox ID="modalRuaResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Bairro:</label>
-                                    <asp:TextBox ID="modalBairroResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Cidade:</label>
-                                    <asp:TextBox ID="modalCidadeResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label">Estado:</label>
-                                    <asp:TextBox ID="modalEstadoResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Número:</label>
-                                    <asp:TextBox ID="modalNumeroResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
-                                <div class="form-group">
-                                    <label>Complemento:</label>
-                                    <asp:TextBox ID="modalComplementoResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
-                                </div>
+                            <div class="form-group">
+                                <asp:Label>Número do ID:</asp:Label>
+                                <asp:TextBox ID="ModalIdResponsavel" runat="server" ReadOnly CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Nome:</label>
+                                <asp:TextBox ID="modalNomeResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label">Sobrenome:</label>
+                                <asp:TextBox ID="modalSobrenomeResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>CPF:</label>
+                                <asp:TextBox ID="modalCpfResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Email:</label>
+                                <asp:TextBox ID="modalEmailResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Telefone:</label>
+                                <asp:TextBox ID="modalTelefoneResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Data de Nascimento:</label>
+                                <asp:TextBox ID="modalDataNascimentoResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>CEP:</label>
+                                <asp:TextBox ID="modalCepResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Rua:</label>
+                                <asp:TextBox ID="modalRuaResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Bairro:</label>
+                                <asp:TextBox ID="modalBairroResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Cidade:</label>
+                                <asp:TextBox ID="modalCidadeResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label">Estado:</label>
+                                <asp:TextBox ID="modalEstadoResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Número:</label>
+                                <asp:TextBox ID="modalNumeroResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
+                            <div class="form-group">
+                                <label>Complemento:</label>
+                                <asp:TextBox ID="modalComplementoResponsavel" runat="server" CssClass="form-control"></asp:TextBox>
+                            </div>
 
-                                <div class="modal-footer text-center">
-                                    <asp:Button ID="SalvarResponsavel" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" OnClick="SalvarResponsavel_Click"/>
-                                </div>
+                            <div class="modal-footer text-center">
+                                <asp:Button ID="SalvarResponsavel" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" OnClick="SalvarResponsavel_Click"/>
+                            </div>
 
-                        </div>
+                    </div>
                             
                     <div ID="divPlano" class="modal-body" style="display: none;">
-                          <div class="modal-footer text-center">
-                             <asp:Button ID="SalvarPlano" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
-                         </div>
-                    </div>
+                     <!-- Seleção da Turma -->
+                        <div class="col-md-6 mb-4">
+                            <label for="ddPlanosModal" class="form-label">Selecione uma turma:</label>
+                            <asp:DropDownList ID="ddPlanosModal" runat="server" CssClass="form-select"
+                                AutoPostBack="true" OnSelectedIndexChanged="ddPlanosModal_SelectedIndexChanged" />
+                            <label for="cbPasseLivre">Passe Livre:</label>
+                            <asp:CheckBox ID="cbPasseLivre" runat="server" CssClass="form-check"
+                                AutoPostBack="true" OnCheckedChanged="cbPasseLivre_SelectedIndexChanged"/>
+                        </div>
+<%--                                    <!-- Dias disponíveis -->
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Selecione os dias disponíveis:</label>
+                                <asp:CheckBoxList ID="cbDias" runat="server" CssClass="form-check"
+                                    AutoPostBack="true" OnSelectedIndexChanged="cbDias_SelectedIndexChanged"
+                                    RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                            </div>
+                        </div>
 
+                        <div class="separador"></div>
+
+                        <!-- Painéis de horários por dia -->
+                        <div class="row">
+                            <asp:Panel ID="pnlSegunda" runat="server" Visible="false">
+                                <div class="col-12 mb-4">
+                                    <label class="form-label">Horários de SEGUNDA</label>
+                                    <asp:CheckBoxList ID="cbHorariosSegunda" CssClass="form-check" runat="server"
+                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                                </div>
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlTerca" runat="server" Visible="false">
+                                <div class="col-12 mb-4">
+                                    <label class="form-label">Horários de TERÇA</label>
+                                    <asp:CheckBoxList ID="cbHorariosTerca" CssClass="form-check" runat="server"
+                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                                </div>
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlQuarta" runat="server" Visible="false">
+                                <div class="col-12 mb-4">
+                                    <label class="form-label">Horários de QUARTA</label>
+                                    <asp:CheckBoxList ID="cbHorariosQuarta" CssClass="form-check" runat="server"
+                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                                </div>
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlQuinta" runat="server" Visible="false">
+                                <div class="col-12 mb-4">
+                                    <label class="form-label">Horários de QUINTA</label>
+                                    <asp:CheckBoxList ID="cbHorariosQuinta" CssClass="form-check" runat="server"
+                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                                </div>
+                            </asp:Panel>
+
+                            <asp:Panel ID="pnlSexta" runat="server" Visible="false">
+                                <div class="col-12 mb-4">
+                                    <label class="form-label">Horários de SEXTA</label>
+                                    <asp:CheckBoxList ID="cbHorariosSexta" CssClass="form-check" runat="server"
+                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                                </div>
+                            </asp:Panel>
+                        </div>
+
+                        <div class="separador"></div>
+
+                        <!-- Valor do plano -->
+                        <div class="d-flex align-items-center gap-2">
+                            <asp:TextBox ID="ValorPagoPlano" runat="server" CssClass="input-text" />
+                            <asp:Button ID="btnValorPlano" runat="server" Text="Calcular"
+                                OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
+                        </div>--%>
+                    </div>
+                            
+                    <div class="modal-footer text-center">
+                        <asp:Button ID="SalvarPlano" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
+                    </div>
                 </div>
             </div>
         </div>
-
     </main>
 
     <script>

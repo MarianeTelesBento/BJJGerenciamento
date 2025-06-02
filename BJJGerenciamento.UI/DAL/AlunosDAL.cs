@@ -571,6 +571,55 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
+        public ResponsavelModels visualizarPlanoAluno(int idMatricula)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"SELECT r.IdResponsavel, r.Nome, r.Sobrenome, r.CPF, r.Email, r.Telefone,
+                                       r.DataDeNascimento, r.Cep, r.Rua, r.Bairro, r.Cidade, r.Estado, 
+                                       r.NumeroCasa, r.Complemento
+                                FROM TBResponsaveis r
+                                JOIN TBAlunos a ON r.IdResponsavel = a.IdResponsavel
+                                WHERE a.IdMatricula = @idMatricula;
+                                ";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@idMatricula", idMatricula);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            ResponsavelModels responsavel = new ResponsavelModels
+                            {
+                                IdResponsavel = reader.GetInt32(0),
+                                Nome = reader.GetString(1),
+                                Sobrenome = reader.GetString(2),
+                                Cpf = reader.GetString(3),
+                                Email = reader.GetString(4),
+                                Telefone = reader.GetString(5),
+                                DataNascimento = reader.GetDateTime(6).ToString("dd/MM/yyyy"),
+                                Cep = reader.GetString(7),
+                                Rua = reader.GetString(8),
+                                Bairro = reader.GetString(9),
+                                Cidade = reader.GetString(10),
+                                Estado = reader.GetString(11),
+                                NumeroCasa = reader.GetInt32(12).ToString(),
+                                Complemento = reader.IsDBNull(13) ? "" : reader.GetString(13)
+                            };
+
+                            return responsavel;
+                        }
+                        return null;
+                    }
+                }
+
+            }
+        }
+
+
         public static int ObterQuantidadeAtivos() 
         {
             using (SqlConnection conn = new SqlConnection( new AlunosDAL().connectionString))
