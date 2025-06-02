@@ -230,7 +230,16 @@ namespace BJJGerenciamento.UI
 
                 if (funcionou)
                 {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Aluno atualizado com sucesso!');", true);
+                    string script = @"
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Aluno atualizado com sucesso!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+
                     alunosList = alunosDAL.VisualizarDados();
                     GridView1.DataSource = alunosList;
                     GridView1.DataBind();

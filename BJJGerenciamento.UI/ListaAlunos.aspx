@@ -262,16 +262,85 @@
             border-color: #0a58ca;
         }
 
+
         #pnlAluno{
             display: "block";
         }
-/*      .form-group {
+
+        .btn-custom {
+            padding: 0.5rem 1rem;
+            font-size: 15px;
+           /* background-color: #3366ff;*/
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            height: 38px;
+            line-height: 1.5;
             display: flex;
             align-items: center;
-            gap:8px; 
-            padding: 4px;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            min-width: 120px;
         }
-*/
+
+        .btn-danger-custom {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            font-size: 15px;
+            border: none;
+            border-radius: 4px;
+            height: 38px;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .form-select-custom,
+        .form-control {
+            height: 38px;
+            font-size: 15px;
+            padding: 0.45rem 1rem;
+            color: #000 !important;
+            background-color: #fff !important;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-width: 180px;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border: none;
+        }
+
+        .icon-btn img {
+            max-width: 70%;
+            max-height: 70%;
+        }
+
 
     </style>
 </asp:Content>
