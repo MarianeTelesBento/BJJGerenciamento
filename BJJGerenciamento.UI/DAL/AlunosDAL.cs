@@ -222,6 +222,7 @@ namespace BJJGerenciamento.UI.DAL
 
             return alunoList;
         }
+
         public List<AlunoModels> PesquisarAlunos(string termo = null, int? idPlano = null)
         {
             List<AlunoModels> alunoList = new List<AlunoModels>();
@@ -231,15 +232,17 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"
-                    SELECT a.IdAluno, a.IdPlano, a.IdResponsavel, a.Nome, a.Sobrenome, a.Telefone, 
-                           a.Email, a.DataNascimento, a.Cpf, a.IdMatricula, 
-                           m.StatusdaMatricula, m.Data
-                    FROM TBAlunos a
+                    SELECT DISTINCT 
+                        a.*,
+                        m.StatusdaMatricula, 
+                        m.Data AS DataMatricula
+                    FROM TBAlunos a 
                     LEFT JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
                     LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
                     LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
                     WHERE (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
-                      AND (@idPlano IS NULL OR pd.IdPlano = @idPlano);";
+                      AND (@idPlano IS NULL OR pd.IdPlano = @idPlano);
+                    ";
 
                 using (SqlCommand readerCommand = new SqlCommand(query, connection))
                 {
@@ -268,9 +271,146 @@ namespace BJJGerenciamento.UI.DAL
                             Email = reader.GetString(6),
                             DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
                             Cpf = reader.GetString(8),
-                            IdMatricula = reader.GetInt32(9),
-                            StatusMatricula = reader.GetBoolean(10),
-                            DataMatricula = reader.GetDateTime(11).ToString("dd/MM/yyyy")
+
+                            Estado = reader.GetString(10),
+                            Bairro = reader.GetString(11),
+                            Cidade = reader.GetString(12),
+                            Rua = reader.GetString(13),
+                            NumeroCasa = reader.GetInt32(14).ToString(),
+                            Complemento = reader.GetString(15),
+                            Cep = reader.GetString(16),
+                            CarteiraFPJJ = reader.GetString(17),
+                            IdMatricula = reader.GetInt32(18),
+                            StatusMatricula = reader.GetBoolean(19),
+                            DataMatricula = reader.GetDateTime(20).ToString("dd/MM/yyyy")
+                        };
+
+                        alunoList.Add(aluno);
+                    }
+                }
+            }
+
+            return alunoList;
+        }
+
+
+        public List<AlunoModels> VisualizarAlunosPresencas()
+        {
+            List<AlunoModels> alunoList = new List<AlunoModels>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand cmd = new SqlCommand(@"
+                    SELECT 
+                        a.IdMatricula,
+                        a.Nome,
+                        a.Sobrenome,
+                        a.CPF,
+                        a.Telefone,
+                        m.StatusdaMatricula,
+                        COUNT(DISTINCT CASE
+                            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
+                            ELSE NULL
+                        END) AS TotalPresencas
+
+                    FROM TBAlunos a
+                    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+                    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
+                    OUTER APPLY (
+                        SELECT MAX(DataGraduacao) AS UltimaGraduacao
+                        FROM TBGraduacoes g
+                        WHERE g.IdMatricula = a.IdMatricula
+                    ) g
+                    GROUP BY a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
+                    ORDER BY a.IdMatricula ASC", connection);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    AlunoModels aluno = new AlunoModels()
+                    {
+                        IdMatricula = reader.GetInt32(0),
+                        Nome = reader.GetString(1),
+                        Sobrenome = reader.GetString(2),
+                        Cpf = reader.GetString(3),
+                        Telefone = reader.GetString(4),
+                        StatusMatricula = reader.GetBoolean(5),
+                        TotalPresencas = reader.GetInt32(6)
+                    };
+
+                    alunoList.Add(aluno);
+                }
+            }
+
+            return alunoList;
+        }
+
+        public List<AlunoModels> PesquisarAlunosPresencas(string termo = null, int? idPlano = null)
+        {
+            List<AlunoModels> alunoList = new List<AlunoModels>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+                    SELECT 
+                        a.IdMatricula,
+                        a.Nome,
+                        a.Sobrenome,
+                        a.CPF,
+                        a.Telefone,
+                        m.StatusdaMatricula,
+                        COUNT(DISTINCT CASE
+                            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
+                            ELSE NULL
+                        END) AS TotalPresencas
+                    FROM TBAlunos a
+                    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+                    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
+                    LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
+                    LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
+                    OUTER APPLY (
+                        SELECT MAX(DataGraduacao) AS UltimaGraduacao
+                        FROM TBGraduacoes g
+                        WHERE g.IdMatricula = a.IdMatricula
+                    ) g
+                    WHERE 
+                        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+                        AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
+                    GROUP BY 
+                        a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
+                    ORDER BY a.IdMatricula ASC;
+                    ";
+
+                using (SqlCommand readerCommand = new SqlCommand(query, connection))
+                {
+                    if (!string.IsNullOrWhiteSpace(termo))
+                        readerCommand.Parameters.AddWithValue("@termo", "%" + termo + "%");
+                    else
+                        readerCommand.Parameters.AddWithValue("@termo", DBNull.Value);
+
+                    if (idPlano.HasValue)
+                        readerCommand.Parameters.AddWithValue("@idPlano", idPlano.Value);
+                    else
+                        readerCommand.Parameters.AddWithValue("@idPlano", DBNull.Value);
+
+                    SqlDataReader reader = readerCommand.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        AlunoModels aluno = new AlunoModels()
+                        {
+                            IdMatricula = reader.GetInt32(0),
+                            Nome = reader.GetString(1),
+                            Sobrenome = reader.GetString(2),
+                            Cpf = reader.GetString(3),
+                            Telefone = reader.GetString(4),
+                            StatusMatricula = reader.GetBoolean(5),
+                            TotalPresencas = reader.GetInt32(6)
                         };
 
                         alunoList.Add(aluno);

@@ -424,14 +424,6 @@ namespace BJJGerenciamento.UI
             };
 
             int idAluno = alunosRepository.CadastrarAluno(aluno);
-            if (idAluno >= 0)
-            {
-                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
-                    typeof(Page),
-                    "sucesso",
-                    "alert('Aluno Salvo com sucesso'); window.location.href='ListaAlunos.aspx';",
-                    true);
-            }
             
             Server.Transfer($"CadastrarPlano.aspx?idAluno={idAluno}"); 
         }

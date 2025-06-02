@@ -26,5 +26,6 @@ namespace BJJGerenciamento.UI.Models
         public int IdMatricula { get; set; }
         public bool StatusMatricula { get; set; }
         public string DataMatricula { get; set; }
+        public int TotalPresencas { get; set; }
     }
 }

@@ -92,16 +92,29 @@ namespace BJJGerenciamento.UI
                 };
 
                 ProfessorDAL professorDAL = new ProfessorDAL(professor);
-                professorDAL.CadastrarProfessor();
+                int cadastrado = professorDAL.CadastrarProfessor();
 
                 // Mensagem de sucesso
                 LimparCampos();
 
-                ScriptManager.RegisterStartupScript(HttpContext.Current.Handler as Page,
-                    typeof(Page),
-                    "sucesso",
-                    "alert('Professor cadastrado com sucesso!'); window.location.href='ListaProfessores.aspx';",
-                    true);
+                if (cadastrado > 0)
+                {
+                    string script = @"
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Professor cadastrado com sucesso!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'ListaProfessores.aspx';
+                        }
+                    });";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+                }
+
             }
             catch (Exception ex)
             {
