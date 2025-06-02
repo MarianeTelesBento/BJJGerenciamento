@@ -5,6 +5,20 @@
     <main>
         <h1 id="aspnetTitle">Lista de Alunos</h1>    
         
+       <div class="flex-container">
+            <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
+
+            <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />
+
+<%--            <asp:DropDownList ID="ddHorarios" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddHorarios_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />--%>
+
+            <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control" placeholder="Pesquisar..." />
+
+            <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false" CssClass="btn btn-primary btn-custom" style="background-color:blue" />
+
+            <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false" CssClass="btn btn-danger btn-custom" />
+        </div>
+
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
             DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ,DataMatricula,IdAlunos"
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">

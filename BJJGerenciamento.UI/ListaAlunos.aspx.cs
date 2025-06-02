@@ -36,6 +36,78 @@ namespace BJJGerenciamento.UI
 
         }
 
+        protected void btnFiltro_Click(object sender, EventArgs e)
+        {
+
+            if (ddPlanos.Visible == false)
+            {
+                btnLimpar.Visible = true;
+                btnPesquisar.Visible = true;
+                TxtTermoPesquisa.Visible = true;
+                ddPlanos.Visible = true;
+                PlanoDAL planoDAL = new PlanoDAL();
+                List<PlanoModels> planos = planoDAL.BuscarPlano();
+
+                if (planos != null && planos.Count > 0)
+                {
+                    ddPlanos.DataSource = planos;
+                    ddPlanos.DataTextField = "Nome";
+                    ddPlanos.DataValueField = "idPlano";
+                    ddPlanos.DataBind();
+
+                    ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", "-1"));
+                }
+            }
+            else
+            {
+                btnLimpar.Visible = false;
+                btnPesquisar.Visible = false;
+                TxtTermoPesquisa.Visible = false;
+                ddPlanos.Visible = false;
+            }
+        }
+
+        protected void btnPesquisar_Click(object sender, EventArgs e)
+        {
+
+            AlunosDAL alunosDAL = new AlunosDAL();
+
+            string termo = TxtTermoPesquisa.Text;
+            int? idPlano = null;
+
+            if (ddPlanos.SelectedValue != "-1")
+            {
+                if (int.TryParse(ddPlanos.SelectedValue, out int idPlanoConvertido))
+                {
+                    idPlano = idPlanoConvertido;
+                }
+            }
+            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano);
+
+            GridView1.DataSource = alunosList;
+            GridView1.DataBind();
+
+
+        }
+
+        protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Ao mudar, aparecer um combo com os dias
+            //Ao mudar o combo de dias, aparecer um combo com os horários
+        }
+
+        protected void btnLimpar_Click(object sender, EventArgs e)
+        {
+            TxtTermoPesquisa.Text = string.Empty;
+            ddPlanos.SelectedIndex = -1;
+
+            AlunosDAL alunosDAL = new AlunosDAL();
+            alunosList = alunosDAL.VisualizarDados();
+            GridView1.DataSource = alunosList;
+            GridView1.DataBind();
+
+        }
+
         protected void btnDetalhes_Click(object sender, EventArgs e)
         {
             Button btn = (Button)sender;

@@ -13,24 +13,6 @@ namespace BJJGerenciamento.UI
 
     public partial class Chamada : System.Web.UI.Page
     {
-
-        private List<int> IdsMarcados
-        {
-            get
-            {
-                if (Session["IdsMarcados"] == null)
-                    Session["IdsMarcados"] = new List<int>();
-                return (List<int>)Session["IdsMarcados"];
-            }
-            set
-            {
-                Session["IdsMarcados"] = value;
-            }
-        }
-
-        public List<AlunoModels> alunosList = new List<AlunoModels>();
-        public AlunoModels aluno = new AlunoModels();
-       
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UsuarioLogado"] == null)
@@ -49,6 +31,24 @@ namespace BJJGerenciamento.UI
 
             }
         }
+
+        private List<int> IdsMarcados
+        {
+            get
+            {
+                if (Session["IdsMarcados"] == null)
+                    Session["IdsMarcados"] = new List<int>();
+                return (List<int>)Session["IdsMarcados"];
+            }
+            set
+            {
+                Session["IdsMarcados"] = value;
+            }
+        }
+
+        public List<AlunoModels> alunosList = new List<AlunoModels>();
+        public AlunoModels aluno = new AlunoModels();
+       
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -219,6 +219,9 @@ namespace BJJGerenciamento.UI
 
         protected void btnLimpar_Click(object sender, EventArgs e)
         {
+            TxtTermoPesquisa.Text = string.Empty;
+            ddPlanos.SelectedIndex = -1;
+
             IdsMarcados = ObterIdsAlunosSelecionados();
 
             AlunosDAL alunosDAL = new AlunosDAL();

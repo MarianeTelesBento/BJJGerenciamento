@@ -285,9 +285,9 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"
-                    SELECT a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, "" +
-                $""m.StatusdaMatricula, "" +
-                $""COUNT(p.IdPresenca) AS TotalPresencas FROM TBAlunos a JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula GROUP BY a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula;
+                    SELECT a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, 
+                m.StatusdaMatricula, 
+                COUNT(p.IdPresenca) AS TotalPresencas FROM TBAlunos a JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula GROUP BY a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula;
                     WHERE (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
                       AND (@idPlano IS NULL OR pd.IdPlano = @idPlano);";
 
