@@ -90,7 +90,9 @@
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/Chamada.aspx">Chamada</a></li>
 
-                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/Graduacao.aspx">Graduacao</a></li>
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/Graduacao.aspx">Graduação</a></li>
+
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/ListaHorario.aspx">Horários</a></li>
 
                             
         <!-- Botão de sair com confirmação -->
