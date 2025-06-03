@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListaHorario.aspx.cs" Inherits="BJJGerenciamento.UI.ListaHorario" %>
+﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListaHorario.aspx.cs" Inherits="BJJGerenciamento.UI.ListaHorario" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -6,7 +6,7 @@
 
     <h2 class="mb-4">Gerenciar Horários</h2>
 
-    <asp:Button ID="btnNovo" runat="server" Text="Novo Horário" OnClick="btnNovo_Click" CssClass="btn btn-primary mb-3" />
+    <asp:Button ID="btnNovo" runat="server" Text="Novo Horário" OnClick="btnNovo_Click" CssClass="btn btn-primary mb-3" Style="height:35px"/>
 
     <asp:Label ID="lblMensagem" runat="server" ForeColor="Red" CssClass="form-text mb-3"></asp:Label>
 
@@ -19,12 +19,12 @@
                     <asp:Button ID="btnAtivarDesativar" runat="server" 
                         Text='<%# (bool)Eval("Ativa") ? "Desativar" : "Ativar" %>' 
                         CommandName="ToggleStatus" 
-                        CommandArgument='<%# Eval("IdHora") %>' CssClass="btn btn-sm btn-outline-primary" />
+                        CommandArgument='<%# Eval("IdHora") %>' CssClass="btn btn-sm btn-outline-primary" Style="height:35px" />
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Editar">
                 <ItemTemplate>
-                    <asp:Button ID="btnEditar" runat="server" Text="Editar" CommandName="Editar" CommandArgument='<%# Eval("IdHora") %>' CssClass="btn btn-sm btn-outline-secondary" />
+                    <asp:Button ID="btnEditar" runat="server" Text="Editar" CommandName="Editar" CommandArgument='<%# Eval("IdHora") %>' CssClass="btn btn-sm btn-outline-secondary" Style="height:35px" />
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
@@ -49,9 +49,9 @@
         <div>
             <asp:Button ID="btnSalvar" runat="server" Text="Salvar"
                 OnClick="btnSalvar_Click"
-                CssClass="btn btn-success" />
+                CssClass="btn btn-success" Style="height:35px" />
 
-            <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" OnClick="btnCancelar_Click" CssClass="btn btn-danger ms-2" />
+            <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" OnClick="btnCancelar_Click" CssClass="btn btn-danger ms-2" Style="height:35px" />
         </div>
         <asp:Label ID="lblMensagemCadastro" runat="server" ForeColor="Red" CssClass="form-text mt-2"></asp:Label>
     </asp:Panel>

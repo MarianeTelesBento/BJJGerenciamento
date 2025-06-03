@@ -42,6 +42,7 @@
                         <asp:TextBox ID="txtUsuario" runat="server" CssClass="form-control mb-3" placeholder="Usuário" />
                         <asp:TextBox ID="txtSenha" runat="server" TextMode="Password" CssClass="form-control mb-3" placeholder="Senha" />
                         <asp:Button ID="btnLogin" runat="server" Text="Entrar" CssClass="btn btn-custom btn-block" OnClick="btnLogin_Click" />
+
                     </div>
                 </div>
             </div>

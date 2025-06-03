@@ -158,6 +158,7 @@
     <Content Include="Graduacao.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Images\filtro.png" />
+    <Content Include="Images\ImagemDesfocada.png" />
     <Content Include="Images\Logo_BJJ.png" />
     <Content Include="Images\save.png" />
     <Content Include="ListaAlunos.aspx" />

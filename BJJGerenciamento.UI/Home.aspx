@@ -35,6 +35,14 @@
             margin: 0;
             padding-left: 20px;
         }
+        body {
+         background-image: url('Images/ImagemDesfocada.png');
+         background-size: cover;
+         background-repeat: no-repeat;
+         background-position: center;
+         background-attachment: fixed;
+        }
+
     </style>
 
     <div class="header">
