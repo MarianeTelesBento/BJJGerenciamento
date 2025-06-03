@@ -5,19 +5,18 @@
     <main>
         <h1 id="aspnetTitle">Lista de Alunos</h1>    
         
-       <div class="flex-container">
-            <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
+      <div class="flex-container">
+    <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
 
-            <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />
+    <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="true" CssClass="form-select-custom filtro-grande" />
 
-<%--            <asp:DropDownList ID="ddHorarios" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddHorarios_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />--%>
+    <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="true" CssClass="form-control filtro-grande" placeholder="Pesquisar..." />
 
-            <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control" placeholder="Pesquisar..." />
+          <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="true" CssClass="btn btn-primary btn-custom" Style="background-color: blue" />
+          <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="true" CssClass="btn btn-danger btn-custom" />
 
-            <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false" CssClass="btn btn-primary btn-custom" style="background-color:blue" />
+</div>
 
-            <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false" CssClass="btn btn-danger btn-custom" />
-        </div>
 
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
             DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ,DataMatricula,IdAlunos"
@@ -79,7 +78,7 @@
                                 <asp:TextBox ID="modalNomeAluno" runat="server" Text="modalNome" CssClass="form-control"></asp:TextBox>
                             </div>
                             <div class="form-group">
-                                <label">Sobrenome:</label>
+                                <label>Sobrenome:</label>
                                 <asp:TextBox ID="modalSobrenomeAluno" runat="server" Text="modalSobrenome" CssClass="form-control"></asp:TextBox>
                             </div>
                             <div class="form-group">
@@ -306,110 +305,167 @@
     </script>
 
     <style>
-        #GridView1 {
-            text-align: center;
-        }
-        .asp-button {
-            display: inline-block;
-            width: auto;
-            padding: 8px 16px;
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #fff;
-            background-color: #0d6efd;
-            border: 1px solid #0d6efd;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            transition: background-color 0.2s ease-in-out;
-            height: 38px;
-        }
+/* Layout geral */
+main {
+    padding: 20px;
+}
 
-        .asp-button:hover {
-            background-color: #0b5ed7;
-            border-color: #0a58ca;
-        }
+/* Título */
+#aspnetTitle {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
 
+/* Container dos filtros */
+.flex-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
 
-        #pnlAluno{
-            display: "block";
-        }
+/* Estilo dos botões */
+.btn-custom, .asp-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        .btn-custom {
-            padding: 0.5rem 1rem;
-            font-size: 15px;
-           /* background-color: #3366ff;*/
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            height: 38px;
-            line-height: 1.5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            min-width: 120px;
-        }
+.btn-custom:hover {
+    opacity: 0.9;
+}
 
-        .btn-danger-custom {
-            background-color: #ff0000;
-            color: #fff;
-            padding: 0.5rem 1rem;
-            font-size: 15px;
-            border: none;
-            border-radius: 4px;
-            height: 38px;
-            line-height: 1.5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            min-width: 120px;
-        }
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
 
-        .form-select-custom,
-        .form-control {
-            height: 38px;
-            font-size: 15px;
-            padding: 0.45rem 1rem;
-            color: #000 !important;
-            background-color: #fff !important;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            min-width: 180px;
-        }
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
 
-        .flex-container {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
+.btn-light {
+    background-color: #f8f9fa;
+    color: #333;
+}
 
-        main {
-            padding: 20px;
-        }
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+}
 
-        .icon-btn {
-            width: 38px;
-            height: 38px;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            border: none;
-        }
+/* DropDown e TextBox */
+.form-select-custom, .form-control {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    min-width: 180px;
+}
 
-        .icon-btn img {
-            max-width: 70%;
-            max-height: 70%;
-        }
+.form-control {
+    width: 100%;
+}
+
+/* Tabela */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    background-color: #007bff;
+    color: white;
+    padding: 8px;
+}
+
+.table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Modal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    padding-top: 60px; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.5); 
+}
+
+.modal-dialog {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.modal-header .close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.modal-body {
+    margin-top: 10px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Labels */
+label, asp\:Label {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* CheckBox alinhado */
+.d-flex {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .flex-container {
+        flex-direction: column;
+    }
+
+    .modal-dialog {
+        width: 90%;
+    }
+}
 
 
     </style>

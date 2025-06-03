@@ -69,6 +69,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
+        /// Controle lblMatricula.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMatricula;
+
+        /// <summary>
         /// Controle modalMatricula.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox modalMatricula;
+
+        /// <summary>
+        /// Controle lblNome.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNome;
 
         /// <summary>
         /// Controle modalNome.
@@ -87,6 +105,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox modalNome;
 
         /// <summary>
+        /// Controle lblSobrenome.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSobrenome;
+
+        /// <summary>
         /// Controle modalSobrenome.
         /// </summary>
         /// <remarks>
@@ -94,6 +121,15 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox modalSobrenome;
+
+        /// <summary>
+        /// Controle lblObservacao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblObservacao;
 
         /// <summary>
         /// Controle modalObservacaoAluno.
