@@ -158,7 +158,7 @@ namespace BJJGerenciamento.UI
             }
 
 
-                string script = $"<script>abrirModal();</script>";
+            string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
 
@@ -201,6 +201,8 @@ namespace BJJGerenciamento.UI
             PlanoDAL planoDAL = new PlanoDAL();
             List<PlanoModels> planos = planoDAL.BuscarPlano();
 
+            List<PlanoAlunoModels> listaPlanoAluno = planoDAL.BuscarPlanoAluno();
+
             if (planos != null && planos.Count > 0)
             {
                 ddPlanosModal.DataSource = planos;
@@ -208,6 +210,7 @@ namespace BJJGerenciamento.UI
                 ddPlanosModal.DataValueField = "idPlano";
                 ddPlanosModal.DataBind();
 
+                ddPlanosModal.SelectedIndex = 3;
                 ddPlanosModal.Items.Insert(0, new ListItem("-- Selecione uma turma --", ""));
             }
 

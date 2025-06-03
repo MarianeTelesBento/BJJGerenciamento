@@ -14,8 +14,6 @@ namespace BJJGerenciamento.UI.DAL
     {
         public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
 
-        //public string connectionString = "Data Source=DESKTOP-FTCVI92\\SQLEXPRESS;Initial Catalog=BJJ_DB;Integrated Security=True;Connect Timeout=30;Encrypt=False;";
-
         public int CadastrarPlanoAlunoValor(decimal valorPlano)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -52,6 +50,52 @@ namespace BJJGerenciamento.UI.DAL
                     return Convert.ToInt32(cmd.ExecuteNonQuery());
                 }
             }
+        }
+
+        public List<PlanoAlunoModels> BuscarPlanoAluno(int idAluno)
+        {
+            List<PlanoAlunoModels> planoAlunos = new List<PlanoAlunoModels>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT 
+                    pa.IdPlanoAluno, 
+                    pa.IdAluno, 
+                    pa.IdDia, 
+                    pa.IdHorario, 
+                    pa.IdDetalhe, 
+                    pa.IdPlanoAlunoValor,
+                    d.QtsDias, 
+                    d.Mensalidade, 
+                    h.HorarioInicio, 
+                    h.HorarioFim
+                FROM TBPlanoAluno pa
+                INNER JOIN TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
+                INNER JOIN TBHora h ON pa.IdHorario = h.IdHora
+                INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
+                WHERE a.IdMatricula = @IdMatricula;";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@IdMatricula", idAluno);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PlanoAlunoModels planoAluno = new PlanoAlunoModels()
+                    {
+                        IdPlanoAluno = reader.GetInt32(0),
+                        IdAluno = reader.GetInt32(1),
+                        IdDia = reader.GetInt32(2),
+                        IdHorario = reader.GetInt32(3),
+                        IdDetalhe = reader.GetInt32(4),
+                        IdPlanoAlunoValor = reader.GetInt32(5),
+                        QtdDias = reader.GetInt32(6),
+                        Mensalidade = reader.GetDecimal(7),
+                        HorarioInicio = reader.GetTimeSpan(8).ToString(@"hh\:mm"),
+                        HorarioFim = reader.GetTimeSpan(9).ToString(@"hh\:mm")
+                    };
+                    planoAlunos.Add(planoAluno);
+                }
+            }
+            return planoAlunos;
         }
 
         public decimal BuscarMensalidade(int idPlano, int QtsDias)
