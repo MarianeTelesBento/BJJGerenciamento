@@ -52,7 +52,7 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
-        public List<PlanoAlunoModels> BuscarPlanoAluno(int idAluno)
+        public List<PlanoAlunoModels> BuscarPlanoAluno(int idMatricula)
         {
             List<PlanoAlunoModels> planoAlunos = new List<PlanoAlunoModels>();
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -74,23 +74,23 @@ namespace BJJGerenciamento.UI.DAL
                 INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
                 WHERE a.IdMatricula = @IdMatricula;";
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@IdMatricula", idAluno);
+                cmd.Parameters.AddWithValue("@IdMatricula", idMatricula);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     PlanoAlunoModels planoAluno = new PlanoAlunoModels()
                     {
-                        IdPlanoAluno = reader.GetInt32(0),
-                        IdAluno = reader.GetInt32(1),
-                        IdDia = reader.GetInt32(2),
-                        IdHorario = reader.GetInt32(3),
-                        IdDetalhe = reader.GetInt32(4),
-                        IdPlanoAlunoValor = reader.GetInt32(5),
-                        QtdDias = reader.GetInt32(6),
-                        Mensalidade = reader.GetDecimal(7),
-                        HorarioInicio = reader.GetTimeSpan(8).ToString(@"hh\:mm"),
-                        HorarioFim = reader.GetTimeSpan(9).ToString(@"hh\:mm")
+                        idPlanoAluno = reader.GetInt32(0),
+                        idAlunos = reader.GetInt32(1),
+                        idDia = reader.GetInt32(2),
+                        idHorario = reader.GetInt32(3),
+                        idDetalhe = reader.GetInt32(4),
+                        idPlanoAlunoValor = reader.GetInt32(5),
+                        qtdDias = reader.GetInt32(6),
+                        mensalidade = reader.GetDecimal(7),
+                        horarioInicio = reader.GetTimeSpan(8).ToString(@"hh\:mm"),
+                        horarioFim = reader.GetTimeSpan(9).ToString(@"hh\:mm")
                     };
                     planoAlunos.Add(planoAluno);
                 }

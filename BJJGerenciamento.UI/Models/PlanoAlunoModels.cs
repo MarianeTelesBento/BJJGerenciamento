@@ -9,9 +9,15 @@ namespace BJJGerenciamento.UI.Models
 {
     public class PlanoAlunoModels 
     {
+        public int idPlanoAluno { get; set; }
         public int idAlunos { get; set; }
-        public string idDia { get; set; }
+        public int idDia { get; set; }
         public int idHorario { get; set; }
         public int idDetalhe { get; set; }
+        public int idPlanoAlunoValor { get; set; }
+        public int qtdDias { get; set; }
+        public decimal mensalidade { get; set; }
+        public string horarioInicio { get; set; }
+        public string horarioFim { get; set; }
     }
 }

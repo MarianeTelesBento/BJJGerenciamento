@@ -21,7 +21,6 @@ namespace BJJGerenciamento.UI
                 Response.Redirect("Login.aspx");
             }
 
-
             idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
 
             if (!IsPostBack)

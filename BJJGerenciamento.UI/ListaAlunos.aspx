@@ -64,7 +64,7 @@
                     <div id="divAluno" class="modal-body">
                             <div class="form-group">
                                 <asp:Label>Número da Matricula:</asp:Label>
-                                <asp:TextBox ID="modalIdMatriculaAluno" runat="server" Text="modalId" ReadOnly CssClass="form-control"></asp:TextBox>
+                                <asp:TextBox ID="modalIdMatriculaAluno" runat="server" Text="modalId" ReadOnly CssClass="form-control" ClientIDMode="Static"></asp:TextBox>
                             </div>
                             <div class="form-group">
                                 <asp:Label>Data da Matricula:</asp:Label>
@@ -202,81 +202,15 @@
                     </div>
                             
                     <div ID="divPlano" class="modal-body" style="display: none;">
-                     <!-- Seleção da Turma -->
-                        <div class="col-md-6 mb-4">
-                            <label for="ddPlanosModal" class="form-label">Selecione uma turma:</label>
-                            <asp:DropDownList ID="ddPlanosModal" runat="server" CssClass="form-select"
-                                AutoPostBack="true" OnSelectedIndexChanged="ddPlanosModal_SelectedIndexChanged" />
-                            <label for="cbPasseLivre">Passe Livre:</label>
-                            <asp:CheckBox ID="cbPasseLivre" runat="server" CssClass="form-check"
-                                AutoPostBack="true" OnCheckedChanged="cbPasseLivre_SelectedIndexChanged"/>
+
+                        <asp:Literal ID="litDadosPlano" runat="server" Mode="PassThrough"></asp:Literal>
+
+                        <div class="modal-footer text-center">
+                        <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
+                            CssClass="asp-button btn btn-primary"
+                            OnClientClick="return confirmarMudancaPlano();" />
+
                         </div>
-<%--                                    <!-- Dias disponíveis -->
-                            <div class="col-md-6 mb-4">
-                                <label class="form-label">Selecione os dias disponíveis:</label>
-                                <asp:CheckBoxList ID="cbDias" runat="server" CssClass="form-check"
-                                    AutoPostBack="true" OnSelectedIndexChanged="cbDias_SelectedIndexChanged"
-                                    RepeatLayout="Flow" RepeatDirection="Horizontal" />
-                            </div>
-                        </div>
-
-                        <div class="separador"></div>
-
-                        <!-- Painéis de horários por dia -->
-                        <div class="row">
-                            <asp:Panel ID="pnlSegunda" runat="server" Visible="false">
-                                <div class="col-12 mb-4">
-                                    <label class="form-label">Horários de SEGUNDA</label>
-                                    <asp:CheckBoxList ID="cbHorariosSegunda" CssClass="form-check" runat="server"
-                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
-                                </div>
-                            </asp:Panel>
-
-                            <asp:Panel ID="pnlTerca" runat="server" Visible="false">
-                                <div class="col-12 mb-4">
-                                    <label class="form-label">Horários de TERÇA</label>
-                                    <asp:CheckBoxList ID="cbHorariosTerca" CssClass="form-check" runat="server"
-                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
-                                </div>
-                            </asp:Panel>
-
-                            <asp:Panel ID="pnlQuarta" runat="server" Visible="false">
-                                <div class="col-12 mb-4">
-                                    <label class="form-label">Horários de QUARTA</label>
-                                    <asp:CheckBoxList ID="cbHorariosQuarta" CssClass="form-check" runat="server"
-                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
-                                </div>
-                            </asp:Panel>
-
-                            <asp:Panel ID="pnlQuinta" runat="server" Visible="false">
-                                <div class="col-12 mb-4">
-                                    <label class="form-label">Horários de QUINTA</label>
-                                    <asp:CheckBoxList ID="cbHorariosQuinta" CssClass="form-check" runat="server"
-                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
-                                </div>
-                            </asp:Panel>
-
-                            <asp:Panel ID="pnlSexta" runat="server" Visible="false">
-                                <div class="col-12 mb-4">
-                                    <label class="form-label">Horários de SEXTA</label>
-                                    <asp:CheckBoxList ID="cbHorariosSexta" CssClass="form-check" runat="server"
-                                        RepeatLayout="Flow" RepeatDirection="Horizontal" />
-                                </div>
-                            </asp:Panel>
-                        </div>
-
-                        <div class="separador"></div>
-
-                        <!-- Valor do plano -->
-                        <div class="d-flex align-items-center gap-2">
-                            <asp:TextBox ID="ValorPagoPlano" runat="server" CssClass="input-text" />
-                            <asp:Button ID="btnValorPlano" runat="server" Text="Calcular"
-                                OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
-                        </div>--%>
-                    </div>
-                            
-                    <div class="modal-footer text-center">
-                        <asp:Button ID="SalvarPlano" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
                     </div>
                 </div>
             </div>
@@ -300,6 +234,38 @@
 
             document.getElementById("div" + nomeAba).style.display = "block";
             abrirModal();
+        }
+
+        function confirmarMudancaPlano() {
+            const idAluno = document.getElementById("modalIdMatriculaAluno").value;
+
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Você não poderá desfazer esta ação!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, confirmar',
+                cancelButtonText: 'Não, cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Confirmado!',
+                        'Você será redirecionado.',
+                        'success'
+                    ).then(() => {
+                        window.location.href = 'CadastrarPlano.aspx?idAluno=' + idAluno;
+                    });
+                } else {
+                    Swal.fire(
+                        'Cancelado',
+                        'A ação foi cancelada.',
+                        'error'
+                    );
+                }
+            });
+
+            return false;
         }
 
 
