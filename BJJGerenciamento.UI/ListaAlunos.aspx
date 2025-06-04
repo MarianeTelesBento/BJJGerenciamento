@@ -38,6 +38,7 @@
 
                 <asp:TemplateField HeaderText="Ação">
                     <ItemTemplate>
+                        <asp:HiddenField ID="hfIdAluno" runat="server" Value='<%# Eval("IdAlunos") %>' />
                         <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
                             CommandName="Detalhes" 
                             OnClick="btnDetalhes_Click" />
@@ -207,13 +208,16 @@
                         <div class="modal-footer text-center">
                         <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
                             CssClass="asp-button btn btn-primary"
-                            OnClientClick="return confirmarMudancaPlano();" />
+                            OnClientClick="return confirmarMudancaPlano(this);" />
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <asp:HiddenField ID="hfAlunoPossuiPlano" runat="server" ClientIDMode="Static" />
+
+
     </main>
 
     <script>
@@ -235,8 +239,27 @@
             abrirModal();
         }
 
-        function confirmarMudancaPlano() {
-            const idAluno = document.getElementById("modalIdMatriculaAluno").value;
+        function confirmarMudancaPlano(button) {
+            const row = button.closest("tr");
+            if (!row) {
+                console.error("Linha (tr) não encontrada.");
+                return false;
+            }
+
+            const hfIdAluno = row.querySelector("[id*='hfIdAlunos']");
+            if (!hfIdAluno) {
+                console.error("Campo hfIdAlunos não encontrado na linha.");
+                return false;
+            }
+            const idAluno = hfIdAluno.value;
+
+            // Ajuste para pegar o plano dentro da mesma linha, se existir
+            const hfAlunoPossuiPlano = row.querySelector("[id*='hfAlunoPossuiPlano']") || document.getElementById("hfAlunoPossuiPlano");
+            if (!hfAlunoPossuiPlano) {
+                console.error("Campo hfAlunoPossuiPlano não encontrado.");
+                return false;
+            }
+            const possuiPlano = hfAlunoPossuiPlano.value === "true";
 
             Swal.fire({
                 title: 'Tem certeza?',
@@ -253,7 +276,11 @@
                         'Você será redirecionado.',
                         'success'
                     ).then(() => {
-                        window.location.href = 'CadastrarPlano.aspx?idAluno=' + idAluno;
+                        if (possuiPlano) {
+                            window.location.href = 'CadastrarPlano.aspx?idAluno=' + idAluno + '&excluirAnterior=true';
+                        } else {
+                            window.location.href = 'CadastrarPlano.aspx?idAluno=' + idAluno;
+                        }
                     });
                 } else {
                     Swal.fire(
@@ -266,6 +293,8 @@
 
             return false;
         }
+
+
 
 
     </script>

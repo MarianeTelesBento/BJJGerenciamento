@@ -200,13 +200,14 @@ namespace BJJGerenciamento.UI
        protected void btnDetalhesPlano_Click(object sender, EventArgs e)
         {
             PlanoDAL planoDal = new PlanoDAL();
-            List<PlanoModels> planos = planoDal.BuscarPlano();
 
             List<PlanoAlunoModels> listaPlanoAluno = planoDal.BuscarPlanoAluno(Convert.ToInt32(modalIdMatriculaAluno.Text));
 
 
             if (listaPlanoAluno != null && listaPlanoAluno.Count > 0)
             {
+                hfAlunoPossuiPlano.Value = "true";
+
                 var planosAgrupados = listaPlanoAluno
                     .GroupBy(p => p.idDetalhe)
                     .ToList();
@@ -218,7 +219,7 @@ namespace BJJGerenciamento.UI
 
                     htmlPlano += $@"
                         <div class='card p-2 mb-2'>
-                        <strong>Plano ID:</strong> {primeiro.idDetalhe}<br/>
+                        <strong>Plano:</strong> {planoDal.BuscarNomePlano(Convert.ToInt32(primeiro.idDetalhe))}<br/>
                         <strong>Dias por Semana:</strong> {primeiro.qtdDias}<br/>
                         <strong>Mensalidade:</strong> R$ {primeiro.mensalidade:N2}<br/>
                         <strong>Dias e Horários:</strong><br/>
@@ -226,7 +227,7 @@ namespace BJJGerenciamento.UI
 
                     foreach (var plano in grupo)
                     {
-                        htmlPlano += $"<li>{plano.idDia} - {plano.horarioInicio} às {plano.horarioFim}</li>";
+                        htmlPlano += $"<li>{planoDal.BuscarDiaSemana(plano.idDia)} - {plano.horarioInicio} às {plano.horarioFim}</li>";
                     }
 
                     htmlPlano += "</ul></div>";
@@ -236,6 +237,7 @@ namespace BJJGerenciamento.UI
             }
             else
             {
+                hfAlunoPossuiPlano.Value = "false";
                 litDadosPlano.Text = "<p>Nenhum plano encontrado para este aluno.</p>";
             }
 
