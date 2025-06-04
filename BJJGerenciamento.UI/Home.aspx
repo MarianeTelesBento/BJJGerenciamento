@@ -4,12 +4,15 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <style>
         .header {
-            background-color: black;
-            color: white;
-            padding: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
-            border-radius: 10px;
-            margin-bottom: 30px;
+            margin: 20px auto;
+            width: 80%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            color: white;
         }
 
         .cards {
@@ -35,6 +38,15 @@
             margin: 0;
             padding-left: 20px;
         }
+        body {
+         background-image: url('Images/ImagemDesfocada.png');
+         background-size: cover;
+         background-repeat: no-repeat;
+         background-position: center;
+         background-attachment: fixed;
+        }
+
+
     </style>
 
     <div class="header">

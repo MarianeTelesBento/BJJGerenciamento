@@ -5,7 +5,6 @@
     .btn-custom {
         padding: 0.5rem 1rem;
         font-size: 15px;
-       /* background-color: #3366ff;*/
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -82,19 +81,71 @@
         max-width: 70%;
         max-height: 70%;
     }
+
+    /* Estilização dos campos do modal */
+    #divAluno .form-control {
+        margin-bottom: 0.75rem;
+        padding: 0.6rem 1rem;
+        font-size: 15px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    #divAluno .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #divAluno label {
+        margin-top: 0.5rem;
+        font-weight: 500;
+        color: #333;
+    }
+
+    /* Botão "Salvar" do modal */
+    .modal-footer .asp-button {
+        padding: 0.5rem 1.2rem;
+        font-size: 16px;
+        border-radius: 6px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        height: 35px;
+    }
+
+    .modal-footer .asp-button:hover {
+        background-color: #218838;
+    }
+
+    /* Botões da GridView */
+    .aspNet-GridView button,
+    .aspNet-GridView input[type="submit"] {
+        padding: 0.4rem 0.8rem;
+        font-size: 14px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        height: 36px;
+    }
+
+    .aspNet-GridView button:hover,
+    .aspNet-GridView input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
 </style>
 
 <contentTemplate>
     <main>
-        <h1>Graduacao</h1>
+        <h1>Graduação</h1>
 
         <!-- Filtros -->
         <div class="flex-container">
             <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
 
             <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />
-
-<%--            <asp:DropDownList ID="ddHorarios" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddHorarios_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />--%>
 
             <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control" placeholder="Pesquisar..." />
 
@@ -104,7 +155,7 @@
         </div>
 
         <!-- Tabela -->
-        <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False"
+        <asp:GridView CssClass="aspNet-GridView table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False"
             OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
             <Columns>
                 <asp:BoundField DataField="IdMatricula" HeaderText="Matrícula" />
@@ -120,20 +171,20 @@
                     </ItemTemplate>
                 </asp:TemplateField>
 
-                 <asp:BoundField DataField="TotalPresencas" HeaderText="Total de Presenças" />
+                <asp:BoundField DataField="TotalPresencas" HeaderText="Total de Presenças" />
 
                 <asp:TemplateField HeaderText="Ação">
                     <ItemTemplate>
-                        <asp:Button ID="btnGraduar" runat="server" Text="Graduar" 
-                            CommandName="Graduar" 
-                             OnClick="btnGraduar_Click"/>
+                        <asp:Button ID="btnGraduar" runat="server" Text="Graduar"
+                            CommandName="Graduar"
+                            OnClick="btnGraduar_Click" />
                     </ItemTemplate>
                 </asp:TemplateField>
-
             </Columns>
         </asp:GridView>
 
-       <div id="modalDetalhes" class="modal" tabindex="-1" role="dialog">
+        <!-- Modal -->
+        <div id="modalDetalhes" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -141,27 +192,29 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div id="divAluno" class="modal-body">
-                        <div class="form-group">
+                  <div id="divAluno" class="modal-body">
+    <div class="form-group">
+        <asp:Label ID="lblMatricula" runat="server" Text="Matrícula:" />
+        <asp:TextBox ID="modalMatricula" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
 
+        <asp:Label ID="lblNome" runat="server" Text="Nome:" />
+        <asp:TextBox ID="modalNome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
 
-                            <asp:TextBox ID="modalMatricula" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
-                            <asp:TextBox ID="modalNome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
-                            <asp:TextBox ID="modalSobrenome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+        <asp:Label ID="lblSobrenome" runat="server" Text="Sobrenome:" />
+        <asp:TextBox ID="modalSobrenome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
 
-                            <asp:Label>Observação:</asp:Label>
-                            <asp:TextBox ID="modalObservacaoAluno" runat="server" CssClass="form-control"></asp:TextBox>
-                        </div>
-                    </div>
+        <asp:Label ID="lblObservacao" runat="server" Text="Observação:" />
+        <asp:TextBox ID="modalObservacaoAluno" runat="server" CssClass="form-control"></asp:TextBox>
+    </div>
+</div>
+
                     <div class="modal-footer text-center">
-                        <asp:Button ID="btnSalvarGraduacao" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" OnClick="btnSalvarGraduacao_Click"/>
+                        <asp:Button ID="btnSalvarGraduacao" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" OnClick="btnSalvarGraduacao_Click" />
                     </div>
                 </div>
             </div>
         </div>
-
     </main>
-
 
     <script>
         function abrirModal() {

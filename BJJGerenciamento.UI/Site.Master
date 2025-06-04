@@ -90,7 +90,9 @@
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/Chamada.aspx">Chamada</a></li>
 
-                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/Graduacao.aspx">Graduacao</a></li>
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/Graduacao.aspx">Graduação</a></li>
+
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/ListaHorario.aspx">Horários</a></li>
 
                             
         <!-- Botão de sair com confirmação -->
@@ -116,7 +118,7 @@
                 </asp:ContentPlaceHolder>
                 <hr />
                 <footer>
-                    <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                    <p>&copy; <%: DateTime.Now.Year %> - R.S.M DevWorks</p>
                 </footer>
             </div>
         </form>
@@ -140,6 +142,16 @@
         .dropdown-item {
             color: #fff;
         }
+        .footer {
+         
+         color: white;
+         text-align: center;
+         padding: 10px;
+         font-family: Arial, sans-serif;
+         font-size: 14px;
+        }
+
   
     </style>
+
 </html>
