@@ -9,7 +9,7 @@
         DataKeyNames="IdPlano,Ativo,Nome"
         OnSelectedIndexChanged="GridViewTurmas_SelectedIndexChanged">
         <Columns>
-            <asp:BoundField DataField="IdPlano" HeaderText="ID" />
+           
             <asp:BoundField DataField="Nome" HeaderText="Nome da Turma" />
             <asp:TemplateField HeaderText="Ativo">
                 <ItemTemplate>
@@ -21,7 +21,8 @@
                 <ItemTemplate>
                     <asp:Button ID="btnDetalhes" runat="server" Text="Mais"
                         CommandName="Detalhes"
-                        OnClick="btnDetalhes_Click" />
+                        OnClick="btnDetalhes_Click"
+                        CssClass="asp-button" />
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
@@ -43,21 +44,26 @@
                         <asp:Label for="modalIdPlano">ID:</asp:Label>
                         <asp:TextBox ID="modalIdPlano" runat="server" ReadOnly CssClass="form-control"></asp:TextBox>
                     </div>
+                    <br />
                     <div class="form-group d-flex align-items-center gap-2">
                         <asp:Label ID="lblmodalAtivo" runat="server" CssClass="mb-0">Turma ativa:</asp:Label>
                         <asp:CheckBox ID="modalAtivo" runat="server" />
                     </div>
+                    <br />
                     <div class="form-group">
                         <asp:Label for="modalNome">Nome:</asp:Label>
                         <asp:TextBox ID="modalNome" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
-
+                    <br />
                     <div class="form-group">
                         <asp:Label ID="lblDiasEdit" runat="server" Text="Dias da Semana:" AssociatedControlID="cblDiasEdit" />
                         <asp:UpdatePanel ID="updDiasHorarios" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
+                                <div class="checkbox-buttons">
                                 <asp:CheckBoxList ID="cblDiasEdit" runat="server" AutoPostBack="true" OnSelectedIndexChanged="cblDiasEdit_SelectedIndexChanged" RepeatDirection="Horizontal" CssClass="d-flex gap-3 flex-wrap">
                                 </asp:CheckBoxList>
+                                </div>
+                             
                                 <br />
                                 <asp:PlaceHolder ID="phHorariosEdit" runat="server" />
                             </ContentTemplate>
@@ -68,7 +74,7 @@
                     </div>
 
                     <div class="modal-footer text-center">
-                        <asp:Button ID="SalvarTurma" OnClick="SalvarTurma_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
+                        <asp:Button ID="SalvarTurma" OnClick="SalvarTurma_Click" runat="server" CssClass="asp-button btn btn-primary" Style="height: 35px" Text="Salvar" />
                     </div>
 
                 </div>
@@ -91,22 +97,19 @@
             text-align: center;
         }
 
+        /* Estilo para o botão "Mais" */
         .asp-button {
             display: inline-block;
-            width: auto;
-            padding: 8px 16px;
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.5;
+            padding: 5px 12px;
+            font-size: 14px;
             color: #fff;
             background-color: #0d6efd;
             border: 1px solid #0d6efd;
             border-radius: 5px;
             cursor: pointer;
-            text-align: center;
             text-decoration: none;
             transition: background-color 0.2s ease-in-out;
-            height: 38px;
+            height:35px
         }
 
         .asp-button:hover {
@@ -131,8 +134,8 @@
             background-color: #fff;
             margin: auto;
             border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
+            width: 100%;
+            max-width: 5000px;
             padding: 20px;
             border-radius: 10px;
         }
@@ -141,6 +144,27 @@
             border-bottom: none;
             border-top: none;
         }
+        .checkbox-buttons label {
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 6px 12px;
+        margin: 4px;
+        cursor: pointer;
+        background-color: #f9f9f9;
+        transition: all 0.3s;
+        user-select: none;
+    }
+
+    .checkbox-buttons input[type="checkbox"] {
+        display: none;
+    }
+
+    .checkbox-buttons input[type="checkbox"]:checked + label {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
     </style>
 
 </main>

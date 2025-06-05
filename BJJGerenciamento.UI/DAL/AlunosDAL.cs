@@ -671,5 +671,39 @@ namespace BJJGerenciamento.UI.DAL
             }
             return aniversariantes;
         }
+        public List<HoraModel> GetHorariosAtivos()
+        {
+            List<HoraModel> horarios = new List<HoraModel>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT IdHora, HorarioInicio, HorarioFim, Ativa
+            FROM TBHora
+            WHERE Ativa = 1
+            ORDER BY HorarioInicio
+        ";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        horarios.Add(new HoraModel
+                        {
+                            IdHora = reader.GetInt32(0),
+                            HorarioInicio = reader.GetTimeSpan(1),
+                            HorarioFim = reader.GetTimeSpan(2),
+                            Ativa = reader.GetBoolean(3)
+                        });
+                    }
+                }
+            }
+
+            return horarios;
+        }
+
     }
 }

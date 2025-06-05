@@ -24,7 +24,7 @@
                 <ItemTemplate>
                     <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
                         CommandName="Detalhes" 
-                        OnClick="btnDetalhes_Click" /> 
+                        OnClick="btnDetalhes_Click" CssClass="asp-button" Style="height: 35px" /> 
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
@@ -138,29 +138,34 @@
         #GridView1 {
             text-align: center;
         }
-      
-   .asp-button {
-       display: inline-block;
-       width: auto;
-       padding: 8px 16px;
-       font-size: 16px;
-       font-weight: 400;
-       line-height: 1.5;
-       color: #fff;
-       background-color: #0d6efd;
-       border: 1px solid #0d6efd;
-       border-radius: 5px;
-       cursor: pointer;
-       text-align: center;
-       text-decoration: none;
-       transition: background-color 0.2s ease-in-out;
-       height: 38px;
-   }
+      .asp-button {
+      display: inline-block;
+      padding: 5px 12px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #0d6efd;
+      border: 1px solid #0d6efd;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease-in-out;
+      height:35px
+  }
 
-   .asp-button:hover {
-       background-color: #0b5ed7;
-       border-color: #0a58ca;
-   }
+.asp-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.asp-button:active {
+    background-color: #004494;
+    transform: translateY(0);
+}
+.form-group {
+    margin-bottom: 16px;
+}
+
+
 
 
     </style>
