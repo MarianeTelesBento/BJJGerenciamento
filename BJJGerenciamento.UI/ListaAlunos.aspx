@@ -53,6 +53,9 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
+
+                        <asp:HiddenField ID="hfIdAlunoModal" runat="server" ClientIDMode="Static" />
+
                         <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno"/>
                         <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel"/>
                         <asp:Button ID="btnDetalhesPlano" OnClick="btnDetalhesPlano_Click" runat="server" Text="Plano"/>
@@ -205,17 +208,18 @@
 
                         <asp:Literal ID="litDadosPlano" runat="server" Mode="PassThrough"></asp:Literal>
 
-                        <div class="modal-footer text-center">
+                    
                         <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
                             CssClass="asp-button btn btn-primary"
-                            OnClientClick="return confirmarMudancaPlano(this);" />
+                            OnClientClick="return confirmarMudancaPlano();" />
+
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <asp:HiddenField ID="hfAlunoPossuiPlano" runat="server" ClientIDMode="Static" />
+        <asp:HiddenField ID="hfAlunoPossuiPlano" runat="server" ClientIDMode="Static"/>
 
 
     </main>
@@ -225,6 +229,7 @@
         function abrirModal() {
             document.getElementById("modalDetalhes").style.display = "block";
         }
+
 
         function fecharModal() {
             document.getElementById("modalDetalhes").style.display = "none";
@@ -236,30 +241,20 @@
             document.getElementById("divPlano").style.display = "none";
 
             document.getElementById("div" + nomeAba).style.display = "block";
-            abrirModal();
         }
 
-        function confirmarMudancaPlano(button) {
-            const row = button.closest("tr");
-            if (!row) {
-                console.error("Linha (tr) não encontrada.");
+
+        function confirmarMudancaPlano() {
+            const hf = document.getElementById('hfIdAlunoModal');
+            const hfPossuiPlano = document.getElementById('hfAlunoPossuiPlano');
+
+            if (!hf || !hfPossuiPlano) {
+                alert("Campos ocultos não encontrados na modal.");
                 return false;
             }
 
-            const hfIdAluno = row.querySelector("[id*='hfIdAlunos']");
-            if (!hfIdAluno) {
-                console.error("Campo hfIdAlunos não encontrado na linha.");
-                return false;
-            }
-            const idAluno = hfIdAluno.value;
-
-            // Ajuste para pegar o plano dentro da mesma linha, se existir
-            const hfAlunoPossuiPlano = row.querySelector("[id*='hfAlunoPossuiPlano']") || document.getElementById("hfAlunoPossuiPlano");
-            if (!hfAlunoPossuiPlano) {
-                console.error("Campo hfAlunoPossuiPlano não encontrado.");
-                return false;
-            }
-            const possuiPlano = hfAlunoPossuiPlano.value === "true";
+            const idAluno = hf.value;
+            const possuiPlano = hfPossuiPlano.value === "true";
 
             Swal.fire({
                 title: 'Tem certeza?',
@@ -271,28 +266,19 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(
-                        'Confirmado!',
-                        'Você será redirecionado.',
-                        'success'
-                    ).then(() => {
-                        if (possuiPlano) {
-                            window.location.href = 'CadastrarPlano.aspx?idAluno=' + idAluno + '&excluirAnterior=true';
-                        } else {
-                            window.location.href = 'CadastrarPlano.aspx?idAluno=' + idAluno;
-                        }
+                    Swal.fire('Confirmado!', 'Você será redirecionado.', 'success').then(() => {
+                        const url = 'CadastrarPlano.aspx?idAluno=' + idAluno +
+                            (possuiPlano ? '&excluirAnterior=true' : '');
+                        window.location.href = url;
                     });
                 } else {
-                    Swal.fire(
-                        'Cancelado',
-                        'A ação foi cancelada.',
-                        'error'
-                    );
+                    Swal.fire('Cancelado', 'A ação foi cancelada.', 'error');
                 }
             });
 
             return false;
         }
+
 
 
 
