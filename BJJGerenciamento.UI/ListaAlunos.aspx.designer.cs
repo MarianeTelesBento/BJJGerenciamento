@@ -69,6 +69,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.GridView GridView1;
 
         /// <summary>
+        /// Controle hfIdAlunoModal.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIdAlunoModal;
+
+        /// <summary>
         /// Controle btnDetalhesAluno.
         /// </summary>
         /// <remarks>
@@ -393,30 +402,30 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button SalvarResponsavel;
 
         /// <summary>
-        /// Controle ddPlanosModal.
+        /// Controle litDadosPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddPlanosModal;
+        protected global::System.Web.UI.WebControls.Literal litDadosPlano;
 
         /// <summary>
-        /// Controle cbPasseLivre.
+        /// Controle btnModificarPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbPasseLivre;
+        protected global::System.Web.UI.WebControls.Button btnModificarPlano;
 
         /// <summary>
-        /// Controle SalvarPlano.
+        /// Controle hfAlunoPossuiPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SalvarPlano;
+        protected global::System.Web.UI.WebControls.HiddenField hfAlunoPossuiPlano;
     }
 }

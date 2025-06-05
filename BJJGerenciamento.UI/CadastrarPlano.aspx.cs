@@ -21,13 +21,12 @@ namespace BJJGerenciamento.UI
                 Response.Redirect("Login.aspx");
             }
 
-
             idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
 
             if (!IsPostBack)
             {
-                PlanoDAL planoDAL = new PlanoDAL();
-                List<PlanoModels> planos = planoDAL.BuscarPlano();
+                PlanoDAL planoDal = new PlanoDAL();
+                List<PlanoModels> planos = planoDal.BuscarPlano();
 
                 if (planos != null && planos.Count > 0)
                 {
@@ -38,6 +37,14 @@ namespace BJJGerenciamento.UI
 
                     ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", ""));
                 }
+
+                if (Request.QueryString["excluirAnterior"] == "true")
+                {
+                    planoDal.ExcluirPlanoAluno(idAluno);
+                    planoDal.ExcluirPlanoAlunoValor(idAluno);
+                }
+
+
             }
         }
 
