@@ -8,9 +8,9 @@
       <div class="flex-container">
     <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
 
-    <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="true" CssClass="form-select-custom filtro-grande" />
+    <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="true" CssClass="form-select-custom input-grande" />
 
-    <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="true" CssClass="form-control filtro-grande" placeholder="Pesquisar..." />
+    <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="true" CssClass="form-control input-grande" placeholder="Pesquisar..." />
 
           <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="true" CssClass="btn btn-primary btn-custom" Style="background-color: blue" />
           <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="true" CssClass="btn btn-danger btn-custom" />
@@ -41,7 +41,7 @@
                         <asp:HiddenField ID="hfIdAluno" runat="server" Value='<%# Eval("IdAlunos") %>' />
                         <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
                             CommandName="Detalhes" 
-                            OnClick="btnDetalhes_Click" />
+                            OnClick="btnDetalhes_Click" CssClass="" />
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>
@@ -206,7 +206,7 @@
                             
                     <div ID="divPlano" class="modal-body" style="display: none;">
 
-                        <asp:Literal ID="litDadosPlano" runat="server" Mode="PassThrough"></asp:Literal>
+                        <asp:Literal ID="LitDadosPlano" runat="server" Mode="PassThrough"></asp:Literal>
 
                     
                         <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
@@ -313,6 +313,7 @@ main {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    height:35px;
 }
 
 .btn-custom:hover {
@@ -446,7 +447,14 @@ label, asp\:Label {
     .modal-dialog {
         width: 90%;
     }
+    .input-grande {
+    width: 250px; /* Aumenta o tamanho */
+    height: 35px; /* Altura opcional */
+    font-size: 16px;
 }
+
+}
+
 
 
     </style>

@@ -234,13 +234,13 @@ namespace BJJGerenciamento.UI
 
                     htmlPlano += "</ul></div>";
                 }
-                litDadosPlano.Text = htmlPlano;
+                LitDadosPlano.Text = htmlPlano;
 
             }
             else
             {
                 hfAlunoPossuiPlano.Value = "false";
-                litDadosPlano.Text = "<p>Nenhum plano encontrado para este aluno.</p>";
+                LitDadosPlano.Text = "<p>Nenhum plano encontrado para este aluno.</p>";
             }
 
             string aba = "Plano";

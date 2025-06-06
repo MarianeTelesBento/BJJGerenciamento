@@ -348,7 +348,8 @@ namespace BJJGerenciamento.UI.DAL
             return alunoList;
         }
 
-        public List<AlunoModels> PesquisarAlunosPresencas(string termo = null, int? idPlano = null)
+        public List<AlunoModels> PesquisarAlunosPresencas(string termo = null, int? idPlano = null, int? idHora = null)
+
         {
             List<AlunoModels> alunoList = new List<AlunoModels>();
 
@@ -357,34 +358,36 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"
-                    SELECT 
-                        a.IdMatricula,
-                        a.Nome,
-                        a.Sobrenome,
-                        a.CPF,
-                        a.Telefone,
-                        m.StatusdaMatricula,
-                        COUNT(DISTINCT CASE
-                            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
-                            ELSE NULL
-                        END) AS TotalPresencas
-                    FROM TBAlunos a
-                    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
-                    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
-                    LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
-                    LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
-                    OUTER APPLY (
-                        SELECT MAX(DataGraduacao) AS UltimaGraduacao
-                        FROM TBGraduacoes g
-                        WHERE g.IdMatricula = a.IdMatricula
-                    ) g
-                    WHERE 
-                        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
-                        AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
-                    GROUP BY 
-                        a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
-                    ORDER BY a.IdMatricula ASC;
-                    ";
+    SELECT 
+        a.IdMatricula,
+        a.Nome,
+        a.Sobrenome,
+        a.CPF,
+        a.Telefone,
+        m.StatusdaMatricula,
+        COUNT(DISTINCT CASE
+            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
+            ELSE NULL
+        END) AS TotalPresencas
+    FROM TBAlunos a
+    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
+    LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
+    LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
+    OUTER APPLY (
+        SELECT MAX(DataGraduacao) AS UltimaGraduacao
+        FROM TBGraduacoes g
+        WHERE g.IdMatricula = a.IdMatricula
+    ) g
+    WHERE 
+        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+        AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
+        AND (@idHora IS NULL OR pd.IdHora = @idHora)
+    GROUP BY 
+        a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
+    ORDER BY a.IdMatricula ASC;
+";
+
 
                 using (SqlCommand readerCommand = new SqlCommand(query, connection))
                 {
@@ -397,6 +400,11 @@ namespace BJJGerenciamento.UI.DAL
                         readerCommand.Parameters.AddWithValue("@idPlano", idPlano.Value);
                     else
                         readerCommand.Parameters.AddWithValue("@idPlano", DBNull.Value);
+                    if (idHora.HasValue)
+                        readerCommand.Parameters.AddWithValue("@idHora", idHora.Value);
+                    else
+                        readerCommand.Parameters.AddWithValue("@idHora", DBNull.Value);
+
 
                     SqlDataReader reader = readerCommand.ExecuteReader();
 
@@ -671,7 +679,7 @@ namespace BJJGerenciamento.UI.DAL
             }
             return aniversariantes;
         }
-        public List<HoraModel> GetHorariosAtivos()
+        public List<HoraModel> GetHorariosPorPlano(int idPlano)
         {
             List<HoraModel> horarios = new List<HoraModel>();
 
@@ -680,30 +688,36 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"
-            SELECT IdHora, HorarioInicio, HorarioFim, Ativa
-            FROM TBHora
-            WHERE Ativa = 1
-            ORDER BY HorarioInicio
-        ";
+            SELECT DISTINCT h.IdHora, h.HorarioInicio, h.HorarioFim
+            FROM TBHora h
+            INNER JOIN TBPlanoHorario ph ON h.IdHora = ph.IdHora
+            WHERE ph.IdPlano = @idPlano
+            ORDER BY h.HorarioInicio;";
 
                 using (SqlCommand cmd = new SqlCommand(query, connection))
-                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    cmd.Parameters.AddWithValue("@idPlano", idPlano); // Corrigido aqui!
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        horarios.Add(new HoraModel
+                        while (reader.Read())
                         {
-                            IdHora = reader.GetInt32(0),
-                            HorarioInicio = reader.GetTimeSpan(1),
-                            HorarioFim = reader.GetTimeSpan(2),
-                            Ativa = reader.GetBoolean(3)
-                        });
+                            horarios.Add(new HoraModel
+                            {
+                                IdHora = reader.GetInt32(0),
+                                HorarioInicio = reader.GetTimeSpan(1),
+                                HorarioFim = reader.GetTimeSpan(2)
+                                // Removido Ativa pois não está na SELECT
+                            });
+                        }
                     }
                 }
             }
 
             return horarios;
         }
+
+
 
     }
 }

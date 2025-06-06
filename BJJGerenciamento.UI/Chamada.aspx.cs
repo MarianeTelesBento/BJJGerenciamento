@@ -2,6 +2,8 @@
 using BJJGerenciamento.UI.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.EnterpriseServices;
 using System.Linq;
 using System.Web;
@@ -21,6 +23,7 @@ namespace BJJGerenciamento.UI
             }
             if (!IsPostBack)
             {
+              
                 GridView1.Columns[6].Visible = false;
                 AlunosDAL alunosDAL = new AlunosDAL();
                 alunosList = alunosDAL.VisualizarDados();
@@ -118,8 +121,13 @@ namespace BJJGerenciamento.UI
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Ao mudar, aparecer um combo com os dias
-            //Ao mudar o combo de dias, aparecer um combo com os horários
+             int idPlanoSelecionado;
+
+            if (int.TryParse(ddPlanos.SelectedValue, out idPlanoSelecionado))
+            {
+                // Carrega os horários da turma (plano) selecionado
+                CarregarHorariosPorPlano(idPlanoSelecionado);
+            }
         }
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
@@ -225,9 +233,11 @@ namespace BJJGerenciamento.UI
             IdsMarcados = ObterIdsAlunosSelecionados();
 
             AlunosDAL alunosDAL = new AlunosDAL();
+
             alunosList = alunosDAL.VisualizarDados();
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
+            ddHorarios.Visible = false;
 
             RestaurarChecks(IdsMarcados);
         }
@@ -261,5 +271,30 @@ namespace BJJGerenciamento.UI
                 }
             }
         }
+
+        protected void ddHorarios_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void CarregarHorariosPorPlano(int idPlano)
+        {
+            AlunosDAL horaDAL = new AlunosDAL();
+            var horarios = horaDAL.GetHorariosPorPlano(idPlano);
+
+            ddHorarios.Items.Clear();
+            ddHorarios.Items.Add(new ListItem("-- Todos os horários --", "-1"));
+
+            foreach (var hora in horarios)
+            {
+                string texto = $"{hora.HorarioInicio:hh\\:mm} às {hora.HorarioFim:hh\\:mm}";
+                ddHorarios.Items.Add(new ListItem(texto, hora.IdHora.ToString()));
+            }
+
+            ddHorarios.Visible = true;
+        }
+
+
+
+
     }
 }
