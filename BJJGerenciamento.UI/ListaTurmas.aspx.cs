@@ -17,6 +17,7 @@ namespace BJJGerenciamento.UI
             if (Session["UsuarioLogado"] == null)
             {
                 Response.Redirect("Login.aspx");
+
             }
 
             if (!IsPostBack)

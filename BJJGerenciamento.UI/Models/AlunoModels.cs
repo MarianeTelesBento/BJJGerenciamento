@@ -28,4 +28,14 @@ namespace BJJGerenciamento.UI.Models
         public string DataMatricula { get; set; }
         public int TotalPresencas { get; set; }
     }
+    public class HoraModel
+    {
+        public int IdHora { get; set; }
+        public TimeSpan HorarioInicio { get; set; }
+        public TimeSpan HorarioFim { get; set; }
+        public bool Ativa { get; set; }
+
+        public string Descricao => $"{HorarioInicio:hh\\:mm} - {HorarioFim:hh\\:mm}";
+    }
+
 }

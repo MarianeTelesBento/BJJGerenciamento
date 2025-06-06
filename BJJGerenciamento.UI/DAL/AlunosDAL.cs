@@ -15,9 +15,7 @@ namespace BJJGerenciamento.UI.DAL
     public class AlunosDAL
     {
 
-
-        public string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
-
+        private string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
 
         public int CadastrarResponsavel(ResponsavelModels responsavel)
         {
@@ -670,5 +668,39 @@ namespace BJJGerenciamento.UI.DAL
             }
             return aniversariantes;
         }
+        public List<HoraModel> GetHorariosAtivos()
+        {
+            List<HoraModel> horarios = new List<HoraModel>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = @"
+            SELECT IdHora, HorarioInicio, HorarioFim, Ativa
+            FROM TBHora
+            WHERE Ativa = 1
+            ORDER BY HorarioInicio
+        ";
+
+                using (SqlCommand cmd = new SqlCommand(query, connection))
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        horarios.Add(new HoraModel
+                        {
+                            IdHora = reader.GetInt32(0),
+                            HorarioInicio = reader.GetTimeSpan(1),
+                            HorarioFim = reader.GetTimeSpan(2),
+                            Ativa = reader.GetBoolean(3)
+                        });
+                    }
+                }
+            }
+
+            return horarios;
+        }
+
     }
 }
