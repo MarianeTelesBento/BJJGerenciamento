@@ -15,7 +15,7 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class GraduacaoDAL
     {
-        public string connectionString = "Data Source=FAC00DT68ZW11-1;Initial Catalog=BJJ_DB;User ID=Sa;Password=123456;";
+        public string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
 
         public int CadastrarGraduacao(GraduacaoModels graduacao)
         {
