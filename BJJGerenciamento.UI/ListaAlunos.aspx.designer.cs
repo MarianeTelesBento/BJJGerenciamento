@@ -105,6 +105,15 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button btnDetalhesPlano;
 
         /// <summary>
+        /// Controle btnDetalhesGraduacao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDetalhesGraduacao;
+
+        /// <summary>
         /// Controle modalIdMatriculaAluno.
         /// </summary>
         /// <remarks>
@@ -418,6 +427,42 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnModificarPlano;
+
+        /// <summary>
+        /// Controle modalNomeGraducaoHeader.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label modalNomeGraducaoHeader;
+
+        /// <summary>
+        /// Controle rptGraduacoes.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptGraduacoes;
+
+        /// <summary>
+        /// Controle pnlNoGraduations.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlNoGraduations;
+
+        /// <summary>
+        /// Controle btnAdicionarGraduacao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAdicionarGraduacao;
 
         /// <summary>
         /// Controle hfAlunoPossuiPlano.

@@ -93,8 +93,7 @@ namespace BJJGerenciamento.UI
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Ao mudar, aparecer um combo com os dias
-            //Ao mudar o combo de dias, aparecer um combo com os horários
+
         }
 
         protected void btnLimpar_Click(object sender, EventArgs e)
@@ -158,6 +157,8 @@ namespace BJJGerenciamento.UI
             {
                 btnDetalhesResponsavel.Visible = true;
             }
+
+            /*Se tiver graduação: x se não y*/
 
 
             string script = $"<script>abrirModal();</script>";
@@ -248,11 +249,79 @@ namespace BJJGerenciamento.UI
             ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
 
-        protected void btnModificarPlano_Click(object sender, EventArgs e)
+        protected void btnDetalhesGraduacao_Click(object sender, EventArgs e)
         {
+            int matriculaId = Convert.ToInt32(modalIdMatriculaAluno.Text);
+            GraduacaoDAL graduacaoDAL = new GraduacaoDAL();
+            List<GraduacaoModels> listaGraduacoes = graduacaoDAL.BuscarGraduacao(matriculaId);
 
+            if (listaGraduacoes != null && listaGraduacoes.Count > 0)
+            {
+                rptGraduacoes.DataSource = listaGraduacoes;
+                rptGraduacoes.DataBind();
+                rptGraduacoes.Visible = true;
+                pnlNoGraduations.Visible = false;
+            }
+            else
+            {
+                rptGraduacoes.Visible = false; 
+                pnlNoGraduations.Visible = true; 
+            }
+  
+            modalNomeGraducaoHeader.Text = "Aluno: " + modalNomeAluno.Text;
+
+            string aba = "Graduacao";
+            string script = $"<script>abrirModal(); exibirAba('{aba}');</script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
 
+        protected void rptGraduacoes_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "Excluir")
+            {
+                int idGraduacaoParaExcluir = Convert.ToInt32(e.CommandArgument);
+                GraduacaoDAL graduacaoDAL = new GraduacaoDAL();
+                int excluidoComSucesso = graduacaoDAL.ExcluirGraduacao(idGraduacaoParaExcluir);
+
+                if (excluidoComSucesso > 0)
+                {
+                    // Reexiba as graduações para refletir a exclusão
+                    int matriculaId = Convert.ToInt32(modalIdMatriculaAluno.Text);
+                    List<GraduacaoModels> listaGraduacoesAtualizada = graduacaoDAL.BuscarGraduacao(matriculaId);
+
+                    if (listaGraduacoesAtualizada != null && listaGraduacoesAtualizada.Count > 0)
+                    {
+                        rptGraduacoes.DataSource = listaGraduacoesAtualizada;
+                        rptGraduacoes.DataBind();
+                        rptGraduacoes.Visible = true;
+                        pnlNoGraduations.Visible = false;
+                    }
+                    else
+                    {
+                        rptGraduacoes.Visible = false;
+                        pnlNoGraduations.Visible = true;
+                    }
+
+                    string scriptSucesso = @"
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Graduação excluída com sucesso!',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", scriptSucesso, true);
+                }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Erro ao excluir a graduação.');", true);
+                }
+
+                string aba = "Graduacao";
+                string script = $"<script>abrirModal(); exibirAaba('{aba}');</script>";
+                ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
+            }
+        }
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
         {

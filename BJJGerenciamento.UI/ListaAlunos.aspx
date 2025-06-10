@@ -5,17 +5,16 @@
     <main>
         <h1 id="aspnetTitle">Lista de Alunos</h1>    
         
-      <div class="flex-container">
-    <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
+        <div class="flex-container">
+            <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
 
-    <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom input-grande" />
+            <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom input-grande" />
 
-    <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control input-grande" placeholder="Pesquisar..." />
+            <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control input-grande" placeholder="Pesquisar..." />
 
-          <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false" CssClass="btn btn-primary btn-custom" Style="background-color: blue" />
-          <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false" CssClass="btn btn-danger btn-custom" />
-
-</div>
+            <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false" CssClass="btn btn-primary btn-custom" Style="background-color: blue" />
+            <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false" CssClass="btn btn-danger btn-custom" />
+        </div>
 
 
         <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
@@ -59,6 +58,7 @@
                         <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno"/>
                         <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel"/>
                         <asp:Button ID="btnDetalhesPlano" OnClick="btnDetalhesPlano_Click" runat="server" Text="Plano"/>
+                        <asp:Button ID="btnDetalhesGraduacao" OnClick="btnDetalhesGraduacao_Click" runat="server" Text="Graduacao"/>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal()">
                             <span aria-hidden="true">&times;</span>
@@ -206,20 +206,49 @@
                             
                     <div ID="divPlano" class="modal-body" style="display: none;">
 
-                        <asp:Literal ID="LitDadosPlano" runat="server" Mode="PassThrough"></asp:Literal>
+                            <asp:Literal ID="LitDadosPlano" runat="server" Mode="PassThrough"></asp:Literal>
 
                     
-                        <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
-                            CssClass="asp-button btn btn-primary"
-                            OnClientClick="return confirmarMudancaPlano();" />
+                            <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
+                                CssClass="asp-button btn btn-primary"
+                                OnClientClick="return confirmarMudancaPlano();" />
 
-
-                        </div>
                     </div>
+
+                    <div ID="divGraduacao" class="modal-body" style="display: none;">
+                        <h3>Graduações do Aluno</h3>
+                        <asp:Label ID="modalNomeGraducaoHeader" runat="server" CssClass="form-group"></asp:Label>
+                        <hr/>
+
+                        <asp:Repeater ID="rptGraduacoes" runat="server" OnItemCommand="rptGraduacoes_ItemCommand">
+                            <ItemTemplate>
+                                <div class='card p-2 mb-2'>
+                                    <asp:HiddenField ID="hdnIdGraduacao" runat="server" Value='<%# Eval("idGraduacao") %>' />
+                                    <strong>Observação:</strong> <asp:Label ID="lblObservacao" runat="server" Text='<%# Eval("observacao") %>' /><br/>
+                                    <strong>Data de Graduação:</strong> <asp:Label ID="lblDataGraduacao" runat="server" Text='<%# Eval("dataGraduacao", "{0:dd/MM/yyyy}") %>' /><br/>
+                                    <div class="text-right mt-2">
+                                        <asp:Button ID="btnExcluirGraduacao" runat="server" CssClass="btn btn-danger btn-sm" Text="Excluir"
+                                                    CommandName="Excluir" CommandArgument='<%# Eval("idGraduacao") %>'
+                                                    OnClientClick="return confirm('Tem certeza que deseja excluir esta graduação?');" />
+                                    </div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
+
+                        <asp:Panel ID="pnlNoGraduations" runat="server" Visible="false">
+                            <p>Nenhuma graduação encontrada para este aluno.</p>
+                        </asp:Panel>
+
+
+                        <div class="modal-footer text-center">
+                            <asp:Button ID="btnAdicionarGraduacao" runat="server" CssClass="asp-button btn btn-primary" Text="Adicionar Graduação" OnClientClick="return adicionarGraduacao()" />
+                        </div>
+
                 </div>
             </div>
         </div>
-        <asp:HiddenField ID="hfAlunoPossuiPlano" runat="server" ClientIDMode="Static"/>
+    </div>
+    <asp:HiddenField ID="hfAlunoPossuiPlano" runat="server" ClientIDMode="Static"/>
 
 
     </main>
@@ -239,6 +268,7 @@
             document.getElementById("divAluno").style.display = "none";
             document.getElementById("divResponsavel").style.display = "none";
             document.getElementById("divPlano").style.display = "none";
+            document.getElementById("divGraduacao").style.display = "none";
 
             document.getElementById("div" + nomeAba).style.display = "block";
         }
@@ -278,6 +308,29 @@
 
             return false;
         }
+
+        function adicionarGraduacao() {
+
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Você será redirecionado!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim, confirmar',
+                cancelButtonText: 'Não, cancelar',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {           
+                    const url = 'Graduacao.aspx';
+                    window.location.href = url;             
+                } else {
+                    Swal.fire('Cancelado', 'A ação foi cancelada.', 'error');
+                }
+            });
+
+            return false;
+        }
+
 
 
 
