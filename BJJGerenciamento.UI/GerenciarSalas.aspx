@@ -45,15 +45,6 @@
                     </ItemTemplate>
                 </asp:TemplateField>
 
-                <asp:TemplateField HeaderText="Excluir">
-                    <ItemTemplate>
-                        <asp:LinkButton ID="btnExcluir" runat="server" Text="Excluir"
-                            CommandArgument='<%# Eval("IdSala") %>'
-                            OnClick="btnExcluir_Click"
-                            CssClass="btn btn-danger btn-sm"
-                            OnClientClick="return confirm('Tem certeza que deseja excluir esta sala? Esta ação não poderá ser desfeita.');" />
-                    </ItemTemplate>
-                </asp:TemplateField>
             </Columns>
         </asp:GridView>
     </div>

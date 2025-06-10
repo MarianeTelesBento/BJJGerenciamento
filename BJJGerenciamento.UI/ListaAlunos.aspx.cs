@@ -46,6 +46,7 @@ namespace BJJGerenciamento.UI
                 btnPesquisar.Visible = true;
                 TxtTermoPesquisa.Visible = true;
                 ddPlanos.Visible = true;
+                chkApenasAtivos.Visible = true;
                 PlanoDAL planoDAL = new PlanoDAL();
                 List<PlanoModels> planos = planoDAL.BuscarPlano();
 
@@ -65,6 +66,7 @@ namespace BJJGerenciamento.UI
                 btnPesquisar.Visible = false;
                 TxtTermoPesquisa.Visible = false;
                 ddPlanos.Visible = false;
+                chkApenasAtivos.Visible = false;
             }
         }
 
@@ -83,7 +85,10 @@ namespace BJJGerenciamento.UI
                     idPlano = idPlanoConvertido;
                 }
             }
-            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano);
+
+            bool apenasAtivos = chkApenasAtivos.Checked;
+
+            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano, apenasAtivos);
 
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
@@ -176,7 +181,7 @@ namespace BJJGerenciamento.UI
             //Status Responsável
             int matriculaId = Convert.ToInt32(modalIdMatriculaAluno.Text);
             AlunosDAL alunosDAL = new AlunosDAL();
-            ResponsavelModels responsavel =  alunosDAL.BuscarResponsavel(matriculaId);
+            ResponsavelModels responsavel = alunosDAL.BuscarResponsavel(matriculaId);
 
             modalNomeResponsavel.Text = responsavel.Nome;
             modalSobrenomeResponsavel.Text = responsavel.Sobrenome;
@@ -198,8 +203,8 @@ namespace BJJGerenciamento.UI
             ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
 
-  
-       protected void btnDetalhesPlano_Click(object sender, EventArgs e)
+
+        protected void btnDetalhesPlano_Click(object sender, EventArgs e)
         {
             PlanoDAL planoDal = new PlanoDAL();
 
@@ -359,5 +364,13 @@ namespace BJJGerenciamento.UI
             return true;
         }
 
+        protected void chkApenasAtivos_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkApenasAtivos.Checked)
+            {
+                AlunosDAL alunosDAL = new AlunosDAL();
+                alunosList = alunosDAL.VisualizarDadosChamada();
+            }
+        }
     }
 }
