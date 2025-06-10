@@ -34,6 +34,22 @@ namespace BJJGerenciamento.UI.DAL
             }
 
         }
+        public void CadastrarUsuario(string usuario, string email, string senha)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "INSERT INTO TBLogin (Usuario, Email, Senha) VALUES (@usuario, @email, @senha)";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@usuario", usuario);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@senha", senha);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        
 
     }
+
+    
 }

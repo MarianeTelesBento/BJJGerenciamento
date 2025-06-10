@@ -330,6 +330,123 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Panel pnlConfirmarAluno;
 
         /// <summary>
+        /// Controle lblNomeCompletoAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNomeCompletoAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblCpfAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCpfAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblDataNascimentoAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDataNascimentoAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblTelefoneAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTelefoneAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblCarteiraFpjjAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCarteiraFpjjAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblEmailAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEmailAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblEnderecoAlunoConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEnderecoAlunoConfirm;
+
+        /// <summary>
+        /// Controle lblNomeCompletoResponsavelConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblNomeCompletoResponsavelConfirm;
+
+        /// <summary>
+        /// Controle lblCpfResponsavelConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCpfResponsavelConfirm;
+
+        /// <summary>
+        /// Controle lblDataNascimentoResponsavelConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDataNascimentoResponsavelConfirm;
+
+        /// <summary>
+        /// Controle lblTelefoneResponsavelConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTelefoneResponsavelConfirm;
+
+        /// <summary>
+        /// Controle lblEmailResponsavelConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEmailResponsavelConfirm;
+
+        /// <summary>
+        /// Controle lblEnderecoResponsavelConfirm.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEnderecoResponsavelConfirm;
+
+        /// <summary>
         /// Controle EnviarInformacoes.
         /// </summary>
         /// <remarks>

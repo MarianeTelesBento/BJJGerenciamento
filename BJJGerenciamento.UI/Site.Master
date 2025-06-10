@@ -94,6 +94,9 @@
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/ListaHorario.aspx">Horários</a></li>
 
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/CadastrarUsuario.aspx">Novo Usuário</a></li>
+
+
                             
         <!-- Botão de sair com confirmação -->
        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">

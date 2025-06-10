@@ -65,17 +65,5 @@ namespace BJJGerenciamento.UI
             CarregarSalas();
         }
 
-        // Método para excluir a sala
-        protected void btnExcluir_Click(object sender, EventArgs e)
-        {
-            LinkButton btnExcluir = (LinkButton)sender;
-            int idSala = Convert.ToInt32(btnExcluir.CommandArgument);
-
-            // Excluir a sala
-            salaDAL.ExcluirSala(idSala);
-
-            lblMensagem.Text = "Sala excluída com sucesso!";
-            CarregarSalas();
-        }
     }
 }

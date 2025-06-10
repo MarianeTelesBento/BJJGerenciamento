@@ -103,7 +103,7 @@
                                         <div class="col-md-6">
                                             <label for="txtCep" class="form-label">CEP</label>
                                             <div class="d-flex gap-2">
-                                                <asp:TextBox ID="cepAluno" runat="server" CssClass="form-control" OnTextChanged="cepResponsavel_TextChanged" />
+                                        <asp:TextBox ID="cepAluno" runat="server" CssClass="form-control" />
                                                 <asp:Button ID="Button1" runat="server" OnClick="buscarCepAluno_Click" 
                                                     Text="Buscar" CssClass="btn btn-danger btn-custom2" UseSubmitBehavior="false" />
                                             </div>
@@ -243,21 +243,85 @@
                     </div>
             </asp:Panel>
 
-            <asp:Panel ID="pnlConfirmarAluno" runat="server" Visible="false">
-                <div class="container mt-4">
-                    <h2 class="text-center">Confirmar cadastro</h2>
+         <asp:Panel ID="pnlConfirmarAluno" runat="server" Visible="false" CssClass="container mt-4">
+                <h2 class="text-center">Confirmar Cadastro</h2>
 
-                    <div class="col-12 text-center mt-3">
-                        <asp:Button ID="EnviarInformacoes" runat="server" style="background-color: #BF0413; font-size: 14px; border: none; color: #F2F2F2; font-family: -apple-system, Roboto, Arial, sans-serif;
-                        border-radius: 3px;" Text="Enviar" OnClick="btnEnviarInformacoes_Click" />
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Informações do Aluno
                     </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Nome Completo:</strong> <asp:Label ID="lblNomeCompletoAlunoConfirm" runat="server" />
+                            </div>
+                            <div class="col-md-6">
+                                <strong>CPF:</strong> <asp:Label ID="lblCpfAlunoConfirm" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Data de Nascimento:</strong> <asp:Label ID="lblDataNascimentoAlunoConfirm" runat="server" />
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Telefone:</strong> <asp:Label ID="lblTelefoneAlunoConfirm" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Carteira FPJJ:</strong> <asp:Label ID="lblCarteiraFpjjAlunoConfirm" runat="server" />
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Email:</strong> <asp:Label ID="lblEmailAlunoConfirm" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <strong>Endereço:</strong> <asp:Label ID="lblEnderecoAlunoConfirm" runat="server" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        Informações do Responsável
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Nome Completo:</strong> <asp:Label ID="lblNomeCompletoResponsavelConfirm" runat="server" />
+                            </div>
+                            <div class="col-md-6">
+                                <strong>CPF:</strong> <asp:Label ID="lblCpfResponsavelConfirm" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Data de Nascimento:</strong> <asp:Label ID="lblDataNascimentoResponsavelConfirm" runat="server" />
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Telefone:</strong> <asp:Label ID="lblTelefoneResponsavelConfirm" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <strong>Email:</strong> <asp:Label ID="lblEmailResponsavelConfirm" runat="server" />
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <strong>Endereço:</strong> <asp:Label ID="lblEnderecoResponsavelConfirm" runat="server" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer text-end">      <asp:Button ID="EnviarInformacoes" runat="server" Text="Confirmar e Cadastrar" OnClick="btnEnviarInformacoes_Click" CssClass="btn btn-danger btn-custom" />
                 </div>
             </asp:Panel>
         </main>
     </ContentTemplate>
-
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
