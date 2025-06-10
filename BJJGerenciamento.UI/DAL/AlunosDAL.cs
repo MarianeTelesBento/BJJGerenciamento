@@ -15,7 +15,13 @@ namespace BJJGerenciamento.UI.DAL
     public class AlunosDAL
     {
 
-        private string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
+        //private string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
+        private readonly string connectionString;
+
+        public AlunosDAL()
+        {
+            connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["BJJGerenciamentoConnectionString"].ConnectionString;
+        }
 
         public int CadastrarResponsavel(ResponsavelModels responsavel)
         {
@@ -379,7 +385,7 @@ namespace BJJGerenciamento.UI.DAL
     WHERE 
         (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
         AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
-        AND (@idHora IS NULL OR pd.IdHora = @idHora)
+      
     GROUP BY 
         a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
     ORDER BY a.IdMatricula ASC;

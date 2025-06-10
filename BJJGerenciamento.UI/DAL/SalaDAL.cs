@@ -7,7 +7,12 @@ namespace BJJGerenciamento.UI.DAL
 {
     public class SalaDAL
     {
-        private string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
+        private readonly string connectionString;
+
+        public SalaDAL()
+        {
+            connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["BJJGerenciamentoConnectionString"].ConnectionString;
+        }
 
         // Retorna o próximo número de sala com base no maior número existente
         public int ObterProximoNumeroSala()

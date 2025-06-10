@@ -9,7 +9,12 @@ namespace BJJGerenciamento.UI.DAL
     public class LoginDAL
     {
 
-        private string connectionString = "Data Source=rsm-dev-works-server.database.windows.net;Initial Catalog=BJJ_DB;User ID=rsm-dev;Password=adm1234@;";
+        private readonly string connectionString;
+
+        public LoginDAL()
+        {
+            connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["BJJGerenciamentoConnectionString"].ConnectionString;
+        }
 
         public bool ValidarLogin(string usuario, string senha)
         {
