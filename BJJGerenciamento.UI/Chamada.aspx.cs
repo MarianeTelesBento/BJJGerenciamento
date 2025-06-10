@@ -26,7 +26,7 @@ namespace BJJGerenciamento.UI
               
                 GridView1.Columns[6].Visible = false;
                 AlunosDAL alunosDAL = new AlunosDAL();
-                alunosList = alunosDAL.VisualizarDados();
+                alunosList = alunosDAL.VisualizarDadosChamada();
                 GridView1.DataSource = alunosList;
                 GridView1.DataBind();
 

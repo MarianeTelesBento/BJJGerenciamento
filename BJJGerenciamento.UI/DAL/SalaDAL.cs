@@ -81,17 +81,5 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
-        public void ExcluirSala(int idSala)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = "DELETE FROM TBSalas WHERE IdSala = @IdSala";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@IdSala", idSala);
-                conn.Open();
-                cmd.ExecuteNonQuery();
-            }
-        }
-
     }
 }
