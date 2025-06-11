@@ -232,7 +232,8 @@ namespace BJJGerenciamento.UI
                         <strong>Plano:</strong> {planoDal.BuscarNomePlano(Convert.ToInt32(primeiro.idDetalhe))}<br/>
                         <strong>Dias por Semana:</strong> {primeiro.qtdDias}<br/>
                         <strong>Mensalidade:</strong> R$ {primeiro.mensalidade:N2}<br/>
-                        <strong>Dias e Horários:</strong><br/>
+                        <strong>Passe Livre:</strong> {(primeiro.passeLivre ? "Sim" : "Não")}<br/>
+                        <strong>Dias e Horários:</strong>
                         <ul>";
 
                     foreach (var plano in grupo)

@@ -15,6 +15,15 @@ namespace BJJGerenciamento.UI
     {
 
         /// <summary>
+        /// Controle hlEditarUsuario.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink hlEditarUsuario;
+
+        /// <summary>
         /// Controle hlUsuarioLogado.
         /// </summary>
         /// <remarks>

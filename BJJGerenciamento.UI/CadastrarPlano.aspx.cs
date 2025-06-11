@@ -61,6 +61,7 @@ namespace BJJGerenciamento.UI
             cbHorariosQuarta.Items.Clear();
             cbHorariosQuinta.Items.Clear();
             cbHorariosSexta.Items.Clear();
+            cbPasseLivre.Checked = false;
 
             PlanoDAL planoDal = new PlanoDAL();
 
@@ -255,7 +256,9 @@ namespace BJJGerenciamento.UI
 
                                 int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(ValorPagoPlano.Text));
 
-                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(idAluno, idDia, idHorario, idDetalhe, idPlanoAlunoValor);
+                                bool passeLivre = cbPasseLivre.Checked;
+
+                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(idAluno, idDia, idHorario, idDetalhe, idPlanoAlunoValor, passeLivre);
 
                                 if (cadastroFuncionando > 0)
                                 {
@@ -318,7 +321,7 @@ namespace BJJGerenciamento.UI
 
 
 
-            if (totalDiasSelecionados != totalHorariosSelecionados )
+            if (totalDiasSelecionados > totalHorariosSelecionados )
             {
                 Response.Write("<script>alert('Selecione pelo menos um horário para cada dia');</script>");
             }
@@ -327,14 +330,9 @@ namespace BJJGerenciamento.UI
                 PlanoDAL planoDAL = new PlanoDAL();
                 decimal valorPlano = planoDAL.BuscarMensalidade(int.Parse(ddPlanos.SelectedValue), totalDiasSelecionados);
 
-                if (totalHorariosSelecionados > totalDiasSelecionados)
-                {
-                    valorPlano = 200.00m;
-
-                    ValorPagoPlano.Text = $"{valorPlano}";
-
-                    EnviarInformacoes.Visible = true;
-                    //Response.Write("<script>alert('Esse plano não permite mais de um horário por dia');</script>");
+                if (totalHorariosSelecionados > totalDiasSelecionados && !cbPasseLivre.Checked)
+                {            
+                    Response.Write("<script>alert('Ative a opção passe livre para selecionar mais de um horário por dia');</script>");
                 }
 
                 ValorPagoPlano.Text = $"{valorPlano}";

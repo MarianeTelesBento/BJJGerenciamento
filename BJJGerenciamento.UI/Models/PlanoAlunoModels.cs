@@ -19,5 +19,6 @@ namespace BJJGerenciamento.UI.Models
         public decimal mensalidade { get; set; }
         public string horarioInicio { get; set; }
         public string horarioFim { get; set; }
+        public bool passeLivre { get; set; }
     }
 }

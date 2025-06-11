@@ -85,6 +85,7 @@
                                     <li><a class="dropdown-item"  runat="server" href="~/ListaTurmas.aspx">Listar Turmas</a></li>
                                 </ul>
                             </li>
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/ListaHorario.aspx">Horários</a></li>
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/GerenciarSalas.aspx">Salas</a></li>
 
@@ -92,12 +93,18 @@
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/Graduacao.aspx">Graduação</a></li>
 
-                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/ListaHorario.aspx">Horários</a></li>
+                                    <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" irole="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Usuários
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item"  runat="server" href="~/CadastrarUsuario.aspx">Cadastrar Usuário</a></li>
+                                <li>
+                                <asp:HyperLink ID="hlEditarUsuario" runat="server" CssClass="dropdown-item" NavigateUrl="#">Editar Usuário</asp:HyperLink>
+                            </li>
 
-                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/CadastrarUsuario.aspx">Novo Usuário</a></li>
-
-
-                            
+                            </ul>
+                        </li>                       
 
         <!-- Botão de sair com confirmação -->
        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">

@@ -17,6 +17,8 @@ namespace BJJGerenciamento.UI
                 hlUsuarioLogado.Text = $"Olá, {usuario}!";
                 // Link para a página de edição, por exemplo passando o usuário como parâmetro
                 hlUsuarioLogado.NavigateUrl = $"~/EditarUsuario.aspx?usuario={usuario}";
+
+                hlEditarUsuario.NavigateUrl = $"~/EditarUsuario.aspx?usuario={usuario}";
             }
         }
         protected void btnSair_Click(object sender, EventArgs e)

@@ -36,12 +36,12 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
         }
-        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor)
+        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO TBPlanoAluno (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor)
-                         VALUES (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor)";
+                string query = @"INSERT INTO TBPlanoAluno (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre )
+                         VALUES (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre)";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -50,6 +50,7 @@ namespace BJJGerenciamento.UI.DAL
                     cmd.Parameters.AddWithValue("@IdHorario", idHorario);
                     cmd.Parameters.AddWithValue("@IdDetalhe", idDetalhe);
                     cmd.Parameters.AddWithValue("@IdPlanoAlunoValor", idPlanoAlunoValor);
+                    cmd.Parameters.AddWithValue("@PasseLivre", passeLivre);
 
                     con.Open();
                     return Convert.ToInt32(cmd.ExecuteNonQuery());
@@ -165,6 +166,7 @@ namespace BJJGerenciamento.UI.DAL
                     pa.IdHorario, 
                     pa.IdDetalhe, 
                     pa.IdPlanoAlunoValor,
+                    pa.PasseLivre,
                     d.QtsDias, 
                     d.Mensalidade, 
                     h.HorarioInicio, 
@@ -188,10 +190,11 @@ namespace BJJGerenciamento.UI.DAL
                         idHorario = reader.GetInt32(3),
                         idDetalhe = reader.GetInt32(4),
                         idPlanoAlunoValor = reader.GetInt32(5),
-                        qtdDias = reader.GetInt32(6),
-                        mensalidade = reader.GetDecimal(7),
-                        horarioInicio = reader.GetTimeSpan(8).ToString(@"hh\:mm"),
-                        horarioFim = reader.GetTimeSpan(9).ToString(@"hh\:mm")
+                        passeLivre = reader.GetBoolean(6),
+                        qtdDias = reader.GetInt32(7),
+                        mensalidade = reader.GetDecimal(8),
+                        horarioInicio = reader.GetTimeSpan(9).ToString(@"hh\:mm"),
+                        horarioFim = reader.GetTimeSpan(10).ToString(@"hh\:mm")
                     };
                     planoAlunos.Add(planoAluno);
                 }
