@@ -44,7 +44,7 @@
             </style>
 
             <main aria-labelledby="title">
-            <asp:Button ID="btnVoltar" runat="server" Text="Voltar" OnClick="btnVoltar_Click" style="background-color: #BF0413; font-size: 14px; border: none; color: #F2F2F2; font-family: -apple-system, Roboto, Arial, sans-serif; border-radius: 3px;" Visible="false"/>
+            <asp:Button ID="btnVoltar" runat="server" Text="Voltar" OnClick="btnVoltar_Click" CssClass="btn btn-danger" style="height:35px" Visible="false"/>
             <asp:Panel ID="pnlInformacoesPessoaisAluno" runat="server" CssClass="container mt-4">
                     <h2>Cadastro de Alunos</h2>
                         <div class="container mt-4">
