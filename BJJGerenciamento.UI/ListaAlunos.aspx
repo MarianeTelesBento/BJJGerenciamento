@@ -57,6 +57,7 @@
                     <div class="modal-header">
 
                         <asp:HiddenField ID="hfIdAlunoModal" runat="server" ClientIDMode="Static" />
+                        <asp:HiddenField ID="hfMatriculaAlunoModal" runat="server" ClientIDMode="Static" />
 
                         <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno"/>
                         <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel"/>
@@ -313,6 +314,8 @@
         }
 
         function adicionarGraduacao() {
+            const hf = document.getElementById('hfMatriculaAlunoModal');
+            const idMatricula = hf.value;
 
             Swal.fire({
                 title: 'Tem certeza?',
@@ -324,7 +327,7 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {           
-                    const url = 'Graduacao.aspx';
+                    const url = 'Graduacao.aspx?idMatricula=' + idMatricula;
                     window.location.href = url;             
                 } else {
                     Swal.fire('Cancelado', 'A ação foi cancelada.', 'error');

@@ -143,6 +143,8 @@ namespace BJJGerenciamento.UI
             ViewState["IdAlunos"] = GridView1.DataKeys[index]["IdAlunos"].ToString();
 
             hfIdAlunoModal.Value = GridView1.DataKeys[index]["IdAlunos"].ToString();
+            hfMatriculaAlunoModal.Value = row.Cells[0].Text;
+
 
             DateTime dataNascimento = Convert.ToDateTime(modalDataNascimentoAluno.Text);
             int idade = DateTime.Now.Year - dataNascimento.Year;

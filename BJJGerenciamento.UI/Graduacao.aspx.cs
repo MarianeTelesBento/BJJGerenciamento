@@ -18,6 +18,8 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            int idMatriculaUrl = -1;
+
             if (Session["UsuarioLogado"] == null)
             {
                 Response.Redirect("Login.aspx");
@@ -30,6 +32,26 @@ namespace BJJGerenciamento.UI
                 GridView1.DataSource = alunosList;
                 GridView1.DataBind();
 
+                if (Request.QueryString["idMatricula"] != null)
+                {
+                    if (int.TryParse(Request.QueryString["idMatricula"], out idMatriculaUrl))
+                    {
+                        string script = $"<script type='text/javascript'>highlightAndScrollToRow({idMatriculaUrl});</script>";
+                        ClientScript.RegisterStartupScript(this.GetType(), "HighlightRow", script, false);
+                    }
+                }
+            }
+        }
+
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (GridView1.DataKeys[e.Row.RowIndex] != null)
+                {
+                    string idMatricula = GridView1.DataKeys[e.Row.RowIndex].Value.ToString();
+                    e.Row.Attributes["data-matricula-id"] = idMatricula;
+                }
             }
         }
 

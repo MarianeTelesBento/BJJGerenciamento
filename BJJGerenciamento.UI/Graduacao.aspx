@@ -135,6 +135,19 @@
     .aspNet-GridView input[type="submit"]:hover {
         background-color: #0056b3;
     }
+
+    @keyframes highlightRow {
+        0%   { background-color: transparent; }
+        25%  { background-color: rgba(0, 123, 255, 0.3); } 
+        50%  { background-color: transparent; }
+        75%  { background-color: rgba(0, 123, 255, 0.3); }
+        100% { background-color: transparent; }
+    }
+
+    tr.highlight-row > td {
+        animation: highlightRow 1s ease-in-out 3;
+    }
+
 </style>
 
 <contentTemplate>
@@ -156,7 +169,9 @@
 
         <!-- Tabela -->
         <asp:GridView CssClass="aspNet-GridView table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False"
-            OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+            DataKeyNames="IdMatricula" 
+            OnSelectedIndexChanged="GridView1_SelectedIndexChanged"
+            OnRowDataBound="GridView1_RowDataBound">
             <Columns>
                 <asp:BoundField DataField="IdMatricula" HeaderText="Matrícula" />
                 <asp:BoundField DataField="Nome" HeaderText="Nome" HtmlEncode="false" />
@@ -223,6 +238,35 @@
 
         function fecharModal() {
             document.getElementById("modalDetalhes").style.display = "none";
+        }
+
+        
+        function highlightAndScrollToRow(idMatricula) {
+            const gridView = document.getElementById('<%= GridView1.ClientID %>');
+            if (!gridView) {
+                console.warn("GridView1 não encontrado no DOM.");
+                return;
+            }
+
+            const dataRows = gridView.querySelectorAll('tbody > tr');
+
+            for (let i = 0; i < dataRows.length; i++) {
+                const row = dataRows[i];
+                const rowMatriculaId = row.getAttribute('data-matricula-id');
+
+                if (rowMatriculaId === idMatricula.toString()) {
+                    row.classList.add('highlight-row');
+
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    setTimeout(() => {
+                        row.classList.remove('highlight-row');
+                    }, 3500);
+
+                    return; 
+                }
+            }
+            console.log(`Aluno com matrícula ${idMatricula} não encontrado no GridView.`);
         }
     </script>
 </contentTemplate>
