@@ -133,6 +133,42 @@
                     eyeIcon.classList.add('bi-eye');
                 }
             }
+
+            $(document).ready(function () {
+                $("#<%= btnCadastrar.ClientID %>").click(function (e) {
+                    let usuario = $("#<%= txtUsuario.ClientID %>").val().trim();
+        let email = $("#<%= txtEmail.ClientID %>").val().trim();
+        let senha = $("#<%= txtSenha.ClientID %>").val();
+        let confirmarSenha = $("#<%= txtConfirmarSenha.ClientID %>").val();
+
+        if (usuario === "" || email === "" || senha === "" || confirmarSenha === "") {
+            alert("Preencha todos os campos.");
+            e.preventDefault(); // impede o postback
+            return;
+        }
+
+        // Validação simples de email
+        let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Digite um e-mail válido.");
+            e.preventDefault();
+            return;
+        }
+
+        if (senha !== confirmarSenha) {
+            alert("As senhas não coincidem.");
+            e.preventDefault();
+            return;
+        }
+
+        if (senha.length < 6) {
+            alert("A senha deve ter pelo menos 6 caracteres.");
+            e.preventDefault();
+            return;
+        }
+    });
+            });
+
         </script>
 
     </body>

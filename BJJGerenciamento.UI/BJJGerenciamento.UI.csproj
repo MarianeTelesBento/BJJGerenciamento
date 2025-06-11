@@ -154,6 +154,7 @@
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="EditarUsuario.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="GerenciarSalas.aspx" />
     <Content Include="Graduacao.aspx" />
@@ -261,6 +262,13 @@
     <Compile Include="DAL\PresencaDAL.cs" />
     <Compile Include="DAL\ProfessorDAL.cs" />
     <Compile Include="DAL\SalaDAL.cs" />
+    <Compile Include="EditarUsuario.aspx.cs">
+      <DependentUpon>EditarUsuario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EditarUsuario.aspx.designer.cs">
+      <DependentUpon>EditarUsuario.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GerenciarSalas.aspx.cs">
       <DependentUpon>GerenciarSalas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

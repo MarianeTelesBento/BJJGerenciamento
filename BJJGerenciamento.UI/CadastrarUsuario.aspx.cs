@@ -23,29 +23,54 @@ namespace BJJGerenciamento.UI
             string usuario = txtUsuario.Text.Trim();
             string email = txtEmail.Text.Trim();
             string senha = txtSenha.Text.Trim();
-            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+            string confirmarSenha = txtConfirmarSenha.Text.Trim();
+
+            if (string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha) || string.IsNullOrEmpty(confirmarSenha))
             {
                 lblMensagem.Text = "Todos os campos são obrigatórios.";
                 return;
             }
-            LoginDAL loginDAL = new LoginDAL();
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                lblMensagem.Text = "E-mail inválido.";
+                return;
+            }
+
+            if (senha != confirmarSenha)
+            {
+                lblMensagem.Text = "As senhas não coincidem.";
+                return;
+            }
+
+            if (senha.Length < 6)
+            {
+                lblMensagem.Text = "A senha deve conter pelo menos 6 caracteres.";
+                return;
+            }        
+
             try
             {
+                LoginDAL loginDAL = new LoginDAL();
+
+                if (loginDAL.UsuarioExiste(usuario, email))
+                {
+                    lblMensagem.CssClass = "text-danger";
+                    lblMensagem.Text = "Já existe um usuário com esse nome ou e-mail.";
+                    return;
+                }
+
                 loginDAL.CadastrarUsuario(usuario, email, senha);
-                lblMensagem.Text = "Usuário cadastrado com sucesso!";
-                txtUsuario.Text = "";
-                txtEmail.Text = "";
-                txtSenha.Text = "";
+
+                lblMensagem.CssClass = "text-success";
+                lblMensagem.Text = $"Usuário {usuario} cadastrado com sucesso!";
                 LimparCampos();
             }
-
             catch (Exception ex)
             {
+                lblMensagem.CssClass = "text-danger"; 
                 lblMensagem.Text = "Erro ao cadastrar usuário: " + ex.Message;
             }
-
-
-
         }
         protected void btnVoltar_Click(object sender, EventArgs e)
         {
