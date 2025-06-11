@@ -323,7 +323,7 @@ namespace BJJGerenciamento.UI
                 }
 
                 string aba = "Graduacao";
-                string script = $"<script>abrirModal(); exibirAaba('{aba}');</script>";
+                string script = $"<script>abrirModal(); exibirAba('{aba}');</script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
             }
         }

@@ -193,20 +193,20 @@
                         </button>
                     </div>
                   <div id="divAluno" class="modal-body">
-    <div class="form-group">
-        <asp:Label ID="lblMatricula" runat="server" Text="Matrícula:" />
-        <asp:TextBox ID="modalMatricula" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+                        <div class="form-group">
+                            <asp:Label ID="lblMatricula" runat="server" Text="Matrícula:" />
+                            <asp:TextBox ID="modalMatricula" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
 
-        <asp:Label ID="lblNome" runat="server" Text="Nome:" />
-        <asp:TextBox ID="modalNome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+                            <asp:Label ID="lblNome" runat="server" Text="Nome:" />
+                            <asp:TextBox ID="modalNome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
 
-        <asp:Label ID="lblSobrenome" runat="server" Text="Sobrenome:" />
-        <asp:TextBox ID="modalSobrenome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
+                            <asp:Label ID="lblSobrenome" runat="server" Text="Sobrenome:" />
+                            <asp:TextBox ID="modalSobrenome" runat="server" CssClass="form-control" ReadOnly></asp:TextBox>
 
-        <asp:Label ID="lblObservacao" runat="server" Text="Observação:" />
-        <asp:TextBox ID="modalObservacaoAluno" runat="server" CssClass="form-control"></asp:TextBox>
-    </div>
-</div>
+                            <asp:Label ID="lblObservacao" runat="server" Text="Observação:" />
+                            <asp:TextBox ID="modalObservacaoAluno" runat="server" CssClass="form-control"></asp:TextBox>
+                        </div>
+                    </div>
 
                     <div class="modal-footer text-center">
                         <asp:Button ID="btnSalvarGraduacao" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" OnClick="btnSalvarGraduacao_Click" />
