@@ -17,37 +17,39 @@
           <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false" CssClass="btn btn-primary btn-custom" Style="background-color: blue" />
           <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false" CssClass="btn btn-danger btn-custom" />
 
-</div>
+        </div>
 
+        <div class="grid-responsive-container ">
+            <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
+                DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ,DataMatricula,IdAlunos"
+                OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+                <Columns>
 
-        <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
-            DataKeyNames="Email,Rg,DataNascimento,Cep,Rua,Bairro,Cidade,Estado,NumeroCasa,Complemento,CarteiraFPJJ,DataMatricula,IdAlunos"
-            OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
-            <Columns>
+                    <asp:BoundField DataField="IdMatricula" HeaderText="Matrícula" />
+                    <asp:BoundField DataField="Nome" HeaderText="Nome" HtmlEncode="false"/>
+                    <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" HtmlEncode="false"/>
+                    <asp:BoundField DataField="Cpf" HeaderText="CPF" />
+                    <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
+                            
+                    <asp:TemplateField HeaderText="Status da Matrícula">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkStatusMatricula" runat="server" Enabled="false"
+                                Checked='<%# Convert.ToBoolean(Eval("StatusMatricula")) %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
 
-                <asp:BoundField DataField="IdMatricula" HeaderText="Matrícula" />
-                <asp:BoundField DataField="Nome" HeaderText="Nome" HtmlEncode="false"/>
-                <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" HtmlEncode="false"/>
-                <asp:BoundField DataField="Cpf" HeaderText="CPF" />
-                <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-                                    
-                <asp:TemplateField HeaderText="Status da Matrícula">
-                    <ItemTemplate>
-                        <asp:CheckBox ID="chkStatusMatricula" runat="server" Enabled="false"
-                            Checked='<%# Convert.ToBoolean(Eval("StatusMatricula")) %>' />
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:TemplateField HeaderText="Ação">
-                    <ItemTemplate>
-                        <asp:HiddenField ID="hfIdAluno" runat="server" Value='<%# Eval("IdAlunos") %>' />
-                        <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
-                            CommandName="Detalhes" 
-                            OnClick="btnDetalhes_Click" CssClass="" />
-                    </ItemTemplate>
-                </asp:TemplateField>
-            </Columns>
-        </asp:GridView>
+                    <asp:TemplateField HeaderText="Ação">
+                        <ItemTemplate>
+                            <asp:HiddenField ID="hfIdAluno" runat="server" Value='<%# Eval("IdAlunos") %>' />
+                            <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
+                                CommandName="Detalhes" 
+                                OnClick="btnDetalhes_Click" CssClass="" />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+        </div>
+        
 
     <!-- Modal (Mini Tela) -->
 

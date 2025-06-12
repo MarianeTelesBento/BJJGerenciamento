@@ -5,30 +5,32 @@
 
     <h1 id="aspnetTitle">Lista de Professores</h1>
 
-    <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
-        DataKeyNames="IdProfessor,Email,DataNasc,CEP,Rua,Bairro,Cidade,Numero,Complemento,CarteiraFPJJ,CarteiraCBJJ,Estado"
-        OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
-        <Columns>
-            <asp:BoundField DataField="IdProfessor" HeaderText="ID" />
-            <asp:BoundField DataField="Nome" HeaderText="Nome" HtmlEncode="false"/>
-            <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" HtmlEncode="false"/>
-            <asp:BoundField DataField="Cpf" HeaderText="CPF" />
-            <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
-            <asp:TemplateField HeaderText="Status da Matrícula">
-                <ItemTemplate>
-                    <asp:CheckBox ID="chkAtivo" runat="server" Enabled="false"
-                        Checked='<%# Convert.ToBoolean(Eval("Ativo")) %>' />
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField HeaderText="Ação">
-                <ItemTemplate>
-                    <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
-                        CommandName="Detalhes" 
-                        OnClick="btnDetalhes_Click" CssClass="asp-button" Style="height: 35px" /> 
-                </ItemTemplate>
-            </asp:TemplateField>
-        </Columns>
-    </asp:GridView>
+    <div class="grid-responsive-container">
+            <asp:GridView CssClass="table table-striped table-bordered table-hover" ID="GridView1" runat="server" AutoGenerateColumns="False" 
+                DataKeyNames="IdProfessor,Email,DataNasc,CEP,Rua,Bairro,Cidade,Numero,Complemento,CarteiraFPJJ,CarteiraCBJJ,Estado"
+                OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+                <Columns>
+                    <asp:BoundField DataField="IdProfessor" HeaderText="ID" />
+                    <asp:BoundField DataField="Nome" HeaderText="Nome" HtmlEncode="false"/>
+                    <asp:BoundField DataField="Sobrenome" HeaderText="Sobrenome" HtmlEncode="false"/>
+                    <asp:BoundField DataField="Cpf" HeaderText="CPF" />
+                    <asp:BoundField DataField="Telefone" HeaderText="Telefone"/>
+                    <asp:TemplateField HeaderText="Status da Matrícula">
+                        <ItemTemplate>
+                            <asp:CheckBox ID="chkAtivo" runat="server" Enabled="false"
+                                Checked='<%# Convert.ToBoolean(Eval("Ativo")) %>' />
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Ação">
+                        <ItemTemplate>
+                            <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
+                                CommandName="Detalhes" 
+                                OnClick="btnDetalhes_Click" CssClass="asp-button" Style="height: 35px" /> 
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+    </div>
 
     <!-- Modal Detalhes -->
     <div id="modalDetalhes" class="modal" tabindex="-1" role="dialog">

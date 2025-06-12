@@ -197,7 +197,7 @@ namespace BJJGerenciamento.UI.DAL
                 {
                     IdAlunos = reader.GetInt32(0),
                     IdPlano = reader.GetInt32(1),
-                    IdResponsavel = reader.GetInt32(2),
+                    IdResponsavel = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
                     Nome = reader.GetString(3),
                     Sobrenome = reader.GetString(4),
                     Telefone = reader.GetString(5),
@@ -248,7 +248,7 @@ namespace BJJGerenciamento.UI.DAL
                 {
                     IdAlunos = reader.GetInt32(0),
                     IdPlano = reader.GetInt32(1),
-                    IdResponsavel = reader.GetInt32(2),
+                    IdResponsavel = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
                     Nome = reader.GetString(3),
                     Sobrenome = reader.GetString(4),
                     Telefone = reader.GetString(5),

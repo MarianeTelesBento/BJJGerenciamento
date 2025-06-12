@@ -9,7 +9,7 @@ namespace BJJGerenciamento.UI.Models
 {
     public class ResponsavelModels : EnderecoModels
     {
-        public int IdResponsavel { get; set; }
+        public int? IdResponsavel { get; set; }
         public string NomeCompleto {
             get => $"{Nome} {Sobrenome}"; 
         }
