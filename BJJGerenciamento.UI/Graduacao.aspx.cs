@@ -135,9 +135,11 @@ namespace BJJGerenciamento.UI
             ddPlanos.SelectedIndex = -1;
 
             AlunosDAL alunosDAL = new AlunosDAL();
+
             alunosList = alunosDAL.VisualizarAlunosPresencas();
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
+            ddHorarios.Visible = false;
 
         }
 
