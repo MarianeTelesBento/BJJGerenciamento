@@ -67,7 +67,7 @@ namespace BJJGerenciamento.UI.DAL
                 "SELECT SCOPE_IDENTITY();", connection);
 
             inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
-            inserirCommand.Parameters.AddWithValue("@idResponsavel", aluno.IdResponsavel);
+            inserirCommand.Parameters.AddWithValue("@idResponsavel", (object)aluno.IdResponsavel ?? DBNull.Value);
             inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
             inserirCommand.Parameters.AddWithValue("@telefone", aluno.Telefone);

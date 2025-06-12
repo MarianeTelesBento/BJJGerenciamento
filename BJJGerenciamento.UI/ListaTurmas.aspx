@@ -97,6 +97,12 @@
             text-align: center;
         }
 
+        .modal-dialog{
+         max-width:650px;
+
+
+        }
+
         /* Estilo para o botão "Mais" */
         .asp-button {
             display: inline-block;
@@ -135,7 +141,6 @@
             margin: auto;
             border: 1px solid #888;
             width: 100%;
-            max-width: 5000px;
             padding: 20px;
             border-radius: 10px;
         }
