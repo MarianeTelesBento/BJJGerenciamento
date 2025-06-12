@@ -88,6 +88,7 @@ namespace BJJGerenciamento.UI
                 btnPesquisar.Visible = false;
                 TxtTermoPesquisa.Visible = false;
                 ddPlanos.Visible = false;
+                ddHorarios.Visible = false;
             }
         }
 
@@ -98,15 +99,15 @@ namespace BJJGerenciamento.UI
 
             string termo = TxtTermoPesquisa.Text;
             int? idPlano = null;
+            int? idHora = null;
 
-            if (ddPlanos.SelectedValue != "-1")
-            {
-                if (int.TryParse(ddPlanos.SelectedValue, out int idPlanoConvertido))
-                {
-                    idPlano = idPlanoConvertido;
-                }
-            }
-            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunosPresencas(termo, idPlano);
+            if (ddPlanos.SelectedValue != "-1" && int.TryParse(ddPlanos.SelectedValue, out int idPlanoConvertido))
+                idPlano = idPlanoConvertido;
+
+            if (ddHorarios.SelectedValue != "-1" && int.TryParse(ddHorarios.SelectedValue, out int idHoraConvertido))
+                idHora = idHoraConvertido;
+
+            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunosPresencas(termo, idPlano, idHora);
 
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
@@ -115,12 +116,17 @@ namespace BJJGerenciamento.UI
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Ao mudar, aparecer um combo com os dias
-            //Ao mudar o combo de dias, aparecer um combo com os horários
+            int idPlanoSelecionado;
+
+            if (int.TryParse(ddPlanos.SelectedValue, out idPlanoSelecionado))
+            {
+                CarregarHorariosPorPlano(idPlanoSelecionado);
+            }
         }
 
         protected void SalvarAluno_Click(object sender, EventArgs e)
         {
+
         }
 
         protected void btnLimpar_Click(object sender, EventArgs e)
@@ -179,6 +185,23 @@ namespace BJJGerenciamento.UI
                 GridView1.DataBind();
             }
 
+        }
+
+        private void CarregarHorariosPorPlano(int idPlano)
+        {
+            AlunosDAL horaDAL = new AlunosDAL();
+            var horarios = horaDAL.GetHorariosPorPlano(idPlano);
+
+            ddHorarios.Items.Clear();
+            ddHorarios.Items.Add(new ListItem("-- Todos os horários --", "-1"));
+
+            foreach (var hora in horarios)
+            {
+                string texto = $"{hora.HorarioInicio:hh\\:mm} às {hora.HorarioFim:hh\\:mm}";
+                ddHorarios.Items.Add(new ListItem(texto, hora.IdHora.ToString()));
+            }
+
+            ddHorarios.Visible = true;
         }
 
     }

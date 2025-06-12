@@ -63,10 +63,9 @@ namespace BJJGerenciamento.UI.DAL
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
 
-            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdPlano, IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idPlano, @idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
+            SqlCommand inserirCommand = new SqlCommand("insert into TBAlunos(IdResponsavel, Nome, Sobrenome, Telefone, Email, Cpf, DataNascimento, CEP, Rua, Bairro, Cidade, Estado, NumeroCasa, CarteiraFPJJ, Complemento, IdMatricula) values(@idResponsavel, @nome, @sobrenome, @telefone, @email, @cpf, @dataNascimento, @cep, @rua, @bairro, @cidade, @estado, @numeroCasa, @carteiraFPJJ, @complemento, @idMatricula); " +
                 "SELECT SCOPE_IDENTITY();", connection);
 
-            inserirCommand.Parameters.AddWithValue("@idPlano", aluno.IdPlano);
             inserirCommand.Parameters.AddWithValue("@idResponsavel", (object)aluno.IdResponsavel ?? DBNull.Value);
             inserirCommand.Parameters.AddWithValue("@nome", aluno.Nome);
             inserirCommand.Parameters.AddWithValue("@sobrenome", aluno.Sobrenome);
@@ -196,24 +195,24 @@ namespace BJJGerenciamento.UI.DAL
                 AlunoModels aluno = new AlunoModels()
                 {
                     IdAlunos = reader.GetInt32(0),
-                    IdPlano = reader.GetInt32(1),
-                    IdResponsavel = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
-                    Nome = reader.GetString(3),
-                    Sobrenome = reader.GetString(4),
-                    Telefone = reader.GetString(5),
-                    Email = reader.GetString(6),
-                    DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                    Cpf = reader.GetString(8),
 
-                    Estado = reader.GetString(10),
-                    Bairro = reader.GetString(11),
-                    Cidade = reader.GetString(12),
-                    Rua = reader.GetString(13),
-                    NumeroCasa = reader.GetInt32(14).ToString(),
-                    Complemento = reader.GetString(15),
-                    Cep = reader.GetString(16),
-                    CarteiraFPJJ = reader.GetString(17),
-                    IdMatricula = reader.GetInt32(18),
+                    IdResponsavel = reader.IsDBNull(1) ? (int?)null : reader.GetInt32(1),
+                    Nome = reader.GetString(2),
+                    Sobrenome = reader.GetString(3),
+                    Telefone = reader.GetString(4),
+                    Email = reader.GetString(5),
+                    DataNascimento = reader.GetDateTime(6).ToString("dd/MM/yyyy"),
+                    Cpf = reader.GetString(7),
+
+                    Estado = reader.GetString(9),
+                    Bairro = reader.GetString(10),
+                    Cidade = reader.GetString(11),
+                    Rua = reader.GetString(12),
+                    NumeroCasa = reader.GetInt32(13).ToString(),
+                    Complemento = reader.GetString(14),
+                    Cep = reader.GetString(15),
+                    CarteiraFPJJ = reader.GetString(16),
+                    IdMatricula = reader.GetInt32(17),
 
                     StatusMatricula = reader.GetBoolean(reader.GetOrdinal("StatusdaMatricula")),
                     DataMatricula = reader.GetDateTime(reader.GetOrdinal("Data")).ToString("dd/MM/yyyy")
@@ -247,24 +246,24 @@ namespace BJJGerenciamento.UI.DAL
                 AlunoModels aluno = new AlunoModels()
                 {
                     IdAlunos = reader.GetInt32(0),
-                    IdPlano = reader.GetInt32(1),
-                    IdResponsavel = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
-                    Nome = reader.GetString(3),
-                    Sobrenome = reader.GetString(4),
-                    Telefone = reader.GetString(5),
-                    Email = reader.GetString(6),
-                    DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                    Cpf = reader.GetString(8),
 
-                    Estado = reader.GetString(10),
-                    Bairro = reader.GetString(11),
-                    Cidade = reader.GetString(12),
-                    Rua = reader.GetString(13),
-                    NumeroCasa = reader.GetInt32(14).ToString(),
-                    Complemento = reader.GetString(15),
-                    Cep = reader.GetString(16),
-                    CarteiraFPJJ = reader.GetString(17),
-                    IdMatricula = reader.GetInt32(18),
+                    IdResponsavel = reader.IsDBNull(1) ? (int?)null : reader.GetInt32(1),
+                    Nome = reader.GetString(2),
+                    Sobrenome = reader.GetString(3),
+                    Telefone = reader.GetString(4),
+                    Email = reader.GetString(5),
+                    DataNascimento = reader.GetDateTime(6).ToString("dd/MM/yyyy"),
+                    Cpf = reader.GetString(7),
+
+                    Estado = reader.GetString(9),
+                    Bairro = reader.GetString(10),
+                    Cidade = reader.GetString(11),
+                    Rua = reader.GetString(12),
+                    NumeroCasa = reader.GetInt32(13).ToString(),
+                    Complemento = reader.GetString(14),
+                    Cep = reader.GetString(15),
+                    CarteiraFPJJ = reader.GetString(16),
+                    IdMatricula = reader.GetInt32(17),
 
                     StatusMatricula = reader.GetBoolean(reader.GetOrdinal("StatusdaMatricula")),
                     DataMatricula = reader.GetDateTime(reader.GetOrdinal("Data")).ToString("dd/MM/yyyy")
@@ -321,26 +320,26 @@ namespace BJJGerenciamento.UI.DAL
                         AlunoModels aluno = new AlunoModels()
                         {
                             IdAlunos = reader.GetInt32(0),
-                            IdPlano = reader.GetInt32(1),
-                            IdResponsavel = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
-                            Nome = reader.GetString(3),
-                            Sobrenome = reader.GetString(4),
-                            Telefone = reader.GetString(5),
-                            Email = reader.GetString(6),
-                            DataNascimento = reader.GetDateTime(7).ToString("dd/MM/yyyy"),
-                            Cpf = reader.GetString(8),
 
-                            Estado = reader.GetString(10),
-                            Bairro = reader.GetString(11),
-                            Cidade = reader.GetString(12),
-                            Rua = reader.GetString(13),
-                            NumeroCasa = reader.GetInt32(14).ToString(),
-                            Complemento = reader.GetString(15),
-                            Cep = reader.GetString(16),
-                            CarteiraFPJJ = reader.GetString(17),
-                            IdMatricula = reader.GetInt32(18),
-                            StatusMatricula = reader.GetBoolean(19),
-                            DataMatricula = reader.GetDateTime(20).ToString("dd/MM/yyyy")
+                            IdResponsavel = reader.IsDBNull(1) ? (int?)null : reader.GetInt32(1),
+                            Nome = reader.GetString(2),
+                            Sobrenome = reader.GetString(3),
+                            Telefone = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            DataNascimento = reader.GetDateTime(6).ToString("dd/MM/yyyy"),
+                            Cpf = reader.GetString(7),
+
+                            Estado = reader.GetString(9),
+                            Bairro = reader.GetString(10),
+                            Cidade = reader.GetString(11),
+                            Rua = reader.GetString(12),
+                            NumeroCasa = reader.GetInt32(13).ToString(),
+                            Complemento = reader.GetString(14),
+                            Cep = reader.GetString(15),
+                            CarteiraFPJJ = reader.GetString(16),
+                            IdMatricula = reader.GetInt32(17),
+                            StatusMatricula = reader.GetBoolean(18),
+                            DataMatricula = reader.GetDateTime(19).ToString("dd/MM/yyyy")
                         };
 
                         alunoList.Add(aluno);
@@ -443,6 +442,7 @@ namespace BJJGerenciamento.UI.DAL
                         WHERE g.IdMatricula = a.IdMatricula
                     ) g
                     WHERE 
+                        m.StatusdaMatricula = '1' AND
                         (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
                         AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
                         AND (@idHora IS NULL OR ph.IdHora = @idHora) 
