@@ -387,7 +387,7 @@ main {
 .btn-danger {
     background-color: #dc3545;
     color: white;
-    h
+    height:37px;
 }
 
 .btn-light {
