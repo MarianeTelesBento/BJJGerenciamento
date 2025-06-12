@@ -322,7 +322,7 @@ namespace BJJGerenciamento.UI.DAL
                         {
                             IdAlunos = reader.GetInt32(0),
                             IdPlano = reader.GetInt32(1),
-                            IdResponsavel = reader.GetInt32(2),
+                            IdResponsavel = reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2),
                             Nome = reader.GetString(3),
                             Sobrenome = reader.GetString(4),
                             Telefone = reader.GetString(5),
@@ -417,35 +417,39 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"
-    SELECT 
-        a.IdMatricula,
-        a.Nome,
-        a.Sobrenome,
-        a.CPF,
-        a.Telefone,
-        m.StatusdaMatricula,
-        COUNT(DISTINCT CASE
-            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
-            ELSE NULL
-        END) AS TotalPresencas
-    FROM TBAlunos a
-    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
-    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
-    LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
-    LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
-    OUTER APPLY (
-        SELECT MAX(DataGraduacao) AS UltimaGraduacao
-        FROM TBGraduacoes g
-        WHERE g.IdMatricula = a.IdMatricula
-    ) g
-    WHERE 
-        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
-        AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
-      
-    GROUP BY 
-        a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
-    ORDER BY a.IdMatricula ASC;
-";
+                    SELECT 
+                        a.IdMatricula,
+                        a.Nome,
+                        a.Sobrenome,
+                        a.CPF,
+                        a.Telefone,
+                        m.StatusdaMatricula,
+                        COUNT(DISTINCT CASE
+                            WHEN p.DataPresenca > ISNULL(g.UltimaGraduacao, '1900-01-01') THEN p.IdPresenca
+                            ELSE NULL
+                        END) AS TotalPresencas
+                    FROM TBAlunos a
+                    JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+                    LEFT JOIN TBPresencas p ON m.IdMatricula = p.IdMatricula
+                    LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
+                    LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
+                    LEFT JOIN TBPlanoHorario ph 
+                        ON pd.IdPlano = ph.IdPlano 
+                        AND pa.IdHorario = ph.IdHora 
+                        AND pa.IdDia = ph.IdDia
+                    OUTER APPLY (
+                        SELECT MAX(DataGraduacao) AS UltimaGraduacao
+                        FROM TBGraduacoes g
+                        WHERE g.IdMatricula = a.IdMatricula
+                    ) g
+                    WHERE 
+                        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+                        AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
+                        AND (@idHora IS NULL OR ph.IdHora = @idHora) 
+                    GROUP BY 
+                        a.IdMatricula, a.Nome, a.Sobrenome, a.CPF, a.Telefone, m.StatusdaMatricula
+                    ORDER BY a.IdMatricula ASC
+                    ";
 
 
                 using (SqlCommand readerCommand = new SqlCommand(query, connection))
@@ -465,6 +469,12 @@ namespace BJJGerenciamento.UI.DAL
                         readerCommand.Parameters.AddWithValue("@idHora", DBNull.Value);
 
 
+                    
+                    
+                    
+                    
+                    
+                    
                     SqlDataReader reader = readerCommand.ExecuteReader();
 
                     while (reader.Read())

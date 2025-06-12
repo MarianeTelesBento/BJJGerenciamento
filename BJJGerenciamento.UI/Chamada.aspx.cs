@@ -91,6 +91,8 @@ namespace BJJGerenciamento.UI
                 btnPesquisar.Visible = false;
                 TxtTermoPesquisa.Visible = false;
                 ddPlanos.Visible = false;
+                ddHorarios.Visible = false;
+
             }
         }
 
@@ -102,22 +104,22 @@ namespace BJJGerenciamento.UI
 
             string termo = TxtTermoPesquisa.Text;
             int? idPlano = null;
+            int? idHora = null;
 
-            if (ddPlanos.SelectedValue != "-1")
-            {
-                if (int.TryParse(ddPlanos.SelectedValue, out int idPlanoConvertido))
-                {
-                    idPlano = idPlanoConvertido;
-                }
-            }
-            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano);
+            if (ddPlanos.SelectedValue != "-1" && int.TryParse(ddPlanos.SelectedValue, out int idPlanoConvertido))
+                idPlano = idPlanoConvertido;
+
+            if (ddHorarios.SelectedValue != "-1" && int.TryParse(ddHorarios.SelectedValue, out int idHoraConvertido))
+                idHora = idHoraConvertido;
+
+            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunosPresencas(termo, idPlano, idHora);
 
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
 
             RestaurarChecks(IdsMarcados);
-
         }
+
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -125,7 +127,6 @@ namespace BJJGerenciamento.UI
 
             if (int.TryParse(ddPlanos.SelectedValue, out idPlanoSelecionado))
             {
-                // Carrega os horários da turma (plano) selecionado
                 CarregarHorariosPorPlano(idPlanoSelecionado);
             }
         }
