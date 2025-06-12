@@ -8,9 +8,9 @@
         <div class="flex-container">
             <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
 
-            <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom input-grande" />
+            <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />
 
-            <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control input-grande" placeholder="Pesquisar..." />
+            <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control" placeholder="Pesquisar..." />
 
           <asp:CheckBox ID="chkApenasAtivos" runat="server" Text="Apenas Ativos" AutoPostBack="true" OnCheckedChanged="chkApenasAtivos_CheckedChanged" Visible="false"/>
 
@@ -43,7 +43,7 @@
                             <asp:HiddenField ID="hfIdAluno" runat="server" Value='<%# Eval("IdAlunos") %>' />
                             <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
                                 CommandName="Detalhes" 
-                                OnClick="btnDetalhes_Click" CssClass="" />
+                                OnClick="btnDetalhes_Click" CssClass="asp-button" />
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
@@ -61,10 +61,10 @@
                         <asp:HiddenField ID="hfIdAlunoModal" runat="server" ClientIDMode="Static" />
                         <asp:HiddenField ID="hfMatriculaAlunoModal" runat="server" ClientIDMode="Static" />
 
-                        <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno"/>
-                        <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel"/>
-                        <asp:Button ID="btnDetalhesPlano" OnClick="btnDetalhesPlano_Click" runat="server" Text="Plano"/>
-                        <asp:Button ID="btnDetalhesGraduacao" OnClick="btnDetalhesGraduacao_Click" runat="server" Text="Graduacao"/>
+                        <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno" CssClass="asp-button"/>
+                        <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel" CssClas="asp-button"/>
+                        <asp:Button ID="btnDetalhesPlano" OnClick="btnDetalhesPlano_Click" runat="server" Text="Plano" CssClass="asp-button"/>
+                        <asp:Button ID="btnDetalhesGraduacao" OnClick="btnDetalhesGraduacao_Click" runat="server" Text="Graduacao" CssClass="asp-button"/>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal()">
                             <span aria-hidden="true">&times;</span>
@@ -368,13 +368,11 @@ main {
 }
 
 /* Estilo dos botões */
-.btn-custom, .asp-button {
-    padding: 8px 16px;
-    border-radius: 8px;
+.btn-custom {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    height:35px;
+    height:37px;
 }
 
 .btn-custom:hover {
@@ -389,6 +387,7 @@ main {
 .btn-danger {
     background-color: #dc3545;
     color: white;
+    h
 }
 
 .btn-light {
@@ -421,8 +420,8 @@ main {
 }
 
 .table th {
-    background-color: #007bff;
-    color: white;
+   
+   
     padding: 8px;
 }
 
@@ -500,21 +499,49 @@ label, asp\:Label {
 }
 
 /* Responsivo */
-@media (max-width: 600px) {
-    .flex-container {
-        flex-direction: column;
-    }
+        @media (max-width: 600px) {
+            .flex-container {
+                flex-direction: column;
+            }
 
-    .modal-dialog {
-        width: 90%;
-    }
-    .input-grande {
-    width: 250px; /* Aumenta o tamanho */
-    height: 35px; /* Altura opcional */
-    font-size: 16px;
-}
+            .modal-dialog {
+                width: 90%;
+            }
 
-}
+            .input-grande {
+                width: 250px; /* Aumenta o tamanho */
+                height: 35px; /* Altura opcional */
+                font-size: 16px;
+            }
+        }
+        .asp-button {
+            display: inline-block;
+            padding: 5px 12px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #0d6efd;
+            border: 1px solid #0d6efd;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s ease-in-out;
+            height: 35px
+        }
+        .form-select-custom,
+        .form-control
+     
+        {
+            height: 38px;
+            font-size: 15px;
+            padding: 0.45rem 1rem;
+            color: #000 !important;
+            background-color: #fff !important;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            min-width: 180px;
+        }
+
+
 
 
 
