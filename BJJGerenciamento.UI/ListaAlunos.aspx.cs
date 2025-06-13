@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -145,32 +146,33 @@ namespace BJJGerenciamento.UI
             hfIdAlunoModal.Value = GridView1.DataKeys[index]["IdAlunos"].ToString();
             hfMatriculaAlunoModal.Value = row.Cells[0].Text;
 
+            DateTime dataNascimento;
+            string valorData = modalDataNascimentoAluno.Text;
+            string[] formatosAceitos = { "dd/MM/yyyy", "yyyy-MM-dd", "MM/dd/yyyy" };
 
-            DateTime dataNascimento = Convert.ToDateTime(modalDataNascimentoAluno.Text);
-            int idade = DateTime.Now.Year - dataNascimento.Year;
-
-            if (DateTime.Now < dataNascimento.AddYears(idade))
+            if (DateTime.TryParseExact(valorData, formatosAceitos, CultureInfo.InvariantCulture, DateTimeStyles.None, out dataNascimento))
             {
-                idade--;
-            }
+                int idade = DateTime.Now.Year - dataNascimento.Year;
 
-            bool maiorDeIdade = idade >= 18;
+                if (DateTime.Now < dataNascimento.AddYears(idade))
+                {
+                    idade--;
+                }
 
-            if (maiorDeIdade)
-            {
-                btnDetalhesResponsavel.Visible = false;
+                bool maiorDeIdade = idade >= 18;
+
+                btnDetalhesResponsavel.Visible = !maiorDeIdade;
             }
             else
             {
-                btnDetalhesResponsavel.Visible = true;
+                // Se não conseguir converter a data, melhor ocultar o botão de responsável por segurança
+                btnDetalhesResponsavel.Visible = false;
             }
-
-            /*Se tiver graduação: x se não y*/
-
 
             string script = $"<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowModal", script);
         }
+
 
         protected void btnDetalhesAluno_Click(object sender, EventArgs e)
         {
