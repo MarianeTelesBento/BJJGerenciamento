@@ -43,7 +43,7 @@
                             <asp:HiddenField ID="hfIdAluno" runat="server" Value='<%# Eval("IdAlunos") %>' />
                             <asp:Button ID="btnDetalhes" runat="server" Text="Mais" 
                                 CommandName="Detalhes" 
-                                OnClick="btnDetalhes_Click" CssClass="asp-button" />
+                                OnClick="btnDetalhes_Click" CssClass="asp-button1" />
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
@@ -61,10 +61,10 @@
                         <asp:HiddenField ID="hfIdAlunoModal" runat="server" ClientIDMode="Static" />
                         <asp:HiddenField ID="hfMatriculaAlunoModal" runat="server" ClientIDMode="Static" />
 
-                        <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno" CssClass="asp-button"/>
-                        <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel" CssClas="asp-button"/>
-                        <asp:Button ID="btnDetalhesPlano" OnClick="btnDetalhesPlano_Click" runat="server" Text="Plano" CssClass="asp-button"/>
-                        <asp:Button ID="btnDetalhesGraduacao" OnClick="btnDetalhesGraduacao_Click" runat="server" Text="Graduacao" CssClass="asp-button"/>
+                        <asp:Button ID="btnDetalhesAluno" OnClick="btnDetalhesAluno_Click" runat="server" Text="Aluno" CssClass="asp-button1"/>
+                        <asp:Button ID="btnDetalhesResponsavel" OnClick="btnDetalhesResponsavel_Click" runat="server" Text="Responsavel" CssClas="asp-button1" Style="display: inline-block; padding: 5px 12px; font-size: 14px; color: #fff; background-color: #0d6efd;border: 1px solid #0d6efd; border-radius: 5px; cursor: pointer; text-decoration: none; transition: background-color 0.2s ease-in-out; height: 35px " />
+                        <asp:Button ID="btnDetalhesPlano" OnClick="btnDetalhesPlano_Click" runat="server" Text="Plano" CssClass="asp-button1"/>
+                        <asp:Button ID="btnDetalhesGraduacao" OnClick="btnDetalhesGraduacao_Click" runat="server" Text="Graduacao" CssClass="asp-button1"/>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="fecharModal()">
                             <span aria-hidden="true">&times;</span>
@@ -141,7 +141,7 @@
                             </div>
 
                             <div class="modal-footer text-center">
-                                <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" />
+                                <asp:Button ID="SalvarAluno" OnClick="SalvarAluno_Click" runat="server" CssClass="asp-button1 btn btn-primary" Text="Salvar" />
                             </div>
 
                     </div>
@@ -205,7 +205,7 @@
                             </div>
 
                             <div class="modal-footer text-center">
-                                <asp:Button ID="SalvarResponsavel" runat="server" CssClass="asp-button btn btn-primary" Text="Salvar" OnClick="SalvarResponsavel_Click"/>
+                                <asp:Button ID="SalvarResponsavel" runat="server" CssClass="asp-button1 btn btn-primary" Text="Salvar" OnClick="SalvarResponsavel_Click"/>
                             </div>
 
                     </div>
@@ -216,7 +216,7 @@
 
                     
                             <asp:Button ID="btnModificarPlano" runat="server" Text="Modificar Plano"
-                                CssClass="asp-button btn btn-primary"
+                                CssClass="asp-button1 btn btn-primary"
                                 OnClientClick="return confirmarMudancaPlano();" />
 
                     </div>
@@ -247,7 +247,7 @@
 
 
                         <div class="modal-footer text-center">
-                            <asp:Button ID="btnAdicionarGraduacao" runat="server" CssClass="asp-button btn btn-primary" Text="Adicionar Graduação" OnClientClick="return adicionarGraduacao()" />
+                            <asp:Button ID="btnAdicionarGraduacao" runat="server" CssClass="asp-button1 btn btn-primary" Text="Adicionar Graduação" OnClientClick="return adicionarGraduacao()" />
                         </div>
 
                 </div>
@@ -514,7 +514,7 @@ label, asp\:Label {
                 font-size: 16px;
             }
         }
-        .asp-button {
+        .asp-button1 {
             display: inline-block;
             padding: 5px 12px;
             font-size: 14px;
