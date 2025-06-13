@@ -12,10 +12,6 @@ namespace BJJGerenciamento.UI
 {
     public partial class CadastrarAluno : Page
     {
-        // Variáveis de instância para controle de fluxo (serão ajustadas para Session)
-        // public bool cpfResponsavelExistente; // Não é estritamente necessário como variável de instância, pode ser verificada no fluxo
-        // public bool alunoMaiorIdade; // Mover para Session para persistência entre postbacks
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UsuarioLogado"] == null)
@@ -25,26 +21,21 @@ namespace BJJGerenciamento.UI
 
             if (!IsPostBack)
             {
-                // Garante que apenas o primeiro painel esteja visível ao carregar a página pela primeira vez
                 pnlInformacoesPessoaisAluno.Visible = true;
                 pnlInformacoesResponsavelAluno.Visible = false;
                 pnlConfirmarAluno.Visible = false;
                 btnVoltar.Visible = false;
-                Session["AlunoMaiorIdade"] = null; // Reinicia a flag de idade do aluno
+                Session["AlunoMaiorIdade"] = null; 
             }
             else
             {
-                // No postback, verifica qual painel estava visível antes do clique
-                // e mantém a visibilidade para não piscar a tela ou esconder o painel atual
-                // Isso é importante para a funcionalidade do "Voltar" e "Próximo"
+
                 if (pnlInformacoesPessoaisAluno.Visible)
                 {
-                    // Se o aluno está no painel de informações pessoais, o botão voltar não deve aparecer
                     btnVoltar.Visible = false;
                 }
                 else
                 {
-                    // Para os outros painéis, o botão voltar deve estar visível
                     btnVoltar.Visible = true;
                 }
             }
@@ -52,7 +43,6 @@ namespace BJJGerenciamento.UI
 
         public void LimparCamposAluno()
         {
-            // Sua lógica de limpar campos, mantenha-a aqui se usada em algum lugar.
             nomeAluno.Text = string.Empty;
             sobrenomeAluno.Text = string.Empty;
             telefoneAluno.Text = string.Empty;
@@ -158,7 +148,7 @@ namespace BJJGerenciamento.UI
         }
         #endregion
 
-        #region Eventos TextChanged (mantidos para sua lógica de validação/busca)
+        #region Eventos TextChanged
         protected void cpfAluno_TextChanged(object sender, EventArgs e)
         {
             AlunosDAL alunosDAL = new AlunosDAL();
@@ -241,7 +231,7 @@ namespace BJJGerenciamento.UI
         {
             if (VerificarCampos(nomeAluno, sobrenomeAluno, telefoneAluno, emailAluno, cpfAluno, dataNascimentoAluno, cepAluno, ruaAluno, bairroAluno, cidadeAluno, estadoAluno, numeroCasaAluno))
             {
-                SalvarDadosAlunoNaSession(); // Salva os dados do aluno
+                SalvarDadosAlunoNaSession(); 
 
                 DateTime dataNascimento;
                 if (!DateTime.TryParse(dataNascimentoAluno.Text, out dataNascimento))
@@ -256,30 +246,30 @@ namespace BJJGerenciamento.UI
                     idade--;
                 }
 
-                pnlInformacoesPessoaisAluno.Visible = false; // Esconde o painel atual
+                pnlInformacoesPessoaisAluno.Visible = false; 
 
-                if (idade < 18) // Aluno menor de idade
+                if (idade < 18) 
                 {
                     pnlInformacoesResponsavelAluno.Visible = true;
                     pnlConfirmarAluno.Visible = false;
                     Session["AlunoMaiorIdade"] = false;
                 }
-                else // Aluno maior de idade
+                else 
                 {
-                    pnlInformacoesResponsavelAluno.Visible = false; // Garante que o painel do responsável esteja escondido
+                    pnlInformacoesResponsavelAluno.Visible = false; 
                     pnlConfirmarAluno.Visible = true;
                     Session["AlunoMaiorIdade"] = true;
-                    CarregarDadosConfirmacao(); // Carrega os dados diretamente para o painel de confirmação
+                    CarregarDadosConfirmacao(); 
                 }
                 btnVoltar.Visible = true;
             }
         }
 
-        protected void btnProximoPlano_Click(object sender, EventArgs e)
+        protected void btnProximoConfimar_Click(object sender, EventArgs e)
         {
             if (VerificarCampos(nomeResponsavel, sobrenomeResponsavel, telefoneResponsavel, emailResponsavel, cpfResponsavel, dataNascimentoResponsavel, cepResponsavel, ruaResponsavel, bairroResponsavel, cidadeResponsavel, estadoResponsavel, numeroCasaResponsavel))
             {
-                SalvarDadosResponsavelNaSession(); // Salva os dados do responsável
+                SalvarDadosResponsavelNaSession();
 
                 DateTime dataNascimento;
                 if (!DateTime.TryParse(dataNascimentoResponsavel.Text, out dataNascimento))
@@ -303,7 +293,7 @@ namespace BJJGerenciamento.UI
                     pnlInformacoesResponsavelAluno.Visible = false;
                     pnlConfirmarAluno.Visible = true;
                     btnVoltar.Visible = true;
-                    CarregarDadosConfirmacao(); // Carrega os dados para o painel de confirmação
+                    CarregarDadosConfirmacao();
                 }
             }
         }
@@ -312,32 +302,26 @@ namespace BJJGerenciamento.UI
         {
             if (pnlConfirmarAluno.Visible)
             {
-                // Se estamos na tela de confirmação, decide para qual painel voltar
                 bool alunoMaiorIdade = Session["AlunoMaiorIdade"] != null && (bool)Session["AlunoMaiorIdade"];
 
                 pnlConfirmarAluno.Visible = false;
 
                 if (alunoMaiorIdade)
                 {
-                    // Se o aluno é maior de idade, volta para o painel de informações do aluno
                     pnlInformacoesPessoaisAluno.Visible = true;
-                    btnVoltar.Visible = false; // Não há mais para onde voltar
+                    btnVoltar.Visible = false;
                 }
                 else
                 {
-                    // Se o aluno é menor de idade, volta para o painel de informações do responsável
                     pnlInformacoesResponsavelAluno.Visible = true;
                 }
             }
             else if (pnlInformacoesResponsavelAluno.Visible)
             {
-                // Se estamos no painel do responsável, volta para o painel do aluno
                 pnlInformacoesPessoaisAluno.Visible = true;
                 pnlInformacoesResponsavelAluno.Visible = false;
-                btnVoltar.Visible = false; // Não há mais para onde voltar
+                btnVoltar.Visible = false; 
             }
-            // else if (pnlInformacoesPessoaisAluno.Visible) - Não precisa de um else if aqui, pois é o primeiro passo
-            // Se estiver no primeiro painel, o botão "Voltar" já deve estar invisível.
         }
 
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
@@ -347,7 +331,7 @@ namespace BJJGerenciamento.UI
 
             bool alunoMaiorIdade = Session["AlunoMaiorIdade"] != null && (bool)Session["AlunoMaiorIdade"];
 
-            if (!alunoMaiorIdade) // Se o aluno for menor de idade, precisa do responsável
+            if (!alunoMaiorIdade)
             {
                 string cpfResponsavelFormatado = (Session["CpfResponsavel"] as string)?.Replace("-", "").Replace(".", "").Trim();
                 ResponsavelModels responsavel = alunosRepository.BuscarCpfResponsavel(cpfResponsavelFormatado);
@@ -358,7 +342,6 @@ namespace BJJGerenciamento.UI
                 }
                 else
                 {
-                    // Cria um novo responsável com os dados da Session
                     responsavel = new ResponsavelModels
                     {
                         Nome = Session["NomeResponsavel"] as string,
@@ -381,7 +364,6 @@ namespace BJJGerenciamento.UI
 
             int idMatricula = alunosRepository.CadastrarMatricula(DateTime.Now, true);
 
-            // Cria o objeto AlunoModels com os dados da Session
             AlunoModels aluno = new AlunoModels
             {
                 Nome = Session["NomeAluno"] as string,
@@ -399,19 +381,37 @@ namespace BJJGerenciamento.UI
                 CarteiraFPJJ = Session["CarteiraFPJJAluno"] as string,
                 Complemento = Session["ComplementoAluno"] as string,
                 IdResponsavel = idResponsavel,
-                IdPlano = 1, // Assumindo que 1 é um valor padrão ou virá de outra etapa
                 IdMatricula = idMatricula
             };
 
             int idAluno = alunosRepository.CadastrarAluno(aluno);
 
-            // Limpa a session após o cadastro, se desejar
+
             Session.Remove("NomeAluno");
             Session.Remove("SobrenomeAluno");
-            // ... remova todas as outras variáveis de Session que você usou
 
-            ScriptManager.RegisterStartupScript(this, GetType(), "Sucesso", "alert('Aluno cadastrado com sucesso!');", true);
-            Server.Transfer($"CadastrarPlano.aspx?idAluno={idAluno}");
+            if (idAluno > 0)
+            {
+                string script = $@"
+                    Swal.fire({{
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        text: 'Aluno cadastrado! Você será redirecionado...',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    }}).then((result) => {{
+                        if (result.isConfirmed) {{
+                            window.location.href = 'CadastrarPlano.aspx?idAluno={idAluno}';
+                        }}
+                    }});";
+
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+            }
+            else
+            {
+                Response.Write("<script>alert('Erro ao cadastrar aluno.');</script>");
+            }
         }
     }
 }

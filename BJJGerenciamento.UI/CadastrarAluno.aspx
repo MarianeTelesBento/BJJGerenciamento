@@ -237,7 +237,7 @@
                             </div>
                         </div>
                         <div class="modal-footer text-end">
-                            <asp:Button ID="btnProximoPlano" Text="Próximo" OnClick="btnProximoPlano_Click" runat="server"
+                            <asp:Button ID="btnProximoConfimar" Text="Próximo" OnClick="btnProximoConfimar_Click" runat="server"
                             CssClass="btn btn-danger btn-custom" />
                         </div>
                     </div>

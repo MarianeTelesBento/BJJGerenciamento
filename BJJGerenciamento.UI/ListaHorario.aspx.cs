@@ -143,6 +143,14 @@ namespace BJJGerenciamento.UI
 
                     // Define como edição no JavaScript
                     btnSalvar.OnClientClick = "return confirmarSalvar(false);";
+
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        this.GetType(),
+                        "FocusInicio",
+                        $"setTimeout(function() {{ document.getElementById('{txtHorarioInicio.ClientID}').focus(); }}, 100);",
+                        true
+                    );
                 }
             }
             else if (e.CommandName == "ToggleStatus")

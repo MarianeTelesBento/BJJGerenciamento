@@ -235,7 +235,7 @@ namespace BJJGerenciamento.UI
 
             AlunosDAL alunosDAL = new AlunosDAL();
 
-            alunosList = alunosDAL.VisualizarDados();
+            alunosList = alunosDAL.VisualizarDadosChamada();
             GridView1.DataSource = alunosList;
             GridView1.DataBind();
             ddHorarios.Visible = false;

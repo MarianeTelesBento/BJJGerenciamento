@@ -114,6 +114,7 @@
         height: 35px;
     }
 
+
     .modal-footer .asp-button:hover {
         background-color: #218838;
     }
@@ -159,6 +160,7 @@
             <asp:ImageButton ID="btnFiltro" runat="server" ImageUrl="~/Images/filtro.png" OnClick="btnFiltro_Click" AlternateText="Filtrar" CssClass="btn btn-light icon-btn" />
 
             <asp:DropDownList ID="ddPlanos" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" Visible="false" CssClass="form-select-custom" />
+            <asp:DropDownList ID="ddHorarios" runat="server" AutoPostBack="false" CssClass="form-select-custom" Visible="false" />
 
             <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control" placeholder="Pesquisar..." />
 
