@@ -226,6 +226,16 @@ namespace BJJGerenciamento.UI
             GridView1.Columns[6].Visible = false;
         }
 
+        protected void ddSalas_Click(object sender, EventArgs e)
+        {
+            ddHorarios.Visible = false;
+        }
+
+        protected void ddProfessores_Click(object sender, EventArgs e)
+        {
+            ddHorarios.Visible = false;
+        }
+
         protected void btnLimpar_Click(object sender, EventArgs e)
         {
             TxtTermoPesquisa.Text = string.Empty;
