@@ -63,7 +63,20 @@ namespace BJJGerenciamento.UI
                 loginDAL.CadastrarUsuario(usuario, email, senha);
 
                 lblMensagem.CssClass = "text-success";
-                lblMensagem.Text = $"Usuário {usuario} cadastrado com sucesso!";
+
+                string script = $@"
+                Swal.fire({{
+                    icon: 'success',
+                    title: 'Sucesso!',
+                    text: 'Usuário {usuario} cadastrado com sucesso!!',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                }});";
+
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
+
+
                 LimparCampos();
             }
             catch (Exception ex)
