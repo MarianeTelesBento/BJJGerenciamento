@@ -1,26 +1,25 @@
 # 🥋 Jiu-Jitsu Academy Management System
 
-Este projeto foi desenvolvido como trabalho final do Curso Técnico em Informática do Senac. O sistema foi criado para simplificar a gestão de academias de Jiu-Jitsu, oferecendo funcionalidades para cadastrar alunos, gerenciar matrículas, controlar o status das inscrições e realizar outras operações essenciais para o funcionamento da academia.
+This project was developed as the final assignment for the Technical Course in IT at Senac. The system is designed to simplify the management of Jiu-Jitsu academies, providing features to register students, manage enrollments, control enrollment status, and handle other essential operations for the smooth running of the academy.
 
 ## 🔧 Features
 
-- **Cadastro de Alunos:** Permite registrar novos alunos com informações como nome, CPF, telefone, e-mail e outros dados relevantes.
-- **Gerenciamento de Matrículas:** Controla o status das matrículas dos alunos, incluindo datas de inscrição e se a matrícula está ativa ou inativa.
-- **Atualização de Dados:** Os dados dos alunos podem ser facilmente atualizados por meio de uma interface simples e intuitiva.
-- **Interface Responsiva:** O sistema funciona plenamente em dispositivos móveis, garantindo que administradores possam gerenciar a academia de qualquer lugar.
+- **Student Registration:** Allows registering new students with information such as name, CPF, phone number, email, and other relevant data.
+- **Enrollment Management:** Controls student enrollment status, including enrollment dates and whether the enrollment is active or inactive.
+- **Data Update:** Student data can be easily updated through a simple and intuitive interface.
+- **Responsive Interface:** The system works fully on mobile devices, ensuring administrators can manage the academy from anywhere.
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Technologies Used
 
-- **ASP.NET WebForms:** Framework utilizado para desenvolver o backend do sistema.
-- **C#:** Linguagem de programação utilizada em toda a lógica de negócio.
-- **SQL Server:** Banco de dados relacional usado para armazenar os dados dos alunos e matrículas.
-- **HTML/CSS:** Para construção da interface responsiva.
-- **JavaScript:** Usado para interatividade e tratamento de eventos no frontend.
+- **ASP.NET WebForms:** Framework used to develop the system’s backend.
+- **C#:** Programming language used for all business logic.
+- **SQL Server:** Relational database used to store student and enrollment data.
+- **HTML/CSS:** For building the responsive user interface.
+- **JavaScript:** Used for frontend interactivity and event handling.
 
-## 👥 Membros da Equipe
+## 👥 Team Members
 
-- **Mariane:** Responsável pelo desenvolvimento backend e integração com banco de dados.
-- **Sara:** Responsável pelo design da interface e implementação frontend.
-- **Raul:** Responsável pela documentação e testes do sistema.
-- **Amanda:** Responsável pela criação e análise do banco de dados.
-
+- **Mariane:** Responsible for backend development and database integration.
+- **Sara:** Responsible for interface design and frontend implementation.
+- **Raul:** Responsible for documentation and system testing.
+- **Amanda:** Responsible for database creation and analysis.
