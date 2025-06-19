@@ -1,4 +1,3 @@
 ﻿
-
 ALTER TABLE TBPlanoAluno
-ADD DiaVencimento INT NOT NULL DEFAULT 15;
+ADD DataProximaCobranca DATE DEFAULT(GETDATE());
