@@ -1,0 +1,4 @@
+﻿
+
+ALTER TABLE TBPlanoAluno
+ADD DiaVencimento INT NOT NULL DEFAULT 15;

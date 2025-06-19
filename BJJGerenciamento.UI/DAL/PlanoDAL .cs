@@ -36,12 +36,14 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
         }
-        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre)
+        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre, int diaVencimento)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO TBPlanoAluno (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre )
-                         VALUES (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre)";
+                string query = @"INSERT INTO TBPlanoAluno 
+                         (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento)
+                         VALUES 
+                         (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento)";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -51,12 +53,15 @@ namespace BJJGerenciamento.UI.DAL
                     cmd.Parameters.AddWithValue("@IdDetalhe", idDetalhe);
                     cmd.Parameters.AddWithValue("@IdPlanoAlunoValor", idPlanoAlunoValor);
                     cmd.Parameters.AddWithValue("@PasseLivre", passeLivre);
+                    cmd.Parameters.AddWithValue("@DiaVencimento", diaVencimento);
+
 
                     con.Open();
                     return Convert.ToInt32(cmd.ExecuteNonQuery());
                 }
             }
         }
+
 
         public void ExcluirPlanoAluno(int idAluno)
         {
@@ -161,12 +166,15 @@ namespace BJJGerenciamento.UI.DAL
             {
                 string query = @"SELECT 
                     pa.IdPlanoAluno, 
-                    pa.IdAluno, 
+                    pa.IdAluno,
+                    a.Nome, 
+                    a.Sobrenome,
                     pa.IdDia, 
                     pa.IdHorario, 
                     pa.IdDetalhe, 
                     pa.IdPlanoAlunoValor,
                     pa.PasseLivre,
+                    pa.DiaVencimento,  
                     d.QtsDias, 
                     d.Mensalidade, 
                     h.HorarioInicio, 
@@ -186,15 +194,18 @@ namespace BJJGerenciamento.UI.DAL
                     {
                         idPlanoAluno = reader.GetInt32(0),
                         idAlunos = reader.GetInt32(1),
-                        idDia = reader.GetInt32(2),
-                        idHorario = reader.GetInt32(3),
-                        idDetalhe = reader.GetInt32(4),
-                        idPlanoAlunoValor = reader.GetInt32(5),
-                        passeLivre = reader.GetBoolean(6),
-                        qtdDias = reader.GetInt32(7),
-                        mensalidade = reader.GetDecimal(8),
-                        horarioInicio = reader.GetTimeSpan(9).ToString(@"hh\:mm"),
-                        horarioFim = reader.GetTimeSpan(10).ToString(@"hh\:mm")
+                        Nome = reader.GetString(2),
+                        Sobrenome = reader.GetString(3),
+                        idDia = reader.GetInt32(4),
+                        idHorario = reader.GetInt32(5),
+                        idDetalhe = reader.GetInt32(6),
+                        idPlanoAlunoValor = reader.GetInt32(7),
+                        passeLivre = reader.GetBoolean(8),
+                        DiaVencimento = reader.GetInt32(9),
+                        qtdDias = reader.GetInt32(10),
+                        mensalidade = reader.GetDecimal(11),
+                        horarioInicio = reader.GetTimeSpan(12).ToString(@"hh\:mm"),
+                        horarioFim = reader.GetTimeSpan(13).ToString(@"hh\:mm")
                     };
                     planoAlunos.Add(planoAluno);
                 }
@@ -798,6 +809,154 @@ namespace BJJGerenciamento.UI.DAL
 
             return horariosPorDia;
         }
+        public List<PlanoAlunoModels> BuscarTodosPlanosAlunos()
+        {
+            List<PlanoAlunoModels> planoAlunos = new List<PlanoAlunoModels>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT 
+                            pa.IdPlanoAluno, 
+                            pa.IdAluno, 
+                            a.Nome,
+                            a.Sobrenome,    
+                            pa.IdDia, 
+                            pa.IdHorario, 
+                            pa.IdDetalhe, 
+                            pa.IdPlanoAlunoValor,
+                            pa.PasseLivre,
+                            pa.DiaVencimento,
+                            d.QtsDias, 
+                            d.Mensalidade, 
+                            h.HorarioInicio, 
+                            h.HorarioFim
+                        FROM TBPlanoAluno pa
+                        INNER JOIN TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
+                        INNER JOIN TBHora h ON pa.IdHorario = h.IdHora
+                        INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
+                        "; 
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    PlanoAlunoModels planoAluno = new PlanoAlunoModels()
+                    {
+                        idPlanoAluno = reader.GetInt32(0),
+                        idAlunos = reader.GetInt32(1),
+                        Nome = reader.GetString(2),
+                        Sobrenome = reader.GetString(3),
+                        idDia = reader.GetInt32(4),
+                        idHorario = reader.GetInt32(5),
+                        idDetalhe = reader.GetInt32(6),
+                        idPlanoAlunoValor = reader.GetInt32(7),
+                        passeLivre = reader.GetBoolean(8),
+                        DiaVencimento = reader.GetInt32(9),
+                        qtdDias = reader.GetInt32(10),
+                        mensalidade = reader.GetDecimal(11),
+                        horarioInicio = reader.GetTimeSpan(12).ToString(@"hh\:mm"),
+                        horarioFim = reader.GetTimeSpan(13).ToString(@"hh\:mm")
+                    };
+
+                    planoAlunos.Add(planoAluno);
+                }
+            }
+
+            return planoAlunos;
+        }
+        public List<PlanoAlunoModels> BuscarTodosPlanosComAlunos()
+        {
+            List<PlanoAlunoModels> lista = new List<PlanoAlunoModels>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT 
+                p.IdPlanoAluno,
+                p.IdAluno,
+                a.Nome,
+                a.Sobrenome,
+                p.DiaVencimento,
+                d.Mensalidade
+            FROM TBPlanoAluno p
+            INNER JOIN TBAlunos a ON p.IdAluno = a.IdAluno
+            INNER JOIN TBPlanoDetalhes d ON p.IdDetalhe = d.IdDetalhe";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read()) // sempre verificar isso antes de ler colunas!
+                {
+                    PlanoAlunoModels plano = new PlanoAlunoModels
+                    {
+                        idPlanoAluno = reader.GetInt32(reader.GetOrdinal("IdPlanoAluno")),
+                        idAlunos = reader.GetInt32(reader.GetOrdinal("IdAluno")),
+                        Nome = reader["Nome"].ToString(),
+                        Sobrenome = reader["Sobrenome"].ToString(),
+                        DiaVencimento = Convert.ToInt32(reader["DiaVencimento"]),
+                        mensalidade = Convert.ToDecimal(reader["Mensalidade"])
+                    };
+
+                    lista.Add(plano);
+                }
+            }
+            return lista;
+        }
+
+        public void AtualizarDataPagamento(int idPlanoAluno, int novoDia)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "UPDATE TBPlanoAluno SET diaVencimento = @novoDia WHERE idPlanoAluno = @id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@novoDia", novoDia);
+                cmd.Parameters.AddWithValue("@id", idPlanoAluno);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public PlanoAlunoModels BuscarPlanoPorId(int idPlanoAluno)
+        {
+            PlanoAlunoModels plano = null;
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT p.*, a.Nome, a.Sobrenome, d.mensalidade
+            FROM TBPlanoAluno p
+            INNER JOIN TBAlunos a ON p.idAluno = a.IdAluno
+            INNER JOIN TBPlanoDetalhes d ON p.idDetalhe = d.idDetalhe
+            WHERE p.idPlanoAluno = @idPlanoAluno";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@idPlanoAluno", idPlanoAluno);
+
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    plano = new PlanoAlunoModels()
+                    {
+                        idPlanoAluno = (int)reader["idPlanoAluno"],
+                        idAlunos = (int)reader["idAluno"],
+                        idDetalhe = (int)reader["idDetalhe"],
+                        DiaVencimento = (int)reader["diaVencimento"],
+                        mensalidade = Convert.ToDecimal(reader["mensalidade"]),
+                        Nome = reader["Nome"].ToString(),
+                        Sobrenome = reader["Sobrenome"].ToString()
+                    };
+                }
+            }
+            return plano;
+        }
+
+
+
+
+
 
 
 

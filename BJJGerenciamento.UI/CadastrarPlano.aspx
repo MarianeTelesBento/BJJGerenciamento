@@ -203,6 +203,12 @@
                             OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
                     </div>
 
+<div class="mb-4">
+    <asp:Label ID="lblDiaVencimento" runat="server" Text="Dia do Vencimento:" CssClass="form-label"></asp:Label>
+    <asp:DropDownList ID="ddlDiaVencimento" runat="server" CssClass="form-select" OnSelectedIndexChanged="ddlDiaVencimento_SelectedIndexChanged"></asp:DropDownList>
+</div>
+
+                
 
                     <!-- Botão de Enviar -->
                     <div class="row">
@@ -215,6 +221,7 @@
             </div>
 
     </ContentTemplate>
+        </div>
 </asp:content>
 
 

@@ -20,10 +20,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+            //if (Session["UsuarioLogado"] == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //}
             if (!IsPostBack)
             {
                 AlunosDAL alunosDAL = new AlunosDAL();
@@ -215,7 +215,6 @@ namespace BJJGerenciamento.UI
 
             List<PlanoAlunoModels> listaPlanoAluno = planoDal.BuscarPlanoAluno(Convert.ToInt32(modalIdMatriculaAluno.Text));
 
-
             if (listaPlanoAluno != null && listaPlanoAluno.Count > 0)
             {
                 hfAlunoPossuiPlano.Value = "true";
@@ -230,13 +229,14 @@ namespace BJJGerenciamento.UI
                     var primeiro = grupo.First();
 
                     htmlPlano += $@"
-                        <div class='card p-2 mb-2'>
-                        <strong>Plano:</strong> {planoDal.BuscarNomePlano(Convert.ToInt32(primeiro.idDetalhe))}<br/>
-                        <strong>Dias por Semana:</strong> {primeiro.qtdDias}<br/>
-                        <strong>Mensalidade:</strong> R$ {primeiro.mensalidade:N2}<br/>
-                        <strong>Passe Livre:</strong> {(primeiro.passeLivre ? "Sim" : "Não")}<br/>
-                        <strong>Dias e Horários:</strong>
-                        <ul>";
+                <div class='card p-2 mb-2'>
+                <strong>Plano:</strong> {planoDal.BuscarNomePlano(Convert.ToInt32(primeiro.idDetalhe))}<br/>
+                <strong>Dias por Semana:</strong> {primeiro.qtdDias}<br/>
+                <strong>Mensalidade:</strong> R$ {primeiro.mensalidade:N2}<br/>
+                <strong>Passe Livre:</strong> {(primeiro.passeLivre ? "Sim" : "Não")}<br/>
+                <strong>Dia do Vencimento:</strong> {primeiro.DiaVencimento}<br/>
+                <strong>Dias e Horários:</strong>
+                <ul>";
 
                     foreach (var plano in grupo)
                     {
@@ -245,8 +245,8 @@ namespace BJJGerenciamento.UI
 
                     htmlPlano += "</ul></div>";
                 }
-                LitDadosPlano.Text = htmlPlano;
 
+                LitDadosPlano.Text = htmlPlano;
             }
             else
             {
@@ -258,6 +258,7 @@ namespace BJJGerenciamento.UI
             string script = $"<script>abrirModal(); exibirAba('{aba}');</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
+
 
         protected void btnDetalhesGraduacao_Click(object sender, EventArgs e)
         {

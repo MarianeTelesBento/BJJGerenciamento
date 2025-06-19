@@ -20,5 +20,11 @@ namespace BJJGerenciamento.UI.Models
         public string horarioInicio { get; set; }
         public string horarioFim { get; set; }
         public bool passeLivre { get; set; }
+        public int DiaVencimento { get; set; }
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+
+
+
     }
 }

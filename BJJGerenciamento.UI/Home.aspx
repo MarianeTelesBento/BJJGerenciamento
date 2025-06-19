@@ -45,6 +45,18 @@
          background-position: center;
          background-attachment: fixed;
         }
+        .card-mensalidade {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px; /* espaçamento entre os blocos */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .card-mensalidade p {
+            margin-bottom: 5px;
+        }
+
 
 
     </style>
@@ -76,4 +88,34 @@
             </asp:Repeater>
         </div>
     </div>
+  <!-- CARD GERAL: Mensalidades Próximas a Vencer -->
+<div class="card-mensalidade">
+    <h3>Mensalidades Próximas a Vencer</h3>
+    <asp:Repeater ID="rptMensalidadesProximas" runat="server">
+        <ItemTemplate>
+            <div onclick="location.href='Financeiro.aspx?idAluno=<%# Eval("idAlunos") %>'">
+                <p><strong><%# Eval("Nome") %> <%# Eval("Sobrenome") %></strong></p>
+                <p>Vencimento: dia <%# Eval("DiaVencimento") %> – Mensalidade: <%# Eval("Mensalidade", "{0:C}") %></p>
+                <hr />
+            </div>
+        </ItemTemplate>
+    </asp:Repeater>
+</div>
+
+<div class="card-mensalidade">
+    <h3>Mensalidades Vencidas</h3>
+    <asp:Repeater ID="rptMensalidadesVencidas" runat="server">
+        <ItemTemplate>
+            <div onclick="location.href='Financeiro.aspx?idAluno=<%# Eval("idAlunos") %>'">
+                <p><strong><%# Eval("Nome") %> <%# Eval("Sobrenome") %></strong></p>
+                <p>Vencimento: dia <%# Eval("DiaVencimento") %> – Mensalidade: <%# Eval("Mensalidade", "{0:C}") %></p>
+                <hr />
+            </div>
+        </ItemTemplate>
+    </asp:Repeater>
+</div>
+
+
+
+
 </asp:Content>

@@ -156,6 +156,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="EditarUsuario.aspx" />
     <Content Include="favicon.ico" />
+    <Content Include="Financeiro.aspx" />
     <Content Include="GerenciarSalas.aspx" />
     <Content Include="Graduacao.aspx" />
     <Content Include="Home.aspx" />
@@ -269,6 +270,13 @@
     <Compile Include="EditarUsuario.aspx.designer.cs">
       <DependentUpon>EditarUsuario.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Financeiro.aspx.cs">
+      <DependentUpon>Financeiro.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Financeiro.aspx.designer.cs">
+      <DependentUpon>Financeiro.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GerenciarSalas.aspx.cs">
       <DependentUpon>GerenciarSalas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -330,6 +338,7 @@
     </Compile>
     <Compile Include="Models\DiasHorariosModels.cs" />
     <Compile Include="DAL\GraduacaoDAL.cs" />
+    <Compile Include="Models\Financeiro.cs" />
     <Compile Include="Models\GraduacaoModels.cs" />
     <Compile Include="Models\HoraModels.cs" />
     <Compile Include="Models\LoginModels.cs" />

@@ -14,17 +14,23 @@ namespace BJJGerenciamento.UI
 	{
         int idAluno;
 
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+            //if (Session["UsuarioLogado"] == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //}
+
+
+
+
 
             idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
 
             if (!IsPostBack)
             {
+                PreencherDiasVencimento();
                 PlanoDAL planoDal = new PlanoDAL();
                 List<PlanoModels> planos = planoDal.BuscarPlano();
 
@@ -43,6 +49,8 @@ namespace BJJGerenciamento.UI
                     planoDal.ExcluirPlanoAluno(idAluno);
                     planoDal.ExcluirPlanoAlunoValor(idAluno);
                 }
+
+               
 
 
             }
@@ -221,6 +229,7 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
+            int diaVencimento = Convert.ToInt32(ddlDiaVencimento.SelectedValue);
             int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
             int idPlano = int.Parse(ddPlanos.SelectedValue);
 
@@ -241,13 +250,14 @@ namespace BJJGerenciamento.UI
             {
                 if (diaItem.Selected)
                 {
-                    int idDia = int.Parse(diaItem.Value);
+                   int idDia = int.Parse(diaItem.Value);
                     string nomeDia = diaItem.Text;
 
                     CheckBoxList horariosDia = ObterCheckBoxListPorDia(nomeDia);
 
                     if (horariosDia != null)
                     {
+
                         foreach (ListItem horarioItem in horariosDia.Items)
                         {
                             if (horarioItem.Selected)
@@ -258,7 +268,8 @@ namespace BJJGerenciamento.UI
 
                                 bool passeLivre = cbPasseLivre.Checked;
 
-                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(idAluno, idDia, idHorario, idDetalhe, idPlanoAlunoValor, passeLivre);
+                               
+                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(idAluno, idDia, idHorario, idDetalhe, idPlanoAlunoValor, passeLivre, diaVencimento);
 
                                 if (cadastroFuncionando > 0)
                                 {
@@ -364,5 +375,20 @@ namespace BJJGerenciamento.UI
                     return null;
             }
         }
+
+        protected void ddlDiaVencimento_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+        private void PreencherDiasVencimento()
+        {
+            ddlDiaVencimento.Items.Clear();
+            ddlDiaVencimento.Items.Add(new ListItem("-- Selecione --", ""));
+
+            for (int i = 1; i <= 31; i++)
+            {
+                ddlDiaVencimento.Items.Add(new ListItem(i.ToString(), i.ToString()));
+            }
+        }
+
     }
 }

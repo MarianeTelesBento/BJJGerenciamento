@@ -11,52 +11,79 @@ namespace BJJGerenciamento.UI
 {
 
 
-    public partial class Home
+    public partial class Financeiro
     {
 
         /// <summary>
-        /// Controle lblAtivos.
+        /// Controle ddlFiltro.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblAtivos;
+        protected global::System.Web.UI.WebControls.DropDownList ddlFiltro;
 
         /// <summary>
-        /// Controle lblInativos.
+        /// Controle gvFinanceiro.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblInativos;
+        protected global::System.Web.UI.WebControls.GridView gvFinanceiro;
 
         /// <summary>
-        /// Controle rptAniversariantes.
+        /// Controle lblNomeAluno.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptAniversariantes;
+        protected global::System.Web.UI.WebControls.Label lblNomeAluno;
 
         /// <summary>
-        /// Controle rptMensalidadesProximas.
+        /// Controle lblPlano.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptMensalidadesProximas;
+        protected global::System.Web.UI.WebControls.Label lblPlano;
 
         /// <summary>
-        /// Controle rptMensalidadesVencidas.
+        /// Controle lblVencimento.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptMensalidadesVencidas;
+        protected global::System.Web.UI.WebControls.Label lblVencimento;
+
+        /// <summary>
+        /// Controle lblValor.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblValor;
+
+        /// <summary>
+        /// Controle hiddenIdPlanoAluno.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenIdPlanoAluno;
+
+        /// <summary>
+        /// Controle btnPagamentoEfetuado.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPagamentoEfetuado;
     }
 }
