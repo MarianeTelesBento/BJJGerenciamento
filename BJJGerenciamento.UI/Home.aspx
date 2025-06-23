@@ -88,32 +88,48 @@
             </asp:Repeater>
         </div>
     </div>
-  <!-- CARD GERAL: Mensalidades Próximas a Vencer -->
-<div class="card-mensalidade">
-    <h3>Mensalidades Próximas a Vencer</h3>
-    <asp:Repeater ID="rptMensalidadesProximas" runat="server">
-        <ItemTemplate>
-            <div onclick="location.href='Financeiro.aspx?idAluno=<%# Eval("idAlunos") %>'">
-                <p><strong><%# Eval("Nome") %> <%# Eval("Sobrenome") %></strong></p>
-                <p>Vencimento: dia <%# Eval("DiaVencimento") %> – Mensalidade: <%# Eval("Mensalidade", "{0:C}") %></p>
-                <hr />
-            </div>
-        </ItemTemplate>
-    </asp:Repeater>
-</div>
+<h4 class="mt-4">Mensalidades Vencidas</h4>
+<asp:GridView ID="gvVencidas" runat="server"
+    AutoGenerateColumns="False"
+    CssClass="table table-bordered table-striped"
+    DataKeyNames="idPlanoAluno">
+  <Columns>
+    <asp:BoundField DataField="NomeCompleto" HeaderText="Aluno" />
+    <asp:BoundField DataField="DataReal" HeaderText="Vencimento" DataFormatString="{0:dd/MM/yyyy}" />
+    <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
+  <asp:TemplateField HeaderText="Ação">
+  <ItemTemplate>
+    <a href='Financeiro.aspx?idPlanoAluno=<%# Eval("idPlanoAluno") %>' 
+       class='btn btn-link btn-sm'>Visualizar</a>
+  </ItemTemplate>
+</asp:TemplateField>
+  </Columns>
+  <EmptyDataTemplate>
+    <div class="text-center text-muted py-3">Nenhuma mensalidade vencida</div>
+  </EmptyDataTemplate>
+</asp:GridView>
 
-<div class="card-mensalidade">
-    <h3>Mensalidades Vencidas</h3>
-    <asp:Repeater ID="rptMensalidadesVencidas" runat="server">
-        <ItemTemplate>
-            <div onclick="location.href='Financeiro.aspx?idAluno=<%# Eval("idAlunos") %>'">
-                <p><strong><%# Eval("Nome") %> <%# Eval("Sobrenome") %></strong></p>
-                <p>Vencimento: dia <%# Eval("DiaVencimento") %> – Mensalidade: <%# Eval("Mensalidade", "{0:C}") %></p>
-                <hr />
-            </div>
-        </ItemTemplate>
-    </asp:Repeater>
-</div>
+<h4 class="mt-5">Mensalidades Próximas a Vencer</h4>
+<asp:GridView ID="gvProximas" runat="server"
+    AutoGenerateColumns="False"
+    CssClass="table table-bordered table-striped"
+    DataKeyNames="idPlanoAluno">
+  <Columns>
+    <asp:BoundField DataField="NomeCompleto" HeaderText="Aluno" />
+    <asp:BoundField DataField="DataReal" HeaderText="Vencimento" DataFormatString="{0:dd/MM/yyyy}" />
+    <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
+    <asp:TemplateField HeaderText="Ação">
+      <ItemTemplate>
+        <a href='Financeiro.aspx?idPlanoAluno=<%# Eval("idPlanoAluno") %>' 
+           class='btn btn-link btn-sm'>Visualizar</a>
+      </ItemTemplate>
+    </asp:TemplateField>
+  </Columns>
+  <EmptyDataTemplate>
+    <div class="text-center text-muted py-3">Nenhuma mensalidade próxima</div>
+  </EmptyDataTemplate>
+</asp:GridView>
+
 
 
 

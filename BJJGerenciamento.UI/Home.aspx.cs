@@ -17,12 +17,11 @@ namespace BJJGerenciamento.UI
             {
                 Response.Redirect("Login.aspx");
             }
-            
-        
+
 
             if (!IsPostBack)
             {
-              CarregarMensalidades();
+                CarregarMensalidades();
                 int ativos = AlunosDAL.ObterQuantidadeAtivos();
                 int inativos = AlunosDAL.ObterQuantidadeInativos();
                 List<AlunoModels> aniversariantes = AlunosDAL.ObterAniversariantesDoMes();
@@ -59,39 +58,49 @@ namespace BJJGerenciamento.UI
         }
         private void CarregarMensalidades()
         {
-            PlanoDAL planoDal = new PlanoDAL();
-
-            // Agora busca todos os planos de todos os alunos
-            List<PlanoAlunoModels> listaPlanos = planoDal.BuscarTodosPlanosAlunos();
+            var planoDal = new PlanoDAL();
+            var listaPlanos = planoDal.BuscarTodosPlanosComAlunos();
 
             DateTime hoje = DateTime.Today;
             int diasPraVencer = 7;
 
-            var listaComDataVencimento = listaPlanos.Select(p => new
-            {
-                Plano = p,
-                DataVencimentoReal = ObterDataVencimentoReal(p.DiaVencimento)
-            }).ToList();
+            // Projeta cada plano usando só DataProximaCobranca
+            var todosDados = listaPlanos
+                .Where(p => p.DataProximaCobranca.HasValue) // DESCARTA NULLs
+                .Select(p => new
+                {
+                    p.idPlanoAluno,
+                    NomeCompleto = p.Nome + " " + p.Sobrenome,
+                    DataReal = p.DataProximaCobranca.Value,
+                    Mensalidade = p.mensalidade
+                })
+            // Agrupa por plano
+            .GroupBy(x => x.NomeCompleto)
 
-            // Agrupar por aluno (evita duplicações visuais)
-            var vencidas = listaComDataVencimento
-                .Where(x => x.DataVencimentoReal < hoje)
-                .GroupBy(x => x.Plano.idAlunos)
-                .Select(g => g.First().Plano)
+                .Select(g => g.First())
                 .ToList();
 
-            var proximasVencer = listaComDataVencimento
-                .Where(x => x.DataVencimentoReal >= hoje && x.DataVencimentoReal <= hoje.AddDays(diasPraVencer))
-                .GroupBy(x => x.Plano.idAlunos)
-                .Select(g => g.First().Plano)
+            // Vencidas: DataReal < hoje
+            var vencidas = todosDados
+                .Where(x => x.DataReal.Date < hoje)
                 .ToList();
 
-            rptMensalidadesVencidas.DataSource = vencidas;
-            rptMensalidadesVencidas.DataBind();
+            // Próximas: hoje ≤ DataReal ≤ hoje+7
+            var proximas = todosDados
+                .Where(x => x.DataReal.Date >= hoje && x.DataReal.Date <= hoje.AddDays(diasPraVencer))
+                .ToList();
 
-            rptMensalidadesProximas.DataSource = proximasVencer;
-            rptMensalidadesProximas.DataBind();
+            gvVencidas.DataSource = vencidas;
+            gvVencidas.DataBind();
+
+            gvProximas.DataSource = proximas;
+            gvProximas.DataBind();
         }
+
+
+
+
+
 
 
 

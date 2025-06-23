@@ -42,21 +42,21 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Repeater rptAniversariantes;
 
         /// <summary>
-        /// Controle rptMensalidadesProximas.
+        /// Controle gvVencidas.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptMensalidadesProximas;
+        protected global::System.Web.UI.WebControls.GridView gvVencidas;
 
         /// <summary>
-        /// Controle rptMensalidadesVencidas.
+        /// Controle gvProximas.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptMensalidadesVencidas;
+        protected global::System.Web.UI.WebControls.GridView gvProximas;
     }
 }

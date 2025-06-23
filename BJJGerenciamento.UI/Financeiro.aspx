@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Financeiro.aspx.cs" Inherits="BJJGerenciamento.UI.Financeiro" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
        <title>Financeiro</title>
+
     <style>
         .grid-style {
             margin: 30px auto;
@@ -14,18 +15,37 @@
             padding: 12px;
             text-align: center;
         }
+        .custom-width {
+            width: 200px !important;
+            height: 35px !important;
+        }
+        .margin-bottom-15 {
+            margin-bottom: 15px;
+        }
+
     </style>
 
-    <asp:DropDownList ID="ddlFiltro" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlFiltro_SelectedIndexChanged">
+    <h1>Financeiro</h1>
+
+<asp:DropDownList ID="ddlFiltro" runat="server" AutoPostBack="true" 
+    OnSelectedIndexChanged="ddlFiltro_SelectedIndexChanged" 
+    CssClass="form-select custom-width margin-bottom-15" >
     <asp:ListItem Value="Todos" Text="Todos" />
     <asp:ListItem Value="Vencidos" Text="Vencidos" />
     <asp:ListItem Value="Proximos" Text="Próximos" />
 </asp:DropDownList>
 
-<asp:GridView ID="gvFinanceiro" runat="server" AutoGenerateColumns="False" CssClass="grid-style" OnRowCommand="gvFinanceiro_RowCommand" OnSelectedIndexChanged="gvFinanceiro_SelectedIndexChanged">
+
+<asp:GridView ID="gvFinanceiro"
+              runat="server"
+              AutoGenerateColumns="False"
+              CssClass="table table-bordered table-striped table-hover"
+              OnRowCommand="gvFinanceiro_RowCommand"
+              OnSelectedIndexChanged="gvFinanceiro_SelectedIndexChanged">
+
     <Columns>
         <asp:BoundField DataField="NomeCompleto" HeaderText="Aluno" />
-        <asp:BoundField DataField="DiaVencimento" HeaderText="Vencimento" />
+      <asp:BoundField DataField="DataVencimento" HeaderText="Vencimento" />
         <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
         <asp:BoundField DataField="Status" HeaderText="Status" />
 
@@ -35,12 +55,14 @@
                             runat="server"
                             Text="Detalhes"
                             CssClass="btn btn-primary"
+                            Style="height:35px"
                             CommandName="ExibirDetalhes"
                             CommandArgument='<%# Eval("idPlanoAluno") %>' OnClick="btnDetalhesPlano_Click" />
             </ItemTemplate>
         </asp:TemplateField>
     </Columns>
 </asp:GridView>
+
 
 
 <!-- Modal Bootstrap -->
@@ -61,7 +83,7 @@
                 <asp:HiddenField ID="hiddenIdPlanoAluno" runat="server" />
             </div>
             <div class="modal-footer">
-                <asp:Button ID="btnPagamentoEfetuado" runat="server" Text="Pagamento Efetuado" CssClass="btn btn-success" OnClick="btnPagamentoEfetuado_Click" />
+                <asp:Button ID="btnPagamentoEfetuado" runat="server" Text="Pagamento Efetuado" CssClass="btn btn-success"  Style="height:35px" OnClick="btnPagamentoEfetuado_Click" />
             </div>
         </div>
     </div>

@@ -104,7 +104,8 @@
                             </li>
 
                             </ul>
-                        </li>                       
+                        </li>  
+                         <li class="nav-item"><a class="nav-link"  runat="server" href="~/Financeiro.aspx">Financeiro</a></li>
 
         <!-- Botão de sair com confirmação -->
        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">

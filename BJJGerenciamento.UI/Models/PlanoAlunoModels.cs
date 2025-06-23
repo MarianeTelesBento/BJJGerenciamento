@@ -23,6 +23,7 @@ namespace BJJGerenciamento.UI.Models
         public int DiaVencimento { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
+        public DateTime? DataProximaCobranca { get; set; }
 
 
 
