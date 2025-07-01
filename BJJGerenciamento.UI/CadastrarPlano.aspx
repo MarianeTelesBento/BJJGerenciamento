@@ -228,11 +228,12 @@
                         <asp:Button ID="btnValorPlano" runat="server" Text="Calcular"
                             OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
                     </div>
+                       <div class="separador"></div>
 
-<div class="campo-vencimento">
-    <asp:Label ID="lblDataEscolhida" runat="server" Text="Data de Vencimento:"></asp:Label>
-    <asp:TextBox ID="txtDataVencimento" runat="server" TextMode="Date" CssClass="input-date" />
-</div>
+                    <div class="campo-vencimento d-flex gap-2">
+                        <asp:Label ID="lblDataEscolhida" runat="server" Text="Data de Vencimento:"></asp:Label>
+                        <asp:TextBox ID="txtDataVencimento" runat="server" TextMode="Date" CssClass="input-date" Style="height:35px" />
+                    </div>
                 
 
                     <!-- Botão de Enviar -->

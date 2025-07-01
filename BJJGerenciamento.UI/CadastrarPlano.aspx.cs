@@ -229,7 +229,6 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            // ✅ Novo: valida e extrai data do DatePicker
             DateTime dataEscolhida;
             if (!DateTime.TryParse(txtDataVencimento.Text, out dataEscolhida))
             {
@@ -237,8 +236,28 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
+            DateTime hoje = DateTime.Today;
+            DateTime primeiroDiaMesSeguinte = new DateTime(hoje.Year, hoje.Month, 1).AddMonths(1);
+
+            if (dataEscolhida < primeiroDiaMesSeguinte)
+            {
+                Response.Write("<script>alert('A data de vencimento deve ser no mês seguinte ou posterior.');</script>");
+                return;
+            }
+
+            // Agora sim: pode usar a data nos seus objetos
             int diaVencimento = dataEscolhida.Day;
             DateTime dataProximaCobranca = CalcularDataProximaCobranca(diaVencimento);
+
+            // Exemplo: passando para o DAL ou model externo
+            var planoAlunoModel = new PlanoAlunoModels
+            {
+                DiaVencimento = diaVencimento,
+                DataProximaCobranca = dataProximaCobranca,
+                // outros campos...
+            };
+
+
 
             int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
             int idPlano = int.Parse(ddPlanos.SelectedValue);
