@@ -13,6 +13,7 @@
             <asp:TextBox ID="TxtTermoPesquisa" runat="server" Visible="false" CssClass="form-control" placeholder="Pesquisar..." />
 
           <asp:CheckBox ID="chkApenasAtivos" runat="server" Text="Apenas Ativos" AutoPostBack="true" OnCheckedChanged="chkApenasAtivos_CheckedChanged" Visible="false"/>
+           <asp:CheckBox ID="chkApenasInativos" runat="server" Text="Apenas Inativos" AutoPostBack="true"  Visible="false"  />
 
           <asp:Button ID="btnPesquisar" runat="server" Text="Pesquisar" OnClick="btnPesquisar_Click" Visible="false" CssClass="btn btn-primary btn-custom" Style="background-color: blue" />
           <asp:Button ID="btnLimpar" runat="server" Text="Limpar filtros" OnClick="btnLimpar_Click" Visible="false" CssClass="btn btn-danger btn-custom" />

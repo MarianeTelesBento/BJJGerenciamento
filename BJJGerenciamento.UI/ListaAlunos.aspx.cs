@@ -20,10 +20,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["UsuarioLogado"] == null)
-            //{
-            //    Response.Redirect("Login.aspx");
-            //}
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
             if (!IsPostBack)
             {
                 AlunosDAL alunosDAL = new AlunosDAL();
@@ -40,14 +40,17 @@ namespace BJJGerenciamento.UI
 
         protected void btnFiltro_Click(object sender, EventArgs e)
         {
+            bool visivel = !ddPlanos.Visible;
 
-            if (ddPlanos.Visible == false)
+            btnLimpar.Visible = visivel;
+            btnPesquisar.Visible = visivel;
+            TxtTermoPesquisa.Visible = visivel;
+            ddPlanos.Visible = visivel;
+            chkApenasAtivos.Visible = visivel;
+            chkApenasInativos.Visible = visivel;
+
+            if (visivel)
             {
-                btnLimpar.Visible = true;
-                btnPesquisar.Visible = true;
-                TxtTermoPesquisa.Visible = true;
-                ddPlanos.Visible = true;
-                chkApenasAtivos.Visible = true;
                 PlanoDAL planoDAL = new PlanoDAL();
                 List<PlanoModels> planos = planoDAL.BuscarPlano();
 
@@ -61,15 +64,8 @@ namespace BJJGerenciamento.UI
                     ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", "-1"));
                 }
             }
-            else
-            {
-                btnLimpar.Visible = false;
-                btnPesquisar.Visible = false;
-                TxtTermoPesquisa.Visible = false;
-                ddPlanos.Visible = false;
-                chkApenasAtivos.Visible = false;
-            }
         }
+
 
         protected void btnPesquisar_Click(object sender, EventArgs e)
         {
@@ -88,8 +84,9 @@ namespace BJJGerenciamento.UI
             }
 
             bool apenasAtivos = chkApenasAtivos.Checked;
+            bool apenasInativos = chkApenasInativos.Checked;
 
-            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano, apenasAtivos);
+            List<AlunoModels> alunoModels = alunosList = alunosDAL.PesquisarAlunos(termo, idPlano, apenasAtivos, apenasInativos);
 
             GridView1.DataSource = alunosList;
             GridView1.DataBind();

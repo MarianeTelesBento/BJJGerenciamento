@@ -277,7 +277,7 @@ namespace BJJGerenciamento.UI.DAL
             return alunoList;
         }
 
-        public List<AlunoModels> PesquisarAlunos(string termo = null, int? idPlano = null, bool apenasAtivos = false)
+        public List<AlunoModels> PesquisarAlunos(string termo = null, int? idPlano = null, bool apenasAtivos = false, bool apenasInativos = false)
         {
             List<AlunoModels> alunoList = new List<AlunoModels>();
 
@@ -286,32 +286,40 @@ namespace BJJGerenciamento.UI.DAL
                 connection.Open();
 
                 string query = @"
-            SELECT DISTINCT 
-                a.*,
-                m.StatusdaMatricula, 
-                m.Data AS DataMatricula
-            FROM TBAlunos a 
-            LEFT JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
-            LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
-            LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
-            WHERE (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
-              AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
-              AND (@apenasAtivos = 0 OR m.StatusdaMatricula = 1);
-            ";
+        SELECT DISTINCT 
+            a.*,
+            m.StatusdaMatricula, 
+            m.Data AS DataMatricula
+        FROM TBAlunos a 
+        LEFT JOIN TBMatriculas m ON a.IdMatricula = m.IdMatricula
+        LEFT JOIN TBPlanoAluno pa ON a.IdAluno = pa.IdAluno
+        LEFT JOIN TBPlanoDetalhes pd ON pa.IdDetalhe = pd.IdDetalhe
+        WHERE (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+          AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
+          AND (
+                (@apenasAtivos = 0 AND @apenasInativos = 0) -- Nenhum filtro: traz todos
+             OR (@apenasAtivos = 1 AND m.StatusdaMatricula = 1) -- Apenas ativos
+             OR (@apenasInativos = 1 AND m.StatusdaMatricula = 0) -- Apenas inativos
+          );
+        ";
 
                 using (SqlCommand readerCommand = new SqlCommand(query, connection))
                 {
+                    // Parâmetro do termo de pesquisa
                     if (!string.IsNullOrWhiteSpace(termo))
                         readerCommand.Parameters.AddWithValue("@termo", "%" + termo + "%");
                     else
                         readerCommand.Parameters.AddWithValue("@termo", DBNull.Value);
 
+                    // Parâmetro do plano
                     if (idPlano.HasValue)
                         readerCommand.Parameters.AddWithValue("@idPlano", idPlano.Value);
                     else
                         readerCommand.Parameters.AddWithValue("@idPlano", DBNull.Value);
 
+                    // Filtros de status
                     readerCommand.Parameters.AddWithValue("@apenasAtivos", apenasAtivos ? 1 : 0);
+                    readerCommand.Parameters.AddWithValue("@apenasInativos", apenasInativos ? 1 : 0);
 
                     SqlDataReader reader = readerCommand.ExecuteReader();
 
@@ -320,7 +328,6 @@ namespace BJJGerenciamento.UI.DAL
                         AlunoModels aluno = new AlunoModels()
                         {
                             IdAlunos = reader.GetInt32(0),
-
                             IdResponsavel = reader.IsDBNull(1) ? (int?)null : reader.GetInt32(1),
                             Nome = reader.GetString(2),
                             Sobrenome = reader.GetString(3),
