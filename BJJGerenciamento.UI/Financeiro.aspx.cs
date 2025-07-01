@@ -16,10 +16,6 @@ namespace BJJGerenciamento.UI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
             if (!IsPostBack)
             {
                 if (Request.QueryString["idPlanoAluno"] != null)
@@ -74,28 +70,31 @@ namespace BJJGerenciamento.UI
         }
 
 
-
         private string ObterStatus(DateTime? dataVencimento)
         {
             if (dataVencimento == null)
                 return "Sem data";
 
             DateTime hoje = DateTime.Today;
+            double dias = (dataVencimento.Value - hoje).TotalDays;
 
-            if (dataVencimento < hoje)
+            if (dias < 0)
                 return "Vencido";
-            else if ((dataVencimento - hoje)?.TotalDays <= 7)
+            else if (dias <= 7)
                 return "Próximo";
             else
                 return "OK";
         }
+
+
+
+
 
         protected void gvFinanceiro_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "ExibirDetalhes")
             {
                 int idPlanoAluno = Convert.ToInt32(e.CommandArgument);
-                ExibirDetalhesPlano(idPlanoAluno);
 
                 PlanoDAL planoDal = new PlanoDAL();
                 var plano = planoDal.BuscarPlanoPorId(idPlanoAluno); // ou o método correto
@@ -119,40 +118,47 @@ namespace BJJGerenciamento.UI
             PlanoDAL planoDal = new PlanoDAL();
             PlanoAlunoModels plano = planoDal.BuscarPlanoPorId(idPlanoAluno);
 
-            // 1) Calcula a novaData mantendo o dia fixo de vencimento
-            int diaVencimento = plano.DiaVencimento;
-            DateTime dataBase = plano.DataProximaCobranca ?? DateTime.Today;
+            // Base será sempre a DataProximaCobranca, mesmo que futura
+            DateTime baseData = plano.DataProximaCobranca ?? DateTime.Today;
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] BaseData: {baseData:yyyy-MM-dd}");
 
-            int novoMes = dataBase.Month + 1;
-            int novoAno = dataBase.Year;
-            if (novoMes > 12)
+            int dia = plano.DiaVencimento;
+            int mes = baseData.Month;
+            int ano = baseData.Year;
+
+            // Garante que a nova data será sempre posterior à baseData
+            DateTime novaData;
+            do
             {
-                novoMes = 1;
-                novoAno++;
-            }
+                mes++;
+                if (mes > 12)
+                {
+                    mes = 1;
+                    ano++;
+                }
 
-            int ultimoDiaMes = DateTime.DaysInMonth(novoAno, novoMes);
-            int diaCorreto = Math.Min(diaVencimento, ultimoDiaMes);
-            DateTime novaData = new DateTime(novoAno, novoMes, diaCorreto);
+                int ultimoDia = DateTime.DaysInMonth(ano, mes);
+                int diaCorreto = Math.Min(dia, ultimoDia);
+                novaData = new DateTime(ano, mes, diaCorreto);
 
-            // 2) Executa o UPDATE e captura quantas linhas foram afetadas
+            } while (novaData <= baseData); // 🔁 Garante que nova data será futura
+
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] NovaData calculada: {novaData:yyyy-MM-dd}");
+
             int linhasAfetadas = planoDal.AtualizarDataPagamento(idPlanoAluno, novaData);
-            System.Diagnostics.Debug.WriteLine($"[DEBUG] Linhas afetadas no UPDATE: {linhasAfetadas}");
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] UPDATE afetou {linhasAfetadas} linhas");
 
-            // 3) Recarrega o objeto do banco e loga o valor atual de DataProximaCobranca
             var atualizado = planoDal.BuscarPlanoPorId(idPlanoAluno);
-            System.Diagnostics.Debug.WriteLine(
-                $"[DEBUG] Valor em DataProximaCobranca no banco: {atualizado.DataProximaCobranca}"
-            );
+            System.Diagnostics.Debug.WriteLine($"[DEBUG] Data atual no banco: {atualizado?.DataProximaCobranca?.ToString("yyyy-MM-dd")}");
 
-            // 4) Recarrega a grid com o filtro atual
             string filtroAtual = ddlFiltro.SelectedValue;
             CarregarMensalidades(filtroAtual);
-
-            // 5) Fecha o modal e exibe alerta
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Alerta",
                 "alert('Pagamento registrado com sucesso!'); fecharModal();", true);
+
         }
+
+
 
 
 

@@ -20,24 +20,26 @@ namespace BJJGerenciamento.UI
 
             }
 
+            CarregarDiasSemana();
+
             if (!IsPostBack)
             {
                 CarregarTurmas();
-                CarregarDiasSemana();
                 phHorariosEdit.Controls.Clear();
             }
             else
             {
+                // 🔹 SOMENTE recarrega os horários se dias ainda existirem selecionados
                 if (int.TryParse(modalIdPlano.Text, out int idPlano) && idPlano > 0)
                 {
-                    List<int> diasSelecionados = new List<int>();
-                    foreach (ListItem item in cblDiasEdit.Items)
-                        if (item.Selected) diasSelecionados.Add(int.Parse(item.Value));
-
+                    var diasSelecionados = cblDiasEdit.Items.Cast<ListItem>()
+                                            .Where(i => i.Selected)
+                                            .Select(i => int.Parse(i.Value))
+                                            .ToList();
                     CarregarHorariosPorDia(diasSelecionados, idPlano);
                 }
             }
-        }
+        }      
 
         private void CarregarTurmas()
         {
@@ -48,14 +50,16 @@ namespace BJJGerenciamento.UI
 
         private void CarregarDiasSemana()
         {
-            var dias = planoDAL.BuscarDiasSemana();
-            cblDiasEdit.DataSource = dias;
-            cblDiasEdit.DataTextField = "Value";
-            cblDiasEdit.DataValueField = "Key";
-            cblDiasEdit.DataBind();
+            if (cblDiasEdit.Items.Count == 0) // Evita sobrescrever seleção no postback
+            {
+                var dias = planoDAL.BuscarDiasSemana();
+                cblDiasEdit.DataSource = dias;
+                cblDiasEdit.DataTextField = "Value";
+                cblDiasEdit.DataValueField = "Key";
+                cblDiasEdit.DataBind();
+            }
 
             cblDiasEdit.AutoPostBack = true;
-            cblDiasEdit.SelectedIndexChanged += cblDiasEdit_SelectedIndexChanged;
         }
 
         private void CarregarHorariosPorDia(List<int> diasSelecionados, int idPlano = 0)
@@ -127,14 +131,16 @@ namespace BJJGerenciamento.UI
             modalIdPlano.Text = turma.IdPlano.ToString();
             modalNome.Text = turma.Nome;
             modalAtivo.Checked = turma.Ativo;
+            modalMensalidade.Text = turma.Mensalidade.ToString("F2");
 
+            // 🔹 Marcar dias salvos no banco
             var diasSelecionados = planoDAL.ListarDiasDoPlano(idPlano);
-            for (int i = 0; i < cblDiasEdit.Items.Count; i++)
+            foreach (ListItem item in cblDiasEdit.Items)
             {
-                int idDia = Convert.ToInt32(cblDiasEdit.Items[i].Value);
-                cblDiasEdit.Items[i].Selected = diasSelecionados.Contains(idDia);
+                item.Selected = diasSelecionados.Contains(int.Parse(item.Value));
             }
 
+            // 🔹 Carregar e marcar os horários corretos
             CarregarHorariosPorDia(diasSelecionados, idPlano);
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "abrirModal", "abrirModal();", true);
@@ -150,8 +156,14 @@ namespace BJJGerenciamento.UI
             {
                 IdPlano = idPlano,
                 Nome = modalNome.Text.Trim(),
-                Ativo = modalAtivo.Checked
+                Ativo = modalAtivo.Checked,
+                Mensalidade = decimal.TryParse(modalMensalidade.Text, out decimal mensalidade) ? mensalidade : 0.00m,
+                QtdDias = cblDiasEdit.Items.Cast<ListItem>().Count(i => i.Selected)
+
+
+
             };
+
 
             planoDAL.AtualizarTurma(turmaAtualizada);
 

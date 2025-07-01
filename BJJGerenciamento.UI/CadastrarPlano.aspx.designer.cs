@@ -150,22 +150,22 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Button btnValorPlano;
 
         /// <summary>
-        /// Controle lblDiaVencimento.
+        /// Controle lblDataEscolhida.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDiaVencimento;
+        protected global::System.Web.UI.WebControls.Label lblDataEscolhida;
 
         /// <summary>
-        /// Controle ddlDiaVencimento.
+        /// Controle txtDataVencimento.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDiaVencimento;
+        protected global::System.Web.UI.WebControls.TextBox txtDataVencimento;
 
         /// <summary>
         /// Controle EnviarInformacoes.

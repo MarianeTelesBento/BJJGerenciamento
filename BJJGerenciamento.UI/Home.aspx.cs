@@ -13,10 +13,10 @@ namespace BJJGerenciamento.UI
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+            //if (Session["UsuarioLogado"] == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //}
 
 
             if (!IsPostBack)
@@ -41,6 +41,72 @@ namespace BJJGerenciamento.UI
             int ano = hoje.Year;
             int mes = hoje.Month;
 
+            if (diaVencimento <= hoje.Day)
+            {
+                mes++;
+                if (mes > 12)
+                {
+                    mes = 1;
+                    ano++;
+                }
+            }
+
+            int ultimoDiaMes = DateTime.DaysInMonth(ano, mes);
+            int diaFinal = Math.Min(diaVencimento, ultimoDiaMes);
+
+            return new DateTime(ano, mes, diaFinal);
+        }
+
+
+        private void CarregarMensalidades()
+        {
+            var planoDal = new PlanoDAL();
+            var listaPlanos = planoDal.BuscarTodosPlanosComAlunos();
+
+            DateTime hoje = DateTime.Today;
+            int diasPraVencer = 7;
+
+           
+            var todosDados = listaPlanos
+                .Select(p => new
+                {
+                    p.idPlanoAluno,
+                    NomeCompleto = p.Nome + " " + p.Sobrenome,
+                    p.DataProximaCobranca,
+                    DataReal = p.DataProximaCobranca.HasValue && p.DataProximaCobranca.Value.Year > 2000
+                    ? p.DataProximaCobranca.Value
+                    : ObterDataProximaCobrancaEstimada(p.DiaVencimento),
+                    p.mensalidade
+                })
+                .ToList();
+
+
+                var dadosAgrupados = todosDados
+               .GroupBy(x => new { x.NomeCompleto, x.mensalidade })
+               .Select(g => g.OrderByDescending(p => p.DataReal).First())
+               .ToList();
+
+
+               var vencidas = dadosAgrupados
+              .Where(x => x.DataReal.Date < hoje)
+              .ToList();
+
+                 var proximas = dadosAgrupados
+                .Where(x => x.DataReal.Date >= hoje && x.DataReal.Date <= hoje.AddDays(diasPraVencer))
+                .ToList();
+
+            gvVencidas.DataSource = vencidas;
+            gvVencidas.DataBind();
+
+            gvProximas.DataSource = proximas;
+            gvProximas.DataBind();
+        }
+        private DateTime ObterDataProximaCobrancaEstimada(int diaVencimento)
+        {
+            DateTime hoje = DateTime.Today;
+            int ano = hoje.Year;
+            int mes = hoje.Month;
+
             if (diaVencimento < hoje.Day)
             {
                 mes++;
@@ -56,46 +122,32 @@ namespace BJJGerenciamento.UI
 
             return new DateTime(ano, mes, diaFinal);
         }
-        private void CarregarMensalidades()
+        private DateTime CalcularDataProximaCobranca(DateTime diaVencimento)
         {
-            var planoDal = new PlanoDAL();
-            var listaPlanos = planoDal.BuscarTodosPlanosComAlunos();
-
+            int dia = diaVencimento.Day; 
             DateTime hoje = DateTime.Today;
-            int diasPraVencer = 7;
+            int ano = hoje.Year;
+            int mes = hoje.Month;
 
-            // Projeta cada plano usando só DataProximaCobranca
-            var todosDados = listaPlanos
-                .Where(p => p.DataProximaCobranca.HasValue) // DESCARTA NULLs
-                .Select(p => new
+         
+            if (dia < hoje.Day)
+            {
+                mes++;
+                if (mes > 12)
                 {
-                    p.idPlanoAluno,
-                    NomeCompleto = p.Nome + " " + p.Sobrenome,
-                    DataReal = p.DataProximaCobranca.Value,
-                    Mensalidade = p.mensalidade
-                })
-            // Agrupa por plano
-            .GroupBy(x => x.NomeCompleto)
+                    mes = 1;
+                    ano++;
+                }
+            }
 
-                .Select(g => g.First())
-                .ToList();
+            int ultimoDiaMes = DateTime.DaysInMonth(ano, mes);
+            int diaCorreto = Math.Min(dia, ultimoDiaMes);
 
-            // Vencidas: DataReal < hoje
-            var vencidas = todosDados
-                .Where(x => x.DataReal.Date < hoje)
-                .ToList();
-
-            // Próximas: hoje ≤ DataReal ≤ hoje+7
-            var proximas = todosDados
-                .Where(x => x.DataReal.Date >= hoje && x.DataReal.Date <= hoje.AddDays(diasPraVencer))
-                .ToList();
-
-            gvVencidas.DataSource = vencidas;
-            gvVencidas.DataBind();
-
-            gvProximas.DataSource = proximas;
-            gvProximas.DataBind();
+            return new DateTime(ano, mes, diaCorreto);
         }
+
+
+
 
 
 

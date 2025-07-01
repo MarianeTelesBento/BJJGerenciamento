@@ -72,6 +72,15 @@
                             </Triggers>
                         </asp:UpdatePanel>
                     </div>
+                    <br />
+                                       <br />
+                    <div class="form-group">
+                         <asp:Label for="modalMensalidade">Mensalidade (R$):</asp:Label>
+                         <asp:TextBox ID="modalMensalidade" runat="server" CssClass="form-control"></asp:TextBox>
+                     </div>
+
+                                       
+
 
                     <div class="modal-footer text-center">
                         <asp:Button ID="SalvarTurma" OnClick="SalvarTurma_Click" runat="server" CssClass="asp-button btn btn-primary" Style="height: 35px" Text="Salvar" />

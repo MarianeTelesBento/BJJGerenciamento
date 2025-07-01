@@ -36,14 +36,14 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
         }
-        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre, int diaVencimento)
+        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre, int diaVencimento, DateTime dataProximaCobranca)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = @"INSERT INTO TBPlanoAluno 
-                         (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento)
+                         (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento, DataProximaCobranca)
                          VALUES 
-                         (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento)";
+                         (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento, @DataProximaCobranca)";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -54,13 +54,15 @@ namespace BJJGerenciamento.UI.DAL
                     cmd.Parameters.AddWithValue("@IdPlanoAlunoValor", idPlanoAlunoValor);
                     cmd.Parameters.AddWithValue("@PasseLivre", passeLivre);
                     cmd.Parameters.AddWithValue("@DiaVencimento", diaVencimento);
-
+                    cmd.Parameters.AddWithValue("@DataProximaCobranca", dataProximaCobranca);
 
                     con.Open();
                     return Convert.ToInt32(cmd.ExecuteNonQuery());
                 }
             }
         }
+
+
 
 
         public void ExcluirPlanoAluno(int idAluno)
@@ -201,7 +203,7 @@ namespace BJJGerenciamento.UI.DAL
                         idDetalhe = reader.GetInt32(6),
                         idPlanoAlunoValor = reader.GetInt32(7),
                         passeLivre = reader.GetBoolean(8),
-                        DiaVencimento = reader.GetInt32(9),
+                        DiaVencimento = reader.GetInt32(9), 
                         qtdDias = reader.GetInt32(10),
                         mensalidade = reader.GetDecimal(11),
                         horarioInicio = reader.GetTimeSpan(12).ToString(@"hh\:mm"),
@@ -209,6 +211,7 @@ namespace BJJGerenciamento.UI.DAL
                     };
                     planoAlunos.Add(planoAluno);
                 }
+
             }
             return planoAlunos;
         }
@@ -601,7 +604,7 @@ namespace BJJGerenciamento.UI.DAL
                 {
                     try
                     {
-                        // Apagar dias antigos
+                     
                         string deleteSql = "DELETE FROM TBPlanoDias WHERE IdPlano = @IdPlano";
                         using (SqlCommand cmdDelete = new SqlCommand(deleteSql, conn, tran))
                         {
@@ -609,7 +612,7 @@ namespace BJJGerenciamento.UI.DAL
                             cmdDelete.ExecuteNonQuery();
                         }
 
-                        // Inserir novos dias
+                     
                         string insertSql = "INSERT INTO TBPlanoDias (IdPlano, IdDia) VALUES (@IdPlano, @IdDia)";
                         using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn, tran))
                         {
@@ -873,7 +876,8 @@ namespace BJJGerenciamento.UI.DAL
 
         public List<PlanoAlunoModels> BuscarTodosPlanosComAlunos()
         {
-            List<PlanoAlunoModels> lista = new List<PlanoAlunoModels>();
+            List<PlanoAlunoModels> listaCompleta = new List<PlanoAlunoModels>();
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = @"
@@ -881,6 +885,7 @@ namespace BJJGerenciamento.UI.DAL
             p.IdPlanoAluno,
             p.IdAluno,
             p.IdDetalhe,
+            p.IdPlanoAlunoValor,
             a.Nome,
             a.Sobrenome,
             p.DiaVencimento,
@@ -892,6 +897,7 @@ namespace BJJGerenciamento.UI.DAL
 
                 SqlCommand cmd = new SqlCommand(query, con);
                 con.Open();
+
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
@@ -901,39 +907,48 @@ namespace BJJGerenciamento.UI.DAL
                         idPlanoAluno = reader.GetInt32(0),
                         idAlunos = reader.GetInt32(1),
                         idDetalhe = reader.GetInt32(2),
+                        idPlanoAlunoValor = reader.GetInt32(3),
                         Nome = reader["Nome"].ToString(),
                         Sobrenome = reader["Sobrenome"].ToString(),
-                        DiaVencimento = Convert.ToInt32(reader["DiaVencimento"]),
+                        DiaVencimento = reader.GetInt32(6),
                         DataProximaCobranca = reader.IsDBNull(reader.GetOrdinal("DataProximaCobranca"))
-    ? (DateTime?)null
-    : reader.GetDateTime(reader.GetOrdinal("DataProximaCobranca")),
-
+                            ? (DateTime?)null
+                            : reader.GetDateTime(reader.GetOrdinal("DataProximaCobranca")),
                         mensalidade = Convert.ToDecimal(reader["Mensalidade"])
                     };
-                    lista.Add(plano);
+
+                    listaCompleta.Add(plano);
                 }
             }
-            return lista;
+
+            return listaCompleta;
         }
 
         public int AtualizarDataPagamento(int idPlanoAluno, DateTime novaData)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string sql = "UPDATE TBPlanoAluno " +
-                             "SET DataProximaCobranca = @novaData " +
-                             "WHERE IdPlanoAluno = @id";
+                System.Diagnostics.Debug.WriteLine($"[DEBUG DAL] Tentando atualizar plano {idPlanoAluno} para {novaData:yyyy-MM-dd}");
+
+                string sql = @"UPDATE TBPlanoAluno 
+                       SET DataProximaCobranca = @novaData 
+                       WHERE IdPlanoAluno = @id";
+
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@novaData", novaData);
                     cmd.Parameters.AddWithValue("@id", idPlanoAluno);
 
                     conn.Open();
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG DAL] Conectado ao banco: {conn.Database}");
+
                     int linhasAfetadas = cmd.ExecuteNonQuery();
+                    System.Diagnostics.Debug.WriteLine($"[DEBUG DAL] Linhas afetadas: {linhasAfetadas}");
                     return linhasAfetadas;
                 }
             }
         }
+
 
         public PlanoAlunoModels BuscarPlanoPorId(int idPlanoAluno)
         {
@@ -941,11 +956,11 @@ namespace BJJGerenciamento.UI.DAL
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string sql = @"
-            SELECT p.*, a.Nome, a.Sobrenome, d.mensalidade
-            FROM TBPlanoAluno p
-            INNER JOIN TBAlunos a ON p.idAluno = a.IdAluno
-            INNER JOIN TBPlanoDetalhes d ON p.idDetalhe = d.idDetalhe
-            WHERE p.idPlanoAluno = @idPlanoAluno";
+        SELECT p.*, a.Nome, a.Sobrenome, d.mensalidade
+        FROM TBPlanoAluno p
+        INNER JOIN TBAlunos a ON p.idAluno = a.IdAluno
+        INNER JOIN TBPlanoDetalhes d ON p.idDetalhe = d.idDetalhe
+        WHERE p.idPlanoAluno = @idPlanoAluno";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@idPlanoAluno", idPlanoAluno);
@@ -960,10 +975,15 @@ namespace BJJGerenciamento.UI.DAL
                         idPlanoAluno = (int)reader["idPlanoAluno"],
                         idAlunos = (int)reader["idAluno"],
                         idDetalhe = (int)reader["idDetalhe"],
-                        DiaVencimento = (int)reader["diaVencimento"],
+                        DiaVencimento = (int)reader["DiaVencimento"],
                         mensalidade = Convert.ToDecimal(reader["mensalidade"]),
                         Nome = reader["Nome"].ToString(),
-                        Sobrenome = reader["Sobrenome"].ToString()
+                        Sobrenome = reader["Sobrenome"].ToString(),
+
+                        // ✅ Adiciona isso!
+                        DataProximaCobranca = reader["DataProximaCobranca"] != DBNull.Value
+                            ? Convert.ToDateTime(reader["DataProximaCobranca"])
+                            : (DateTime?)null
                     };
                 }
             }

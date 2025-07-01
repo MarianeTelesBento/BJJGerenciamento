@@ -21,6 +21,9 @@ namespace BJJGerenciamento.UI.Models
         public bool Ativo { get; set; }
 
         public string DiasSemana { get; set; }  
-        public string Horarios { get; set; }  
+        public string Horarios { get; set; }
+
+       
+
     }
 }

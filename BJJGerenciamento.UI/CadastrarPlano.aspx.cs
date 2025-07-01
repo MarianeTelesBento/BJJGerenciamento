@@ -30,7 +30,7 @@ namespace BJJGerenciamento.UI
 
             if (!IsPostBack)
             {
-                PreencherDiasVencimento();
+              
                 PlanoDAL planoDal = new PlanoDAL();
                 List<PlanoModels> planos = planoDal.BuscarPlano();
 
@@ -229,7 +229,17 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            int diaVencimento = Convert.ToInt32(ddlDiaVencimento.SelectedValue);
+            // ✅ Novo: valida e extrai data do DatePicker
+            DateTime dataEscolhida;
+            if (!DateTime.TryParse(txtDataVencimento.Text, out dataEscolhida))
+            {
+                Response.Write("<script>alert('Data de vencimento inválida.');</script>");
+                return;
+            }
+
+            int diaVencimento = dataEscolhida.Day;
+            DateTime dataProximaCobranca = CalcularDataProximaCobranca(diaVencimento);
+
             int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
             int idPlano = int.Parse(ddPlanos.SelectedValue);
 
@@ -243,37 +253,36 @@ namespace BJJGerenciamento.UI
             }
 
             int idDetalhe = planoSelecionado.IdDetalhe;
-
             bool cadastroSucesso = false;
 
             foreach (ListItem diaItem in cbDias.Items)
             {
                 if (diaItem.Selected)
                 {
-                   int idDia = int.Parse(diaItem.Value);
+                    int idDia = int.Parse(diaItem.Value);
                     string nomeDia = diaItem.Text;
 
                     CheckBoxList horariosDia = ObterCheckBoxListPorDia(nomeDia);
 
                     if (horariosDia != null)
                     {
-
                         foreach (ListItem horarioItem in horariosDia.Items)
                         {
                             if (horarioItem.Selected)
                             {
                                 int idHorario = int.Parse(horarioItem.Value);
-
                                 int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(ValorPagoPlano.Text));
-
                                 bool passeLivre = cbPasseLivre.Checked;
 
-                               
-                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(idAluno, idDia, idHorario, idDetalhe, idPlanoAlunoValor, passeLivre, diaVencimento);
+                                // ✅ Novo: passando dia fixo (int) e data calculada (DateTime)
+                                int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(
+                                    idAluno, idDia, idHorario, idDetalhe,
+                                    idPlanoAlunoValor, passeLivre, diaVencimento, dataProximaCobranca
+                                );
 
                                 if (cadastroFuncionando > 0)
                                 {
-                                    cadastroSucesso = true; 
+                                    cadastroSucesso = true;
                                 }
                             }
                         }
@@ -284,17 +293,17 @@ namespace BJJGerenciamento.UI
             if (cadastroSucesso)
             {
                 string script = @"
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sucesso!',
-                        text: 'Plano cadastrado com sucesso!',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = 'ListaAlunos.aspx';
-                        }
-                    });";
+        Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Plano cadastrado com sucesso!',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'ListaAlunos.aspx';
+            }
+        });";
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
             }
@@ -303,6 +312,8 @@ namespace BJJGerenciamento.UI
                 Response.Write("<script>alert('Erro ao cadastrar plano.');</script>");
             }
         }
+
+
 
 
         protected void btnValorPlano_Click(object sender, EventArgs e)
@@ -376,19 +387,28 @@ namespace BJJGerenciamento.UI
             }
         }
 
-        protected void ddlDiaVencimento_SelectedIndexChanged(object sender, EventArgs e)
+        private DateTime CalcularDataProximaCobranca(int diaVencimento)
         {
-        }
-        private void PreencherDiasVencimento()
-        {
-            ddlDiaVencimento.Items.Clear();
-            ddlDiaVencimento.Items.Add(new ListItem("-- Selecione --", ""));
+            DateTime hoje = DateTime.Today;
+            int ano = hoje.Year;
+            int mes = hoje.Month;
 
-            for (int i = 1; i <= 31; i++)
+            if (diaVencimento <= hoje.Day)
             {
-                ddlDiaVencimento.Items.Add(new ListItem(i.ToString(), i.ToString()));
+                mes++;
+                if (mes > 12)
+                {
+                    mes = 1;
+                    ano++;
+                }
             }
+
+            int ultimoDiaMes = DateTime.DaysInMonth(ano, mes);
+            int diaFinal = Math.Min(diaVencimento, ultimoDiaMes);
+
+            return new DateTime(ano, mes, diaFinal);
         }
+
 
     }
 }

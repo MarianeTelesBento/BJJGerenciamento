@@ -95,19 +95,27 @@
     DataKeyNames="idPlanoAluno">
   <Columns>
     <asp:BoundField DataField="NomeCompleto" HeaderText="Aluno" />
-    <asp:BoundField DataField="DataReal" HeaderText="Vencimento" DataFormatString="{0:dd/MM/yyyy}" />
-    <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
-  <asp:TemplateField HeaderText="Ação">
+    
+    <asp:TemplateField HeaderText="Vencimento">
   <ItemTemplate>
-    <a href='Financeiro.aspx?idPlanoAluno=<%# Eval("idPlanoAluno") %>' 
-       class='btn btn-link btn-sm'>Visualizar</a>
+    <%# ((DateTime)Eval("DataReal")).ToString("dd/MM/yyyy") %>
   </ItemTemplate>
 </asp:TemplateField>
+
+    <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
+    
+    <asp:TemplateField HeaderText="Ação">
+      <ItemTemplate>
+        <a href='Financeiro.aspx?idPlanoAluno=<%# Eval("idPlanoAluno") %>' 
+           class='btn btn-link btn-sm'>Visualizar</a>
+      </ItemTemplate>
+    </asp:TemplateField>
   </Columns>
   <EmptyDataTemplate>
     <div class="text-center text-muted py-3">Nenhuma mensalidade vencida</div>
   </EmptyDataTemplate>
 </asp:GridView>
+
 
 <h4 class="mt-5">Mensalidades Próximas a Vencer</h4>
 <asp:GridView ID="gvProximas" runat="server"
@@ -116,8 +124,16 @@
     DataKeyNames="idPlanoAluno">
   <Columns>
     <asp:BoundField DataField="NomeCompleto" HeaderText="Aluno" />
-    <asp:BoundField DataField="DataReal" HeaderText="Vencimento" DataFormatString="{0:dd/MM/yyyy}" />
+  <asp:TemplateField HeaderText="Vencimento">
+  <ItemTemplate>
+    <%# ((DateTime)Eval("DataReal")).ToString("dd/MM/yyyy") %>
+  </ItemTemplate>
+</asp:TemplateField>
+
+
+
     <asp:BoundField DataField="Mensalidade" HeaderText="Mensalidade" DataFormatString="{0:C}" />
+
     <asp:TemplateField HeaderText="Ação">
       <ItemTemplate>
         <a href='Financeiro.aspx?idPlanoAluno=<%# Eval("idPlanoAluno") %>' 
@@ -129,6 +145,7 @@
     <div class="text-center text-muted py-3">Nenhuma mensalidade próxima</div>
   </EmptyDataTemplate>
 </asp:GridView>
+
 
 
 

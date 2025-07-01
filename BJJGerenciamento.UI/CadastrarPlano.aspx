@@ -121,6 +121,32 @@
                     margin-bottom: 8px;
                     display: block;
                 }
+                             .campo-vencimento {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 1rem;
+                    font-family: 'Segoe UI', sans-serif;
+                }
+
+                .campo-vencimento label {
+                    margin-bottom: 0.4rem;
+                    font-weight: 600;
+                    color: #333;
+                }
+
+                .campo-vencimento input[type="date"] {
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    transition: border-color 0.3s ease;
+                }
+
+                .campo-vencimento input[type="date"]:focus {
+                    border-color: #007bff;
+                    outline: none;
+                    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+                }
             </style>
             <div class="container mt-4">
                 <h2>Cadastrar Plano do Aluno</h2>
@@ -203,11 +229,10 @@
                             OnClick="btnValorPlano_Click" CssClass="btn btn-danger btn-pequeno" />
                     </div>
 
-<div class="mb-4">
-    <asp:Label ID="lblDiaVencimento" runat="server" Text="Dia do Vencimento:" CssClass="form-label"></asp:Label>
-    <asp:DropDownList ID="ddlDiaVencimento" runat="server" CssClass="form-select" OnSelectedIndexChanged="ddlDiaVencimento_SelectedIndexChanged"></asp:DropDownList>
+<div class="campo-vencimento">
+    <asp:Label ID="lblDataEscolhida" runat="server" Text="Data de Vencimento:"></asp:Label>
+    <asp:TextBox ID="txtDataVencimento" runat="server" TextMode="Date" CssClass="input-date" />
 </div>
-
                 
 
                     <!-- Botão de Enviar -->
