@@ -131,6 +131,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CadastrarAdesao.aspx" />
     <Content Include="CadastrarAluno.aspx" />
     <Content Include="CadastrarPlano.aspx" />
     <Content Include="CadastrarProfessor.aspx" />
@@ -213,6 +214,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="CadastrarAdesao.aspx.cs">
+      <DependentUpon>CadastrarAdesao.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CadastrarAdesao.aspx.designer.cs">
+      <DependentUpon>CadastrarAdesao.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CadastrarAluno.aspx.cs">
       <DependentUpon>CadastrarAluno.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -336,6 +344,7 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdesaoModels.cs" />
     <Compile Include="Models\DiasHorariosModels.cs" />
     <Compile Include="DAL\GraduacaoDAL.cs" />
     <Compile Include="Models\Financeiro.cs" />

@@ -156,7 +156,7 @@ namespace BJJGerenciamento.UI.DAL
                 {
                     dia = reader["Dia"].ToString();
                 }
-                return dia;   
+                return dia;
             }
         }
 
@@ -203,7 +203,7 @@ namespace BJJGerenciamento.UI.DAL
                         idDetalhe = reader.GetInt32(6),
                         idPlanoAlunoValor = reader.GetInt32(7),
                         passeLivre = reader.GetBoolean(8),
-                        DiaVencimento = reader.GetInt32(9), 
+                        DiaVencimento = reader.GetInt32(9),
                         qtdDias = reader.GetInt32(10),
                         mensalidade = reader.GetDecimal(11),
                         horarioInicio = reader.GetTimeSpan(12).ToString(@"hh\:mm"),
@@ -233,7 +233,7 @@ namespace BJJGerenciamento.UI.DAL
 
                     if (reader.Read())
                     {
-                        mensalidade = reader.GetDecimal(2);                    
+                        mensalidade = reader.GetDecimal(2);
                     }
 
                 }
@@ -254,7 +254,7 @@ namespace BJJGerenciamento.UI.DAL
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
-                        while(reader.Read())
+                        while (reader.Read())
                         {
                             PlanoModels plano = new PlanoModels()
                             {
@@ -604,7 +604,7 @@ namespace BJJGerenciamento.UI.DAL
                 {
                     try
                     {
-                     
+
                         string deleteSql = "DELETE FROM TBPlanoDias WHERE IdPlano = @IdPlano";
                         using (SqlCommand cmdDelete = new SqlCommand(deleteSql, conn, tran))
                         {
@@ -612,7 +612,7 @@ namespace BJJGerenciamento.UI.DAL
                             cmdDelete.ExecuteNonQuery();
                         }
 
-                     
+
                         string insertSql = "INSERT INTO TBPlanoDias (IdPlano, IdDia) VALUES (@IdPlano, @IdDia)";
                         using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn, tran))
                         {
@@ -858,7 +858,7 @@ namespace BJJGerenciamento.UI.DAL
                         passeLivre = reader.GetBoolean(8),
                         DiaVencimento = reader.GetInt32(9),
 
-                
+
                         DataProximaCobranca = reader.IsDBNull(10) ? (DateTime?)null : reader.GetDateTime(10),
 
                         qtdDias = reader.GetInt32(11),
@@ -989,6 +989,96 @@ namespace BJJGerenciamento.UI.DAL
             }
             return plano;
         }
+
+        public void InserirAdesao(AdesaoModels adesao)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction();
+
+                try
+                {
+                    // Inserir a adesão
+                    string sqlAdesao = @"
+                INSERT INTO TBAdesao (NomeAdesao, QtdDiasPermitidos, Mensalidade)
+                VALUES (@NomeAdesao, @QtdDiasPermitidos, @Mensalidade);
+                SELECT SCOPE_IDENTITY();";
+
+                    SqlCommand cmd = new SqlCommand(sqlAdesao, conn, transaction);
+                    cmd.Parameters.AddWithValue("@NomeAdesao", adesao.NomeAdesao);
+                    cmd.Parameters.AddWithValue("@QtdDiasPermitidos", adesao.QtdDiasPermitidos);
+                    cmd.Parameters.AddWithValue("@Mensalidade", adesao.Mensalidade);
+
+                    int idAdesao = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    // Inserir os vínculos com turmas
+                    foreach (int idPlano in adesao.IdsPlanos)
+                    {
+                        string sqlVinculo = @"
+                    INSERT INTO TBAdesaoPlanos (IdAdesao, IdPlano)
+                    VALUES (@IdAdesao, @IdPlano)";
+
+                        SqlCommand cmdVinculo = new SqlCommand(sqlVinculo, conn, transaction);
+                        cmdVinculo.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                        cmdVinculo.Parameters.AddWithValue("@IdPlano", idPlano);
+                        cmdVinculo.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+        public DataTable ListarAdesoes()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT * FROM TBAdesao";
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        public DataTable ListarTurmasAdesao()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT IdPlano, Nome FROM TBPlanos";
+                SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                return dt;
+            }
+        }
+
+        public void ExcluirAdesao(int idAdesao)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // Primeiro apaga os vínculos com as turmas
+                string sqlVinculos = "DELETE FROM TBAdesaoPlano WHERE IdAdesao = @Id";
+                SqlCommand cmdVinculos = new SqlCommand(sqlVinculos, conn);
+                cmdVinculos.Parameters.AddWithValue("@Id", idAdesao);
+                cmdVinculos.ExecuteNonQuery();
+
+                // Depois apaga a adesão
+                string sqlAdesao = "DELETE FROM TBAdesao WHERE IdAdesao = @Id";
+                SqlCommand cmdAdesao = new SqlCommand(sqlAdesao, conn);
+                cmdAdesao.Parameters.AddWithValue("@Id", idAdesao);
+                cmdAdesao.ExecuteNonQuery();
+            }
+        }
+
+
 
 
 
