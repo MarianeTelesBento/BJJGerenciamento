@@ -348,6 +348,7 @@
     <Compile Include="Models\DiasHorariosModels.cs" />
     <Compile Include="DAL\GraduacaoDAL.cs" />
     <Compile Include="Models\Financeiro.cs" />
+    <Compile Include="Models\FrequenciaAdesaoModels.cs" />
     <Compile Include="Models\GraduacaoModels.cs" />
     <Compile Include="Models\HoraModels.cs" />
     <Compile Include="Models\LoginModels.cs" />

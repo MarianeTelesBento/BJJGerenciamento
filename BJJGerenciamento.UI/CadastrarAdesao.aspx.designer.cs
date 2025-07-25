@@ -15,15 +15,6 @@ namespace BJJGerenciamento.UI
     {
 
         /// <summary>
-        /// Controle lblMensagem.
-        /// </summary>
-        /// <remarks>
-        /// Campo gerado automaticamente.
-        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMensagem;
-
-        /// <summary>
         /// Controle txtNomeAdesao.
         /// </summary>
         /// <remarks>
@@ -33,40 +24,40 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.TextBox txtNomeAdesao;
 
         /// <summary>
-        /// Controle txtQtdDias.
+        /// Controle chkFrequencias.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtQtdDias;
+        protected global::System.Web.UI.WebControls.CheckBoxList chkFrequencias;
 
         /// <summary>
-        /// Controle txtMensalidade.
+        /// Controle chkListTurmas.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMensalidade;
+        protected global::System.Web.UI.WebControls.CheckBoxList chkListTurmas;
 
         /// <summary>
-        /// Controle chkTurmas.
+        /// Controle BtnSalvar.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList chkTurmas;
+        protected global::System.Web.UI.WebControls.Button BtnSalvar;
 
         /// <summary>
-        /// Controle btnSalvar.
+        /// Controle lblMensagem.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSalvar;
+        protected global::System.Web.UI.WebControls.Label lblMensagem;
 
         /// <summary>
         /// Controle gridAdesoes.
@@ -76,5 +67,59 @@ namespace BJJGerenciamento.UI
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gridAdesoes;
+
+        /// <summary>
+        /// Controle hdnIdAdesaoExcluir.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnIdAdesaoExcluir;
+
+        /// <summary>
+        /// Controle btnConfirmarExclusao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnConfirmarExclusao;
+
+        /// <summary>
+        /// Controle hdnIdAdesaoEditar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnIdAdesaoEditar;
+
+        /// <summary>
+        /// Controle txtNomeAdesaoEditar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNomeAdesaoEditar;
+
+        /// <summary>
+        /// Controle chkListTurmasEditar.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList chkListTurmasEditar;
+
+        /// <summary>
+        /// Controle btnSalvarEdicao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSalvarEdicao;
     }
 }
