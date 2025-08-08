@@ -24,6 +24,11 @@ namespace BJJGerenciamento.UI.Models
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
         public DateTime? DataProximaCobranca { get; set; }
+        public string NomeAdesao { get; set; }
+        public int QtdDiasPermitidos { get; set; }
+        public decimal MensalidadeAdesao { get; set; }
+
+
 
 
 

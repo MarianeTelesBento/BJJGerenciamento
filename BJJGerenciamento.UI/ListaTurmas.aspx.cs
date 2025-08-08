@@ -131,8 +131,7 @@ namespace BJJGerenciamento.UI
             modalIdPlano.Text = turma.IdPlano.ToString();
             modalNome.Text = turma.Nome;
             modalAtivo.Checked = turma.Ativo;
-            modalMensalidade.Text = turma.Mensalidade.ToString("F2");
-
+           
             // 🔹 Marcar dias salvos no banco
             var diasSelecionados = planoDAL.ListarDiasDoPlano(idPlano);
             foreach (ListItem item in cblDiasEdit.Items)
@@ -157,7 +156,7 @@ namespace BJJGerenciamento.UI
                 IdPlano = idPlano,
                 Nome = modalNome.Text.Trim(),
                 Ativo = modalAtivo.Checked,
-                Mensalidade = decimal.TryParse(modalMensalidade.Text, out decimal mensalidade) ? mensalidade : 0.00m,
+             
                 QtdDias = cblDiasEdit.Items.Cast<ListItem>().Count(i => i.Selected)
 
 

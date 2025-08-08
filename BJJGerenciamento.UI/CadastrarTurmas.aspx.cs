@@ -98,7 +98,7 @@ namespace BJJGerenciamento.UI
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
             string nomePlano = txtNomeNovoPlano.Text.Trim();
-            string mensalidadeStr = txtMensalidade.Text.Trim();
+          
 
             lblMensagem.Visible = false;
             lblMensagem.Text = "";
@@ -119,15 +119,7 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            // Validação da mensalidade
-            if (string.IsNullOrWhiteSpace(mensalidadeStr) ||
-            !decimal.TryParse(mensalidadeStr, out decimal valor) ||
-            valor <= 0)
-            {
-                lblMensagem.Text = "Por favor, informe uma sugestão de valor válida (o Valor não pode ser 0,00).";
-                lblMensagem.Visible = true;
-                return;
-            }
+          
 
             // Cria o novo plano e pega o ID gerado
             int idPlano = planoDAL.CriarNovoPlano(nomePlano);
@@ -185,8 +177,7 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            // Salva o valor do plano
-            planoDAL.SalvarValorPlano(idPlano, diasSelecionados, valor);
+
 
             string script = @"
                 Swal.fire({
@@ -206,19 +197,7 @@ namespace BJJGerenciamento.UI
         }
 
 
-        protected void btnCalcularMensalidade_Click(object sender, EventArgs e)
-        {
-            var diasSelecionados = ObterDiasSelecionados();
-            if (diasSelecionados.Count == 0)
-            {
-                txtMensalidade.Text = "0.00";
-                return;
-            }
-
-            decimal mensalidade = diasSelecionados.Count * 30; // Exemplo de cálculo automático
-            txtMensalidade.Text = mensalidade.ToString("F2");
-        }
-
+       
         private List<int> ObterDiasSelecionados()
         {
             List<int> diasSelecionados = new List<int>();

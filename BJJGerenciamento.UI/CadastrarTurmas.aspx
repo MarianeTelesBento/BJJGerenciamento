@@ -138,12 +138,8 @@
 
             <div class="separador"></div>
 
-            <!-- Mensalidade -->
-            <div class="d-flex align-items-center gap-2 mb-4">
-                <asp:TextBox ID="txtMensalidade" runat="server" CssClass="input-text" />
-                <asp:Button ID="btnCalcularMensalidade" runat="server" Text="Calcular"
-                    OnClick="btnCalcularMensalidade_Click" CssClass="btn btn-danger btn-pequeno" />
-            </div>
+       
+       
  
 
             <!-- Botão Salvar -->
@@ -160,7 +156,7 @@
          document.getElementById('<%= txtNomeNovoPlano.ClientID %>').value = "";
 
         // Limpa o valor da mensalidade
-        document.getElementById('<%= txtMensalidade.ClientID %>').value = "";
+       
 
         // Desmarca os dias
         var dias = document.querySelectorAll('#<%= cblDias.ClientID %> input[type=checkbox]');

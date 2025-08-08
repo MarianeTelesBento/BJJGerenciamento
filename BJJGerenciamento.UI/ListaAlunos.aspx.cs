@@ -20,10 +20,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+            //if (Session["UsuarioLogado"] == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //}
             if (!IsPostBack)
             {
                 AlunosDAL alunosDAL = new AlunosDAL();
@@ -225,15 +225,17 @@ namespace BJJGerenciamento.UI
                 {
                     var primeiro = grupo.First();
 
+                    // ALTERAÇÃO: Adicionar a linha para exibir o nome da adesão
                     htmlPlano += $@"
-                <div class='card p-2 mb-2'>
-                <strong>Plano:</strong> {planoDal.BuscarNomePlano(Convert.ToInt32(primeiro.idDetalhe))}<br/>
-                <strong>Dias por Semana:</strong> {primeiro.qtdDias}<br/>
-                <strong>Mensalidade:</strong> R$ {primeiro.mensalidade:N2}<br/>
-                <strong>Passe Livre:</strong> {(primeiro.passeLivre ? "Sim" : "Não")}<br/>
-                <strong>Dia do Vencimento:</strong> {primeiro.DiaVencimento}<br/>
-                <strong>Dias e Horários:</strong>
-                <ul>";
+            <div class='card p-2 mb-2'>
+            <strong>Turma:</strong> {planoDal.BuscarNomePlano(Convert.ToInt32(primeiro.idDetalhe))}<br/>
+            <strong>Adesão:</strong> {primeiro.NomeAdesao}<br/>
+            <strong>Dias por Semana:</strong> {primeiro.qtdDias}<br/>
+            <strong>Mensalidade:</strong> R$ {primeiro.mensalidade:N2}<br/>
+            <strong>Passe Livre:</strong> {(primeiro.passeLivre ? "Sim" : "Não")}<br/>
+            <strong>Dia do Vencimento:</strong> {primeiro.DiaVencimento}<br/>
+            <strong>Dias e Horários:</strong>
+            <ul>";
 
                     foreach (var plano in grupo)
                     {

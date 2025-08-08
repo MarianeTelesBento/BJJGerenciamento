@@ -74,11 +74,7 @@
                     </div>
                     <br />
                                        <br />
-                    <div class="form-group">
-                         <asp:Label for="modalMensalidade">Mensalidade (R$):</asp:Label>
-                         <asp:TextBox ID="modalMensalidade" runat="server" CssClass="form-control"></asp:TextBox>
-                     </div>
-
+             
                                        
 
 

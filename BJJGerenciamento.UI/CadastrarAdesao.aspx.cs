@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web.UI;
@@ -21,12 +22,14 @@ namespace BJJGerenciamento.UI
                 CarregarAdesoes();
                 CarregarTurmas();
                 CarregarFrequencias();
-                string eventTarget = Request["__EVENTTARGET"];
-                string eventArgument = Request["__EVENTARGUMENT"];
-                if (eventTarget == "buscarAdesao" && int.TryParse(eventArgument, out int id))
-                {
-                    CarregarDadosParaEditar(id);
-                }
+            }
+            // ALTERAÇÃO: Lógica para tratar o postback de edição.
+            // O OnClientClick do botão de edição agora dispara um postback com o ID.
+            string eventTarget = Request["__EVENTTARGET"];
+            string eventArgument = Request["__EVENTARGUMENT"];
+            if (eventTarget == "buscarAdesao" && int.TryParse(eventArgument, out int id))
+            {
+                CarregarDadosParaEditar(id);
             }
         }
 
@@ -41,9 +44,9 @@ namespace BJJGerenciamento.UI
         {
             var turmas = dal.ListarTurmasAdesao();
             chkListTurmas.DataSource = turmas;
-            chkListTurmas.DataTextField = "Nome";      // ou "NomeTurma"
-            chkListTurmas.DataValueField = "IdPlano";  // ou "IdTurma"
-            chkListTurmas.DataBind();
+            chkListTurmas.DataTextField = "Nome";      // ou "NomeTurma"
+            chkListTurmas.DataValueField = "IdPlano";  // ou "IdTurma"
+            chkListTurmas.DataBind();
         }
 
         private void CarregarFrequencias()
@@ -51,7 +54,7 @@ namespace BJJGerenciamento.UI
             DataTable dt = new DataTable();
             dt.Columns.Add("Dias");
 
-            for (int i = 1; i <= 5; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 DataRow row = dt.NewRow();
                 row["Dias"] = i;
@@ -63,13 +66,14 @@ namespace BJJGerenciamento.UI
             chkFrequencias.DataValueField = "Dias";
             chkFrequencias.DataBind();
         }
+
         protected void btnSalvar_Click(object sender, EventArgs e)
         {
             var adesao = new AdesaoModels
             {
                 NomeAdesao = txtNomeAdesao.Text.Trim(),
-                Frequencias = new List<FrequenciaAdesaoModels>(),
-                IdsPlanos = new List<int>()
+                Frequencias = new List<FrequenciaAdesaoModels>(), // CORRIGIDO: Tipo do modelo
+                IdsPlanos = new List<int>()
             };
 
             bool peloMenosUmaFrequenciaValida = false;
@@ -81,18 +85,17 @@ namespace BJJGerenciamento.UI
                 {
                     string valorTexto = Request.Form["valor_" + qtdDias];
 
-                    if (decimal.TryParse(valorTexto, out decimal mensalidade) && mensalidade > 0)
+                    // ALTERAÇÃO: Usar InvariantCulture para garantir a leitura correta
+                    if (decimal.TryParse(valorTexto, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal mensalidade) && mensalidade > 0)
                     {
                         adesao.Frequencias.Add(new FrequenciaAdesaoModels
                         {
-                            QtdDiasPermitidos = qtdDias,
+                            IdFrequencia = 0, // IdFrequencia é 0 para novas inserções
+                            QtdDiasPermitidos = qtdDias,
                             Mensalidade = mensalidade
                         });
-
-                        // Captura a maior mensalidade, caso você use isso em TBAdesao
                         if (mensalidade > maiorMensalidade)
                             maiorMensalidade = mensalidade;
-
                         peloMenosUmaFrequenciaValida = true;
                     }
                 }
@@ -104,23 +107,18 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            // Definir o máximo de dias selecionado
-            adesao.QtdDiasPermitidos = adesao.Frequencias.Max(f => f.QtdDiasPermitidos);
+            // CORRIGIDO: A propriedade QtdDiasPermitidos não existe em AdesaoModels
+            // AdesaoModels precisa apenas da lista de frequências
+            //adesao.QtdDiasPermitidos = adesao.Frequencias.Max(f => f.QtdDiasPermitidos);
 
-            // Se TBAdesao também tem uma coluna Mensalidade, descomente abaixo
-            // adesao.Mensalidade = maiorMensalidade;
-
-            // Captura planos/turmas selecionados
-            foreach (ListItem item in chkListTurmas.Items)
+            foreach (ListItem item in chkListTurmas.Items)
             {
                 if (item.Selected && int.TryParse(item.Value, out int idTurma))
                 {
                     adesao.IdsPlanos.Add(idTurma);
                 }
             }
-
             dal.InserirAdesaoComFrequencias(adesao);
-
             lblMensagem.Text = "Adesão cadastrada com sucesso!";
             CarregarAdesoes();
             txtNomeAdesao.Text = "";
@@ -130,26 +128,19 @@ namespace BJJGerenciamento.UI
         {
             if (e.CommandName == "Editar")
             {
-                int index = Convert.ToInt32(e.CommandArgument);
-                int idAdesao = Convert.ToInt32(gridAdesoes.DataKeys[index].Value);
-
+                // ALTERAÇÃO: O CommandArgument é o ID, não o índice.
+                int idAdesao = Convert.ToInt32(e.CommandArgument);
                 CarregarDadosParaEditar(idAdesao);
-
-                // Exibe o modal depois de carregar os dados
-                ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "var modal = new bootstrap.Modal(document.getElementById('modalEditarAdesao')); modal.show();", true);
-
-            }
+                // O modal é aberto no CarregarDadosParaEditar através do script
+            }
             else if (e.CommandName == "Excluir")
             {
-                int index = Convert.ToInt32(e.CommandArgument);
-                int idAdesao = Convert.ToInt32(gridAdesoes.DataKeys[index].Value);
-
+                int idAdesao = Convert.ToInt32(e.CommandArgument);
                 dal.ExcluirAdesao(idAdesao);
                 CarregarAdesoes();
                 lblMensagem.Text = "Adesão excluída com sucesso!";
             }
         }
-
 
         protected void btnConfirmarExclusao_Click(object sender, EventArgs e)
         {
@@ -159,29 +150,25 @@ namespace BJJGerenciamento.UI
             lblMensagem.Text = "Adesão excluída com sucesso!";
         }
 
-
-
-     
-       protected void btnSalvarEdicao_Click(object sender, EventArgs e)
+        protected void btnSalvarEdicao_Click(object sender, EventArgs e)
         {
             int idAdesao = int.Parse(hdnIdAdesaoEditar.Value);
             string nome = txtNomeAdesaoEditar.Text;
 
             List<FrequenciaAdesaoModels> frequencias = new List<FrequenciaAdesaoModels>();
-            for (int i = 1; i <= 6; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 string valorStr = Request.Form["valor_edit_" + i];
-                string idFreqStr = Request.Form["id_freq_edit_" + i]; // NOVO: Captura o ID da frequência
+                string idFreqStr = Request.Form["id_freq_edit_" + i];
 
-                if (decimal.TryParse(valorStr, out decimal mensalidade))
+                // ALTERAÇÃO: Usar InvariantCulture para ler o valor formatado com ponto decimal
+                if (decimal.TryParse(valorStr, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal mensalidade))
                 {
-                    // Apenas adiciona se a mensalidade for maior que zero ou se houver um ID existente
-                    // Isso evita salvar frequências vazias se o usuário limpar o campo
                     if (mensalidade > 0 || (int.TryParse(idFreqStr, out int existingIdFreq) && existingIdFreq > 0))
                     {
                         frequencias.Add(new FrequenciaAdesaoModels
                         {
-                            IdFrequencia = int.TryParse(idFreqStr, out int parsedIdFreq) ? parsedIdFreq : 0, // Converte para int ou 0 se for novo
+                            IdFrequencia = int.TryParse(idFreqStr, out int parsedIdFreq) ? parsedIdFreq : 0,
                             QtdDiasPermitidos = i,
                             Mensalidade = mensalidade
                         });
@@ -190,10 +177,10 @@ namespace BJJGerenciamento.UI
             }
 
             List<int> idsPlanos = chkListTurmasEditar.Items
-                .Cast<ListItem>()
-                .Where(i => i.Selected)
-                .Select(i => int.Parse(i.Value))
-                .ToList();
+              .Cast<ListItem>()
+              .Where(i => i.Selected)
+              .Select(i => int.Parse(i.Value))
+              .ToList();
 
             AdesaoModels adesao = new AdesaoModels
             {
@@ -203,13 +190,11 @@ namespace BJJGerenciamento.UI
                 IdsPlanos = idsPlanos
             };
 
-            PlanoDAL dal = new PlanoDAL(); // Certifique-se de que esta é a instância correta (AdesaoDAL, não PlanoDAL, se você separou)
             dal.AtualizarAdesao(adesao);
 
             ScriptManager.RegisterStartupScript(this, GetType(), "FecharModal", "$('#modalEditarAdesao').modal('hide');", true);
-            CarregarAdesoes(); // Recarrega a grid para mostrar as atualizações
+            CarregarAdesoes();
         }
-
 
         private void CarregarDadosParaEditar(int idAdesao)
         {
@@ -224,26 +209,26 @@ namespace BJJGerenciamento.UI
 
             StringBuilder scriptBuilder = new StringBuilder();
 
-            for (int i = 1; i <= 6; i++)
+            for (int i = 1; i <= 7; i++)
             {
                 var freq = adesao.Frequencias?.FirstOrDefault(f => f.QtdDiasPermitidos == i);
                 string val = "";
-                string idFreq = "0"; // Valor padrão para novo ou inexistente
+                string idFreq = "0";
 
                 if (freq != null)
                 {
-                    val = freq.Mensalidade.ToString("N2").Replace(",", ".");
-                    idFreq = freq.IdFrequencia.ToString(); // Captura o ID da frequência
+                    // ALTERAÇÃO: Usar CultureInfo.InvariantCulture para formatar
+                    val = freq.Mensalidade.ToString("F2", CultureInfo.InvariantCulture);
+                    idFreq = freq.IdFrequencia.ToString();
                 }
                 scriptBuilder.AppendLine($"document.getElementById('valor_edit_{i}').value = '{val}';");
-                scriptBuilder.AppendLine($"document.getElementById('id_freq_edit_{i}').value = '{idFreq}';"); // Preenche o hidden field com o ID
+                scriptBuilder.AppendLine($"document.getElementById('id_freq_edit_{i}').value = '{idFreq}';");
             }
 
             scriptBuilder.AppendLine("var modal = new bootstrap.Modal(document.getElementById('modalEditarAdesao')); modal.show();");
             ScriptManager.RegisterStartupScript(this, GetType(), "abrirModalEditar", scriptBuilder.ToString(), true);
 
-            // Carrega e marca as turmas (essa parte parece estar OK)
-            var turmas = planoDAL.ListarTurmas(); // Supondo que ListarTurmas retorna todos os planos
+            var turmas = planoDAL.ListarTurmas();
             chkListTurmasEditar.DataSource = turmas;
             chkListTurmasEditar.DataTextField = "Nome";
             chkListTurmasEditar.DataValueField = "IdPlano";
@@ -257,8 +242,6 @@ namespace BJJGerenciamento.UI
                 }
             }
         }
-
-
     }
 }
 

@@ -156,6 +156,12 @@
                 <div class="form-container">
 
                     <div class="row">
+
+      <div class="col-md-6 mb-4">
+     <label for="ddPlanos" class="form-label">Selecione uma adesão:</label>
+    <asp:DropDownList ID="ddlAdesao" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="ddlAdesao_SelectedIndexChanged">
+    </asp:DropDownList>
+      </div>
                         <!-- Seleção da Turma -->
                         <div class="col-md-6 mb-4">
                             <label for="ddPlanos" class="form-label">Selecione uma turma:</label>

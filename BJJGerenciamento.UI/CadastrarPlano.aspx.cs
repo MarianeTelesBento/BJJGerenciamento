@@ -17,10 +17,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+            //if (Session["UsuarioLogado"] == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //}
 
 
 
@@ -49,8 +49,10 @@ namespace BJJGerenciamento.UI
                     planoDal.ExcluirPlanoAluno(idAluno);
                     planoDal.ExcluirPlanoAlunoValor(idAluno);
                 }
+                CarregarAdesoes();
 
-               
+
+
 
 
             }
@@ -292,11 +294,12 @@ namespace BJJGerenciamento.UI
                                 int idHorario = int.Parse(horarioItem.Value);
                                 int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(ValorPagoPlano.Text));
                                 bool passeLivre = cbPasseLivre.Checked;
+                                int idAdesao = Convert.ToInt32(ddlAdesao.SelectedValue);
 
                                 // ✅ Novo: passando dia fixo (int) e data calculada (DateTime)
                                 int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(
                                     idAluno, idDia, idHorario, idDetalhe,
-                                    idPlanoAlunoValor, passeLivre, diaVencimento, dataProximaCobranca
+                                    idPlanoAlunoValor, passeLivre, diaVencimento, dataProximaCobranca, idAdesao
                                 );
 
                                 if (cadastroFuncionando > 0)
@@ -337,7 +340,7 @@ namespace BJJGerenciamento.UI
 
         protected void btnValorPlano_Click(object sender, EventArgs e)
         {
-            if(string.IsNullOrEmpty(ddPlanos.SelectedValue))
+            if (string.IsNullOrEmpty(ddPlanos.SelectedValue))
             {
                 Response.Write("<script>alert('Selecione uma turma');</script>");
                 return;
@@ -345,41 +348,48 @@ namespace BJJGerenciamento.UI
 
             int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
 
-            if (totalDiasSelecionados == null || totalDiasSelecionados == 0 )
+            if (totalDiasSelecionados == 0)
             {
                 Response.Write("<script>alert('Selecione pelo menos um dia');</script>");
                 return;
             }
 
-
             int totalHorariosSelecionados = 0;
-
             totalHorariosSelecionados += ContarSelecionados(cbHorariosSegunda);
             totalHorariosSelecionados += ContarSelecionados(cbHorariosTerca);
             totalHorariosSelecionados += ContarSelecionados(cbHorariosQuarta);
             totalHorariosSelecionados += ContarSelecionados(cbHorariosQuinta);
             totalHorariosSelecionados += ContarSelecionados(cbHorariosSexta);
 
-
-
-            if (totalDiasSelecionados > totalHorariosSelecionados )
+            if (totalDiasSelecionados > totalHorariosSelecionados)
             {
                 Response.Write("<script>alert('Selecione pelo menos um horário para cada dia');</script>");
+                return;
             }
-            else
+
+            PlanoDAL planoDAL = new PlanoDAL();
+            decimal valorPlano = planoDAL.BuscarMensalidade(int.Parse(ddPlanos.SelectedValue), totalDiasSelecionados);
+
+            if (totalHorariosSelecionados > totalDiasSelecionados && !cbPasseLivre.Checked)
             {
-                PlanoDAL planoDAL = new PlanoDAL();
-                decimal valorPlano = planoDAL.BuscarMensalidade(int.Parse(ddPlanos.SelectedValue), totalDiasSelecionados);
-
-                if (totalHorariosSelecionados > totalDiasSelecionados && !cbPasseLivre.Checked)
-                {            
-                    Response.Write("<script>alert('Ative a opção passe livre para selecionar mais de um horário por dia');</script>");
-                }
-
-                ValorPagoPlano.Text = $"{valorPlano}";
-
-                EnviarInformacoes.Visible = true;
+                Response.Write("<script>alert('Ative a opção passe livre para selecionar mais de um horário por dia');</script>");
+                return;
             }
+
+            // Exibe no formato brasileiro
+            ValorPagoPlano.Text = valorPlano.ToString("N2", new System.Globalization.CultureInfo("pt-BR"));
+
+            // Agora já tenta salvar sem erro de formato
+            decimal valor;
+            if (!decimal.TryParse(ValorPagoPlano.Text, System.Globalization.NumberStyles.Number, new System.Globalization.CultureInfo("pt-BR"), out valor))
+            {
+                Response.Write("<script>alert('Valor do plano inválido');</script>");
+                return;
+            }
+
+            int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(valor);
+
+            EnviarInformacoes.Visible = true;
         }
 
         private int ContarSelecionados(CheckBoxList cbl)
@@ -427,6 +437,32 @@ namespace BJJGerenciamento.UI
 
             return new DateTime(ano, mes, diaFinal);
         }
+        private void CarregarAdesoes()
+        {
+            var adesoes = new PlanoDAL().ListarTodasAdesoes();
+            ddlAdesao.DataSource = adesoes;
+            ddlAdesao.DataTextField = "Nomeadesao"; // ou outra propriedade da adesão
+            ddlAdesao.DataValueField = "IdAdesao";
+            ddlAdesao.DataBind();
+            ddlAdesao.Items.Insert(0, new ListItem("-- Selecione uma adesão --", "0"));
+        }
+        protected void ddlAdesao_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int idAdesao = Convert.ToInt32(ddlAdesao.SelectedValue);
+            if (idAdesao > 0)
+            {
+                var planos = new PlanoDAL().BuscarPlanosPorAdesao(idAdesao);
+
+                ddPlanos.Items.Clear();
+                foreach (var plano in planos)
+                {
+                   ddPlanos.Items.Add(new ListItem(plano.Nome, plano.IdPlano.ToString()));
+                }
+            }
+        }
+
+
+
 
 
     }

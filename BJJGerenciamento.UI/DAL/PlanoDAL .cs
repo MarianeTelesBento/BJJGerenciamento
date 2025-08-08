@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.ConstrainedExecution;
 using System.Web;
 using BJJGerenciamento.UI.Models;
@@ -37,14 +38,14 @@ namespace BJJGerenciamento.UI.DAL
                 }
             }
         }
-        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre, int diaVencimento, DateTime dataProximaCobranca)
+        public int CadastrarPlanoAluno(int idAlunos, int idDia, int idHorario, int idDetalhe, int idPlanoAlunoValor, bool passeLivre, int diaVencimento, DateTime dataProximaCobranca, int? idAdesao)
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = @"INSERT INTO TBPlanoAluno 
-                         (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento, DataProximaCobranca)
+                         (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento, DataProximaCobranca,  IdAdesao)
                          VALUES 
-                         (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento, @DataProximaCobranca)";
+                         (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento, @DataProximaCobranca, @IdAdesao)";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -56,6 +57,8 @@ namespace BJJGerenciamento.UI.DAL
                     cmd.Parameters.AddWithValue("@PasseLivre", passeLivre);
                     cmd.Parameters.AddWithValue("@DiaVencimento", diaVencimento);
                     cmd.Parameters.AddWithValue("@DataProximaCobranca", dataProximaCobranca);
+                    cmd.Parameters.AddWithValue("@IdAdesao", idAdesao.HasValue ? (object)idAdesao.Value : DBNull.Value);
+
 
                     con.Open();
                     return Convert.ToInt32(cmd.ExecuteNonQuery());
@@ -167,7 +170,8 @@ namespace BJJGerenciamento.UI.DAL
             List<PlanoAlunoModels> planoAlunos = new List<PlanoAlunoModels>();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"SELECT 
+                string query = @"
+                SELECT 
                     pa.IdPlanoAluno, 
                     pa.IdAluno,
                     a.Nome, 
@@ -177,42 +181,56 @@ namespace BJJGerenciamento.UI.DAL
                     pa.IdDetalhe, 
                     pa.IdPlanoAlunoValor,
                     pa.PasseLivre,
-                    pa.DiaVencimento,  
+                    pa.DiaVencimento, 
                     d.QtsDias, 
                     d.Mensalidade, 
                     h.HorarioInicio, 
-                    h.HorarioFim
-                FROM TBPlanoAluno pa
+                    h.HorarioFim,
+                    ad.NomeAdesao,
+                    f.QtdDiasPermitidos,
+                    f.Mensalidade AS MensalidadeAdesao
+                 FROM TBPlanoAluno pa
                 INNER JOIN TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
                 INNER JOIN TBHora h ON pa.IdHorario = h.IdHora
                 INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
-                WHERE a.IdMatricula = @IdMatricula;";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@IdMatricula", idMatricula);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    PlanoAlunoModels planoAluno = new PlanoAlunoModels()
-                    {
-                        idPlanoAluno = reader.GetInt32(0),
-                        idAlunos = reader.GetInt32(1),
-                        Nome = reader.GetString(2),
-                        Sobrenome = reader.GetString(3),
-                        idDia = reader.GetInt32(4),
-                        idHorario = reader.GetInt32(5),
-                        idDetalhe = reader.GetInt32(6),
-                        idPlanoAlunoValor = reader.GetInt32(7),
-                        passeLivre = reader.GetBoolean(8),
-                        DiaVencimento = reader.GetInt32(9),
-                        qtdDias = reader.GetInt32(10),
-                        mensalidade = reader.GetDecimal(11),
-                        horarioInicio = reader.GetTimeSpan(12).ToString(@"hh\:mm"),
-                        horarioFim = reader.GetTimeSpan(13).ToString(@"hh\:mm")
-                    };
-                    planoAlunos.Add(planoAluno);
-                }
+                LEFT JOIN TBAdesao ad ON pa.IdAdesao = ad.IdAdesao  -- ALTERADO para LEFT JOIN
+                LEFT JOIN TBAdesaoFrequencias f ON ad.IdAdesao = f.IdAdesao AND d.QtsDias = f.QtdDiasPermitidos
+                WHERE a.IdMatricula = @IdMatricula;
+            ";
 
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdMatricula", idMatricula);
+                    con.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            PlanoAlunoModels planoAluno = new PlanoAlunoModels()
+                            {
+                                idPlanoAluno = reader.GetInt32(reader.GetOrdinal("IdPlanoAluno")),
+                                idAlunos = reader.GetInt32(reader.GetOrdinal("IdAluno")),
+                                Nome = reader.GetString(reader.GetOrdinal("Nome")),
+                                Sobrenome = reader.GetString(reader.GetOrdinal("Sobrenome")),
+                                idDia = reader.GetInt32(reader.GetOrdinal("IdDia")),
+                                idHorario = reader.GetInt32(reader.GetOrdinal("IdHorario")),
+                                idDetalhe = reader.GetInt32(reader.GetOrdinal("IdDetalhe")),
+                                idPlanoAlunoValor = reader.GetInt32(reader.GetOrdinal("IdPlanoAlunoValor")),
+                                passeLivre = reader.GetBoolean(reader.GetOrdinal("PasseLivre")),
+                                DiaVencimento = reader.GetInt32(reader.GetOrdinal("DiaVencimento")),
+                                qtdDias = reader.GetInt32(reader.GetOrdinal("QtsDias")),
+                                mensalidade = reader.GetDecimal(reader.GetOrdinal("Mensalidade")),
+                                horarioInicio = reader.GetTimeSpan(reader.GetOrdinal("HorarioInicio")).ToString(@"hh\:mm"),
+                                horarioFim = reader.GetTimeSpan(reader.GetOrdinal("HorarioFim")).ToString(@"hh\:mm"),
+                                NomeAdesao = reader.IsDBNull(reader.GetOrdinal("NomeAdesao")) ? null : reader.GetString(reader.GetOrdinal("NomeAdesao")),
+                                QtdDiasPermitidos = reader.IsDBNull(reader.GetOrdinal("QtdDiasPermitidos")) ? 0 : reader.GetInt32(reader.GetOrdinal("QtdDiasPermitidos")),
+                                MensalidadeAdesao = reader.IsDBNull(reader.GetOrdinal("MensalidadeAdesao")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MensalidadeAdesao"))
+                            };
+                            planoAlunos.Add(planoAluno);
+                        }
+                    }
+                }
             }
             return planoAlunos;
         }
@@ -1054,8 +1072,8 @@ namespace BJJGerenciamento.UI.DAL
             {
                 conn.Open();
 
-                // Consulta de adesões
-                string sqlAdesoes = "SELECT * FROM TBAdesao";
+                // Consulta apenas ID e Nome da adesão
+                string sqlAdesoes = "SELECT IdAdesao, NomeAdesao FROM TBAdesao";
                 SqlCommand cmdAdesoes = new SqlCommand(sqlAdesoes, conn);
                 SqlDataReader readerAdesoes = cmdAdesoes.ExecuteReader();
 
@@ -1065,8 +1083,6 @@ namespace BJJGerenciamento.UI.DAL
                     {
                         IdAdesao = (int)readerAdesoes["IdAdesao"],
                         NomeAdesao = readerAdesoes["NomeAdesao"].ToString(),
-                        QtdDiasPermitidos = (int)readerAdesoes["QtdDiasPermitidos"],
-                        Mensalidade = (decimal)readerAdesoes["Mensalidade"],
                         Frequencias = new List<FrequenciaAdesaoModels>()
                     };
 
@@ -1075,7 +1091,7 @@ namespace BJJGerenciamento.UI.DAL
 
                 readerAdesoes.Close();
 
-                // Frequências
+                // Frequências associadas a cada adesão
                 string sqlFreq = "SELECT * FROM TBAdesaoFrequencias";
                 SqlCommand cmdFreq = new SqlCommand(sqlFreq, conn);
                 SqlDataReader readerFreq = cmdFreq.ExecuteReader();
@@ -1094,7 +1110,6 @@ namespace BJJGerenciamento.UI.DAL
                             QtdDiasPermitidos = (int)readerFreq["QtdDiasPermitidos"],
                             Mensalidade = (decimal)readerFreq["Mensalidade"]
                         });
-
                     }
                 }
 
@@ -1103,9 +1118,6 @@ namespace BJJGerenciamento.UI.DAL
 
             return lista;
         }
-
-
-
 
         public DataTable ListarTurmasAdesao()
         {
@@ -1327,7 +1339,7 @@ namespace BJJGerenciamento.UI.DAL
                 conn.Open();
 
                 // Buscar adesão principal
-                string sqlAdesao = @"SELECT IdAdesao, NomeAdesao, Mensalidade, QtdDiasPermitidos 
+                string sqlAdesao = @"SELECT IdAdesao, NomeAdesao
                              FROM TBAdesao 
                              WHERE IdAdesao = @IdAdesao";
 
@@ -1343,8 +1355,6 @@ namespace BJJGerenciamento.UI.DAL
                             {
                                 IdAdesao = (int)reader["IdAdesao"],
                                 NomeAdesao = reader["NomeAdesao"].ToString(),
-                                Mensalidade = (decimal)reader["Mensalidade"],
-                                QtdDiasPermitidos = (int)reader["QtdDiasPermitidos"],
                                 Frequencias = new List<FrequenciaAdesaoModels>(),
                                 IdsPlanos = new List<int>()
                             };
@@ -1355,7 +1365,7 @@ namespace BJJGerenciamento.UI.DAL
                 if (adesao == null)
                     return null;
 
-                // Buscar frequências vinculadas
+                // Buscar frequências vinculadas (agora sim com Mensalidade e QtdDiasPermitidos)
                 string sqlFreq = @"SELECT QtdDiasPermitidos, Mensalidade 
                            FROM TBAdesaoFrequencias 
                            WHERE IdAdesao = @IdAdesao";
@@ -1398,6 +1408,85 @@ namespace BJJGerenciamento.UI.DAL
 
             return adesao;
         }
+
+
+        public List<AdesaoModels> ListarTodasAdesoes()
+            {
+                List<AdesaoModels> lista = new List<AdesaoModels>();
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT IdAdesao, NomeAdesao FROM TBAdesao";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        lista.Add(new AdesaoModels
+                        {
+                            IdAdesao = Convert.ToInt32(reader["IdAdesao"]),
+                            NomeAdesao = reader["NomeAdesao"].ToString()
+                        });
+                    }
+                }
+
+                return lista;
+        }
+        public List<PlanoModels> BuscarPlanosPorAdesao(int idAdesao)
+        {
+            List<PlanoModels> lista = new List<PlanoModels>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+
+            {
+                string sql = @"SELECT p.IdPlano, p.Nome
+                       FROM TBPlanos p
+                       INNER JOIN TBAdesaoPlanos ap ON ap.IdPlano = p.IdPlano
+                       WHERE ap.IdAdesao = @IdAdesao";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                con.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    PlanoModels plano = new PlanoModels
+                    {
+                        IdPlano = Convert.ToInt32(dr["IdPlano"]),
+                        Nome = dr["Nome"].ToString()
+                    };
+                    lista.Add(plano);
+                }
+            }
+            return lista;
+        }
+        public decimal BuscarValorPorAdesaoEFrequencia(int idAdesao, int frequencia)
+        {
+            decimal valor = 0;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT Mensalidade FROM TBAdesaoFrequencias
+                         WHERE IdAdesao = @IdAdesao AND QtdDiasPermitidos = @QtdDiasPermitidos;";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                cmd.Parameters.AddWithValue("@QtdDiasPermitidos", frequencia);
+
+                con.Open();
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                    valor = Convert.ToDecimal(result);
+            }
+
+            return valor;
+        }
+
+
+
+
+
 
 
 
