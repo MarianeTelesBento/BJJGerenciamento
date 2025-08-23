@@ -26,6 +26,9 @@ namespace BJJGerenciamento.UI.Models
                 return string.Join(", ", Frequencias.Select(f => $"{f.QtdDiasPermitidos}x: R$ {f.Mensalidade.ToString("N2")}"));
             }
         }
+        public bool IsVip { get; set; }
+        public decimal ValorVip { get; set; }
+
 
     }
 

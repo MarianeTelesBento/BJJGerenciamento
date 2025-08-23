@@ -1018,41 +1018,63 @@ namespace BJJGerenciamento.UI.DAL
 
                 try
                 {
-                    decimal menorMensalidade = adesao.Frequencias.Min(f => f.Mensalidade);
-
+                    // Passo 1: Inserir na TBAdesao (correto, como no seu screenshot)
                     string sqlAdesao = @"
-                INSERT INTO TBAdesao (NomeAdesao, Mensalidade, QtdDiasPermitidos)
-                VALUES (@NomeAdesao, @Mensalidade, @QtdDiasPermitidos);
-                SELECT SCOPE_IDENTITY();";
+            INSERT INTO TBAdesao (NomeAdesao)
+            VALUES (@NomeAdesao);
+            SELECT SCOPE_IDENTITY();";
 
-                    SqlCommand cmdAdesao = new SqlCommand(sqlAdesao, conn, transaction);
-                    cmdAdesao.Parameters.AddWithValue("@NomeAdesao", adesao.NomeAdesao);
-                    cmdAdesao.Parameters.AddWithValue("@Mensalidade", menorMensalidade);
-                    cmdAdesao.Parameters.AddWithValue("@QtdDiasPermitidos", adesao.QtdDiasPermitidos);
-
-                    int idAdesao = Convert.ToInt32(cmdAdesao.ExecuteScalar());
-
-                    foreach (var freq in adesao.Frequencias)
+                    using (SqlCommand cmdAdesao = new SqlCommand(sqlAdesao, conn, transaction))
                     {
-                        string sqlFreq = @"INSERT INTO TBAdesaoFrequencias (IdAdesao, QtdDiasPermitidos, Mensalidade)
-                                   VALUES (@IdAdesao, @QtdDiasPermitidos, @Mensalidade)";
-                        SqlCommand cmdFreq = new SqlCommand(sqlFreq, conn, transaction);
-                        cmdFreq.Parameters.AddWithValue("@IdAdesao", idAdesao);
-                        cmdFreq.Parameters.AddWithValue("@QtdDiasPermitidos", freq.QtdDiasPermitidos);
-                        cmdFreq.Parameters.AddWithValue("@Mensalidade", freq.Mensalidade);
-                        cmdFreq.ExecuteNonQuery();
-                    }
+                        cmdAdesao.Parameters.AddWithValue("@NomeAdesao", adesao.NomeAdesao);
+                        int idAdesao = Convert.ToInt32(cmdAdesao.ExecuteScalar());
 
-                    foreach (int idPlano in adesao.IdsPlanos)
-                    {
-                        string sqlVinculo = "INSERT INTO TBAdesaoPlanos (IdAdesao, IdPlano) VALUES (@IdAdesao, @IdPlano)";
-                        SqlCommand cmdVinculo = new SqlCommand(sqlVinculo, conn, transaction);
-                        cmdVinculo.Parameters.AddWithValue("@IdAdesao", idAdesao);
-                        cmdVinculo.Parameters.AddWithValue("@IdPlano", idPlano);
-                        cmdVinculo.ExecuteNonQuery();
-                    }
+                        // Passo 2: Inserir cada frequência com os dados de VIP na TBAdesaoFrequencias
+                        foreach (var freq in adesao.Frequencias)
+                        {
+                            // A sua query original estava correta no conceito.
+                            string sqlFreq = @"
+                    INSERT INTO TBAdesaoFrequencias (IdAdesao, QtdDiasPermitidos, Mensalidade, IsVip, ValorVip)
+                    VALUES (@IdAdesao, @QtdDiasPermitidos, @Mensalidade, @IsVip, @ValorVip)";
 
-                    transaction.Commit();
+                            using (SqlCommand cmdFreq = new SqlCommand(sqlFreq, conn, transaction))
+                            {
+                                // Parâmetros que vêm de cada frequência
+                                cmdFreq.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                                cmdFreq.Parameters.AddWithValue("@QtdDiasPermitidos", freq.QtdDiasPermitidos);
+                                cmdFreq.Parameters.AddWithValue("@Mensalidade", freq.Mensalidade);
+
+                                // **** A CORREÇÃO REAL É AQUI ****
+                                // Os valores de VIP vêm do objeto 'adesao' principal, e não de cada 'freq'.
+                                cmdFreq.Parameters.AddWithValue("@IsVip", adesao.IsVip);
+
+                                if (adesao.ValorVip > 0)
+                                {
+                                    cmdFreq.Parameters.AddWithValue("@ValorVip", adesao.ValorVip);
+                                }
+                                else
+                                {
+                                    cmdFreq.Parameters.AddWithValue("@ValorVip", DBNull.Value);
+                                }
+
+                                cmdFreq.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Passo 3: Vincular os planos (turmas)
+                        foreach (int idPlano in adesao.IdsPlanos)
+                        {
+                            string sqlVinculo = "INSERT INTO TBAdesaoPlanos (IdAdesao, IdPlano) VALUES (@IdAdesao, @IdPlano)";
+                            using (SqlCommand cmdVinculo = new SqlCommand(sqlVinculo, conn, transaction))
+                            {
+                                cmdVinculo.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                                cmdVinculo.Parameters.AddWithValue("@IdPlano", idPlano);
+                                cmdVinculo.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
                 }
                 catch
                 {
@@ -1064,59 +1086,67 @@ namespace BJJGerenciamento.UI.DAL
 
 
 
+        // Coloque este método dentro da sua classe PlanoDAL.cs
+
         public List<AdesaoModels> ListarAdesoesComFrequencias()
         {
-            List<AdesaoModels> lista = new List<AdesaoModels>();
+            var adesoes = new Dictionary<int, AdesaoModels>();
+            string query = @"
+        SELECT 
+            a.IdAdesao, 
+            a.NomeAdesao, 
+            f.IdFrequencia, 
+            f.QtdDiasPermitidos, 
+            f.Mensalidade,
+            f.IsVip,
+            f.ValorVip
+        FROM 
+            TBAdesao a
+        LEFT JOIN 
+            TBAdesaoFrequencias f ON a.IdAdesao = f.IdAdesao
+        ORDER BY 
+            a.IdAdesao, f.QtdDiasPermitidos;";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString)) // Certifique-se que connectionString está acessível
             {
-                conn.Open();
-
-                // Consulta apenas ID e Nome da adesão
-                string sqlAdesoes = "SELECT IdAdesao, NomeAdesao FROM TBAdesao";
-                SqlCommand cmdAdesoes = new SqlCommand(sqlAdesoes, conn);
-                SqlDataReader readerAdesoes = cmdAdesoes.ExecuteReader();
-
-                while (readerAdesoes.Read())
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    AdesaoModels adesao = new AdesaoModels
+                    conn.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        IdAdesao = (int)readerAdesoes["IdAdesao"],
-                        NomeAdesao = readerAdesoes["NomeAdesao"].ToString(),
-                        Frequencias = new List<FrequenciaAdesaoModels>()
-                    };
-
-                    lista.Add(adesao);
-                }
-
-                readerAdesoes.Close();
-
-                // Frequências associadas a cada adesão
-                string sqlFreq = "SELECT * FROM TBAdesaoFrequencias";
-                SqlCommand cmdFreq = new SqlCommand(sqlFreq, conn);
-                SqlDataReader readerFreq = cmdFreq.ExecuteReader();
-
-                while (readerFreq.Read())
-                {
-                    int idAdesao = (int)readerFreq["IdAdesao"];
-                    var adesao = lista.FirstOrDefault(a => a.IdAdesao == idAdesao);
-
-                    if (adesao != null)
-                    {
-                        adesao.Frequencias.Add(new FrequenciaAdesaoModels
+                        while (reader.Read())
                         {
-                            IdFrequencia = (int)readerFreq["IdFrequencia"],
-                            IdAdesao = idAdesao,
-                            QtdDiasPermitidos = (int)readerFreq["QtdDiasPermitidos"],
-                            Mensalidade = (decimal)readerFreq["Mensalidade"]
-                        });
+                            int idAdesao = reader.GetInt32(reader.GetOrdinal("IdAdesao"));
+                            AdesaoModels adesao;
+
+                            if (!adesoes.TryGetValue(idAdesao, out adesao))
+                            {
+                                adesao = new AdesaoModels
+                                {
+                                    IdAdesao = idAdesao,
+                                    NomeAdesao = reader["NomeAdesao"].ToString(),
+                                    // AQUI ESTÁ A MÁGICA: Populamos as propriedades do objeto principal
+                                    IsVip = reader["IsVip"] != DBNull.Value && reader.GetBoolean(reader.GetOrdinal("IsVip")),
+                                    ValorVip = reader["ValorVip"] != DBNull.Value ? reader.GetDecimal(reader.GetOrdinal("ValorVip")) : 0,
+                                    Frequencias = new List<FrequenciaAdesaoModels>()
+                                };
+                                adesoes.Add(idAdesao, adesao);
+                            }
+
+                            if (reader["IdFrequencia"] != DBNull.Value)
+                            {
+                                adesao.Frequencias.Add(new FrequenciaAdesaoModels
+                                {
+                                    IdFrequencia = reader.GetInt32(reader.GetOrdinal("IdFrequencia")),
+                                    QtdDiasPermitidos = reader.GetInt32(reader.GetOrdinal("QtdDiasPermitidos")),
+                                    Mensalidade = reader.GetDecimal(reader.GetOrdinal("Mensalidade"))
+                                });
+                            }
+                        }
                     }
                 }
-
-                readerFreq.Close();
             }
-
-            return lista;
+            return adesoes.Values.ToList();
         }
 
         public DataTable ListarTurmasAdesao()
@@ -1131,35 +1161,43 @@ namespace BJJGerenciamento.UI.DAL
             }
         }
 
+        // PlanoDAL.cs
         public void ExcluirAdesao(int idAdesao)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-
+                SqlTransaction transaction = conn.BeginTransaction();
                 try
                 {
-                    // 1. Apagar da TBAdesaoFrequencias
-                    string sqlFrequencias = "DELETE FROM TBAdesaoFrequencias WHERE IdAdesao = @Id";
-                    SqlCommand cmdFrequencias = new SqlCommand(sqlFrequencias, conn);
-                    cmdFrequencias.Parameters.AddWithValue("@Id", idAdesao);
-                    cmdFrequencias.ExecuteNonQuery();
+                    string sqlPlanos = "DELETE FROM TBAdesaoPlanos WHERE IdAdesao = @IdAdesao";
+                    using (SqlCommand cmd = new SqlCommand(sqlPlanos, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    // 2. Apagar da TBAdesaoPlanos
-                    string sqlVinculos = "DELETE FROM TBAdesaoPlanos WHERE IdAdesao = @Id";
-                    SqlCommand cmdVinculos = new SqlCommand(sqlVinculos, conn);
-                    cmdVinculos.Parameters.AddWithValue("@Id", idAdesao);
-                    cmdVinculos.ExecuteNonQuery();
+                    string sqlFrequencias = "DELETE FROM TBAdesaoFrequencias WHERE IdAdesao = @IdAdesao";
+                    using (SqlCommand cmd = new SqlCommand(sqlFrequencias, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                        cmd.ExecuteNonQuery();
+                    }
 
-                    // 3. Por fim, apagar a adesão
-                    string sqlAdesao = "DELETE FROM TBAdesao WHERE IdAdesao = @Id";
-                    SqlCommand cmdAdesao = new SqlCommand(sqlAdesao, conn);
-                    cmdAdesao.Parameters.AddWithValue("@Id", idAdesao);
-                    cmdAdesao.ExecuteNonQuery();
+                    // Finalmente, deleta da tabela principal
+                    string sqlAdesao = "DELETE FROM TBAdesao WHERE IdAdesao = @IdAdesao";
+                    using (SqlCommand cmd = new SqlCommand(sqlAdesao, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    HttpContext.Current.Response.Write("Erro: " + ex.Message);
+                    transaction.Rollback();
+                    throw;
                 }
             }
         }
@@ -1169,164 +1207,91 @@ namespace BJJGerenciamento.UI.DAL
             foreach (var freq in frequencias)
             {
                 string sql = @"
-        INSERT INTO TBAdesaoFrequencias (IdAdesao, QtdDias, Mensalidade)
-        VALUES (@IdAdesao, @QtdDias, @Mensalidade)";
+        INSERT INTO TBAdesaoFrequencias (IdAdesao, QtdDias, Mensalidade, IsVip, ValorVip)
+        VALUES (@IdAdesao, @QtdDias, @Mensalidade, @IsVip, @ValorVip)";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn, transaction))
                 {
                     cmd.Parameters.AddWithValue("@IdAdesao", freq.IdAdesao);
                     cmd.Parameters.AddWithValue("@QtdDias", freq.QtdDiasPermitidos);
                     cmd.Parameters.AddWithValue("@Mensalidade", freq.Mensalidade);
+                    cmd.Parameters.AddWithValue("@IsVip", freq.IsVip); // bool aceita null diretamente
+                    cmd.Parameters.AddWithValue("@ValorVip", (object)freq.ValorVip ?? DBNull.Value);
+
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+        // Coloque este método dentro da sua classe PlanoDAL.cs
         public void AtualizarAdesao(AdesaoModels adesao)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlTransaction tx = conn.BeginTransaction();
+                SqlTransaction transaction = conn.BeginTransaction();
 
                 try
                 {
-                    // 1. Atualiza o Nome da Adesão
-                    string sqlUpdateAdesao = @"UPDATE TBAdesao SET NomeAdesao = @Nome WHERE IdAdesao = @Id";
-                    using (SqlCommand cmd = new SqlCommand(sqlUpdateAdesao, conn, tx))
+                    // 1. Atualiza o nome na tabela principal
+                    string sqlUpdateAdesao = "UPDATE TBAdesao SET NomeAdesao = @NomeAdesao WHERE IdAdesao = @IdAdesao";
+                    using (SqlCommand cmdUpdate = new SqlCommand(sqlUpdateAdesao, conn, transaction))
                     {
-                        cmd.Parameters.AddWithValue("@Nome", adesao.NomeAdesao);
-                        cmd.Parameters.AddWithValue("@Id", adesao.IdAdesao);
-                        cmd.ExecuteNonQuery();
+                        cmdUpdate.Parameters.AddWithValue("@NomeAdesao", adesao.NomeAdesao);
+                        cmdUpdate.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
+                        cmdUpdate.ExecuteNonQuery();
                     }
 
-                    // --- Lógica para Frequências (Inserir, Atualizar, Excluir) ---
-
-                    // Pega as frequências que já existem no banco para esta adesão
-                    List<FrequenciaAdesaoModels> frequenciasExistentes = new List<FrequenciaAdesaoModels>();
-                    string sqlSelectFrequencias = "SELECT IdFrequencia, QtdDiasPermitidos, Mensalidade FROM TBAdesaoFrequencias WHERE IdAdesao = @IdAdesao";
-                    using (SqlCommand cmd = new SqlCommand(sqlSelectFrequencias, conn, tx))
+                    // 2. Deleta as frequências antigas
+                    string sqlDeleteFreq = "DELETE FROM TBAdesaoFrequencias WHERE IdAdesao = @IdAdesao";
+                    using (SqlCommand cmdDelete = new SqlCommand(sqlDeleteFreq, conn, transaction))
                     {
-                        cmd.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
-                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        cmdDelete.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
+                        cmdDelete.ExecuteNonQuery();
+                    }
+
+                    // 3. Insere as novas frequências (com os dados de VIP atualizados)
+                    foreach (var freq in adesao.Frequencias)
+                    {
+                        string sqlInsertFreq = @"
+                    INSERT INTO TBAdesaoFrequencias (IdAdesao, QtdDiasPermitidos, Mensalidade, IsVip, ValorVip)
+                    VALUES (@IdAdesao, @QtdDiasPermitidos, @Mensalidade, @IsVip, @ValorVip)";
+                        using (SqlCommand cmdInsert = new SqlCommand(sqlInsertFreq, conn, transaction))
                         {
-                            while (reader.Read())
-                            {
-                                frequenciasExistentes.Add(new FrequenciaAdesaoModels
-                                {
-                                    IdFrequencia = reader.GetInt32(0),
-                                    QtdDiasPermitidos = reader.GetInt32(1),
-                                    Mensalidade = reader.GetDecimal(2)
-                                });
-                            }
+                            cmdInsert.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
+                            cmdInsert.Parameters.AddWithValue("@QtdDiasPermitidos", freq.QtdDiasPermitidos);
+                            cmdInsert.Parameters.AddWithValue("@Mensalidade", freq.Mensalidade);
+                            cmdInsert.Parameters.AddWithValue("@IsVip", adesao.IsVip);
+                            cmdInsert.Parameters.AddWithValue("@ValorVip", adesao.ValorVip > 0 ? (object)adesao.ValorVip : DBNull.Value);
+                            cmdInsert.ExecuteNonQuery();
                         }
                     }
 
-                    // Frequências para EXCLUIR: Estão no banco, mas não na nova lista
-                    var frequenciasParaExcluir = frequenciasExistentes
-                        .Where(fEx => !adesao.Frequencias.Any(fNova => fNova.IdFrequencia == fEx.IdFrequencia))
-                        .ToList();
-
-                    foreach (var freqExcluir in frequenciasParaExcluir)
+                    // 4. Deleta os vínculos de planos antigos
+                    string sqlDeletePlanos = "DELETE FROM TBAdesaoPlanos WHERE IdAdesao = @IdAdesao";
+                    using (SqlCommand cmdDelete = new SqlCommand(sqlDeletePlanos, conn, transaction))
                     {
-                        using (SqlCommand cmd = new SqlCommand("DELETE FROM TBAdesaoFrequencias WHERE IdFrequencia = @IdFrequencia", conn, tx))
+                        cmdDelete.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
+                        cmdDelete.ExecuteNonQuery();
+                    }
+
+                    // 5. Insere os novos vínculos de planos
+                    foreach (var idPlano in adesao.IdsPlanos)
+                    {
+                        string sqlInsertPlano = "INSERT INTO TBAdesaoPlanos (IdAdesao, IdPlano) VALUES (@IdAdesao, @IdPlano)";
+                        using (SqlCommand cmdInsert = new SqlCommand(sqlInsertPlano, conn, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@IdFrequencia", freqExcluir.IdFrequencia);
-                            cmd.ExecuteNonQuery();
+                            cmdInsert.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
+                            cmdInsert.Parameters.AddWithValue("@IdPlano", idPlano);
+                            cmdInsert.ExecuteNonQuery();
                         }
                     }
 
-                    // Frequências para INSERIR ou ATUALIZAR
-                    foreach (var freqNova in adesao.Frequencias)
-                    {
-                        // Verifica se a frequência já existe (tem um IdFrequencia e foi encontrada no banco)
-                        if (freqNova.IdFrequencia > 0 && frequenciasExistentes.Any(fEx => fEx.IdFrequencia == freqNova.IdFrequencia))
-                        {
-                            // ATUALIZAR frequência existente
-                            string sqlUpdateFrequencia = @"
-                            UPDATE TBAdesaoFrequencias
-                            SET QtdDiasPermitidos = @Qtd, Mensalidade = @Valor
-                            WHERE IdFrequencia = @IdFrequencia";
-                            using (SqlCommand cmd = new SqlCommand(sqlUpdateFrequencia, conn, tx))
-                            {
-                                cmd.Parameters.AddWithValue("@IdFrequencia", freqNova.IdFrequencia);
-                                cmd.Parameters.AddWithValue("@Qtd", freqNova.QtdDiasPermitidos);
-                                cmd.Parameters.AddWithValue("@Valor", freqNova.Mensalidade);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        else
-                        {
-                            // INSERIR nova frequência (não tem IdFrequencia ou não existia no banco)
-                            string sqlInsertFrequencia = @"
-                            INSERT INTO TBAdesaoFrequencias (IdAdesao, QtdDiasPermitidos, Mensalidade)
-                            VALUES (@IdAdesao, @Qtd, @Valor)";
-                            using (SqlCommand cmd = new SqlCommand(sqlInsertFrequencia, conn, tx))
-                            {
-                                cmd.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
-                                cmd.Parameters.AddWithValue("@Qtd", freqNova.QtdDiasPermitidos);
-                                cmd.Parameters.AddWithValue("@Valor", freqNova.Mensalidade);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-
-                    // --- Lógica para Planos (Inserir, Excluir) ---
-                    // Para planos, como geralmente é apenas o IdPlano, a lógica de diferença é mais simples.
-
-                    // Pega os IDs dos planos que já existem no banco para esta adesão
-                    List<int> planosExistentes = new List<int>();
-                    string sqlSelectPlanos = "SELECT IdPlano FROM TBAdesaoPlanos WHERE IdAdesao = @IdAdesao";
-                    using (SqlCommand cmd = new SqlCommand(sqlSelectPlanos, conn, tx))
-                    {
-                        cmd.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                planosExistentes.Add(reader.GetInt32(0));
-                            }
-                        }
-                    }
-
-                    // Planos para EXCLUIR: Estão no banco, mas não na nova lista
-                    var planosParaExcluir = planosExistentes
-                        .Where(pEx => !adesao.IdsPlanos.Contains(pEx))
-                        .ToList();
-
-                    foreach (var planoExcluir in planosParaExcluir)
-                    {
-                        using (SqlCommand cmd = new SqlCommand("DELETE FROM TBAdesaoPlanos WHERE IdAdesao = @IdAdesao AND IdPlano = @IdPlano", conn, tx))
-                        {
-                            cmd.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
-                            cmd.Parameters.AddWithValue("@IdPlano", planoExcluir);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    // Planos para INSERIR: Estão na nova lista, mas não no banco
-                    var planosParaInserir = adesao.IdsPlanos
-                        .Where(pNovo => !planosExistentes.Contains(pNovo))
-                        .ToList();
-
-                    foreach (var idPlano in planosParaInserir)
-                    {
-                        using (SqlCommand cmd = new SqlCommand("INSERT INTO TBAdesaoPlanos (IdAdesao, IdPlano) VALUES (@IdAdesao, @IdPlano)", conn, tx))
-                        {
-                            cmd.Parameters.AddWithValue("@IdAdesao", adesao.IdAdesao);
-                            cmd.Parameters.AddWithValue("@IdPlano", idPlano);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
-                    // Confirma a transação se tudo deu certo
-                    tx.Commit();
+                    transaction.Commit();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    // Em caso de erro, reverte a transação
-                    tx.Rollback();
-                    // Opcional: Logar o erro (ex) para depuração
-                    throw; // Relança a exceção para que o erro seja tratado em um nível superior
+                    transaction.Rollback();
+                    throw;
                 }
             }
         }
@@ -1334,27 +1299,41 @@ namespace BJJGerenciamento.UI.DAL
         {
             AdesaoModels adesao = null;
 
+            // Query que busca a adesão principal e os dados de VIP da primeira frequência encontrada
+            string query = @"
+        SELECT 
+            a.IdAdesao, 
+            a.NomeAdesao, 
+            f.IsVip,
+            f.ValorVip
+        FROM 
+            TBAdesao a
+        LEFT JOIN 
+            TBAdesaoFrequencias f ON a.IdAdesao = f.IdAdesao
+        WHERE 
+            a.IdAdesao = @IdAdesao;
+    ";
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                // Buscar adesão principal
-                string sqlAdesao = @"SELECT IdAdesao, NomeAdesao
-                             FROM TBAdesao 
-                             WHERE IdAdesao = @IdAdesao";
-
-                using (SqlCommand cmd = new SqlCommand(sqlAdesao, conn))
+                // 1. Busca os dados principais e de VIP
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
-
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
+                        // Usamos o 'if' pois esperamos apenas uma linha principal
                         if (reader.Read())
                         {
                             adesao = new AdesaoModels
                             {
-                                IdAdesao = (int)reader["IdAdesao"],
+                                IdAdesao = Convert.ToInt32(reader["IdAdesao"]),
                                 NomeAdesao = reader["NomeAdesao"].ToString(),
+                                // AQUI ESTÁ A CORREÇÃO: Lemos os dados de VIP e populamos o objeto
+                                IsVip = reader["IsVip"] != DBNull.Value && Convert.ToBoolean(reader["IsVip"]),
+                                ValorVip = reader["ValorVip"] != DBNull.Value ? Convert.ToDecimal(reader["ValorVip"]) : 0,
                                 Frequencias = new List<FrequenciaAdesaoModels>(),
                                 IdsPlanos = new List<int>()
                             };
@@ -1362,45 +1341,36 @@ namespace BJJGerenciamento.UI.DAL
                     }
                 }
 
-                if (adesao == null)
-                    return null;
+                if (adesao == null) return null; 
 
-                // Buscar frequências vinculadas (agora sim com Mensalidade e QtdDiasPermitidos)
-                string sqlFreq = @"SELECT QtdDiasPermitidos, Mensalidade 
-                           FROM TBAdesaoFrequencias 
-                           WHERE IdAdesao = @IdAdesao";
-
-                using (SqlCommand cmd = new SqlCommand(sqlFreq, conn))
+                string freqQuery = "SELECT IdFrequencia, QtdDiasPermitidos, Mensalidade FROM TBAdesaoFrequencias WHERE IdAdesao = @IdAdesao";
+                using (SqlCommand cmdFreq = new SqlCommand(freqQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    cmdFreq.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                    using (SqlDataReader readerFreq = cmdFreq.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while (readerFreq.Read())
                         {
                             adesao.Frequencias.Add(new FrequenciaAdesaoModels
                             {
-                                QtdDiasPermitidos = (int)reader["QtdDiasPermitidos"],
-                                Mensalidade = (decimal)reader["Mensalidade"]
+                                IdFrequencia = Convert.ToInt32(readerFreq["IdFrequencia"]),
+                                QtdDiasPermitidos = Convert.ToInt32(readerFreq["QtdDiasPermitidos"]),
+                                Mensalidade = Convert.ToDecimal(readerFreq["Mensalidade"])
                             });
                         }
                     }
                 }
 
-                // Buscar planos vinculados
-                string sqlPlanos = @"SELECT IdPlano 
-                             FROM TBAdesaoPlanos 
-                             WHERE IdAdesao = @IdAdesao";
-
-                using (SqlCommand cmd = new SqlCommand(sqlPlanos, conn))
+                // 3. Busca a lista de planos/turmas associados
+                string planosQuery = "SELECT IdPlano FROM TBAdesaoPlanos WHERE IdAdesao = @IdAdesao";
+                using (SqlCommand cmdPlanos = new SqlCommand(planosQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    cmdPlanos.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                    using (SqlDataReader readerPlanos = cmdPlanos.ExecuteReader())
                     {
-                        while (reader.Read())
+                        while (readerPlanos.Read())
                         {
-                            adesao.IdsPlanos.Add((int)reader["IdPlano"]);
+                            adesao.IdsPlanos.Add(Convert.ToInt32(readerPlanos["IdPlano"]));
                         }
                     }
                 }
@@ -1468,20 +1438,45 @@ namespace BJJGerenciamento.UI.DAL
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = @"SELECT Mensalidade FROM TBAdesaoFrequencias
-                         WHERE IdAdesao = @IdAdesao AND QtdDiasPermitidos = @QtdDiasPermitidos;";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
-                cmd.Parameters.AddWithValue("@QtdDiasPermitidos", frequencia);
 
-                con.Open();
-                object result = cmd.ExecuteScalar();
-                if (result != null)
-                    valor = Convert.ToDecimal(result);
+                string query = @"
+            SELECT
+                CASE WHEN IsVip = 1 THEN ValorVip ELSE Mensalidade END
+            FROM TBAdesaoFrequencias
+            WHERE IdAdesao = @IdAdesao AND QtdDiasPermitidos = @QtdDiasPermitidos;";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                    cmd.Parameters.AddWithValue("@QtdDiasPermitidos", frequencia);
+
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        valor = Convert.ToDecimal(result);
+                    }
+                }
             }
 
             return valor;
         }
+        public bool VerificarAdesaoEmUso(int idAdesao)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM TBPlanoAluno WHERE IdAdesao = @IdAdesao";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                    conn.Open();
+                    int count = (int)cmd.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
 
 
 

@@ -60,6 +60,7 @@ namespace BJJGerenciamento.UI
 
         protected void ddPlanos_SelectedIndexChanged(object sender, EventArgs e)
         {
+             
             pnlSegunda.Visible = false;
             pnlTerca.Visible = false;
             pnlQuarta.Visible = false;

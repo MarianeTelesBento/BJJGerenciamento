@@ -110,173 +110,216 @@
     text-align: left !important;
 }
 </style>
-
 <div class="container mt-4">
-    <h2 class="mb-4">Cadastro de Adesão</h2>
+    <h2 class="mb-4">Cadastro de Adesão</h2>
 
-    <div class="mb-4">
-        <label class="form-label fw-bold">Nome da Adesão</label>
-        <asp:TextBox ID="txtNomeAdesao" runat="server" CssClass="form-control" />
-    </div>
+    <div class="mb-4">
+        <label class="form-label fw-bold">Nome da Adesão</label>
+        <asp:TextBox ID="txtNomeAdesao" runat="server" CssClass="form-control" />
+    </div>
 
-<h4>Dias da Semana:</h4>
-<div class="d-flex gap-3 flex-wrap">
-    <asp:CheckBoxList ID="chkFrequencias" runat="server" CssClass="checkbox-dia-semana" RepeatLayout="Flow" RepeatDirection="Horizontal" />
-</div>
+    <div class="mb-4">
+        <label class="form-label fw-bold">Plano VIP</label>
+        <div class="form-check">
+            <asp:CheckBox ID="chkIsVip" runat="server" CssClass="form-check-input" />
+            <label class="form-check-label" for="<%= chkIsVip.ClientID %>">Ativar plano VIP</label>
+        </div>
+        <div class="mt-2">
+            <label class="form-label fw-bold">Valor Mensal VIP</label>
+            <asp:TextBox ID="txtValorVip" runat="server" CssClass="form-control input-valor-cadastro" placeholder="R$" />
+        </div>
+    </div>
 
-<h4 class="mt-4">Frequência (dias por semana) e Valor</h4>
-<div>
-<% for (int i = 1; i <= 7; i++) { %>
-    Valor para <%= i %>x: <input type="text" name="valor_<%= i %>" id="valor_<%= i %>" class="form-control input-valor-cadastro" /><br />
-<% } %>
+    <h4 class="mt-4">Frequência (dias por semana) e Valor</h4>
+    <div class="d-flex gap-3 flex-wrap">
+        <asp:CheckBoxList ID="chkFrequencias" runat="server" CssClass="checkbox-dia-semana" RepeatLayout="Flow" RepeatDirection="Horizontal" />
+    </div>
 
-</div>
+    <div>
+        <asp:Repeater ID="rptFrequencias" runat="server">
+            <ItemTemplate>
+                <div class="mb-2">
+                    <asp:Label ID="lblFrequencia" runat="server" Text='<%# "Valor para " + Eval("Dias") + "x:" %>' />
+                    <asp:TextBox ID="txtValorFrequencia" runat="server" CssClass="form-control  input-valor-cadastro" placeholder="R$"></asp:TextBox>
+                    <asp:HiddenField ID="hdnFrequenciaId" runat="server" Value='<%# Eval("Dias") %>' />
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </div>
 
-<label class="form-label fw-bold mt-3">Turmas permitidas</label>
-<div class="card-check-group d-flex gap-2 flex-wrap">
-    <asp:CheckBoxList ID="chkListTurmas" runat="server" CssClass="checkbox-turma" RepeatLayout="Flow" RepeatDirection="Horizontal" />
-</div>
-  
-    <asp:Button ID="BtnSalvar" runat="server" Text="Salvar" CssClass="btn btn-success mt-4 mb-3 btn-custom" OnClick="btnSalvar_Click" />
-    <asp:Label ID="lblMensagem" runat="server" CssClass="text-success d-block mb-4" />
+    <label class="form-label fw-bold mt-3">Turmas permitidas</label>
+    <div>
+        <asp:CheckBoxList ID="chkListTurmas" runat="server" CssClass="checkbox-turma" RepeatLayout="Flow" RepeatDirection="Vertical" />
+    </div>
+    
+    <asp:Button ID="BtnSalvar" runat="server" Text="Salvar" CssClass="btn btn-success mt-4 mb-3 btn-custom" OnClick="btnSalvar_Click" />
+    <asp:Label ID="lblMensagem" runat="server" CssClass="text-success d-block mb-4" />
 
-    <hr />
+    <hr />
 
-    <h4 class="mb-3">Adesões Cadastradas</h4>
-    <asp:GridView ID="gridAdesoes" runat="server" AutoGenerateColumns="False" CssClass="table table-striped table-bordered"
-        DataKeyNames="IdAdesao" OnRowCommand="gridAdesoes_RowCommand">
-        <Columns>
-            <asp:BoundField DataField="NomeAdesao" HeaderText="Adesão" />
-            <asp:BoundField DataField="FrequenciasTexto" HeaderText="Frequências e Valores" />
-            <asp:TemplateField>
-                <ItemTemplate>
-                    <asp:Button ID="btnExcluir" runat="server" 
-                        CommandName="Excluir" 
-                        CommandArgument='<%# Eval("IdAdesao") %>' 
-                        Text="Excluir" 
-                        OnClientClick='<%# "abrirModalConfirmar(" + Eval("IdAdesao") + "); return false;" %>' 
+    <h4 class="mb-3">Adesões Cadastradas</h4>
+    <asp:GridView ID="gridAdesoes" runat="server" AutoGenerateColumns="False" CssClass="table table-striped table-bordered"
+        DataKeyNames="IdAdesao" OnRowCommand="gridAdesoes_RowCommand">
+        <Columns>
+            <asp:BoundField DataField="NomeAdesao" HeaderText="Adesão" />
+            <asp:TemplateField HeaderText="Plano VIP">
+                <ItemTemplate>
+                    <asp:Label ID="lblIsVip" runat="server" Text='<%# GetVipText(Eval("IsVip"), Eval("ValorVip")) %>' />
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField HeaderText="Frequências e Valores">
+                <ItemTemplate>
+                    <asp:Label ID="lblFrequencias" runat="server" Text='<%# GetFrequenciasTexto(Eval("Frequencias")) %>' />
+                </ItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField>
+                <ItemTemplate>
+                    <asp:Button ID="btnExcluir" runat="server"
+                        CommandName="Excluir"
+                        CommandArgument='<%# Eval("IdAdesao") %>'
+                        Text="Excluir"
+                        OnClientClick='<%# "abrirModalConfirmar(" + Eval("IdAdesao") + "); return false;" %>'
                         CssClass="btn btn-danger btn-custom" />
-                    <asp:Button ID="btnEditar" runat="server"
-                        Text="Editar"
-                        CommandName="Editar"
-                        CommandArgument='<%# Eval("IdAdesao") %>'
-                        CssClass="btn btn-warning btn-custom" />
-                </ItemTemplate>
-            </asp:TemplateField>
-        </Columns>
-    </asp:GridView>
+                    <asp:Button ID="btnEditar" runat="server"
+                        Text="Editar"
+                        CommandName="Editar"
+                        CommandArgument='<%# Eval("IdAdesao") %>'
+                        CssClass="btn btn-warning btn-custom" />
+                </ItemTemplate>
+            </asp:TemplateField>
+        </Columns>
+    </asp:GridView>
 </div>
 
 <div class="modal fade" id="modalConfirmarExclusao" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="modalLabel">Confirmar Exclusão</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-      </div>
-      <div class="modal-body">
-        Tem certeza que deseja excluir esta adesão?
-      </div>
-      <div class="modal-footer">
-        <asp:HiddenField ID="hdnIdAdesaoExcluir" runat="server" />
-        <button type="button" class="btn btn-secondary btn-custom" data-bs-dismiss="modal">Cancelar</button>
-        <asp:Button ID="btnConfirmarExclusao" runat="server" CssClass="btn btn-danger btn-custom" Text="Excluir" OnClick="btnConfirmarExclusao_Click" />
-      </div>
-    </div>
-  </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir esta adesão?
+            </div>
+            <div class="modal-footer">
+                <asp:HiddenField ID="hdnIdAdesaoExcluir" runat="server" />
+                <button type="button" class="btn btn-secondary btn-custom" data-bs-dismiss="modal">Cancelar</button>
+                <asp:Button ID="btnConfirmarExclusao" runat="server" CssClass="btn btn-danger btn-custom" Text="Excluir" OnClick="btnConfirmarExclusao_Click" />
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="modal fade" id="modalEditarAdesao" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-l" role="document">
-    <div class="modal-content p-3">
-      <div class="modal-header">
-        <h5 class="modal-title">Editar Adesão</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+<div class="modal fade" id="modalEditarAdesao" tabindex="-1" role="dialog" aria-labelledby="modalEditarAdesaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-mg" role="document"> <%-- Aumentei o tamanho para modal-lg para melhor visualização --%>
+        <div class="modal-content p-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarAdesaoLabel">Editar Adesão</h5>
+                <%-- CORREÇÃO AQUI: data-bs-dismiss em vez de data-dismiss --%>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-      <div class="modal-body">
-        <asp:HiddenField ID="hdnIdAdesaoEditar" runat="server" />
-        
-        <div class="form-group text-left">
-          <label>Nome da Adesão</label>
-          <asp:TextBox ID="txtNomeAdesaoEditar" runat="server" CssClass="form-control" />
-        </div>
+            <div class="modal-body">
+                <asp:HiddenField ID="hdnIdAdesaoEditar" runat="server" />
 
-        <div class="form-group">
-          <label>Frequências e Mensalidades:</label>
-          
-                        <% for (int i = 1; i <= 7; i++) { %>
-              <div class="mb-2">
-                <label><%= i %>x por semana</label>
-                <input type="text" class="form-control" id="valor_edit_<%= i %>" name="valor_edit_<%= i %>" placeholder="R$">
-                <input type="hidden" id="id_freq_edit_<%= i %>" name="id_freq_edit_<%= i %>">
-              </div>
-            <% } %>
-        </div>
+                <div class="form-group text-left mb-3">
+                    <label>Nome da Adesão</label>
+                    <asp:TextBox ID="txtNomeAdesaoEditar" runat="server" CssClass="form-control" />
+                </div>
 
-        <div class="form-group">
-          <label>Turmas Permitidas</label>
-          <div class="d-flex gap-2 flex-wrap">
-            <asp:CheckBoxList ID="chkListTurmasEditar" runat="server" CssClass="checkbox-turma" RepeatLayout="Flow" RepeatDirection="Horizontal" />
-          </div>
-        </div>
-      </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Plano VIP</label>
+                    <div class="form-check">
+                        <asp:CheckBox ID="chkIsVipEditar" runat="server" CssClass="form-check-input" />
+                        <label class="form-check-label" for="<%= chkIsVipEditar.ClientID %>">Ativar plano VIP</label>
+                    </div>
+                    <div class="mt-2">
+                        <label class="form-label fw-bold">Valor Mensal VIP</label>
+                        <asp:TextBox ID="txtVipEditar" runat="server" CssClass="form-control" placeholder="R$" />
+                    </div>
+                </div>
+                
+                <h4 class="mt-4">Frequência (dias por semana) e Valor</h4>
+                <div class="d-flex gap-3 flex-wrap">
+                    <asp:CheckBoxList ID="chkFrequenciasEditar" runat="server" CssClass="checkbox-dia-semana" RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                </div>
+                <div>
+                    <asp:Repeater ID="rptFrequenciasEditar" runat="server">
+                        <ItemTemplate>
+                            <div class="mb-2">
+                                <asp:Label ID="lblFrequencia" runat="server" Text='<%# "Valor para " + Eval("Dias") + "x:" %>' />
+                                <asp:TextBox ID="txtValorFrequencia" runat="server" CssClass="form-control input-valor-cadastro" placeholder="R$"></asp:TextBox>
+                                <asp:HiddenField ID="hdnFrequenciaId" runat="server" Value='<%# Eval("Dias") %>' />
+                                <asp:HiddenField ID="hdnFrequenciaDbId" runat="server" Value="" />
+                            </div>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
+                
+                <div class="form-group mt-3">
+                    <label>Turmas Permitidas</label>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <asp:CheckBoxList ID="chkListTurmasEditar" runat="server" CssClass="checkbox-turma" RepeatLayout="Flow" RepeatDirection="Horizontal" />
+                    </div>
+                </div>
+            </div>
 
-      <div class="modal-footer">
-        <asp:Button ID="btnSalvarEdicao" runat="server" Text="Salvar" CssClass="btn btn-success btn-custom" OnClick="btnSalvarEdicao_Click" />
-        <button type="button" class="btn btn-secondary btn-custom" data-dismiss="modal">Cancelar</button>
-      </div>
-    </div>
-  </div>
+            <div class="modal-footer">
+                <%-- CORREÇÃO AQUI: data-bs-dismiss em vez de data-dismiss --%>
+                <button type="button" class="btn btn-secondary btn-custom" data-bs-dismiss="modal">Cancelar</button>
+                <asp:Button ID="btnSalvarEdicao" runat="server" Text="Salvar" CssClass="btn btn-success btn-custom" OnClick="btnSalvarEdicao_Click" />
+            </div>
+        </div>
+    </div>
 </div>
+    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
 <script type="text/javascript">
-    // Funções JavaScript
-    function abrirModalConfirmar(id) {
-        document.getElementById('<%= hdnIdAdesaoExcluir.ClientID %>').value = id;
-        var myModal = new bootstrap.Modal(document.getElementById('modalConfirmarExclusao'));
-        myModal.show();
-    }
 
-    function abrirModalEditar(idAdesao) {
-        document.getElementById('<%= hdnIdAdesaoEditar.ClientID %>').value = idAdesao;
-        __doPostBack('buscarAdesao', idAdesao);
-    }
+    // --- FUNÇÃO ATUALIZADA ---
+    function aplicarMascaras() {
+        // Máscara para o campo VIP do formulário de CADASTRO
+        $('#<%= txtValorVip.ClientID %>').mask('000.000.000,00', { reverse: true });
 
-    function aplicarMascaras() {
-        // Máscara para o modal de cadastro
-        for (let i = 1; i <= 7; i++) {
-            $('input[name="valor_' + i + '"]').mask('000.000.000,00', {reverse: true});
-        }
-        // Máscara para o modal de edição
-        for (let i = 1; i <= 7; i++) {
-            $('#valor_edit_' + i).mask('000.000.000,00', {reverse: true});
-        }
-    }
+        // Máscara para o campo VIP do MODAL DE EDIÇÃO
+        $('#<%= txtVipEditar.ClientID %>').mask('000.000.000,00', { reverse: true });
 
-    function limparMascarasAntesDeSalvar() {
-        for (let i = 1; i <= 7; i++) {
-            let campo = document.getElementById('valor_edit_' + i);
-            if (campo && campo.value) {
-                let valorLimpo = campo.value.replace(/\./g, '').replace(',', '.');
-                campo.value = valorLimpo;
-            }
-        }
-    }
-    
-    document.getElementById('<%= btnSalvarEdicao.ClientID %>').onclick = function () {
-        limparMascarasAntesDeSalvar();
-    };
+        // AQUI ESTÁ A CORREÇÃO:
+        // Esta única linha agora aplica a máscara em TODOS os campos de valor de frequência,
+        // tanto no cadastro quanto no modal de edição, usando a classe CSS.
+        $('.input-valor-cadastro').mask('000.000.000,00', { reverse: true });
+    }
 
+    // 1. Executa na carga inicial completa da página
     $(document).ready(function () {
         aplicarMascaras();
     });
 
+    // 2. Garante a execução após um PostBack parcial do ASP.NET
+    if (typeof Sys !== 'undefined' && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+        const prm = Sys.WebForms.PageRequestManager.getInstance();
+        prm.add_endRequest(function() {
+            aplicarMascaras();
+        });
+    }
+
+    // 3. Funções dos seus modais
+    function abrirModalConfirmar(id) {
+        document.getElementById('<%= hdnIdAdesaoExcluir.ClientID %>').value = id;
+        var myModal = new bootstrap.Modal(document.getElementById('modalConfirmarExclusao'));
+        myModal.show();
+    }
+
+    function abrirModalEditar(idAdesao) {
+        document.getElementById('<%= hdnIdAdesaoEditar.ClientID %>').value = idAdesao;
+        __doPostBack('buscarAdesao', idAdesao);
+    }
+
     $('#modalEditarAdesao').on('shown.bs.modal', function () {
         aplicarMascaras();
     });
-</script>
 
+</script>
 </asp:Content>

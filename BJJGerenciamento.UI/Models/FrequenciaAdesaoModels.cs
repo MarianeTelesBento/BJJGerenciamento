@@ -13,5 +13,7 @@ namespace BJJGerenciamento.UI.Models
         public int IdAdesao { get; set; }
         public int QtdDiasPermitidos { get; set; }
         public decimal Mensalidade { get; set; }
+        public bool IsVip { get; set; }
+        public decimal ValorVip { get; set; }
     }
 }

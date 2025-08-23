@@ -85,6 +85,8 @@
                                     <li><a class="dropdown-item"  runat="server" href="~/ListaTurmas.aspx">Listar Turmas</a></li>
                                 </ul>
                             </li>
+                            <li class="nav-item"><a class="nav-link"  runat="server" href="~/CadastrarAdesao.aspx">Adesões</a></li>
+
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/ListaHorario.aspx">Horários</a></li>
 
                             <li class="nav-item"><a class="nav-link"  runat="server" href="~/GerenciarSalas.aspx">Salas</a></li>
@@ -106,6 +108,8 @@
                             </ul>
                         </li>  
                          <li class="nav-item"><a class="nav-link"  runat="server" href="~/Financeiro.aspx">Financeiro</a></li>
+                             
+                    
 
         <!-- Botão de sair com confirmação -->
        <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
