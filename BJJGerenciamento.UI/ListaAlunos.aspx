@@ -137,7 +137,7 @@
                                 <asp:TextBox ID="modalComplementoAluno" runat="server" CssClass="form-control"></asp:TextBox>
                             </div>
                             <div class="form-group">
-                                <label>CarteiraFpjj:</label>
+                                <label>Carteira FPJJ:</label>
                                 <asp:TextBox ID="modalCarteiraFpjjAluno" runat="server" CssClass="form-control"></asp:TextBox>
                             </div>
 

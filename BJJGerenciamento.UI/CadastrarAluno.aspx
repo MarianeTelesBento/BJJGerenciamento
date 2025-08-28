@@ -52,49 +52,58 @@
                                 <div class="card-header">
                                     Informações Pessoais
                                 </div>
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="txtNome" class="form-label">Nome</label>
-                                            <asp:TextBox ID="nomeAluno" CssClass="form-control" runat="server" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="txtSobrenome" class="form-label">Sobrenome</label>
-                                            <asp:TextBox ID="sobrenomeAluno" CssClass="form-control" runat="server" />
-                                        </div>
-                                    </div>
+                          <div class="card-body">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="txtNome" class="form-label">Nome</label>
+            <asp:TextBox ID="nomeAluno" CssClass="form-control" runat="server" />
+        </div>
+        <div class="col-md-6">
+            <label for="txtSobrenome" class="form-label">Sobrenome</label>
+            <asp:TextBox ID="sobrenomeAluno" CssClass="form-control" runat="server" />
+        </div>
+    </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="txtCpf" class="form-label">CPF</label>
-                                            <asp:TextBox ID="cpfAluno" CssClass="form-control" runat="server" OnTextChanged="cpfAluno_TextChanged" AutoPostBack="true"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="txtDataNascimento" class="form-label">Data de Nascimento</label>
-                                            <asp:TextBox ID="dataNascimentoAluno" CssClass="form-control" TextMode="Date" runat="server" />
-                                        </div>
-                                    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="txtCpf" class="form-label">CPF</label>
+            <asp:TextBox ID="cpfAluno" CssClass="form-control" runat="server" 
+                         OnTextChanged="cpfAluno_TextChanged" AutoPostBack="true"/>
+        </div>
+        <div class="col-md-6">
+            <label for="txtDataNascimento" class="form-label">Data de Nascimento</label>
+            <asp:TextBox ID="dataNascimentoAluno" CssClass="form-control" 
+                         TextMode="Date" runat="server" />
+        </div>
+    </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="txtTelefone" class="form-label">Telefone</label>
-                                            <asp:TextBox ID="telefoneAluno" CssClass="form-control" runat="server" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="txtFpjj" class="form-label">Carteira FPJJ</label>
-                                            <asp:TextBox ID="carteiraFPJJAluno" CssClass="form-control" runat="server" />
-                                        </div>
-                                    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="txtTelefone" class="form-label">Telefone</label>
+            <asp:TextBox ID="telefoneAluno" CssClass="form-control" runat="server" />
+        </div>
+        <div class="col-md-6">
+            <label for="txtEmail" class="form-label">Email</label>
+            <asp:TextBox ID="emailAluno" CssClass="form-control" runat="server" />
+        </div>
+    </div>
 
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="txtEmail" class="form-label">Email</label>
-                                            <asp:TextBox ID="emailAluno" CssClass="form-control" runat="server" />
-                                        </div>
-                                    </div>
-                                </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="txtFpjj" class="form-label">Carteira FPJJ</label>
+            <div class="d-flex align-items-center">
+                <asp:TextBox ID="carteiraFPJJAluno" CssClass="form-control me-2" runat="server" />
+                <asp:HyperLink ID="lnkFpjj" runat="server" 
+                    NavigateUrl="https://am.fpjjcompetidor.com.br/auth/cadastrar-login.php" 
+                    Text="Cadastrar" 
+                    Target="_blank" />
+            </div>
+        </div>
+    </div>
+</div>
                             </div>
-                            <div class="card mb-4">
+
+                       <div class="card mb-4">
                                 <div class="card-header">
                                     Informações de Logradouro
                                 </div>

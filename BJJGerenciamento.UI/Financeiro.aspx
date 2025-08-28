@@ -76,6 +76,7 @@
                 </div>
                 <div class="modal-body">
                     <asp:Label ID="lblNomeAluno" runat="server" /><br />
+                    <asp:Label ID="lblAdesao" runat="server"></asp:Label><br />
                     <asp:Label ID="lblPlano" runat="server" /><br />
                     <asp:Label ID="lblVencimento" runat="server" /><br />
                     <asp:Label ID="lblValor" runat="server" /><br />
