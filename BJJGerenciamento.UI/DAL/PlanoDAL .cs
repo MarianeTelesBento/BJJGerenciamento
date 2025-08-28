@@ -25,15 +25,14 @@ namespace BJJGerenciamento.UI.DAL
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
+                
                 string query = @"INSERT INTO TBPlanoAlunoValor (Valor)
                          VALUES (@valorPlano); SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@valorPlano", valorPlano);
-
                     con.Open();
-
                     return Convert.ToInt32(cmd.ExecuteScalar());
                 }
             }
@@ -43,9 +42,10 @@ namespace BJJGerenciamento.UI.DAL
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = @"INSERT INTO TBPlanoAluno 
-                         (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento, DataProximaCobranca,  IdAdesao)
+                           (IdAluno, IdDia, IdHorario, IdDetalhe, IdPlanoAlunoValor, PasseLivre, DiaVencimento, DataProximaCobranca, IdAdesao)
                          VALUES 
-                         (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento, @DataProximaCobranca, @IdAdesao)";
+                           (@IdAluno, @IdDia, @IdHorario, @IdDetalhe, @IdPlanoAlunoValor, @PasseLivre, @DiaVencimento, @DataProximaCobranca, @IdAdesao);
+                         SELECT SCOPE_IDENTITY();"; 
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -59,14 +59,12 @@ namespace BJJGerenciamento.UI.DAL
                     cmd.Parameters.AddWithValue("@DataProximaCobranca", dataProximaCobranca);
                     cmd.Parameters.AddWithValue("@IdAdesao", idAdesao.HasValue ? (object)idAdesao.Value : DBNull.Value);
 
-
                     con.Open();
-                    return Convert.ToInt32(cmd.ExecuteNonQuery());
+                 
+                    return Convert.ToInt32(cmd.ExecuteScalar()); 
                 }
             }
         }
-
-
 
 
         public void ExcluirPlanoAluno(int idAluno)
@@ -171,32 +169,35 @@ namespace BJJGerenciamento.UI.DAL
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string query = @"
-                SELECT 
-                    pa.IdPlanoAluno, 
-                    pa.IdAluno,
-                    a.Nome, 
-                    a.Sobrenome,
-                    pa.IdDia, 
-                    pa.IdHorario, 
-                    pa.IdDetalhe, 
-                    pa.IdPlanoAlunoValor,
-                    pa.PasseLivre,
-                    pa.DiaVencimento, 
-                    d.QtsDias, 
-                    d.Mensalidade, 
-                    h.HorarioInicio, 
-                    h.HorarioFim,
-                    ad.NomeAdesao,
-                    f.QtdDiasPermitidos,
-                    f.Mensalidade AS MensalidadeAdesao
-                 FROM TBPlanoAluno pa
-                INNER JOIN TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
-                INNER JOIN TBHora h ON pa.IdHorario = h.IdHora
-                INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
-                LEFT JOIN TBAdesao ad ON pa.IdAdesao = ad.IdAdesao  -- ALTERADO para LEFT JOIN
-                LEFT JOIN TBAdesaoFrequencias f ON ad.IdAdesao = f.IdAdesao AND d.QtsDias = f.QtdDiasPermitidos
-                WHERE a.IdMatricula = @IdMatricula;
-            ";
+            SELECT 
+                pa.IdPlanoAluno, 
+                pa.IdAluno,
+                a.Nome, 
+                a.Sobrenome,
+                pa.IdDia, 
+                pa.IdHorario, 
+                pa.IdDetalhe, 
+                pa.IdPlanoAlunoValor,
+                pa.PasseLivre,
+                pa.DiaVencimento, 
+                d.QtsDias, 
+                -- ALTERAÇÃO PRINCIPAL AQUI:
+                -- Pega o valor da tabela correta (TBPlanoAlunoValor).
+                -- Se não existir, pega o valor antigo da TBPlanoDetalhes como um fallback.
+                COALESCE(tpav.Valor, d.Mensalidade) AS mensalidade,
+                h.HorarioInicio, 
+                h.HorarioFim,
+                ad.NomeAdesao
+            FROM TBPlanoAluno pa
+            INNER JOIN TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
+            INNER JOIN TBHora h ON pa.IdHorario = h.IdHora
+            INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
+            LEFT JOIN TBAdesao ad ON pa.IdAdesao = ad.IdAdesao
+            -- ADIÇÃO DO JOIN CORRETO:
+            -- Faz a ligação com a tabela que tem o valor pago pelo aluno.
+            LEFT JOIN TBPlanoAlunoValor tpav ON pa.IdPlanoAlunoValor = tpav.IdPlanoAlunoValor
+            WHERE a.IdMatricula = @IdMatricula;
+        ";
 
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
@@ -216,16 +217,14 @@ namespace BJJGerenciamento.UI.DAL
                                 idDia = reader.GetInt32(reader.GetOrdinal("IdDia")),
                                 idHorario = reader.GetInt32(reader.GetOrdinal("IdHorario")),
                                 idDetalhe = reader.GetInt32(reader.GetOrdinal("IdDetalhe")),
-                                idPlanoAlunoValor = reader.GetInt32(reader.GetOrdinal("IdPlanoAlunoValor")),
+                                idPlanoAlunoValor = reader.IsDBNull(reader.GetOrdinal("IdPlanoAlunoValor")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanoAlunoValor")),
                                 passeLivre = reader.GetBoolean(reader.GetOrdinal("PasseLivre")),
                                 DiaVencimento = reader.GetInt32(reader.GetOrdinal("DiaVencimento")),
                                 qtdDias = reader.GetInt32(reader.GetOrdinal("QtsDias")),
-                                mensalidade = reader.GetDecimal(reader.GetOrdinal("Mensalidade")),
+                                mensalidade = reader.GetDecimal(reader.GetOrdinal("mensalidade")), // Agora pega a coluna correta
                                 horarioInicio = reader.GetTimeSpan(reader.GetOrdinal("HorarioInicio")).ToString(@"hh\:mm"),
                                 horarioFim = reader.GetTimeSpan(reader.GetOrdinal("HorarioFim")).ToString(@"hh\:mm"),
-                                NomeAdesao = reader.IsDBNull(reader.GetOrdinal("NomeAdesao")) ? null : reader.GetString(reader.GetOrdinal("NomeAdesao")),
-                                QtdDiasPermitidos = reader.IsDBNull(reader.GetOrdinal("QtdDiasPermitidos")) ? 0 : reader.GetInt32(reader.GetOrdinal("QtdDiasPermitidos")),
-                                MensalidadeAdesao = reader.IsDBNull(reader.GetOrdinal("MensalidadeAdesao")) ? 0 : reader.GetDecimal(reader.GetOrdinal("MensalidadeAdesao"))
+                                NomeAdesao = reader.IsDBNull(reader.GetOrdinal("NomeAdesao")) ? null : reader.GetString(reader.GetOrdinal("NomeAdesao"))
                             };
                             planoAlunos.Add(planoAluno);
                         }
@@ -234,7 +233,6 @@ namespace BJJGerenciamento.UI.DAL
             }
             return planoAlunos;
         }
-
         public decimal BuscarMensalidade(int idPlano, int QtsDias)
         {
             decimal mensalidade = 0;
@@ -895,120 +893,191 @@ namespace BJJGerenciamento.UI.DAL
 
         public List<PlanoAlunoModels> BuscarTodosPlanosComAlunos()
         {
-            List<PlanoAlunoModels> listaCompleta = new List<PlanoAlunoModels>();
+            List<PlanoAlunoModels> planos = new List<PlanoAlunoModels>();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                
+                string query = @"
+            SELECT 
+                pa.IdPlanoAluno,
+                pa.IdAluno,
+                a.Nome,
+                a.Sobrenome,
+                pa.IdDetalhe,
+                pa.IdAdesao, 
+                pa.DataProximaCobranca,
+                COALESCE(tpav.Valor, d.Mensalidade) AS mensalidade
+            FROM 
+                TBPlanoAluno pa
+            INNER JOIN 
+                TBAlunos a ON pa.IdAluno = a.IdAluno
+            INNER JOIN 
+                TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
+            LEFT JOIN 
+                TBPlanoAlunoValor tpav ON pa.IdPlanoAlunoValor = tpav.IdPlanoAlunoValor
+            LEFT JOIN 
+                TBAdesao ad ON pa.IdAdesao = ad.IdAdesao;
+        ";
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            planos.Add(new PlanoAlunoModels
+                            {
+                                idPlanoAluno = reader.GetInt32(reader.GetOrdinal("IdPlanoAluno")),
+                                idAlunos = reader.GetInt32(reader.GetOrdinal("IdAluno")),
+                                Nome = reader.GetString(reader.GetOrdinal("Nome")),
+                                Sobrenome = reader.GetString(reader.GetOrdinal("Sobrenome")),
+                                idDetalhe = reader.GetInt32(reader.GetOrdinal("IdDetalhe")),
+                                IdAdesao = reader.IsDBNull(reader.GetOrdinal("IdAdesao")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdAdesao")), // <<< ADICIONADO
+                                DataProximaCobranca = reader.IsDBNull(reader.GetOrdinal("DataProximaCobranca")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("DataProximaCobranca")),
+                                mensalidade = reader.GetDecimal(reader.GetOrdinal("mensalidade"))
+                            });
+                        }
+                    }
+                }
+            }
+            return planos;
+        }
+        public int AtualizarDataPagamento(int idAluno, DateTime novaData, int idAdesao)
+        {
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
+
                 string query = @"
-        SELECT 
-            p.IdPlanoAluno,
-            p.IdAluno,
-            p.IdDetalhe,
-            p.IdPlanoAlunoValor,
-            a.Nome,
-            a.Sobrenome,
-            p.DiaVencimento,
-            p.DataProximaCobranca,
-            d.Mensalidade
-        FROM TBPlanoAluno p
-        INNER JOIN TBAlunos a ON p.IdAluno = a.IdAluno
-        INNER JOIN TBPlanoDetalhes d ON p.IdDetalhe = d.IdDetalhe";
+            UPDATE TBPlanoAluno 
+            SET 
+                DataProximaCobranca = @NovaData,
+                IdAdesao = @IdAdesao -- CAMPO ADICIONADO
+            WHERE 
+                IdAluno = @IdAluno";
 
-                SqlCommand cmd = new SqlCommand(query, con);
-                con.Open();
-
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    PlanoAlunoModels plano = new PlanoAlunoModels
-                    {
-                        idPlanoAluno = reader.GetInt32(0),
-                        idAlunos = reader.GetInt32(1),
-                        idDetalhe = reader.GetInt32(2),
-                        idPlanoAlunoValor = reader.GetInt32(3),
-                        Nome = reader["Nome"].ToString(),
-                        Sobrenome = reader["Sobrenome"].ToString(),
-                        DiaVencimento = reader.GetInt32(6),
-                        DataProximaCobranca = reader.IsDBNull(reader.GetOrdinal("DataProximaCobranca"))
-                            ? (DateTime?)null
-                            : reader.GetDateTime(reader.GetOrdinal("DataProximaCobranca")),
-                        mensalidade = Convert.ToDecimal(reader["Mensalidade"])
-                    };
+                    cmd.Parameters.AddWithValue("@NovaData", novaData);
+                    cmd.Parameters.AddWithValue("@IdAdesao", idAdesao);
+                    cmd.Parameters.AddWithValue("@IdAluno", idAluno);
 
-                    listaCompleta.Add(plano);
+                    con.Open();
+
+                    return cmd.ExecuteNonQuery();
                 }
             }
-
-            return listaCompleta;
         }
-
-        public int AtualizarDataPagamento(int idPlanoAluno, DateTime novaData)
+        public int AtualizarApenasDataCobranca(int idAluno, DateTime novaData)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                System.Diagnostics.Debug.WriteLine($"[DEBUG DAL] Tentando atualizar plano {idPlanoAluno} para {novaData:yyyy-MM-dd}");
 
-                string sql = @"UPDATE TBPlanoAluno 
-                       SET DataProximaCobranca = @novaData 
-                       WHERE IdPlanoAluno = @id";
+                string query = @"
+            UPDATE TBPlanoAluno 
+            SET 
+                DataProximaCobranca = @NovaData
+            WHERE 
+                IdAluno = @IdAluno";
 
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    cmd.Parameters.AddWithValue("@novaData", novaData);
-                    cmd.Parameters.AddWithValue("@id", idPlanoAluno);
+                    cmd.Parameters.AddWithValue("@NovaData", novaData);
+                    cmd.Parameters.AddWithValue("@IdAluno", idAluno);
 
-                    conn.Open();
-                    System.Diagnostics.Debug.WriteLine($"[DEBUG DAL] Conectado ao banco: {conn.Database}");
-
-                    int linhasAfetadas = cmd.ExecuteNonQuery();
-                    System.Diagnostics.Debug.WriteLine($"[DEBUG DAL] Linhas afetadas: {linhasAfetadas}");
-                    return linhasAfetadas;
+                    con.Open();
+                    return cmd.ExecuteNonQuery();
                 }
             }
         }
+        public DateTime? BuscarDataMaisRecentePorAluno(int idAluno)
+        {
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT MAX(DataProximaCobranca) FROM TBPlanoAluno WHERE IdAluno = @IdAluno";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdAluno", idAluno);
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        return Convert.ToDateTime(result);
+                    }
+                    return null;
+                }
+            }
+        }
+
 
 
         public PlanoAlunoModels BuscarPlanoPorId(int idPlanoAluno)
         {
             PlanoAlunoModels plano = null;
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sql = @"
-        SELECT p.*, a.Nome, a.Sobrenome, d.mensalidade
-        FROM TBPlanoAluno p
-        INNER JOIN TBAlunos a ON p.idAluno = a.IdAluno
-        INNER JOIN TBPlanoDetalhes d ON p.idDetalhe = d.idDetalhe
-        WHERE p.idPlanoAluno = @idPlanoAluno";
+                string query = @"
+            SELECT 
+                pa.IdPlanoAluno, 
+                pa.IdAluno,
+                a.Nome, 
+                a.Sobrenome,
+                pa.IdDia, 
+                pa.IdHorario, 
+                pa.IdDetalhe, 
+                pa.IdPlanoAlunoValor,
+                pa.PasseLivre,
+                pa.DiaVencimento, 
+                d.QtsDias, 
+                -- ALTERAÇÃO PRINCIPAL AQUI:
+                -- Prioriza o valor da TBPlanoAlunoValor. Se não houver, usa o valor antigo como fallback.
+                COALESCE(tpav.Valor, d.Mensalidade) AS mensalidade,
+                h.HorarioInicio, 
+                h.HorarioFim,
+                ad.NomeAdesao
+            FROM TBPlanoAluno pa
+            INNER JOIN TBPlanoDetalhes d ON pa.IdDetalhe = d.IdDetalhe
+            INNER JOIN TBHora h ON pa.IdHorario = h.IdHora
+            INNER JOIN TBAlunos a ON pa.IdAluno = a.IdAluno
+            LEFT JOIN TBAdesao ad ON pa.IdAdesao = ad.IdAdesao
+            -- ADIÇÃO DO JOIN CORRETO:
+            LEFT JOIN TBPlanoAlunoValor tpav ON pa.IdPlanoAlunoValor = tpav.IdPlanoAlunoValor
+            WHERE pa.IdPlanoAluno = @IdPlanoAluno;
+        ";
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@idPlanoAluno", idPlanoAluno);
-
-                conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.Read())
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    plano = new PlanoAlunoModels()
+                    cmd.Parameters.AddWithValue("@IdPlanoAluno", idPlanoAluno);
+                    con.Open();
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        idPlanoAluno = (int)reader["idPlanoAluno"],
-                        idAlunos = (int)reader["idAluno"],
-                        idDetalhe = (int)reader["idDetalhe"],
-                        DiaVencimento = (int)reader["DiaVencimento"],
-                        mensalidade = Convert.ToDecimal(reader["mensalidade"]),
-                        Nome = reader["Nome"].ToString(),
-                        Sobrenome = reader["Sobrenome"].ToString(),
-
-                        // ✅ Adiciona isso!
-                        DataProximaCobranca = reader["DataProximaCobranca"] != DBNull.Value
-                            ? Convert.ToDateTime(reader["DataProximaCobranca"])
-                            : (DateTime?)null
-                    };
+                        if (reader.Read())
+                        {
+                            plano = new PlanoAlunoModels()
+                            {
+                                idPlanoAluno = reader.GetInt32(reader.GetOrdinal("IdPlanoAluno")),
+                                idAlunos = reader.GetInt32(reader.GetOrdinal("IdAluno")),
+                                Nome = reader.GetString(reader.GetOrdinal("Nome")),
+                                Sobrenome = reader.GetString(reader.GetOrdinal("Sobrenome")),
+                                idDia = reader.GetInt32(reader.GetOrdinal("IdDia")),
+                                idHorario = reader.GetInt32(reader.GetOrdinal("IdHorario")),
+                                idDetalhe = reader.GetInt32(reader.GetOrdinal("IdDetalhe")),
+                                idPlanoAlunoValor = reader.IsDBNull(reader.GetOrdinal("IdPlanoAlunoValor")) ? 0 : reader.GetInt32(reader.GetOrdinal("IdPlanoAlunoValor")),
+                                passeLivre = reader.GetBoolean(reader.GetOrdinal("PasseLivre")),
+                                DiaVencimento = reader.GetInt32(reader.GetOrdinal("DiaVencimento")),
+                                qtdDias = reader.GetInt32(reader.GetOrdinal("QtsDias")),
+                                mensalidade = reader.GetDecimal(reader.GetOrdinal("mensalidade")),
+                                horarioInicio = reader.GetTimeSpan(reader.GetOrdinal("HorarioInicio")).ToString(@"hh\:mm"),
+                                horarioFim = reader.GetTimeSpan(reader.GetOrdinal("HorarioFim")).ToString(@"hh\:mm"),
+                                NomeAdesao = reader.IsDBNull(reader.GetOrdinal("NomeAdesao")) ? "" : reader.GetString(reader.GetOrdinal("NomeAdesao"))
+                            };
+                        }
+                    }
                 }
             }
             return plano;
         }
-
         public void InserirAdesaoComFrequencias(AdesaoModels adesao)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -1475,6 +1544,26 @@ namespace BJJGerenciamento.UI.DAL
                     return count > 0;
                 }
             }
+        }
+        public int BuscarIdDetalhe(int idPlano)
+        {
+            int idDetalhe = 0;
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = "SELECT IdDetalhe FROM TBPlanoDetalhes WHERE IdPlano = @IdPlano;";
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    cmd.Parameters.AddWithValue("@IdPlano", idPlano);
+          
+                    con.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        idDetalhe = Convert.ToInt32(result);
+                    }
+                }
+            }
+            return idDetalhe;
         }
 
 
