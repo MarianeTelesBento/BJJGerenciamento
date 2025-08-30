@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Financeiro.aspx.cs" Inherits="BJJGerenciamento.UI.Financeiro" %>
+﻿<%@ Page Title="Financeiro" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Financeiro.aspx.cs" Inherits="BJJGerenciamento.UI.Financeiro" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <title>Financeiro</title>
 
@@ -81,17 +81,18 @@
                     <asp:Label ID="lblValor" runat="server" /><br />
                     <asp:HiddenField ID="hiddenIdPlanoAluno" runat="server" />
                 </div>
-  <div class="modal-footer" style="justify-content: flex-end; padding-bottom: 20px;">
-    <!-- Botão visual -->
-    <button type="button" class="btn btn-success" style="height:35px; width: 180px;" onclick="confirmarPagamento();">
-        Pagamento Efetuado
-    </button>
+                <div class="modal-footer" style="justify-content: flex-end; padding-bottom: 20px;">
+                    <!-- Botão visual -->
+                    <button type="button" class="btn btn-success" style="height:35px; width: 180px;" onclick="confirmarPagamento();">
+                        Pagamento Efetuado
+                    </button>
 
-    <!-- Botão ASP.NET oculto -->
-    <asp:Button ID="btnPagamentoEfetuado" runat="server" Text="Confirmar"
-        Style="display:none" OnClick="btnPagamentoEfetuado_Click" />
-</div>
-
+                    <!-- Botão ASP.NET oculto -->
+                    <asp:Button ID="btnPagamentoEfetuado" runat="server" Text="Confirmar"
+                        Style="display:none" OnClick="btnPagamentoEfetuado_Click" />
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->

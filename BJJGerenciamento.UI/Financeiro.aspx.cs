@@ -91,9 +91,6 @@ namespace BJJGerenciamento.UI
         }
 
 
-
-
-
         protected void gvFinanceiro_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "ExibirDetalhes")
@@ -161,11 +158,6 @@ namespace BJJGerenciamento.UI
                 "alert('Pagamento registrado com sucesso!'); fecharModal();", true);
 
         }
-
-
-
-
-
         protected void gvFinanceiro_SelectedIndexChanged(object sender, EventArgs e)
         {
           
@@ -177,6 +169,7 @@ namespace BJJGerenciamento.UI
             string script = "<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
+
         private void ExibirDetalhesPlano(int idPlanoAluno)
         {
             // Instancia o DAL
