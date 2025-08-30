@@ -1507,10 +1507,9 @@ namespace BJJGerenciamento.UI.DAL
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-
+                
                 string query = @"
-            SELECT
-                CASE WHEN IsVip = 1 THEN ValorVip ELSE Mensalidade END
+            SELECT Mensalidade 
             FROM TBAdesaoFrequencias
             WHERE IdAdesao = @IdAdesao AND QtdDiasPermitidos = @QtdDiasPermitidos;";
 

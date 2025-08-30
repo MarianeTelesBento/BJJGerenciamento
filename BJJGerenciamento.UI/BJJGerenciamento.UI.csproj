@@ -160,6 +160,7 @@
     <Content Include="Financeiro.aspx" />
     <Content Include="GerenciarSalas.aspx" />
     <Content Include="Graduacao.aspx" />
+    <Content Include="Guia.aspx" />
     <Content Include="Home.aspx" />
     <Content Include="Images\filtro.png" />
     <Content Include="Images\ImagemDesfocada.png" />
@@ -298,6 +299,13 @@
     </Compile>
     <Compile Include="Graduacao.aspx.designer.cs">
       <DependentUpon>Graduacao.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Guia.aspx.cs">
+      <DependentUpon>Guia.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Guia.aspx.designer.cs">
+      <DependentUpon>Guia.aspx</DependentUpon>
     </Compile>
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
