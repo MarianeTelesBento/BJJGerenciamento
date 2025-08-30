@@ -468,6 +468,7 @@ namespace BJJGerenciamento.UI
                 var planos = new PlanoDAL().BuscarPlanosPorAdesao(idAdesao);
 
                 ddPlanos.Items.Clear();
+                ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", "0"));
                 foreach (var plano in planos)
                 {
                    ddPlanos.Items.Add(new ListItem(plano.Nome, plano.IdPlano.ToString()));
