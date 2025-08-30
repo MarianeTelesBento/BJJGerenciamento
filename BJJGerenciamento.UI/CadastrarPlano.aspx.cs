@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -72,7 +73,7 @@ namespace BJJGerenciamento.UI
             cbHorariosQuarta.Items.Clear();
             cbHorariosQuinta.Items.Clear();
             cbHorariosSexta.Items.Clear();
-            cbPasseLivre.Checked = false;
+            chkUsarVip.Checked = false;
 
             PlanoDAL planoDal = new PlanoDAL();
 
@@ -194,9 +195,9 @@ namespace BJJGerenciamento.UI
 
         }
 
-        protected void cbPasseLivre_SelectedIndexChanged(object sender, EventArgs e)
+        protected void chkUsarVip_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbPasseLivre.Checked)
+            if (chkUsarVip.Checked)
             {
                 foreach (ListItem item in cbDias.Items)
                 {
@@ -211,9 +212,11 @@ namespace BJJGerenciamento.UI
                 }
             }
 
+            // Dispara o evento de seleção de dias para mostrar/esconder os painéis de horário
             cbDias_SelectedIndexChanged(null, null);
 
-            if (cbPasseLivre.Checked)
+            // Se marcou, também seleciona todos os horários que apareceram
+            if (chkUsarVip.Checked)
             {
                 foreach (ListItem item in cbHorariosSegunda.Items) item.Selected = true;
                 foreach (ListItem item in cbHorariosTerca.Items) item.Selected = true;
@@ -226,6 +229,9 @@ namespace BJJGerenciamento.UI
 
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
+
+            Response.Write($"<script>alert('O valor que estou lendo da tela é: {ValorPagoPlano.Text}');</script>");
+
             if (string.IsNullOrEmpty(ValorPagoPlano.Text))
             {
                 Response.Write("<script>alert('Selecione um valor para o plano');</script>");
@@ -248,33 +254,42 @@ namespace BJJGerenciamento.UI
                 return;
             }
 
-            // Agora sim: pode usar a data nos seus objetos
             int diaVencimento = dataEscolhida.Day;
             DateTime dataProximaCobranca = CalcularDataProximaCobranca(diaVencimento);
 
-            // Exemplo: passando para o DAL ou model externo
-            var planoAlunoModel = new PlanoAlunoModels
+            // O valor a ser salvo é o que está no campo da tela (pode incluir desconto)
+            decimal valorSalvo;
+            if (!decimal.TryParse(ValorPagoPlano.Text, NumberStyles.Number, new CultureInfo("pt-BR"), out valorSalvo))
             {
-                DiaVencimento = diaVencimento,
-                DataProximaCobranca = dataProximaCobranca,
-                // outros campos...
-            };
-
-
-
-            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
-            int idPlano = int.Parse(ddPlanos.SelectedValue);
-
-            PlanoDAL planoDAL = new PlanoDAL();
-            PlanoModels planoSelecionado = planoDAL.BuscarPlanoDetalhes(idPlano, totalDiasSelecionados);
-
-            if (planoSelecionado == null)
-            {
-                Response.Write("<script>alert('Plano não encontrado. Verifique os dias selecionados e o plano.');</script>");
+                Response.Write("<script>alert('Valor do plano inválido. Verifique o formato do desconto.');</script>");
                 return;
             }
 
-            int idDetalhe = planoSelecionado.IdDetalhe;
+            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+            if (totalDiasSelecionados == 0)
+            {
+                Response.Write("<script>alert('Selecione pelo menos um dia.');</script>");
+                return;
+            }
+
+            int idPlano = int.Parse(ddPlanos.SelectedValue);
+            int idAdesao = Convert.ToInt32(ddlAdesao.SelectedValue);
+            int idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
+            PlanoDAL planoDAL = new PlanoDAL();
+
+            // Busca o IdDetalhe para o plano e dias selecionados
+            int idDetalhe = planoDAL.BuscarIdDetalhe(idPlano);
+
+            if (idDetalhe == 0)
+            {
+                Response.Write("<script>alert('Detalhes do plano não encontrados para o plano e frequência selecionados.');</script>");
+                return;
+            }
+
+     
+            int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(valorSalvo);
+
+            bool passeLivre = chkUsarVip.Checked;
             bool cadastroSucesso = false;
 
             foreach (ListItem diaItem in cbDias.Items)
@@ -283,7 +298,6 @@ namespace BJJGerenciamento.UI
                 {
                     int idDia = int.Parse(diaItem.Value);
                     string nomeDia = diaItem.Text;
-
                     CheckBoxList horariosDia = ObterCheckBoxListPorDia(nomeDia);
 
                     if (horariosDia != null)
@@ -293,16 +307,10 @@ namespace BJJGerenciamento.UI
                             if (horarioItem.Selected)
                             {
                                 int idHorario = int.Parse(horarioItem.Value);
-                                int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(decimal.Parse(ValorPagoPlano.Text));
-                                bool passeLivre = cbPasseLivre.Checked;
-                                int idAdesao = Convert.ToInt32(ddlAdesao.SelectedValue);
-
-                                // ✅ Novo: passando dia fixo (int) e data calculada (DateTime)
                                 int cadastroFuncionando = planoDAL.CadastrarPlanoAluno(
                                     idAluno, idDia, idHorario, idDetalhe,
                                     idPlanoAlunoValor, passeLivre, diaVencimento, dataProximaCobranca, idAdesao
                                 );
-
                                 if (cadastroFuncionando > 0)
                                 {
                                     cadastroSucesso = true;
@@ -316,18 +324,17 @@ namespace BJJGerenciamento.UI
             if (cadastroSucesso)
             {
                 string script = @"
-        Swal.fire({
-            icon: 'success',
-            title: 'Sucesso!',
-            text: 'Plano cadastrado com sucesso!',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'ListaAlunos.aspx';
-            }
-        });";
-
+            Swal.fire({
+                icon: 'success',
+                title: 'Sucesso!',
+                text: 'Plano cadastrado com sucesso!',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'ListaAlunos.aspx';
+                }
+            });";
                 ScriptManager.RegisterStartupScript(this, GetType(), "sweetalert", script, true);
             }
             else
@@ -337,61 +344,67 @@ namespace BJJGerenciamento.UI
         }
 
 
-
-
         protected void btnValorPlano_Click(object sender, EventArgs e)
         {
+            PlanoDAL planoDAL = new PlanoDAL();
+
+            // Validações iniciais (continuam iguais)
+            if (ddlAdesao.SelectedValue == "0" || string.IsNullOrEmpty(ddlAdesao.SelectedValue))
+            {
+                Response.Write("<script>alert('Selecione uma adesão');</script>");
+                return;
+            }
             if (string.IsNullOrEmpty(ddPlanos.SelectedValue))
             {
                 Response.Write("<script>alert('Selecione uma turma');</script>");
                 return;
             }
 
-            int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+            decimal valorPlano = 0;
+            int idAdesao = Convert.ToInt32(ddlAdesao.SelectedValue);
 
-            if (totalDiasSelecionados == 0)
+            if (chkUsarVip.Checked)
             {
-                Response.Write("<script>alert('Selecione pelo menos um dia');</script>");
-                return;
+                AdesaoModels adesao = planoDAL.BuscarAdesaoPorId(idAdesao);
+                if (adesao != null && adesao.IsVip && adesao.ValorVip > 0)
+                {
+                    valorPlano = adesao.ValorVip;
+                }
+                else
+                {
+                    ValorPagoPlano.Text = "0,00";
+                    EnviarInformacoes.Visible = false;
+                    chkUsarVip.Checked = false;
+                    Response.Write("<script>alert('A adesão selecionada não possui uma opção VIP cadastrada.');</script>");
+                    return;
+                }
+            }
+            else // Se não for VIP
+            {
+                int totalDiasSelecionados = cbDias.Items.Cast<ListItem>().Count(item => item.Selected);
+                if (totalDiasSelecionados == 0)
+                {
+                    Response.Write("<script>alert('Selecione pelo menos um dia');</script>");
+                    return;
+                }
+
+                valorPlano = planoDAL.BuscarValorPorAdesaoEFrequencia(idAdesao, totalDiasSelecionados);
+
+                if (valorPlano == 0)
+                {
+                    Response.Write("<script>alert('Mensalidade não encontrada para a frequência selecionada.');</script>");
+                    // Limpa o campo e esconde o botão, pois não encontrou valor
+                    ValorPagoPlano.Text = "";
+                    EnviarInformacoes.Visible = false;
+                    return;
+                }
             }
 
-            int totalHorariosSelecionados = 0;
-            totalHorariosSelecionados += ContarSelecionados(cbHorariosSegunda);
-            totalHorariosSelecionados += ContarSelecionados(cbHorariosTerca);
-            totalHorariosSelecionados += ContarSelecionados(cbHorariosQuarta);
-            totalHorariosSelecionados += ContarSelecionados(cbHorariosQuinta);
-            totalHorariosSelecionados += ContarSelecionados(cbHorariosSexta);
-
-            if (totalDiasSelecionados > totalHorariosSelecionados)
-            {
-                Response.Write("<script>alert('Selecione pelo menos um horário para cada dia');</script>");
-                return;
-            }
-
-            PlanoDAL planoDAL = new PlanoDAL();
-            decimal valorPlano = planoDAL.BuscarMensalidade(int.Parse(ddPlanos.SelectedValue), totalDiasSelecionados);
-
-            if (totalHorariosSelecionados > totalDiasSelecionados && !cbPasseLivre.Checked)
-            {
-                Response.Write("<script>alert('Ative a opção passe livre para selecionar mais de um horário por dia');</script>");
-                return;
-            }
-
-            // Exibe no formato brasileiro
-            ValorPagoPlano.Text = valorPlano.ToString("N2", new System.Globalization.CultureInfo("pt-BR"));
-
-            // Agora já tenta salvar sem erro de formato
-            decimal valor;
-            if (!decimal.TryParse(ValorPagoPlano.Text, System.Globalization.NumberStyles.Number, new System.Globalization.CultureInfo("pt-BR"), out valor))
-            {
-                Response.Write("<script>alert('Valor do plano inválido');</script>");
-                return;
-            }
-
-            int idPlanoAlunoValor = planoDAL.CadastrarPlanoAlunoValor(valor);
-
+            // APENAS ATUALIZA O CAMPO DE TEXTO E MOSTRA O BOTÃO ENVIAR
+            ValorPagoPlano.Text = valorPlano.ToString("N2", new CultureInfo("pt-BR"));
             EnviarInformacoes.Visible = true;
         }
+        // Método auxiliar que você já tinha
 
         private int ContarSelecionados(CheckBoxList cbl)
         {

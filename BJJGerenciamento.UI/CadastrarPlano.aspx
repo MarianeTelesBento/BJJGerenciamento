@@ -153,23 +153,22 @@
 
 
             <div class="container mt-5">
-                <div class="form-container">
-
-                    <div class="row">
-
+           <div class="form-container">
+        <div class="row">
       <div class="col-md-6 mb-4">
      <label for="ddPlanos" class="form-label">Selecione uma adesão:</label>
-    <asp:DropDownList ID="ddlAdesao" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="ddlAdesao_SelectedIndexChanged">
-    </asp:DropDownList>
+    <asp:DropDownList ID="ddlAdesao" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="ddlAdesao_SelectedIndexChanged">        
+    </asp:DropDownList>     <asp:CheckBox ID="chkUsarVip" runat="server" OnCheckedChanged="chkUsarVip_CheckedChanged" AutoPostBack="true"  CssClass="form-check-input" /> <label for="chkUsarVip" class="form-check-label">VIP</label>  
+  
+    
       </div>
+  
                         <!-- Seleção da Turma -->
                         <div class="col-md-6 mb-4">
                             <label for="ddPlanos" class="form-label">Selecione uma turma:</label>
                             <asp:DropDownList ID="ddPlanos" runat="server" CssClass="form-select"
                                 AutoPostBack="true" OnSelectedIndexChanged="ddPlanos_SelectedIndexChanged" />
-                            <label for="cbPasseLivre">Passe Livre:</label>
-                            <asp:CheckBox ID="cbPasseLivre" runat="server" CssClass="form-check"
-                                AutoPostBack="true" OnCheckedChanged="cbPasseLivre_SelectedIndexChanged"/>
+                       
                         </div>
 
                         <!-- Dias disponíveis -->

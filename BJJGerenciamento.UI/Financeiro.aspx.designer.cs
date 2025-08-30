@@ -42,7 +42,16 @@ namespace BJJGerenciamento.UI
         protected global::System.Web.UI.WebControls.Label lblNomeAluno;
 
         /// <summary>
-        /// lblPlano control.
+        /// Controle lblAdesao.
+        /// </summary>
+        /// <remarks>
+        /// Campo gerado automaticamente.
+        /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAdesao;
+
+        /// <summary>
+        /// Controle lblPlano.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
