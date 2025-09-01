@@ -450,7 +450,7 @@ namespace BJJGerenciamento.UI.DAL
                     ) g
                     WHERE 
                         m.StatusdaMatricula = '1' AND
-                        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo)
+                        (ISNULL(@termo, '') = '' OR a.Nome LIKE @termo OR a.Sobrenome LIKE @termo OR (a.Nome + ' ' + a.Sobrenome) LIKE @termo)
                         AND (@idPlano IS NULL OR pd.IdPlano = @idPlano)
                         AND (@idHora IS NULL OR ph.IdHora = @idHora) 
                     GROUP BY 

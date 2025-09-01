@@ -106,7 +106,9 @@
             <p>
                 Para realizar a chamada, acesse a seção "Chamada" no menu. acione o icone de filtros, que são divididos por turmas, horarios, e uma aba de pesquisa, selecione a turma e o horario, e clique em "pesquisar"( em casos de alunos "VIP's" que podem frequentar horarios e turmas diferentes de acordo com o nivel, pesquise pelo aluno na lista geral, e compute a presença a ele).
             </p>
-            
+             <p>
+                Em caso de presença para um aluno VIP, primeiro pesquise o nome dele, depois selecione a turma e o horário que ele participou,  e clique em "Nova Chamada.
+             </p>
             <img src="/Images/chamada1.png" alt="Tela de chamada com seleção de turma e data" class="img-fluid" style="border: 1px solid #ccc; margin-top: 10px; margin-bottom: 15px;" />
             
             <p>

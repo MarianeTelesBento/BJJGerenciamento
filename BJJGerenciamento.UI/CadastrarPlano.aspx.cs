@@ -18,14 +18,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (Session["UsuarioLogado"] == null)
-            //{
-            //    Response.Redirect("Login.aspx");
-            //}
-
-
-
-
+            if (Session["UsuarioLogado"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
 
             idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
 
@@ -250,7 +246,7 @@ namespace BJJGerenciamento.UI
 
             if (dataEscolhida < primeiroDiaMesSeguinte)
             {
-                Response.Write("<script>alert('A data de vencimento deve ser no mês seguinte ou posterior.');</script>");
+                Response.Write("<script>alert('A data de vencimento deve pertencer ao próximo mês do calendário. Datas no mês atual não são permitidas.');</script>");
                 return;
             }
 
