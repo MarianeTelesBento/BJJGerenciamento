@@ -136,6 +136,8 @@
                 <hr />
                 <footer>
                     <p>&copy; <%: DateTime.Now.Year %> - R.S.M DevWorks</p>
+                     <p><a href="Guia.aspx">Como Usar o Software</a></p>
+                    <a href="mailto:rsmdevworks@gmail.com?subject=Suporte%20do%20Sistema&body=Olá,%20gostaria%20de%20solicitar%20suporte.">Entrar em Contato com o Suporte</a>
                 </footer>
             </div>
         </form>
