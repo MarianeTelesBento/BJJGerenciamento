@@ -18,10 +18,10 @@ namespace BJJGerenciamento.UI
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UsuarioLogado"] == null)
-            {
-                Response.Redirect("Login.aspx");
-            }
+            //if (Session["UsuarioLogado"] == null)
+            //{
+            //    Response.Redirect("Login.aspx");
+            //}
 
 
 
@@ -230,7 +230,8 @@ namespace BJJGerenciamento.UI
         protected void btnEnviarInformacoes_Click(object sender, EventArgs e)
         {
 
-           
+            Response.Write($"<script>alert('O valor que estou lendo da tela é: {ValorPagoPlano.Text}');</script>");
+
             if (string.IsNullOrEmpty(ValorPagoPlano.Text))
             {
                 Response.Write("<script>alert('Selecione um valor para o plano');</script>");
@@ -276,7 +277,7 @@ namespace BJJGerenciamento.UI
             int idAluno = Convert.ToInt32(Request.QueryString["idAluno"]);
             PlanoDAL planoDAL = new PlanoDAL();
 
-       
+            // Busca o IdDetalhe para o plano e dias selecionados
             int idDetalhe = planoDAL.BuscarIdDetalhe(idPlano);
 
             if (idDetalhe == 0)
@@ -467,6 +468,7 @@ namespace BJJGerenciamento.UI
                 var planos = new PlanoDAL().BuscarPlanosPorAdesao(idAdesao);
 
                 ddPlanos.Items.Clear();
+                ddPlanos.Items.Insert(0, new ListItem("-- Selecione uma turma --", "0"));
                 foreach (var plano in planos)
                 {
                    ddPlanos.Items.Add(new ListItem(plano.Nome, plano.IdPlano.ToString()));

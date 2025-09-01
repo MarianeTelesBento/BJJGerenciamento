@@ -161,6 +161,7 @@ namespace BJJGerenciamento.UI
             string script = "<script>abrirModal();</script>";
             ClientScript.RegisterStartupScript(this.GetType(), "ShowDetalhes", script);
         }
+
         private void ExibirDetalhesPlano(int idPlanoAluno)
         {
             // Instancia o DAL
